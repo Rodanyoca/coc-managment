@@ -101,7 +101,7 @@ export function Sidebar() {
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4">
           <div className="space-y-1">
-          {navigation.map((item) => {
+            {navigation.map((item) => {
               const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
               const isExpanded = expandedItems.includes(item.name)
               const hasChildren = item.children && item.children.length > 0
