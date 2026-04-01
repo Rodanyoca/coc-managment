@@ -12,7 +12,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Search, Plus, FileText, Image, Upload, ExternalLink, Eye, Trash2, Filter } from "lucide-react"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Search, FileText, Image, Upload, ExternalLink, Trash2, Download } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -121,7 +129,6 @@ const documents = [
 ]
 
 const modules = ["Tous", "Acteurs", "Compétitions", "Courriers", "Activités", "Patrimoine"]
-const types = ["Tous", "pdf", "image"]
 
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState("")
@@ -228,73 +235,76 @@ export default function DocumentsPage() {
           </Link>
         </div>
 
-        {/* Documents Grid */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredDocuments.map((doc) => (
-            <Card key={doc.id} className="border-border/50 hover:shadow-md transition-shadow group">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  {/* Preview Area */}
-                  <div className={cn(
-                    "aspect-[4/3] rounded-lg flex items-center justify-center",
-                    doc.type === "pdf" 
-                      ? "bg-destructive/5" 
-                      : "bg-chart-4/5"
-                  )}>
-                    {doc.type === "pdf" ? (
-                      <FileText className="h-12 w-12 text-destructive/50" />
-                    ) : (
-                      <Image className="h-12 w-12 text-chart-4/50" />
-                    )}
-                  </div>
-
-                  {/* File Info */}
-                  <div className="space-y-2">
-                    <p className="font-medium text-sm truncate" title={doc.nom}>
-                      {doc.nom}
-                    </p>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <Badge variant="outline" className="text-[10px]">
+        {/* Documents Table */}
+        <Card className="border-border/50">
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-[40px]">Type</TableHead>
+                  <TableHead>Nom du fichier</TableHead>
+                  <TableHead>Module</TableHead>
+                  <TableHead>Entité liée</TableHead>
+                  <TableHead>Date d&apos;ajout</TableHead>
+                  <TableHead>Taille</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredDocuments.map((doc) => (
+                  <TableRow key={doc.id}>
+                    <TableCell>
+                      <div className={cn(
+                        "rounded p-1.5 w-fit",
+                        doc.type === "pdf" 
+                          ? "bg-destructive/10" 
+                          : "bg-chart-4/10"
+                      )}>
+                        {doc.type === "pdf" ? (
+                          <FileText className="h-4 w-4 text-destructive" />
+                        ) : (
+                          <Image className="h-4 w-4 text-chart-4" />
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{doc.nom}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="text-xs">
                         {doc.module}
                       </Badge>
-                      <Badge 
-                        variant="secondary" 
-                        className={cn(
-                          "text-[10px]",
-                          doc.type === "pdf" 
-                            ? "bg-destructive/10 text-destructive" 
-                            : "bg-chart-4/10 text-chart-4"
-                        )}
-                      >
-                        {doc.type.toUpperCase()}
-                      </Badge>
-                    </div>
-                    <div className="text-xs text-muted-foreground space-y-1">
-                      <p>Lié à: {doc.entite}</p>
-                      <p>{doc.dateAjout} • {doc.taille}</p>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex justify-between pt-2 border-t border-border/50">
-                    <Button variant="ghost" size="sm" className="h-8 text-xs gap-1">
-                      <Eye className="h-3 w-3" />
-                      Aperçu
-                    </Button>
-                    <div className="flex gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <ExternalLink className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {doc.entite}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {doc.dateAjout}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {doc.taille}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-1">
+                        <Button variant="ghost" size="icon" className="h-8 w-8" title="Ouvrir dans Drive">
+                          <ExternalLink className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8" title="Télécharger">
+                          <Download className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" title="Supprimer">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
 
         {/* Pagination Info */}
         <div className="flex items-center justify-between text-sm text-muted-foreground">

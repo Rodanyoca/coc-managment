@@ -9,6 +9,7 @@ import {
   Legend,
   Tooltip,
 } from "recharts"
+import { useEffect, useState } from "react"
 
 const data = [
   { name: "Athlètes", value: 245, color: "var(--chart-1)" },
@@ -19,7 +20,12 @@ const data = [
 ]
 
 export function ActorsChart() {
+  const [mounted, setMounted] = useState(false)
   const total = data.reduce((sum, item) => sum + item.value, 0)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   return (
     <Card className="border-border/50">
@@ -27,8 +33,9 @@ export function ActorsChart() {
         <CardTitle className="text-base font-semibold">Répartition des acteurs</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[250px]">
-          <ResponsiveContainer width="100%" height="100%">
+        <div className="h-[250px] min-h-[250px] w-full">
+          {mounted && (
+          <ResponsiveContainer width="100%" height={250} minWidth={200}>
             <PieChart>
               <Pie
                 data={data}
@@ -64,6 +71,7 @@ export function ActorsChart() {
               />
             </PieChart>
           </ResponsiveContainer>
+          )}
         </div>
         <div className="mt-2 text-center">
           <p className="text-2xl font-bold">{total}</p>
