@@ -63,10 +63,6 @@ const navigation = [
     name: "Patrimoine",
     href: "/dashboard/patrimoine",
     icon: Building2,
-    children: [
-      { name: "Inventaire", href: "/dashboard/patrimoine" },
-      { name: "Nouveau bien", href: "/dashboard/patrimoine/nouveau" },
-    ],
   },
   {
     name: "Documents",
@@ -77,7 +73,7 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités", "Patrimoine"])
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités"])
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
@@ -90,14 +86,15 @@ export function Sidebar() {
       <div className="flex flex-col min-h-full">
         <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <Image
-              src="/images/logo-coc.png"
-              alt="COC Logo"
-              width={50}
-              height={60}
-              priority
-              style={{ width: "auto", height: "auto" }}
-            />
+            <div className="relative w-[50px] h-[60px]">
+              <Image
+                src="/images/logo-coc.png"
+                alt="COC Logo"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
             <div className="flex flex-col">
               <span className="text-xs font-medium text-sidebar-primary">Comité Olympique</span>
               <span className="text-xs font-medium text-sidebar-primary">Congolais</span>
