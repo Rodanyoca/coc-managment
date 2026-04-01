@@ -12,11 +12,11 @@ import {
 import { useEffect, useState } from "react"
 
 const data = [
-  { name: "Athletes", value: 245, color: "var(--chart-1)" },
-  { name: "Entraineurs", value: 42, color: "var(--chart-2)" },
-  { name: "Officiels", value: 38, color: "var(--chart-3)" },
-  { name: "Medecins", value: 15, color: "var(--chart-4)" },
-  { name: "Arbitres", value: 28, color: "var(--chart-5)" },
+  { name: "Athletes", value: 245, color: "hsl(221, 83%, 53%)" },
+  { name: "Entraineurs", value: 42, color: "hsl(142, 71%, 45%)" },
+  { name: "Officiels", value: 38, color: "hsl(47, 100%, 50%)" },
+  { name: "Medecins", value: 15, color: "hsl(262, 83%, 58%)" },
+  { name: "Arbitres", value: 28, color: "hsl(0, 84%, 60%)" },
 ]
 
 export function ActorsChart() {
@@ -66,16 +66,13 @@ export function ActorsChart() {
               </Pie>
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "var(--card)",
-                  border: "1px solid var(--border)",
+                  backgroundColor: "white",
+                  border: "1px solid #e5e7eb",
                   borderRadius: "8px",
                   fontSize: "12px",
                 }}
               />
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-              />
+              <Legend verticalAlign="bottom" height={36} />
             </PieChart>
           </ResponsiveContainer>
         </div>

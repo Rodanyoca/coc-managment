@@ -39,6 +39,10 @@ const navigation = [
     name: "Compétitions",
     href: "/dashboard/competitions",
     icon: Trophy,
+    children: [
+      { name: "Liste", href: "/dashboard/competitions" },
+      { name: "Nouvelle", href: "/dashboard/competitions/nouveau" },
+    ],
   },
   {
     name: "Courriers",
@@ -76,7 +80,7 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités", "Documents"])
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Compétitions", "Courriers", "Activités", "Documents"])
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>

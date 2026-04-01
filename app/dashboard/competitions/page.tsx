@@ -6,6 +6,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -15,80 +23,81 @@ import {
 import { Search, Plus, Calendar, MapPin, Users, Trophy, Eye, Edit } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 const competitions = [
   {
     id: "1",
     nom: "Jeux Olympiques Paris 2024",
-    lieu: "Paris, France",
-    dateDebut: "26 Juillet 2024",
-    dateFin: "11 Août 2024",
+    pays: "France",
+    ville: "Paris",
+    dateDebut: "26/07/2024",
+    dateFin: "11/08/2024",
     statut: "termine" as const,
     type: "Olympique",
-    athletes: 12,
-    disciplines: 8,
+    participants: 12,
   },
   {
     id: "2",
     nom: "Championnats d'Afrique d'Athlétisme 2026",
-    lieu: "Douala, Cameroun",
-    dateDebut: "15 Juin 2026",
-    dateFin: "20 Juin 2026",
+    pays: "Cameroun",
+    ville: "Douala",
+    dateDebut: "15/06/2026",
+    dateFin: "20/06/2026",
     statut: "a_venir" as const,
     type: "Continental",
-    athletes: 24,
-    disciplines: 5,
+    participants: 24,
   },
   {
     id: "3",
     nom: "Jeux Africains 2027",
-    lieu: "Accra, Ghana",
-    dateDebut: "4 Septembre 2027",
-    dateFin: "18 Septembre 2027",
+    pays: "Ghana",
+    ville: "Accra",
+    dateDebut: "04/09/2027",
+    dateFin: "18/09/2027",
     statut: "a_venir" as const,
     type: "Continental",
-    athletes: 45,
-    disciplines: 12,
+    participants: 45,
   },
   {
     id: "4",
     nom: "Jeux de la Francophonie 2025",
-    lieu: "Kinshasa, RDC",
-    dateDebut: "28 Juillet 2025",
-    dateFin: "6 Août 2025",
-    statut: "a_venir" as const,
+    pays: "RDC",
+    ville: "Kinshasa",
+    dateDebut: "28/07/2025",
+    dateFin: "06/08/2025",
+    statut: "en_cours" as const,
     type: "Francophonie",
-    athletes: 35,
-    disciplines: 10,
+    participants: 35,
   },
   {
     id: "5",
     nom: "Championnats du Monde de Judo 2025",
-    lieu: "Budapest, Hongrie",
-    dateDebut: "8 Juin 2025",
-    dateFin: "15 Juin 2025",
+    pays: "Hongrie",
+    ville: "Budapest",
+    dateDebut: "08/06/2025",
+    dateFin: "15/06/2025",
     statut: "a_venir" as const,
     type: "Mondial",
-    athletes: 3,
-    disciplines: 1,
+    participants: 3,
   },
   {
     id: "6",
     nom: "Jeux Olympiques Los Angeles 2028",
-    lieu: "Los Angeles, USA",
-    dateDebut: "14 Juillet 2028",
-    dateFin: "30 Juillet 2028",
+    pays: "USA",
+    ville: "Los Angeles",
+    dateDebut: "14/07/2028",
+    dateFin: "30/07/2028",
     statut: "a_venir" as const,
     type: "Olympique",
-    athletes: 0,
-    disciplines: 0,
+    participants: 0,
   },
 ]
 
 const statusConfig = {
-  a_venir: { label: "À venir", className: "bg-chart-1/10 text-chart-1" },
+  a_venir: { label: "A venir", className: "bg-chart-1/10 text-chart-1" },
   en_cours: { label: "En cours", className: "bg-chart-2/10 text-chart-2" },
-  termine: { label: "Terminé", className: "bg-muted text-muted-foreground" },
+  termine: { label: "Termine", className: "bg-muted text-muted-foreground" },
 }
 
 const types = ["Tous", "Olympique", "Continental", "Mondial", "Francophonie"]
@@ -108,8 +117,8 @@ export default function CompetitionsPage() {
   return (
     <div className="min-h-screen">
       <Header 
-        title="Compétitions" 
-        subtitle="Gestion des compétitions internationales"
+        title="Competitions" 
+        subtitle="Gestion des competitions internationales"
       />
       
       <div className="p-6 space-y-6">
@@ -122,7 +131,7 @@ export default function CompetitionsPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{competitions.length}</p>
-                <p className="text-sm text-muted-foreground">Total compétitions</p>
+                <p className="text-sm text-muted-foreground">Total</p>
               </div>
             </CardContent>
           </Card>
@@ -133,7 +142,7 @@ export default function CompetitionsPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">{competitions.filter(c => c.statut === "a_venir").length}</p>
-                <p className="text-sm text-muted-foreground">À venir</p>
+                <p className="text-sm text-muted-foreground">A venir</p>
               </div>
             </CardContent>
           </Card>
@@ -143,8 +152,8 @@ export default function CompetitionsPage() {
                 <Users className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{competitions.reduce((sum, c) => sum + c.athletes, 0)}</p>
-                <p className="text-sm text-muted-foreground">Athlètes engagés</p>
+                <p className="text-2xl font-bold">{competitions.reduce((sum, c) => sum + c.participants, 0)}</p>
+                <p className="text-sm text-muted-foreground">Participants</p>
               </div>
             </CardContent>
           </Card>
@@ -155,7 +164,7 @@ export default function CompetitionsPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold">5</p>
-                <p className="text-sm text-muted-foreground">Pays différents</p>
+                <p className="text-sm text-muted-foreground">Pays</p>
               </div>
             </CardContent>
           </Card>
@@ -167,7 +176,7 @@ export default function CompetitionsPage() {
             <div className="relative flex-1 min-w-[200px] max-w-md">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Rechercher une compétition..."
+                placeholder="Rechercher une competition..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9"
@@ -189,72 +198,94 @@ export default function CompetitionsPage() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="tous">Tous</SelectItem>
-                <SelectItem value="a_venir">À venir</SelectItem>
+                <SelectItem value="a_venir">A venir</SelectItem>
                 <SelectItem value="en_cours">En cours</SelectItem>
-                <SelectItem value="termine">Terminé</SelectItem>
+                <SelectItem value="termine">Termine</SelectItem>
               </SelectContent>
             </Select>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvelle compétition
-          </Button>
+          <Link href="/dashboard/competitions/nouveau">
+            <Button className="bg-primary hover:bg-primary/90">
+              <Plus className="h-4 w-4 mr-2" />
+              Nouvelle competition
+            </Button>
+          </Link>
         </div>
 
-        {/* Competition Cards */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filteredCompetitions.map((competition) => (
-            <Card key={competition.id} className="border-border/50 hover:shadow-md transition-shadow">
-              <CardContent className="p-5">
-                <div className="space-y-4">
-                  <div className="flex items-start justify-between gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      {competition.type}
-                    </Badge>
-                    <Badge 
-                      variant="secondary"
-                      className={cn("text-xs", statusConfig[competition.statut].className)}
-                    >
-                      {statusConfig[competition.statut].label}
-                    </Badge>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-lg leading-tight">{competition.nom}</h3>
-                  </div>
-
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4" />
-                      <span>{competition.lieu}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span>{competition.dateDebut} - {competition.dateFin}</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between pt-2 border-t border-border/50">
-                    <div className="flex gap-4 text-sm">
-                      <span className="flex items-center gap-1">
+        {/* Competitions Table */}
+        <Card className="border-border/50">
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead>Nom</TableHead>
+                  <TableHead>Periode</TableHead>
+                  <TableHead>Pays</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Participants</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCompetitions.map((competition) => (
+                  <TableRow key={competition.id}>
+                    <TableCell>
+                      <div className="font-medium">{competition.nom}</div>
+                      <div className="text-sm text-muted-foreground">{competition.ville}</div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm">
+                        {competition.dateDebut} - {competition.dateFin}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-muted-foreground" />
+                        {competition.pays}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="text-xs">
+                        {competition.type}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
                         <Users className="h-4 w-4 text-muted-foreground" />
-                        <span className="font-medium">{competition.athletes}</span>
-                        <span className="text-muted-foreground">athlètes</span>
-                      </span>
-                    </div>
-                    <div className="flex gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                        <span>{competition.participants}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant="secondary"
+                        className={cn("text-xs", statusConfig[competition.statut].className)}
+                      >
+                        {statusConfig[competition.statut].label}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end gap-1">
+                        <Link href={`/dashboard/competitions/${competition.id}`}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
+        {/* Pagination Info */}
+        <div className="flex items-center justify-between text-sm text-muted-foreground">
+          <span>Affichage de {filteredCompetitions.length} sur {competitions.length} competitions</span>
         </div>
       </div>
     </div>
