@@ -78,8 +78,8 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 z-40 min-h-screen w-64 bg-sidebar text-sidebar-foreground">
-      <div className="flex min-h-screen flex-col">
+    <aside className="w-64 bg-sidebar text-sidebar-foreground shrink-0">
+      <div className="flex flex-col min-h-full">
         {/* Logo */}
         <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
@@ -102,73 +102,73 @@ export function Sidebar() {
         <nav className="flex-1 px-3 py-4">
           <div className="space-y-1">
           {navigation.map((item) => {
-            const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
-            const isExpanded = expandedItems.includes(item.name)
-            const hasChildren = item.children && item.children.length > 0
+              const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
+              const isExpanded = expandedItems.includes(item.name)
+              const hasChildren = item.children && item.children.length > 0
 
-            return (
-              <div key={item.name}>
-                {hasChildren ? (
-                  <button
-                    onClick={() => toggleExpand(item.name)}
-                    className={cn(
-                      "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                      isActive
-                        ? "bg-sidebar-accent text-sidebar-primary"
-                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-                    )}
-                  >
-                    <div className="flex items-center gap-3">
+              return (
+                <div key={item.name}>
+                  {hasChildren ? (
+                    <button
+                      onClick={() => toggleExpand(item.name)}
+                      className={cn(
+                        "flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                        isActive
+                          ? "bg-sidebar-accent text-sidebar-primary"
+                          : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                      )}
+                    >
+                      <div className="flex items-center gap-3">
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.name}</span>
+                      </div>
+                      <ChevronDown
+                        className={cn(
+                          "h-4 w-4 transition-transform",
+                          isExpanded && "rotate-180"
+                        )}
+                      />
+                    </button>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                        isActive
+                          ? "bg-sidebar-accent text-sidebar-primary"
+                          : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                      )}
+                    >
                       <item.icon className="h-5 w-5" />
                       <span>{item.name}</span>
-                    </div>
-                    <ChevronDown
-                      className={cn(
-                        "h-4 w-4 transition-transform",
-                        isExpanded && "rotate-180"
-                      )}
-                    />
-                  </button>
-                ) : (
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                      isActive
-                        ? "bg-sidebar-accent text-sidebar-primary"
-                        : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-                    )}
-                  >
-                    <item.icon className="h-5 w-5" />
-                    <span>{item.name}</span>
-                  </Link>
-                )}
+                    </Link>
+                  )}
 
-                {/* Sub-navigation */}
-                {hasChildren && isExpanded && (
-                  <div className="ml-4 mt-1 space-y-1 border-l border-sidebar-border pl-4">
-                    {item.children?.map((child) => {
-                      const isChildActive = pathname === child.href
-                      return (
-                        <Link
-                          key={child.name}
-                          href={child.href}
-                          className={cn(
-                            "block rounded-lg px-3 py-2 text-sm transition-colors",
-                            isChildActive
-                              ? "text-sidebar-primary font-medium"
-                              : "text-sidebar-foreground/70 hover:text-sidebar-foreground"
-                          )}
-                        >
-                          {child.name}
-                        </Link>
-                      )
-                    })}
-                  </div>
-                )}
-              </div>
-            )
-          })}
+                  {/* Sub-navigation */}
+                  {hasChildren && isExpanded && (
+                    <div className="ml-4 mt-1 space-y-1 border-l border-sidebar-border pl-4">
+                      {item.children?.map((child) => {
+                        const isChildActive = pathname === child.href
+                        return (
+                          <Link
+                            key={child.name}
+                            href={child.href}
+                            className={cn(
+                              "block rounded-lg px-3 py-2 text-sm transition-colors",
+                              isChildActive
+                                ? "text-sidebar-primary font-medium"
+                                : "text-sidebar-foreground/70 hover:text-sidebar-foreground"
+                            )}
+                          >
+                            {child.name}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </nav>
 
