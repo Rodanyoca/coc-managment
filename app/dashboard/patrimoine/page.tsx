@@ -23,7 +23,6 @@ import {
 import { Search, Plus, Building2, Car, Laptop, Package, DollarSign, Eye, Edit, Trash2 } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
 
 const patrimoine = [
   {
@@ -233,12 +232,10 @@ export default function PatrimoinePage() {
               </SelectContent>
             </Select>
           </div>
-          <Link href="/dashboard/patrimoine/nouveau">
-            <Button className="bg-primary hover:bg-primary/90">
-              <Plus className="h-4 w-4 mr-2" />
-              Nouveau bien
-            </Button>
-          </Link>
+          <Button className="bg-primary hover:bg-primary/90">
+            <Plus className="h-4 w-4 mr-2" />
+            Nouveau bien
+          </Button>
         </div>
 
         {/* Table */}
@@ -290,11 +287,9 @@ export default function PatrimoinePage() {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
-                          <Link href={`/dashboard/patrimoine/${item.id}`}>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <Eye className="h-4 w-4" />
-                            </Button>
-                          </Link>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Eye className="h-4 w-4" />
+                          </Button>
                           <Button variant="ghost" size="icon" className="h-8 w-8">
                             <Edit className="h-4 w-4" />
                           </Button>

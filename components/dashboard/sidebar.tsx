@@ -86,15 +86,14 @@ export function Sidebar() {
       <div className="flex flex-col min-h-full">
         <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="relative w-[50px] h-[60px]">
-              <Image
-                src="/images/logo-coc.png"
-                alt="COC Logo"
-                fill
-                priority
-                className="object-contain"
-              />
-            </div>
+            <Image
+              src="/images/logo-coc.png"
+              alt="COC Logo"
+              width={50}
+              height={60}
+              priority
+              className="object-contain"
+            />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-sidebar-primary">Comité Olympique</span>
               <span className="text-xs font-medium text-sidebar-primary">Congolais</span>
