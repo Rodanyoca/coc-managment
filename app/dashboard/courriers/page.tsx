@@ -20,13 +20,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, Filter, ArrowDownLeft, ArrowUpRight, Eye, Edit, FileText, ExternalLink } from "lucide-react"
+import { Search, Plus, ArrowDownLeft, ArrowUpRight, Eye, FileText, Link2 } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 const courriers = [
   {
     id: "1",
+    code: "001",
     reference: "COC/2026/001",
     objet: "Convocation Assemblée Générale CIO",
     expediteur: "Comité International Olympique",
@@ -35,10 +37,11 @@ const courriers = [
     sens: "entrant" as const,
     categorie: "Institutionnel",
     statut: "traite",
-    pdf: true,
+    pdf: "/documents/courrier-001.pdf",
   },
   {
     id: "2",
+    code: "002",
     reference: "COC/2026/002",
     objet: "Demande de subvention annuelle",
     expediteur: "COC",
@@ -47,10 +50,11 @@ const courriers = [
     sens: "sortant" as const,
     categorie: "Financier",
     statut: "en_attente",
-    pdf: true,
+    pdf: "/documents/courrier-002.pdf",
   },
   {
     id: "3",
+    code: "003",
     reference: "COC/2026/003",
     objet: "Accréditation Jeux Olympiques 2028",
     expediteur: "CIO",
@@ -59,10 +63,11 @@ const courriers = [
     sens: "entrant" as const,
     categorie: "Compétitions",
     statut: "traite",
-    pdf: true,
+    pdf: "/documents/courrier-003.pdf",
   },
   {
     id: "4",
+    code: "004",
     reference: "COC/2026/004",
     objet: "Rapport mission Lausanne",
     expediteur: "COC",
@@ -71,10 +76,11 @@ const courriers = [
     sens: "sortant" as const,
     categorie: "Rapport",
     statut: "traite",
-    pdf: false,
+    pdf: null,
   },
   {
     id: "5",
+    code: "005",
     reference: "COC/2026/005",
     objet: "Invitation Séminaire Olympique Africain",
     expediteur: "ACNOA",
@@ -83,10 +89,11 @@ const courriers = [
     sens: "entrant" as const,
     categorie: "Événement",
     statut: "non_traite",
-    pdf: true,
+    pdf: "/documents/courrier-005.pdf",
   },
   {
     id: "6",
+    code: "006",
     reference: "COC/2026/006",
     objet: "Confirmation participation Jeux Africains",
     expediteur: "COC",
@@ -95,33 +102,69 @@ const courriers = [
     sens: "sortant" as const,
     categorie: "Compétitions",
     statut: "traite",
-    pdf: true,
+    pdf: "/documents/courrier-006.pdf",
+  },
+  {
+    id: "7",
+    code: "007",
+    reference: "COC/2026/007",
+    objet: "Demande d'équipements sportifs",
+    expediteur: "Fédération d'Athlétisme",
+    destinataire: "COC",
+    date: "12/03/2026",
+    sens: "entrant" as const,
+    categorie: "Logistique",
+    statut: "en_attente",
+    pdf: null,
+  },
+  {
+    id: "8",
+    code: "008",
+    reference: "COC/2026/008",
+    objet: "Convocation réunion du Bureau Exécutif",
+    expediteur: "COC",
+    destinataire: "Membres du Bureau",
+    date: "10/03/2026",
+    sens: "sortant" as const,
+    categorie: "Institutionnel",
+    statut: "traite",
+    pdf: "/documents/courrier-008.pdf",
   },
 ]
 
-const categories = ["Toutes", "Institutionnel", "Financier", "Compétitions", "Rapport", "Événement"]
-const annees = ["2026", "2025", "2024", "2023"]
+const categories = ["Toutes", "Institutionnel", "Financier", "Compétitions", "Rapport", "Événement", "Logistique"]
 
 export default function CourriersPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [categorieFilter, setCategorieFilter] = useState("Toutes")
   const [sensFilter, setSensFilter] = useState("tous")
+  const [statutFilter, setStatutFilter] = useState("tous")
 
   const filteredCourriers = courriers.filter((courrier) => {
     const matchesSearch = 
       courrier.objet.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      courrier.reference.toLowerCase().includes(searchQuery.toLowerCase())
+      courrier.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      courrier.code.includes(searchQuery)
     const matchesCategorie = 
       categorieFilter === "Toutes" || courrier.categorie === categorieFilter
     const matchesSens = 
       sensFilter === "tous" || courrier.sens === sensFilter
-    return matchesSearch && matchesCategorie && matchesSens
+    const matchesStatut =
+      statutFilter === "tous" || courrier.statut === statutFilter
+    return matchesSearch && matchesCategorie && matchesSens && matchesStatut
   })
 
   const statutConfig = {
     traite: { label: "Traité", className: "bg-coc-green/10 text-coc-green" },
     en_attente: { label: "En attente", className: "bg-chart-2/10 text-chart-2" },
     non_traite: { label: "Non traité", className: "bg-destructive/10 text-destructive" },
+  }
+
+  const stats = {
+    entrants: courriers.filter(c => c.sens === "entrant").length,
+    sortants: courriers.filter(c => c.sens === "sortant").length,
+    nonTraites: courriers.filter(c => c.statut === "non_traite").length,
+    sansPdf: courriers.filter(c => !c.pdf).length,
   }
 
   return (
@@ -133,14 +176,14 @@ export default function CourriersPage() {
       
       <div className="p-6 space-y-6">
         {/* Stats */}
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-4">
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="rounded-lg p-3 bg-coc-green/10 text-coc-green">
                 <ArrowDownLeft className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">87</p>
+                <p className="text-2xl font-bold">{stats.entrants}</p>
                 <p className="text-sm text-muted-foreground">Courriers reçus</p>
               </div>
             </CardContent>
@@ -151,7 +194,7 @@ export default function CourriersPage() {
                 <ArrowUpRight className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">69</p>
+                <p className="text-2xl font-bold">{stats.sortants}</p>
                 <p className="text-sm text-muted-foreground">Courriers expédiés</p>
               </div>
             </CardContent>
@@ -162,8 +205,19 @@ export default function CourriersPage() {
                 <FileText className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">12</p>
+                <p className="text-2xl font-bold">{stats.nonTraites}</p>
                 <p className="text-sm text-muted-foreground">Non traités</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-border/50">
+            <CardContent className="p-4 flex items-center gap-4">
+              <div className="rounded-lg p-3 bg-chart-2/10 text-chart-2">
+                <Link2 className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{stats.sansPdf}</p>
+                <p className="text-sm text-muted-foreground">Sans PDF</p>
               </div>
             </CardContent>
           </Card>
@@ -175,7 +229,7 @@ export default function CourriersPage() {
             <div className="relative flex-1 min-w-[200px] max-w-md">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Rechercher un courrier..."
+                placeholder="Rechercher par code, référence ou objet..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9"
@@ -201,11 +255,24 @@ export default function CourriersPage() {
                 ))}
               </SelectContent>
             </Select>
+            <Select value={statutFilter} onValueChange={setStatutFilter}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Statut" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="tous">Tous</SelectItem>
+                <SelectItem value="traite">Traité</SelectItem>
+                <SelectItem value="en_attente">En attente</SelectItem>
+                <SelectItem value="non_traite">Non traité</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouveau courrier
-          </Button>
+          <Link href="/dashboard/courriers/nouveau">
+            <Button className="bg-primary hover:bg-primary/90">
+              <Plus className="h-4 w-4 mr-2" />
+              Nouveau courrier
+            </Button>
+          </Link>
         </div>
 
         {/* Table */}
@@ -214,21 +281,22 @@ export default function CourriersPage() {
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/30">
-                  <TableHead className="w-[100px]">Réf.</TableHead>
-                  <TableHead>Sens</TableHead>
+                  <TableHead className="w-[80px]">Code</TableHead>
+                  <TableHead className="w-[80px]">Sens</TableHead>
                   <TableHead className="w-[350px]">Objet</TableHead>
                   <TableHead>Correspondant</TableHead>
                   <TableHead>Catégorie</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Statut</TableHead>
+                  <TableHead>PDF</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredCourriers.map((courrier) => (
                   <TableRow key={courrier.id} className="hover:bg-muted/30">
-                    <TableCell className="font-mono text-xs text-muted-foreground">
-                      {courrier.reference}
+                    <TableCell className="font-mono font-bold text-primary">
+                      {courrier.code}
                     </TableCell>
                     <TableCell>
                       <div
@@ -244,16 +312,15 @@ export default function CourriersPage() {
                         ) : (
                           <ArrowUpRight className="h-3 w-3" />
                         )}
-                        {courrier.sens === "entrant" ? "Reçu" : "Expédié"}
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-2">
-                        <span className="font-medium truncate max-w-[300px]">{courrier.objet}</span>
-                        {courrier.pdf && (
-                          <FileText className="h-4 w-4 text-destructive shrink-0" />
-                        )}
-                      </div>
+                      <Link 
+                        href={`/dashboard/courriers/${courrier.code}`}
+                        className="font-medium hover:text-primary hover:underline truncate max-w-[300px] block"
+                      >
+                        {courrier.objet}
+                      </Link>
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {courrier.sens === "entrant" ? courrier.expediteur : courrier.destinataire}
@@ -272,20 +339,24 @@ export default function CourriersPage() {
                         {statutConfig[courrier.statut as keyof typeof statutConfig].label}
                       </Badge>
                     </TableCell>
+                    <TableCell>
+                      {courrier.pdf ? (
+                        <FileText className="h-4 w-4 text-destructive" />
+                      ) : (
+                        <Link href={`/dashboard/courriers/${courrier.code}/lier-pdf`}>
+                          <Button variant="ghost" size="sm" className="h-7 text-xs text-chart-2 hover:text-chart-2">
+                            <Link2 className="h-3 w-3 mr-1" />
+                            Lier
+                          </Button>
+                        </Link>
+                      )}
+                    </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
+                      <Link href={`/dashboard/courriers/${courrier.code}`}>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        {courrier.pdf && (
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <ExternalLink className="h-4 w-4" />
-                          </Button>
-                        )}
-                      </div>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 ))}
