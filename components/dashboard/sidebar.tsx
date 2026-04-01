@@ -45,6 +45,10 @@ const navigation = [
     name: "Courriers",
     href: "/dashboard/courriers",
     icon: Mail,
+    children: [
+      { name: "Consultation", href: "/dashboard/courriers" },
+      { name: "Nouveau courrier", href: "/dashboard/courriers/nouveau" },
+    ],
   },
   {
     name: "Activités",
@@ -65,7 +69,7 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs"])
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers"])
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
@@ -84,7 +88,8 @@ export function Sidebar() {
               alt="COC Logo"
               width={50}
               height={60}
-              className="object-contain h-auto"
+              style={{ width: "auto", height: "auto" }}
+              className="object-contain max-h-[60px]"
             />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-sidebar-primary">Comité Olympique</span>
