@@ -91,8 +91,9 @@ export function Sidebar() {
               alt="COC Logo"
               width={50}
               height={60}
-              style={{ width: "auto", height: "auto" }}
-              className="object-contain max-h-[60px]"
+              loading="eager"
+              priority
+              className="object-contain w-auto h-auto max-h-[60px]"
             />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-sidebar-primary">Comité Olympique</span>

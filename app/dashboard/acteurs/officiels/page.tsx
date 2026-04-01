@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table"
 import { Search, Plus, Filter, Eye, Edit, FileText } from "lucide-react"
 import { useState } from "react"
+import Link from "next/link"
 
 const officiels = [
   {
@@ -213,9 +214,11 @@ export default function OfficielsPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Eye className="h-4 w-4" />
-                        </Button>
+                        <Link href={`/dashboard/acteurs/officiels/${officiel.id}`}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </Link>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                           <Edit className="h-4 w-4" />
                         </Button>

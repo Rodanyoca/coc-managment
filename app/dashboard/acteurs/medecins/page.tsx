@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table"
 import { Search, Plus, Eye, Edit, FileText, Stethoscope } from "lucide-react"
 import { useState } from "react"
+import Link from "next/link"
 
 const medecins = [
   {
@@ -191,9 +192,11 @@ export default function MedecinsPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Eye className="h-4 w-4" />
-                        </Button>
+                        <Link href={`/dashboard/acteurs/medecins/${medecin.id}`}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </Link>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
                           <Edit className="h-4 w-4" />
                         </Button>
