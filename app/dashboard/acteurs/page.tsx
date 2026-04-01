@@ -1,7 +1,7 @@
 import { Header } from "@/components/dashboard/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, Medal, Stethoscope, Whistle, UserCog } from "lucide-react"
+import { Users, Medal, Stethoscope, Scale, UserCog } from "lucide-react"
 import Link from "next/link"
 
 const categories = [
@@ -41,7 +41,7 @@ const categories = [
     title: "Arbitres",
     description: "Arbitres et juges officiels",
     count: 28,
-    icon: Whistle,
+    icon: Scale,
     href: "/dashboard/acteurs/arbitres",
     color: "bg-chart-5/10 text-chart-5",
   },

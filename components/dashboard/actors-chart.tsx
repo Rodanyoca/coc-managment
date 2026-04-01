@@ -12,10 +12,10 @@ import {
 import { useEffect, useState } from "react"
 
 const data = [
-  { name: "Athlètes", value: 245, color: "var(--chart-1)" },
-  { name: "Entraîneurs", value: 42, color: "var(--chart-2)" },
+  { name: "Athletes", value: 245, color: "var(--chart-1)" },
+  { name: "Entraineurs", value: 42, color: "var(--chart-2)" },
   { name: "Officiels", value: 38, color: "var(--chart-3)" },
-  { name: "Médecins", value: 15, color: "var(--chart-4)" },
+  { name: "Medecins", value: 15, color: "var(--chart-4)" },
   { name: "Arbitres", value: 28, color: "var(--chart-5)" },
 ]
 
@@ -27,15 +27,29 @@ export function ActorsChart() {
     setMounted(true)
   }, [])
 
+  if (!mounted) {
+    return (
+      <Card className="border-border/50">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base font-semibold">Repartition des acteurs</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[250px] min-h-[250px] w-full flex items-center justify-center">
+            <p className="text-muted-foreground">Chargement...</p>
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className="border-border/50">
       <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">Répartition des acteurs</CardTitle>
+        <CardTitle className="text-base font-semibold">Repartition des acteurs</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[250px] min-h-[250px] w-full">
-          {mounted && (
-          <ResponsiveContainer width="100%" height={250} minWidth={200}>
+          <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
                 data={data}
@@ -57,21 +71,13 @@ export function ActorsChart() {
                   borderRadius: "8px",
                   fontSize: "12px",
                 }}
-                formatter={(value: number, name: string) => [
-                  `${value} (${((value / total) * 100).toFixed(1)}%)`,
-                  name,
-                ]}
               />
               <Legend
                 verticalAlign="bottom"
                 height={36}
-                formatter={(value) => (
-                  <span className="text-xs text-foreground">{value}</span>
-                )}
               />
             </PieChart>
           </ResponsiveContainer>
-          )}
         </div>
         <div className="mt-2 text-center">
           <p className="text-2xl font-bold">{total}</p>
