@@ -54,6 +54,10 @@ const navigation = [
     name: "Activités",
     href: "/dashboard/activites",
     icon: Calendar,
+    children: [
+      { name: "Liste des activités", href: "/dashboard/activites" },
+      { name: "Diagramme de Gantt", href: "/dashboard/activites/gantt" },
+    ],
   },
   {
     name: "Patrimoine",
@@ -69,7 +73,7 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers"])
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités"])
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
@@ -80,7 +84,6 @@ export function Sidebar() {
   return (
     <aside className="w-64 bg-sidebar text-sidebar-foreground shrink-0">
       <div className="flex flex-col min-h-full">
-        {/* Logo */}
         <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
             <Image
@@ -97,8 +100,6 @@ export function Sidebar() {
             </div>
           </Link>
         </div>
-
-        {/* Navigation */}
         <nav className="flex-1 px-3 py-4">
           <div className="space-y-1">
             {navigation.map((item) => {
@@ -143,8 +144,6 @@ export function Sidebar() {
                       <span>{item.name}</span>
                     </Link>
                   )}
-
-                  {/* Sub-navigation */}
                   {hasChildren && isExpanded && (
                     <div className="ml-4 mt-1 space-y-1 border-l border-sidebar-border pl-4">
                       {item.children?.map((child) => {
@@ -171,8 +170,6 @@ export function Sidebar() {
             })}
           </div>
         </nav>
-
-        {/* Footer */}
         <div className="border-t border-sidebar-border p-3">
           <div className="flex items-center gap-3 rounded-lg px-3 py-2">
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground text-sm font-semibold">
