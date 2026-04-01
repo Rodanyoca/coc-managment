@@ -63,6 +63,10 @@ const navigation = [
     name: "Patrimoine",
     href: "/dashboard/patrimoine",
     icon: Building2,
+    children: [
+      { name: "Inventaire", href: "/dashboard/patrimoine" },
+      { name: "Nouveau bien", href: "/dashboard/patrimoine/nouveau" },
+    ],
   },
   {
     name: "Documents",
@@ -73,7 +77,7 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités"])
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités", "Patrimoine"])
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
@@ -91,9 +95,8 @@ export function Sidebar() {
               alt="COC Logo"
               width={50}
               height={60}
-              loading="eager"
               priority
-              className="object-contain w-auto h-auto max-h-[60px]"
+              style={{ width: "auto", height: "auto" }}
             />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-sidebar-primary">Comité Olympique</span>
