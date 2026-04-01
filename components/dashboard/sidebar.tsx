@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import Image from "next/image"
 import { cn } from "@/lib/utils"
 import {
   LayoutDashboard,
@@ -68,12 +67,16 @@ const navigation = [
     name: "Documents",
     href: "/dashboard/documents",
     icon: FileText,
+    children: [
+      { name: "Liste des fichiers", href: "/dashboard/documents" },
+      { name: "Ajouter un fichier", href: "/dashboard/documents/nouveau" },
+    ],
   },
 ]
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités"])
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Courriers", "Activités", "Documents"])
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
@@ -86,12 +89,11 @@ export function Sidebar() {
       <div className="flex flex-col min-h-full">
         <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <Image
+            <img
               src="/images/logo-coc.png"
               alt="COC Logo"
               width={50}
               height={60}
-              priority
               className="object-contain"
             />
             <div className="flex flex-col">

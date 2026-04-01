@@ -15,6 +15,7 @@ import {
 import { Search, Plus, FileText, Image, Upload, ExternalLink, Eye, Trash2, Filter } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 const documents = [
   {
@@ -219,10 +220,12 @@ export default function DocumentsPage() {
               </SelectContent>
             </Select>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
-            <Upload className="h-4 w-4 mr-2" />
-            Uploader un fichier
-          </Button>
+          <Link href="/dashboard/documents/nouveau">
+            <Button className="bg-primary hover:bg-primary/90">
+              <Upload className="h-4 w-4 mr-2" />
+              Ajouter un fichier
+            </Button>
+          </Link>
         </div>
 
         {/* Documents Grid */}
