@@ -74,8 +74,8 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-sidebar text-sidebar-foreground">
-      <div className="flex h-full flex-col">
+    <aside className="fixed left-0 top-0 z-40 min-h-screen w-64 bg-sidebar text-sidebar-foreground">
+      <div className="flex min-h-screen flex-col">
         {/* Logo */}
         <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
@@ -84,7 +84,7 @@ export function Sidebar() {
               alt="COC Logo"
               width={50}
               height={60}
-              className="object-contain"
+              className="object-contain h-auto"
             />
             <div className="flex flex-col">
               <span className="text-xs font-medium text-sidebar-primary">Comité Olympique</span>
@@ -94,7 +94,8 @@ export function Sidebar() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+        <nav className="flex-1 px-3 py-4">
+          <div className="space-y-1">
           {navigation.map((item) => {
             const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
             const isExpanded = expandedItems.includes(item.name)
@@ -163,6 +164,7 @@ export function Sidebar() {
               </div>
             )
           })}
+          </div>
         </nav>
 
         {/* Footer */}
