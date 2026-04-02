@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, Eye, Edit, FileText, Stethoscope } from "lucide-react"
+import { Search, Eye, Stethoscope } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -128,10 +128,6 @@ export default function MedecinsPage() {
               </SelectContent>
             </Select>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouveau médecin
-          </Button>
         </div>
 
         {/* Table */}
@@ -141,10 +137,10 @@ export default function MedecinsPage() {
               <TableHeader>
                 <TableRow className="bg-muted/30">
                   <TableHead className="w-[250px]">Médecin</TableHead>
+                  <TableHead>ID</TableHead>
                   <TableHead>Spécialité</TableHead>
                   <TableHead>Établissement</TableHead>
                   <TableHead>Contact</TableHead>
-                  <TableHead>Disponibilité</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -165,20 +161,12 @@ export default function MedecinsPage() {
                         </div>
                       </div>
                     </TableCell>
+                    <TableCell>
+                      <span className="text-muted-foreground">{medecin.id}</span>
+                    </TableCell>
                     <TableCell>{medecin.specialite}</TableCell>
                     <TableCell className="text-muted-foreground">{medecin.hopital}</TableCell>
                     <TableCell className="text-muted-foreground">{medecin.telephone}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary"
-                        className={medecin.disponible 
-                          ? "bg-coc-green/10 text-coc-green" 
-                          : "bg-destructive/10 text-destructive"
-                        }
-                      >
-                        {medecin.disponible ? "Disponible" : "Indisponible"}
-                      </Badge>
-                    </TableCell>
                     <TableCell>
                       <Badge 
                         variant="secondary"
@@ -191,18 +179,12 @@ export default function MedecinsPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
+                      <div className="flex justify-end">
                         <Link href={`/dashboard/acteurs/medecins/${medecin.id}`}>
                           <Button variant="ghost" size="icon" className="h-8 w-8">
                             <Eye className="h-4 w-4" />
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <FileText className="h-4 w-4" />
-                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

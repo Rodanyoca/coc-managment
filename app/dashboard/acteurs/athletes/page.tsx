@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, Filter, Eye, Edit, FileText } from "lucide-react"
+import { Search, Filter, Eye } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -143,10 +143,6 @@ export default function AthletesPage() {
               </SelectContent>
             </Select>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvel athlète
-          </Button>
         </div>
 
         {/* Table */}
@@ -156,6 +152,7 @@ export default function AthletesPage() {
               <TableHeader>
                 <TableRow className="bg-muted/30">
                   <TableHead className="w-[300px]">Athlète</TableHead>
+                  <TableHead>ID</TableHead>
                   <TableHead>Discipline</TableHead>
                   <TableHead>Spécialité</TableHead>
                   <TableHead>Fédération</TableHead>
@@ -180,6 +177,9 @@ export default function AthletesPage() {
                         </div>
                       </div>
                     </TableCell>
+                    <TableCell>
+                      <span className="text-muted-foreground">{athlete.id}</span>
+                    </TableCell>
                     <TableCell>{athlete.discipline}</TableCell>
                     <TableCell className="text-muted-foreground">{athlete.specialite}</TableCell>
                     <TableCell>
@@ -199,18 +199,12 @@ export default function AthletesPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
+                      <div className="flex justify-end">
                         <Link href={`/dashboard/acteurs/athletes/${athlete.id}`}>
                           <Button variant="ghost" size="icon" className="h-8 w-8">
                             <Eye className="h-4 w-4" />
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <FileText className="h-4 w-4" />
-                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

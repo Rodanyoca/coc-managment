@@ -81,6 +81,7 @@ export default function ArbitreDetailPage({ params }: { params: Promise<{ id: st
   }
 
   const mainInfo = [
+    { label: "ID", value: arbitre.id },
     { label: "Discipline", value: arbitre.discipline },
     { 
       label: "Grade", 

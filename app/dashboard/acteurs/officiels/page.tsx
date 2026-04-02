@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, Filter, Eye, Edit, FileText } from "lucide-react"
+import { Search, Eye } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
@@ -151,10 +151,6 @@ export default function OfficielsPage() {
               </SelectContent>
             </Select>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvel officiel
-          </Button>
         </div>
 
         {/* Table */}
@@ -164,6 +160,7 @@ export default function OfficielsPage() {
               <TableHeader>
                 <TableRow className="bg-muted/30">
                   <TableHead className="w-[250px]">Officiel</TableHead>
+                  <TableHead>ID</TableHead>
                   <TableHead>Fonction</TableHead>
                   <TableHead>Organisation</TableHead>
                   <TableHead>Contact</TableHead>
@@ -185,6 +182,9 @@ export default function OfficielsPage() {
                           <p className="font-medium">{officiel.prenom} {officiel.nom}</p>
                         </div>
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-muted-foreground">{officiel.id}</span>
                     </TableCell>
                     <TableCell className="font-medium">{officiel.fonction}</TableCell>
                     <TableCell>
@@ -213,18 +213,12 @@ export default function OfficielsPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
+                      <div className="flex justify-end">
                         <Link href={`/dashboard/acteurs/officiels/${officiel.id}`}>
                           <Button variant="ghost" size="icon" className="h-8 w-8">
                             <Eye className="h-4 w-4" />
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <FileText className="h-4 w-4" />
-                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

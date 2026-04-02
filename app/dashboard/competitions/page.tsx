@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Search, Plus, Calendar, MapPin, Users, Trophy, Eye, Edit } from "lucide-react"
+import { Search, Calendar, MapPin, Users, Trophy, Eye, Edit } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -204,12 +204,6 @@ export default function CompetitionsPage() {
               </SelectContent>
             </Select>
           </div>
-          <Link href="/dashboard/competitions/nouveau">
-            <Button className="bg-primary hover:bg-primary/90">
-              <Plus className="h-4 w-4 mr-2" />
-              Nouvelle competition
-            </Button>
-          </Link>
         </div>
 
         {/* Competitions Table */}

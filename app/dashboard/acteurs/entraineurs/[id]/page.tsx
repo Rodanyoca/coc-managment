@@ -82,6 +82,7 @@ export default function EntraineurDetailPage({ params }: { params: Promise<{ id:
   }
 
   const mainInfo = [
+    { label: "ID", value: entraineur.id },
     { label: "Discipline", value: entraineur.discipline },
     { label: "Specialite", value: entraineur.specialite },
     { 

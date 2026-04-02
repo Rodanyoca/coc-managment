@@ -12,8 +12,6 @@ import {
   Building2,
   FileText,
   ChevronDown,
-  Settings,
-  LogOut,
 } from "lucide-react"
 import { useState } from "react"
 
@@ -41,7 +39,6 @@ const navigation = [
     icon: Trophy,
     children: [
       { name: "Liste", href: "/dashboard/competitions" },
-      { name: "Nouvelle", href: "/dashboard/competitions/nouveau" },
     ],
   },
   {
@@ -89,9 +86,9 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="w-64 bg-sidebar text-sidebar-foreground shrink-0">
-      <div className="flex flex-col min-h-full">
-        <div className="flex h-20 items-center justify-center border-b border-sidebar-border px-4">
+    <aside className="w-64 bg-sidebar text-sidebar-foreground shrink-0 h-screen">
+      <div className="flex flex-col h-full">
+        <div className="flex h-20 shrink-0 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
             <img
               src="/images/logo-coc.png"
@@ -106,7 +103,7 @@ export function Sidebar() {
             </div>
           </Link>
         </div>
-        <nav className="flex-1 px-3 py-4">
+        <nav className="flex-1 overflow-y-auto no-scrollbar px-3 py-4">
           <div className="space-y-1">
             {navigation.map((item) => {
               const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
@@ -176,25 +173,10 @@ export function Sidebar() {
             })}
           </div>
         </nav>
-        <div className="border-t border-sidebar-border p-3">
-          <div className="flex items-center gap-3 rounded-lg px-3 py-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-sidebar-primary text-sidebar-primary-foreground text-sm font-semibold">
-              AD
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium truncate">Admin COC</p>
-              <p className="text-xs text-sidebar-foreground/60 truncate">admin@coc.cd</p>
-            </div>
-          </div>
-          <div className="mt-2 flex gap-2">
-            <button className="flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors">
-              <Settings className="h-4 w-4" />
-              <span>Paramètres</span>
-            </button>
-            <button className="flex items-center justify-center rounded-lg px-3 py-2 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-destructive transition-colors">
-              <LogOut className="h-4 w-4" />
-            </button>
-          </div>
+        <div className="shrink-0 border-t border-sidebar-border px-3 py-2">
+          <p className="text-center text-[11px] text-sidebar-foreground/60">
+            propulse by DS Concept
+          </p>
         </div>
       </div>
     </aside>

@@ -74,6 +74,7 @@ export default function MedecinDetailPage({ params }: { params: Promise<{ id: st
   const medecin = medecinsData[id] || medecinsData["1"]
 
   const mainInfo = [
+    { label: "ID", value: medecin.id },
     { label: "Specialite", value: medecin.specialite },
     { label: "Numero d'ordre", value: <Badge variant="outline">{medecin.numeroOrdre}</Badge> },
     { label: "Etablissement", value: medecin.etablissement },

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, Edit, Trash2, FileText, Mail, Phone, MapPin, Calendar } from "lucide-react"
+import { ArrowLeft, Edit, FileText, Mail, Phone, MapPin, Calendar } from "lucide-react"
 import Link from "next/link"
 import { ReactNode } from "react"
 
@@ -60,7 +60,7 @@ export function ActorDetailLayout({
       <div className="p-6 space-y-6">
         {/* Back button */}
         <Link href={backHref}>
-          <Button variant="ghost" size="sm" className="gap-2">
+          <Button variant="ghost" size="sm" className="gap-2 mb-2">
             <ArrowLeft className="h-4 w-4" />
             {backLabel}
           </Button>
@@ -92,10 +92,7 @@ export function ActorDetailLayout({
                 <div className="flex gap-2 mt-6 w-full">
                   <Button variant="outline" className="flex-1 gap-2">
                     <Edit className="h-4 w-4" />
-                    Modifier
-                  </Button>
-                  <Button variant="outline" className="text-destructive hover:text-destructive">
-                    <Trash2 className="h-4 w-4" />
+                    Ajouter la photo
                   </Button>
                 </div>
               </div>

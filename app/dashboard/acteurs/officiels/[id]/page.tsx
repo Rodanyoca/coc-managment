@@ -66,6 +66,7 @@ export default function OfficielDetailPage({ params }: { params: Promise<{ id: s
   const officiel = officielsData[id] || officielsData["1"]
 
   const mainInfo = [
+    { label: "ID", value: officiel.id },
     { label: "Fonction", value: <span className="font-semibold">{officiel.fonction}</span> },
     { 
       label: "Organisation", 

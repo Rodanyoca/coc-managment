@@ -6,6 +6,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Mail, Phone, MapPin, Calendar, Trophy, Target } from "lucide-react"
 import { use } from "react"
 
+function getAgeFromDateString(dateString: string) {
+  const [dd, mm, yyyy] = dateString.split("/").map((part) => Number(part))
+  if (!dd || !mm || !yyyy) return null
+
+  const birthDate = new Date(yyyy, mm - 1, dd)
+  if (Number.isNaN(birthDate.getTime())) return null
+
+  const today = new Date()
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDiff = today.getMonth() - birthDate.getMonth()
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age -= 1
+  }
+
+  return age
+}
+
 const athletesData: Record<string, {
   id: string
   nom: string
@@ -70,8 +87,15 @@ export default function AthleteDetailPage({ params }: { params: Promise<{ id: st
   const { id } = use(params)
   const athlete = athletesData[id] || athletesData["1"]
 
+  const age = getAgeFromDateString(athlete.dateNaissance)
+
   const mainInfo = [
-    { label: "Date de naissance", value: athlete.dateNaissance },
+    { label: "Nom", value: `${athlete.prenom} ${athlete.nom}` },
+    { label: "ID", value: athlete.id },
+    {
+      label: "Date de naissance",
+      value: age === null ? athlete.dateNaissance : `${athlete.dateNaissance} (${age} ans)`,
+    },
     { label: "Lieu de naissance", value: athlete.lieuNaissance },
     { label: "Discipline", value: athlete.discipline },
     { label: "Specialite", value: athlete.specialite },
