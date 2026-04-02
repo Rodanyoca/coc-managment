@@ -101,8 +101,8 @@ const activites: Activite[] = [
 ]
 
 const moisNoms = [
-  "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
-  "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+  "Jan", "Fév", "Mar", "Avr", "Mai", "Jun",
+  "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"
 ]
 
 const statutConfig = {

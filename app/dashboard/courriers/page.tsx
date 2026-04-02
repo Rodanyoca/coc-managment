@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, ArrowDownLeft, ArrowUpRight, Eye, FileText, Link2 } from "lucide-react"
+import { Search, ArrowDownLeft, ArrowUpRight, Eye, FileText, Link2 } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -267,12 +267,6 @@ export default function CourriersPage() {
               </SelectContent>
             </Select>
           </div>
-          <Link href="/dashboard/courriers/nouveau">
-            <Button className="bg-primary hover:bg-primary/90">
-              <Plus className="h-4 w-4 mr-2" />
-              Nouveau courrier
-            </Button>
-          </Link>
         </div>
 
         {/* Table */}
@@ -285,7 +279,6 @@ export default function CourriersPage() {
                   <TableHead className="w-[80px]">Sens</TableHead>
                   <TableHead className="w-[350px]">Objet</TableHead>
                   <TableHead>Correspondant</TableHead>
-                  <TableHead>Catégorie</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead>PDF</TableHead>
@@ -324,11 +317,6 @@ export default function CourriersPage() {
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {courrier.sens === "entrant" ? courrier.expediteur : courrier.destinataire}
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="text-xs">
-                        {courrier.categorie}
-                      </Badge>
                     </TableCell>
                     <TableCell className="text-muted-foreground">{courrier.date}</TableCell>
                     <TableCell>

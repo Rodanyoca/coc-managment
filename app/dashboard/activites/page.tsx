@@ -20,9 +20,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, Calendar, CheckCircle2, Clock, AlertCircle, Eye, Edit } from "lucide-react"
+import { Search, Calendar, CheckCircle2, Clock, AlertCircle, Eye } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import Link from "next/link"
 
 const activites = [
   {
@@ -197,10 +198,6 @@ export default function ActivitesPage() {
               </SelectContent>
             </Select>
           </div>
-          <Button className="bg-primary hover:bg-primary/90">
-            <Plus className="h-4 w-4 mr-2" />
-            Nouvelle activité
-          </Button>
         </div>
 
         {/* Table */}
@@ -256,13 +253,12 @@ export default function ActivitesPage() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Edit className="h-4 w-4" />
-                          </Button>
+                        <div className="flex justify-end">
+                          <Link href={`/dashboard/activites/${activite.id}`}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          </Link>
                         </div>
                       </TableCell>
                     </TableRow>

@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Search, Calendar, MapPin, Users, Trophy, Eye, Edit } from "lucide-react"
+import { Search, Calendar, MapPin, Users, Trophy, Eye } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -259,15 +259,13 @@ export default function CompetitionsPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
+                      <div className="flex justify-end">
                         <Link href={`/dashboard/competitions/${competition.id}`}>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Button variant="ghost" className="h-8 gap-2">
                             <Eye className="h-4 w-4" />
+                            Voir plus
                           </Button>
                         </Link>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <Edit className="h-4 w-4" />
-                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>

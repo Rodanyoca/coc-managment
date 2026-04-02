@@ -12,13 +12,6 @@ interface Activity {
 
 const activities: Activity[] = [
   {
-    id: "1",
-    title: "Nouveau courrier reçu",
-    description: "Lettre du CIO - Convocation AG 2026",
-    time: "Il y a 2 heures",
-    type: "courrier",
-  },
-  {
     id: "2",
     title: "Athlète ajouté",
     description: "Jean-Pierre Makala - Athlétisme",

@@ -376,6 +376,12 @@ export default function CourrierDetailPage() {
                         Télécharger
                       </Button>
                     </div>
+                    <Link href={`/dashboard/courriers/${courrier.code}/lier-pdf`} className="block">
+                      <Button variant="outline" className="w-full">
+                        <Link2 className="h-4 w-4 mr-2" />
+                        Ajouter
+                      </Button>
+                    </Link>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -387,7 +393,7 @@ export default function CourrierDetailPage() {
                     <Link href={`/dashboard/courriers/${courrier.code}/lier-pdf`} className="block">
                       <Button className="w-full bg-primary hover:bg-primary/90">
                         <Link2 className="h-4 w-4 mr-2" />
-                        Lier un PDF
+                        Ajouter
                       </Button>
                     </Link>
                   </div>

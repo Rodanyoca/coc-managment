@@ -4,7 +4,6 @@ import { Header } from "@/components/dashboard/header"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import {
   Select,
   SelectContent,
@@ -20,9 +19,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, Building2, Car, Laptop, Package, DollarSign, Eye, Edit, Trash2 } from "lucide-react"
+import { Search, Plus, Building2, Car, Package, DollarSign } from "lucide-react"
 import { useState } from "react"
-import { cn } from "@/lib/utils"
 
 const patrimoine = [
   {
@@ -117,19 +115,6 @@ const patrimoine = [
   },
 ]
 
-const categorieConfig: Record<string, { icon: React.ElementType; className: string }> = {
-  "Immobilier": { icon: Building2, className: "bg-chart-1/10 text-chart-1" },
-  "Véhicules": { icon: Car, className: "bg-chart-2/10 text-chart-2" },
-  "Équipements IT": { icon: Laptop, className: "bg-chart-3/10 text-chart-3" },
-  "Matériel sportif": { icon: Package, className: "bg-chart-4/10 text-chart-4" },
-}
-
-const etatConfig = {
-  bon: { label: "Bon état", className: "bg-coc-green/10 text-coc-green" },
-  moyen: { label: "État moyen", className: "bg-chart-2/10 text-chart-2" },
-  mauvais: { label: "Mauvais état", className: "bg-destructive/10 text-destructive" },
-}
-
 const categories = ["Toutes", "Immobilier", "Véhicules", "Équipements IT", "Matériel sportif"]
 
 export default function PatrimoinePage() {
@@ -151,6 +136,13 @@ export default function PatrimoinePage() {
       currency: 'USD',
       minimumFractionDigits: 0,
     }).format(value)
+  }
+
+  const etatLabel = (etat: string) => {
+    if (etat === "bon") return "Bon"
+    if (etat === "moyen") return "Moyen"
+    if (etat === "mauvais") return "Mauvais"
+    return etat
   }
 
   return (
@@ -245,62 +237,20 @@ export default function PatrimoinePage() {
               <TableHeader>
                 <TableRow className="bg-muted/30">
                   <TableHead className="w-[350px]">Libellé</TableHead>
-                  <TableHead>Catégorie</TableHead>
                   <TableHead className="text-center">Quantité</TableHead>
-                  <TableHead className="text-right">Valeur</TableHead>
-                  <TableHead>Date acquisition</TableHead>
+                  <TableHead>Date d&apos;acquisition</TableHead>
                   <TableHead>État</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredPatrimoine.map((item) => {
-                  const catConfig = categorieConfig[item.categorie]
-                  const CatIcon = catConfig?.icon || Package
-                  return (
-                    <TableRow key={item.id} className="hover:bg-muted/30">
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <div className={cn("rounded-lg p-2", catConfig?.className)}>
-                            <CatIcon className="h-4 w-4" />
-                          </div>
-                          <span className="font-medium">{item.libelle}</span>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="text-xs">
-                          {item.categorie}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-center font-medium">{item.nombre}</TableCell>
-                      <TableCell className="text-right font-medium">
-                        {formatCurrency(item.valeur)}
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{item.dateAcquisition}</TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant="secondary"
-                          className={cn("text-xs", etatConfig[item.etat as keyof typeof etatConfig].className)}
-                        >
-                          {etatConfig[item.etat as keyof typeof etatConfig].label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
+                {filteredPatrimoine.map((item) => (
+                  <TableRow key={item.id} className="hover:bg-muted/30">
+                    <TableCell className="font-medium">{item.libelle}</TableCell>
+                    <TableCell className="text-center font-medium">{item.nombre}</TableCell>
+                    <TableCell className="text-muted-foreground">{item.dateAcquisition}</TableCell>
+                    <TableCell className="text-muted-foreground">{etatLabel(item.etat)}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </CardContent>

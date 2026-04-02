@@ -26,7 +26,6 @@ import {
   MapPin, 
   Users, 
   Trophy, 
-  Edit, 
   Plane, 
   Hotel, 
   FileText,
@@ -218,10 +217,6 @@ export default function CompetitionDetailPage() {
               >
                 {competitionStatusConfig[competition.statut].label}
               </Badge>
-              <Button variant="outline" size="sm">
-                <Edit className="h-4 w-4 mr-2" />
-                Modifier
-              </Button>
             </div>
           </CardHeader>
           <CardContent>
@@ -304,20 +299,20 @@ export default function CompetitionDetailPage() {
 
         {/* Tabs */}
         <Tabs defaultValue="participants" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="participants" className="gap-2">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+            <TabsTrigger value="participants" className="w-full justify-center gap-2">
               <Users className="h-4 w-4" />
               Participants
             </TabsTrigger>
-            <TabsTrigger value="transport" className="gap-2">
+            <TabsTrigger value="transport" className="w-full justify-center gap-2">
               <Plane className="h-4 w-4" />
               Transport
             </TabsTrigger>
-            <TabsTrigger value="hebergement" className="gap-2">
+            <TabsTrigger value="hebergement" className="w-full justify-center gap-2">
               <Hotel className="h-4 w-4" />
               Hebergement
             </TabsTrigger>
-            <TabsTrigger value="documents" className="gap-2">
+            <TabsTrigger value="documents" className="w-full justify-center gap-2">
               <FileText className="h-4 w-4" />
               Documents
             </TabsTrigger>

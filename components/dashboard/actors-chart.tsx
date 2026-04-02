@@ -6,7 +6,6 @@ import {
   Pie,
   Cell,
   ResponsiveContainer,
-  Legend,
   Tooltip,
 } from "recharts"
 import { useEffect, useState } from "react"
@@ -48,13 +47,13 @@ export function ActorsChart() {
         <CardTitle className="text-base font-semibold">Repartition des acteurs</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[250px] min-h-[250px] w-full">
-          <ResponsiveContainer width="100%" height={250}>
+        <div className="h-[220px] min-h-[220px] w-full">
+          <ResponsiveContainer width="100%" height={220}>
             <PieChart>
               <Pie
                 data={data}
                 cx="50%"
-                cy="50%"
+                cy="52%"
                 innerRadius={60}
                 outerRadius={90}
                 paddingAngle={2}
@@ -72,9 +71,16 @@ export function ActorsChart() {
                   fontSize: "12px",
                 }}
               />
-              <Legend verticalAlign="bottom" height={36} />
             </PieChart>
           </ResponsiveContainer>
+        </div>
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+          {data.map((item) => (
+            <div key={item.name} className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-sm" style={{ backgroundColor: item.color }} />
+              <span className="whitespace-nowrap">{item.name}</span>
+            </div>
+          ))}
         </div>
         <div className="mt-2 text-center">
           <p className="text-2xl font-bold">{total}</p>

@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, FileText, Image, Upload, ExternalLink, Trash2, Download } from "lucide-react"
+import { Search, FileText, Image, Eye } from "lucide-react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -227,12 +227,6 @@ export default function DocumentsPage() {
               </SelectContent>
             </Select>
           </div>
-          <Link href="/dashboard/documents/nouveau">
-            <Button className="bg-primary hover:bg-primary/90">
-              <Upload className="h-4 w-4 mr-2" />
-              Ajouter un fichier
-            </Button>
-          </Link>
         </div>
 
         {/* Documents Table */}
@@ -287,16 +281,18 @@ export default function DocumentsPage() {
                       {doc.taille}
                     </TableCell>
                     <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Button variant="ghost" size="icon" className="h-8 w-8" title="Ouvrir dans Drive">
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8" title="Télécharger">
-                          <Download className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive" title="Supprimer">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                      <div className="flex justify-end">
+                        <Link href={`/dashboard/documents/${doc.id}`}>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8"
+                            title="Voir plus"
+                            aria-label="Voir plus"
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                        </Link>
                       </div>
                     </TableCell>
                   </TableRow>

@@ -47,7 +47,6 @@ const navigation = [
     icon: Mail,
     children: [
       { name: "Consultation", href: "/dashboard/courriers" },
-      { name: "Nouveau courrier", href: "/dashboard/courriers/nouveau" },
     ],
   },
   {
@@ -70,7 +69,6 @@ const navigation = [
     icon: FileText,
     children: [
       { name: "Liste des fichiers", href: "/dashboard/documents" },
-      { name: "Ajouter un fichier", href: "/dashboard/documents/nouveau" },
     ],
   },
 ]
@@ -108,7 +106,7 @@ export function Sidebar() {
             {navigation.map((item) => {
               const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
               const isExpanded = expandedItems.includes(item.name)
-              const hasChildren = item.children && item.children.length > 0
+              const hasChildren = item.children && item.children.length > 1
 
               return (
                 <div key={item.name}>
