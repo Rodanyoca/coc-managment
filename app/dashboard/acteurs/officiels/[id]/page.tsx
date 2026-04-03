@@ -77,8 +77,7 @@ export default function OfficielDetailPage({ params }: { params: Promise<{ id: s
       ) 
     },
     { label: "Date de nomination", value: officiel.dateNomination },
-    { label: "Fin de mandat", value: officiel.mandatFin },
-    { label: "Type", value: officiel.type === "coc" ? "Officiel COC" : "Federation" },
+    { label: "Date de fin de mandat", value: officiel.mandatFin },
   ]
 
   const contactInfo = [
@@ -93,25 +92,14 @@ export default function OfficielDetailPage({ params }: { params: Promise<{ id: s
     { name: "Photo officielle", type: "Image", date: "20/06/2021" },
   ]
 
-  const responsabilitesSection = {
-    id: "responsabilites",
-    label: "Responsabilites",
+  const palmaresSection = {
+    id: "palmares",
+    label: "Palmarès",
     content: (
-      <div className="space-y-3">
-        <p className="text-sm text-muted-foreground mb-4">
-          Principales responsabilites liees a la fonction de {officiel.fonction}
-        </p>
-        {officiel.responsabilites.map((resp, index) => (
-          <div
-            key={index}
-            className="flex items-start gap-3 p-3 rounded-lg bg-muted/30"
-          >
-            <div className="p-1.5 rounded-full bg-chart-2/10 mt-0.5">
-              <Briefcase className="h-3 w-3 text-chart-2" />
-            </div>
-            <p className="text-sm">{resp}</p>
-          </div>
-        ))}
+      <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+        <Briefcase className="h-12 w-12 mb-3 opacity-30" />
+        <p className="font-medium">Coming soon</p>
+        <p className="text-sm">Le palmarès sera disponible bientôt.</p>
       </div>
     ),
   }
@@ -128,7 +116,7 @@ export default function OfficielDetailPage({ params }: { params: Promise<{ id: s
       mainInfo={mainInfo}
       contactInfo={contactInfo}
       documents={documents}
-      additionalSections={[responsabilitesSection]}
+      additionalSections={[palmaresSection]}
     />
   )
 }

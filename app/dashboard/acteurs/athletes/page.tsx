@@ -30,6 +30,7 @@ const athletes = [
     id: "1",
     nom: "Makala",
     prenom: "Jean-Pierre",
+    sexe: "M",
     discipline: "Athlétisme",
     specialite: "100m / 200m",
     dateNaissance: "15/03/1998",
@@ -41,6 +42,7 @@ const athletes = [
     id: "2",
     nom: "Mbemba",
     prenom: "Grace",
+    sexe: "F",
     discipline: "Basketball",
     specialite: "Meneur",
     dateNaissance: "22/07/1995",
@@ -52,6 +54,7 @@ const athletes = [
     id: "3",
     nom: "Tshimanga",
     prenom: "David",
+    sexe: "M",
     discipline: "Judo",
     specialite: "-81kg",
     dateNaissance: "10/11/2000",
@@ -63,6 +66,7 @@ const athletes = [
     id: "4",
     nom: "Kalombo",
     prenom: "Sarah",
+    sexe: "F",
     discipline: "Natation",
     specialite: "100m Nage Libre",
     dateNaissance: "05/09/1999",
@@ -74,6 +78,7 @@ const athletes = [
     id: "5",
     nom: "Mutombo",
     prenom: "Patrick",
+    sexe: "M",
     discipline: "Taekwondo",
     specialite: "-68kg",
     dateNaissance: "18/02/1997",
@@ -85,6 +90,7 @@ const athletes = [
     id: "6",
     nom: "Kabongo",
     prenom: "Marie",
+    sexe: "F",
     discipline: "Volleyball",
     specialite: "Attaquante",
     dateNaissance: "30/06/2001",
@@ -154,7 +160,6 @@ export default function AthletesPage() {
                   <TableHead className="w-[300px]">Athlète</TableHead>
                   <TableHead>ID</TableHead>
                   <TableHead>Discipline</TableHead>
-                  <TableHead>Spécialité</TableHead>
                   <TableHead>Fédération</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -172,7 +177,15 @@ export default function AthletesPage() {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{athlete.prenom} {athlete.nom}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{athlete.prenom} {athlete.nom}</p>
+                            <Badge
+                              variant="outline"
+                              className="h-5 px-1.5 text-[10px] leading-none"
+                            >
+                              {athlete.sexe === "M" ? "H" : "F"}
+                            </Badge>
+                          </div>
                           <p className="text-xs text-muted-foreground">Né(e) le {athlete.dateNaissance}</p>
                         </div>
                       </div>
@@ -180,8 +193,16 @@ export default function AthletesPage() {
                     <TableCell>
                       <span className="text-muted-foreground">{athlete.id}</span>
                     </TableCell>
-                    <TableCell>{athlete.discipline}</TableCell>
-                    <TableCell className="text-muted-foreground">{athlete.specialite}</TableCell>
+                    <TableCell>
+                      {athlete.specialite ? (
+                        <div className="space-y-0.5">
+                          <p className="font-medium">{athlete.discipline}</p>
+                          <p className="text-xs text-muted-foreground">{athlete.specialite}</p>
+                        </div>
+                      ) : (
+                        <p className="font-medium">{athlete.discipline}</p>
+                      )}
+                    </TableCell>
                     <TableCell>
                       <Badge variant="outline" className="text-xs">
                         {athlete.federation}

@@ -27,6 +27,7 @@ const athletesData: Record<string, {
   id: string
   nom: string
   prenom: string
+  sexe: "M" | "F"
   discipline: string
   specialite: string
   dateNaissance: string
@@ -44,6 +45,7 @@ const athletesData: Record<string, {
     id: "1",
     nom: "Makala",
     prenom: "Jean-Pierre",
+    sexe: "M",
     discipline: "Athletisme",
     specialite: "100m / 200m",
     dateNaissance: "15/03/1998",
@@ -65,6 +67,7 @@ const athletesData: Record<string, {
     id: "2",
     nom: "Mbemba",
     prenom: "Grace",
+    sexe: "F",
     discipline: "Basketball",
     specialite: "Meneur",
     dateNaissance: "22/07/1995",
@@ -92,13 +95,16 @@ export default function AthleteDetailPage({ params }: { params: Promise<{ id: st
   const mainInfo = [
     { label: "Nom", value: `${athlete.prenom} ${athlete.nom}` },
     { label: "ID", value: athlete.id },
+    { label: "Sexe", value: athlete.sexe === "M" ? "H" : "F" },
     {
       label: "Date de naissance",
       value: age === null ? athlete.dateNaissance : `${athlete.dateNaissance} (${age} ans)`,
     },
     { label: "Lieu de naissance", value: athlete.lieuNaissance },
-    { label: "Discipline", value: athlete.discipline },
-    { label: "Specialite", value: athlete.specialite },
+    {
+      label: "Discipline",
+      value: athlete.specialite ? `${athlete.discipline} - ${athlete.specialite}` : athlete.discipline,
+    },
     { label: "Federation", value: <Badge variant="outline">{athlete.federation}</Badge> },
     { label: "Taille", value: athlete.taille },
     { label: "Poids", value: athlete.poids },
@@ -120,24 +126,10 @@ export default function AthleteDetailPage({ params }: { params: Promise<{ id: st
     id: "palmares",
     label: "Palmares",
     content: (
-      <div className="space-y-4">
-        {athlete.palmares.map((item, index) => (
-          <div
-            key={index}
-            className="flex items-start gap-4 p-4 rounded-lg border border-border bg-muted/20"
-          >
-            <div className="p-2 rounded-full bg-coc-yellow/10">
-              <Trophy className="h-5 w-5 text-coc-yellow" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between">
-                <p className="font-semibold">{item.competition}</p>
-                <Badge variant="outline">{item.annee}</Badge>
-              </div>
-              <p className="text-sm text-muted-foreground mt-1">{item.resultat}</p>
-            </div>
-          </div>
-        ))}
+      <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+        <Trophy className="h-12 w-12 mb-3 opacity-30" />
+        <p className="font-medium">Coming soon</p>
+        <p className="text-sm">Le palmarès sera disponible bientôt.</p>
       </div>
     ),
   }

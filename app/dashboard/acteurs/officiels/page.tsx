@@ -25,11 +25,30 @@ import { Search, Eye } from "lucide-react"
 import { useState } from "react"
 import Link from "next/link"
 
+function getAgeFromDateString(dateString: string) {
+  const [dd, mm, yyyy] = dateString.split("/").map((part) => Number(part))
+  if (!dd || !mm || !yyyy) return null
+
+  const birthDate = new Date(yyyy, mm - 1, dd)
+  if (Number.isNaN(birthDate.getTime())) return null
+
+  const today = new Date()
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDiff = today.getMonth() - birthDate.getMonth()
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age -= 1
+  }
+
+  return age
+}
+
 const officiels = [
   {
     id: "1",
     nom: "Kalamba",
     prenom: "Pierre",
+    sexe: "M",
+    dateNaissance: "12/04/1972",
     fonction: "Président",
     organisation: "COC",
     type: "coc",
@@ -41,6 +60,8 @@ const officiels = [
     id: "2",
     nom: "Mbuyi",
     prenom: "Claire",
+    sexe: "F",
+    dateNaissance: "08/11/1980",
     fonction: "Secrétaire Général",
     organisation: "COC",
     type: "coc",
@@ -52,6 +73,8 @@ const officiels = [
     id: "3",
     nom: "Lukusa",
     prenom: "Jean",
+    sexe: "M",
+    dateNaissance: "02/02/1976",
     fonction: "Trésorier",
     organisation: "COC",
     type: "coc",
@@ -63,6 +86,8 @@ const officiels = [
     id: "4",
     nom: "Ndala",
     prenom: "Marie",
+    sexe: "F",
+    dateNaissance: "19/06/1983",
     fonction: "Présidente",
     organisation: "FECOATH",
     type: "federation",
@@ -74,6 +99,8 @@ const officiels = [
     id: "5",
     nom: "Kabongo",
     prenom: "Paul",
+    sexe: "M",
+    dateNaissance: "21/09/1979",
     fonction: "Secrétaire Général",
     organisation: "FECOBA",
     type: "federation",
@@ -85,6 +112,8 @@ const officiels = [
     id: "6",
     nom: "Tshisekedi",
     prenom: "Anne",
+    sexe: "F",
+    dateNaissance: "15/01/1986",
     fonction: "Membre Exécutif",
     organisation: "COC",
     type: "coc",
@@ -179,7 +208,23 @@ export default function OfficielsPage() {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{officiel.prenom} {officiel.nom}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{officiel.prenom} {officiel.nom}</p>
+                            <Badge
+                              variant="outline"
+                              className="h-5 px-1.5 text-[10px] leading-none"
+                            >
+                              {officiel.sexe === "M" ? "H" : "F"}
+                            </Badge>
+                          </div>
+                          {(() => {
+                            const age = getAgeFromDateString(officiel.dateNaissance)
+                            return (
+                              <p className="text-xs text-muted-foreground">
+                                {age === null ? "" : `${age} ans`}
+                              </p>
+                            )
+                          })()}
                         </div>
                       </div>
                     </TableCell>

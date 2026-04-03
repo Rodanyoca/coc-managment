@@ -6,10 +6,29 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Mail, Phone, MapPin, Award, Users } from "lucide-react"
 import { use } from "react"
 
+function getAgeFromDateString(dateString: string) {
+  const [dd, mm, yyyy] = dateString.split("/").map((part) => Number(part))
+  if (!dd || !mm || !yyyy) return null
+
+  const birthDate = new Date(yyyy, mm - 1, dd)
+  if (Number.isNaN(birthDate.getTime())) return null
+
+  const today = new Date()
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDiff = today.getMonth() - birthDate.getMonth()
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age -= 1
+  }
+
+  return age
+}
+
 const entraineursData: Record<string, {
   id: string
   nom: string
   prenom: string
+  sexe: "M" | "F"
+  dateNaissance: string
   discipline: string
   specialite: string
   niveau: string
@@ -26,6 +45,8 @@ const entraineursData: Record<string, {
     id: "1",
     nom: "Mwamba",
     prenom: "Christian",
+    sexe: "M",
+    dateNaissance: "12/08/1985",
     discipline: "Athletisme",
     specialite: "Sprint",
     niveau: "International",
@@ -51,6 +72,8 @@ const entraineursData: Record<string, {
     id: "2",
     nom: "Kasongo",
     prenom: "Bernadette",
+    sexe: "F",
+    dateNaissance: "03/05/1989",
     discipline: "Basketball",
     specialite: "Preparation physique",
     niveau: "National",
@@ -75,6 +98,8 @@ export default function EntraineurDetailPage({ params }: { params: Promise<{ id:
   const { id } = use(params)
   const entraineur = entraineursData[id] || entraineursData["1"]
 
+  const age = getAgeFromDateString(entraineur.dateNaissance)
+
   const niveauConfig: Record<string, string> = {
     "National": "bg-muted text-muted-foreground",
     "Continental": "bg-chart-2/10 text-chart-2",
@@ -83,8 +108,16 @@ export default function EntraineurDetailPage({ params }: { params: Promise<{ id:
 
   const mainInfo = [
     { label: "ID", value: entraineur.id },
-    { label: "Discipline", value: entraineur.discipline },
-    { label: "Specialite", value: entraineur.specialite },
+    { label: "Sexe", value: entraineur.sexe === "M" ? "H" : "F" },
+    {
+      label: "Date de naissance",
+      value:
+        age === null
+          ? entraineur.dateNaissance
+          : `${entraineur.dateNaissance} (${age} ans)`,
+    },
+    { label: "Sport", value: entraineur.discipline },
+    { label: "Discipline", value: entraineur.specialite },
     { 
       label: "Niveau", 
       value: (
@@ -158,7 +191,7 @@ export default function EntraineurDetailPage({ params }: { params: Promise<{ id:
       backHref="/dashboard/acteurs/entraineurs"
       backLabel="Retour aux entraineurs"
       title={`${entraineur.prenom} ${entraineur.nom}`}
-      subtitle={`${entraineur.discipline} - ${entraineur.specialite}`}
+      subtitle={`${entraineur.discipline} - ${entraineur.specialite} | ${entraineur.sexe === "M" ? "H" : "F"}`}
       avatarInitials={`${entraineur.prenom[0]}${entraineur.nom[0]}`}
       avatarColorClass="bg-chart-3/10 text-chart-3"
       status={entraineur.statut}

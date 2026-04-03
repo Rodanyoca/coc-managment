@@ -128,7 +128,7 @@ export default function EntraineursPage() {
             </div>
             <Select value={disciplineFilter} onValueChange={setDisciplineFilter}>
               <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Discipline" />
+                <SelectValue placeholder="Sport" />
               </SelectTrigger>
               <SelectContent>
                 {disciplines.map((disc) => (
@@ -157,8 +157,8 @@ export default function EntraineursPage() {
                 <TableRow className="bg-muted/30">
                   <TableHead className="w-[250px]">Entraîneur</TableHead>
                   <TableHead>ID</TableHead>
+                  <TableHead>Sport</TableHead>
                   <TableHead>Discipline</TableHead>
-                  <TableHead>Spécialité</TableHead>
                   <TableHead>Niveau</TableHead>
                   <TableHead>Athlètes</TableHead>
                   <TableHead>Statut</TableHead>
