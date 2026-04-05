@@ -1,122 +1,71 @@
-"use client"
+import { notFound } from "next/navigation"
 
-import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
-import { Badge } from "@/components/ui/badge"
-import { Mail, Phone, MapPin, Building, Briefcase } from "lucide-react"
-import { use } from "react"
+import { getSheetRows } from "@/lib/google/sheets"
+import { OfficielDetailClient, type OfficielDetail } from "./officiel-detail-client"
 
-const officielsData: Record<string, {
-  id: string
-  nom: string
-  prenom: string
-  fonction: string
-  organisation: string
-  type: "coc" | "federation"
-  dateNomination: string
-  mandatFin: string
-  statut: "actif" | "inactif"
-  telephone: string
-  email: string
-  bureau: string
-  responsabilites: string[]
-}> = {
-  "1": {
-    id: "1",
-    nom: "Kalamba",
-    prenom: "Pierre",
-    fonction: "President",
-    organisation: "COC",
-    type: "coc",
-    dateNomination: "15/06/2021",
-    mandatFin: "15/06/2025",
-    statut: "actif",
-    telephone: "+243 81 234 5678",
-    email: "p.kalamba@coc.cd",
-    bureau: "Siege COC, Avenue de la Paix, Kinshasa",
-    responsabilites: [
-      "Representer le COC aux instances internationales",
-      "Presider les reunions du Bureau Executif",
-      "Valider les decisions strategiques",
-      "Superviser les relations avec le CIO",
-    ],
-  },
-  "2": {
-    id: "2",
-    nom: "Mbuyi",
-    prenom: "Claire",
-    fonction: "Secretaire General",
-    organisation: "COC",
-    type: "coc",
-    dateNomination: "15/06/2021",
-    mandatFin: "15/06/2025",
-    statut: "actif",
-    telephone: "+243 82 345 6789",
-    email: "c.mbuyi@coc.cd",
-    bureau: "Siege COC, Avenue de la Paix, Kinshasa",
-    responsabilites: [
-      "Gerer les affaires administratives",
-      "Coordonner les activites du secretariat",
-      "Assurer le suivi des correspondances",
-    ],
-  },
+export const runtime = "nodejs"
+
+function splitNomComplet(nomComplet: string) {
+  const trimmed = (nomComplet || "").trim()
+  if (!trimmed) return { prenom: "", nom: "" }
+
+  const parts = trimmed.split(/\s+/)
+  if (parts.length === 1) return { prenom: parts[0], nom: "" }
+
+  return {
+    prenom: parts.slice(0, -1).join(" "),
+    nom: parts[parts.length - 1],
+  }
 }
 
-export default function OfficielDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
-  const officiel = officielsData[id] || officielsData["1"]
+function normalizeGender(value: string): "M" | "F" {
+  const v = (value || "").trim().toLowerCase()
+  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
+  return "F"
+}
 
-  const mainInfo = [
-    { label: "ID", value: officiel.id },
-    { label: "Fonction", value: <span className="font-semibold">{officiel.fonction}</span> },
-    { 
-      label: "Organisation", 
-      value: (
-        <Badge variant="outline" className={officiel.type === "coc" ? "border-primary text-primary" : ""}>
-          {officiel.organisation}
-        </Badge>
-      ) 
-    },
-    { label: "Date de nomination", value: officiel.dateNomination },
-    { label: "Date de fin de mandat", value: officiel.mandatFin },
-  ]
+function parseBoolean(value: string): boolean | undefined {
+  const v = (value || "").trim().toLowerCase()
+  if (!v) return undefined
+  if (v === "1" || v === "true" || v === "oui" || v === "yes") return true
+  if (v === "0" || v === "false" || v === "non" || v === "no") return false
+  return undefined
+}
 
-  const contactInfo = [
-    { label: "Telephone", value: officiel.telephone, icon: <Phone className="h-4 w-4" /> },
-    { label: "Email", value: officiel.email, icon: <Mail className="h-4 w-4" /> },
-    { label: "Bureau", value: officiel.bureau, icon: <Building className="h-4 w-4" /> },
-  ]
+export default async function OfficielDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
 
-  const documents = [
-    { name: "Arrete de nomination", type: "PDF", date: "15/06/2021" },
-    { name: "CV officiel", type: "PDF", date: "01/06/2021" },
-    { name: "Photo officielle", type: "Image", date: "20/06/2021" },
-  ]
+  const rows = await getSheetRows({ sheetName: "OFFICIELS" })
+  const row = rows.find((r) => (r["id_officiel"] || "").trim() === id)
 
-  const palmaresSection = {
-    id: "palmares",
-    label: "Palmarès",
-    content: (
-      <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
-        <Briefcase className="h-12 w-12 mb-3 opacity-30" />
-        <p className="font-medium">Coming soon</p>
-        <p className="text-sm">Le palmarès sera disponible bientôt.</p>
-      </div>
-    ),
+  if (!row) {
+    notFound()
   }
 
-  return (
-    <ActorDetailLayout
-      backHref="/dashboard/acteurs/officiels"
-      backLabel="Retour aux officiels"
-      title={`${officiel.prenom} ${officiel.nom}`}
-      subtitle={`${officiel.fonction} - ${officiel.organisation}`}
-      avatarInitials={`${officiel.prenom[0]}${officiel.nom[0]}`}
-      avatarColorClass="bg-chart-2/10 text-chart-2"
-      status={officiel.statut}
-      mainInfo={mainInfo}
-      contactInfo={contactInfo}
-      documents={documents}
-      additionalSections={[palmaresSection]}
-    />
-  )
+  const { prenom, nom } = splitNomComplet(row["nom_complet"])
+  const statut = (row["statut"] || "actif").toLowerCase() === "inactif" ? "inactif" : "actif"
+
+  const officiel: OfficielDetail = {
+    id: row["id_officiel"],
+    nomComplet: row["nom_complet"] || `${prenom} ${nom}`.trim(),
+    prenom,
+    nom,
+    sexe: normalizeGender(row["genre"]),
+    dateNaissance: row["date_de_naissance"] || "",
+    fonction: row["fonction"] || "",
+    entite: row["entite"] || "",
+    sport: row["nom_sport"] || "",
+    federation: row["sigle_federation"] || "",
+    telephone: row["telephone"] || "",
+    email: row["email"] || "",
+    bureau: row["adresse_bureau"] || "",
+    dateNomination: row["date_de_nomination"] || "",
+    membreCoc: parseBoolean(row["membre_coc"]),
+    mandatFin: row["date_de_fin_de_mandat"] || "",
+    urlPasseport: row["url_passeport"] || null,
+    statut,
+    avatarUrl: row["avatar_url"] || null,
+  }
+
+  return <OfficielDetailClient officiel={officiel} />
 }
