@@ -5,10 +5,29 @@ import { Badge } from "@/components/ui/badge"
 import { Mail, Phone, MapPin, Shield, Calendar } from "lucide-react"
 import { use } from "react"
 
+function getAgeFromDateString(dateString: string) {
+  const [dd, mm, yyyy] = dateString.split("/").map((part) => Number(part))
+  if (!dd || !mm || !yyyy) return null
+
+  const birthDate = new Date(yyyy, mm - 1, dd)
+  if (Number.isNaN(birthDate.getTime())) return null
+
+  const today = new Date()
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDiff = today.getMonth() - birthDate.getMonth()
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age -= 1
+  }
+
+  return age
+}
+
 const arbitresData: Record<string, {
   id: string
   nom: string
   prenom: string
+  sexe: "M" | "F"
+  dateNaissance: string
   discipline: string
   grade: string
   numeroLicence: string
@@ -25,6 +44,8 @@ const arbitresData: Record<string, {
     id: "1",
     nom: "Ngandu",
     prenom: "Albert",
+    sexe: "M",
+    dateNaissance: "18/02/1984",
     discipline: "Athletisme",
     grade: "International",
     numeroLicence: "ARB-ATH-2018-001",
@@ -50,6 +71,8 @@ const arbitresData: Record<string, {
     id: "2",
     nom: "Kabila",
     prenom: "Rose",
+    sexe: "F",
+    dateNaissance: "07/09/1989",
     discipline: "Basketball",
     grade: "National",
     numeroLicence: "ARB-BKT-2020-015",
@@ -74,6 +97,8 @@ export default function ArbitreDetailPage({ params }: { params: Promise<{ id: st
   const { id } = use(params)
   const arbitre = arbitresData[id] || arbitresData["1"]
 
+  const age = getAgeFromDateString(arbitre.dateNaissance)
+
   const gradeConfig: Record<string, string> = {
     "Regional": "bg-muted text-muted-foreground",
     "National": "bg-chart-2/10 text-chart-2",
@@ -82,7 +107,15 @@ export default function ArbitreDetailPage({ params }: { params: Promise<{ id: st
 
   const mainInfo = [
     { label: "ID", value: arbitre.id },
-    { label: "Discipline", value: arbitre.discipline },
+    { label: "Sexe", value: arbitre.sexe === "M" ? "H" : "F" },
+    {
+      label: "Date de naissance",
+      value:
+        age === null
+          ? arbitre.dateNaissance
+          : `${arbitre.dateNaissance} (${age} ans)`,
+    },
+    { label: "Sport", value: arbitre.discipline },
     { 
       label: "Grade", 
       value: (
@@ -160,7 +193,7 @@ export default function ArbitreDetailPage({ params }: { params: Promise<{ id: st
       backHref="/dashboard/acteurs/arbitres"
       backLabel="Retour aux arbitres"
       title={`${arbitre.prenom} ${arbitre.nom}`}
-      subtitle={`${arbitre.discipline} - Arbitre ${arbitre.grade}`}
+      subtitle={`${arbitre.discipline} - Arbitre ${arbitre.grade} | ${arbitre.sexe === "M" ? "H" : "F"}`}
       avatarInitials={`${arbitre.prenom[0]}${arbitre.nom[0]}`}
       avatarColorClass="bg-chart-5/10 text-chart-5"
       status={arbitre.statut}

@@ -30,6 +30,7 @@ const arbitres = [
     id: "1",
     nom: "Kanyinda",
     prenom: "Emmanuel",
+    sexe: "M",
     discipline: "Athlétisme",
     grade: "International",
     federation: "FECOATH",
@@ -41,6 +42,7 @@ const arbitres = [
     id: "2",
     nom: "Mwana",
     prenom: "Solange",
+    sexe: "F",
     discipline: "Basketball",
     grade: "Continental",
     federation: "FECOBA",
@@ -52,6 +54,7 @@ const arbitres = [
     id: "3",
     nom: "Kabamba",
     prenom: "Freddy",
+    sexe: "M",
     discipline: "Judo",
     grade: "International",
     federation: "FECOJU",
@@ -63,6 +66,7 @@ const arbitres = [
     id: "4",
     nom: "Lufuma",
     prenom: "Christine",
+    sexe: "F",
     discipline: "Taekwondo",
     grade: "National",
     federation: "FECOTAE",
@@ -74,6 +78,7 @@ const arbitres = [
     id: "5",
     nom: "Ngandu",
     prenom: "Michel",
+    sexe: "M",
     discipline: "Volleyball",
     grade: "Continental",
     federation: "FECOVO",
@@ -85,6 +90,7 @@ const arbitres = [
     id: "6",
     nom: "Tshibangu",
     prenom: "Alice",
+    sexe: "F",
     discipline: "Natation",
     grade: "National",
     federation: "FENACO",
@@ -139,7 +145,7 @@ export default function ArbitresPage() {
             </div>
             <Select value={disciplineFilter} onValueChange={setDisciplineFilter}>
               <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Discipline" />
+                <SelectValue placeholder="Sport" />
               </SelectTrigger>
               <SelectContent>
                 {disciplines.map((disc) => (
@@ -168,10 +174,9 @@ export default function ArbitresPage() {
                 <TableRow className="bg-muted/30">
                   <TableHead className="w-[250px]">Arbitre</TableHead>
                   <TableHead>ID</TableHead>
-                  <TableHead>Discipline</TableHead>
+                  <TableHead>Sport</TableHead>
                   <TableHead>Grade</TableHead>
                   <TableHead>Compétitions</TableHead>
-                  <TableHead>Licence</TableHead>
                   <TableHead>Statut</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -187,7 +192,15 @@ export default function ArbitresPage() {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{arbitre.prenom} {arbitre.nom}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{arbitre.prenom} {arbitre.nom}</p>
+                            <Badge
+                              variant="outline"
+                              className="h-5 px-1.5 text-[10px] leading-none text-muted-foreground"
+                            >
+                              {arbitre.sexe === "M" ? "H" : "F"}
+                            </Badge>
+                          </div>
                           <p className="text-xs text-muted-foreground">{arbitre.federation}</p>
                         </div>
                       </div>
@@ -206,17 +219,6 @@ export default function ArbitresPage() {
                       </Badge>
                     </TableCell>
                     <TableCell className="font-medium">{arbitre.competitionsArbitrees}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary"
-                        className={arbitre.licenceValide 
-                          ? "bg-coc-green/10 text-coc-green" 
-                          : "bg-destructive/10 text-destructive"
-                        }
-                      >
-                        {arbitre.licenceValide ? "Valide" : "Expirée"}
-                      </Badge>
-                    </TableCell>
                     <TableCell>
                       <Badge 
                         variant="secondary"

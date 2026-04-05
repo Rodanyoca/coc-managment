@@ -30,6 +30,7 @@ const entraineurs = [
     id: "1",
     nom: "Mwamba",
     prenom: "Christian",
+    sexe: "M",
     discipline: "Athlétisme",
     specialite: "Sprint",
     niveau: "International",
@@ -41,6 +42,7 @@ const entraineurs = [
     id: "2",
     nom: "Kasongo",
     prenom: "Bernadette",
+    sexe: "F",
     discipline: "Basketball",
     specialite: "Préparation physique",
     niveau: "National",
@@ -52,6 +54,7 @@ const entraineurs = [
     id: "3",
     nom: "Ilunga",
     prenom: "Patrick",
+    sexe: "M",
     discipline: "Judo",
     specialite: "Technique",
     niveau: "Continental",
@@ -63,6 +66,7 @@ const entraineurs = [
     id: "4",
     nom: "Ngoy",
     prenom: "Sylvie",
+    sexe: "F",
     discipline: "Natation",
     specialite: "Nage libre",
     niveau: "National",
@@ -74,6 +78,7 @@ const entraineurs = [
     id: "5",
     nom: "Banza",
     prenom: "Jacques",
+    sexe: "M",
     discipline: "Taekwondo",
     specialite: "Combat",
     niveau: "International",
@@ -176,7 +181,15 @@ export default function EntraineursPage() {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{entraineur.prenom} {entraineur.nom}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{entraineur.prenom} {entraineur.nom}</p>
+                            <Badge
+                              variant="outline"
+                              className="h-5 px-1.5 text-[10px] leading-none"
+                            >
+                              {entraineur.sexe === "M" ? "H" : "F"}
+                            </Badge>
+                          </div>
                           <p className="text-xs text-muted-foreground">{entraineur.federation}</p>
                         </div>
                       </div>

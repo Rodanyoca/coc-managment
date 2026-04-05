@@ -419,11 +419,6 @@ export default function CourrierDetailPage() {
                   <p className="text-xs text-muted-foreground mb-1">Référence complète</p>
                   <p className="font-mono text-sm">{courrier.reference}</p>
                 </div>
-                <Separator />
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Date de création</p>
-                  <p className="text-sm">{courrier.dateCreation}</p>
-                </div>
               </CardContent>
             </Card>
           </div>

@@ -28,11 +28,9 @@ import {
   Trophy, 
   Plane, 
   Hotel, 
-  FileText,
   Check,
   Clock,
   AlertCircle,
-  Download
 } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -230,10 +228,6 @@ export default function CompetitionDetailPage() {
                 <p className="font-medium">{competition.lieu}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Budget</p>
-                <p className="font-medium">{competition.budget}</p>
-              </div>
-              <div>
                 <p className="text-sm text-muted-foreground">Contact</p>
                 <p className="font-medium">{competition.contact}</p>
               </div>
@@ -299,7 +293,7 @@ export default function CompetitionDetailPage() {
 
         {/* Tabs */}
         <Tabs defaultValue="participants" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
             <TabsTrigger value="participants" className="w-full justify-center gap-2">
               <Users className="h-4 w-4" />
               Participants
@@ -311,10 +305,6 @@ export default function CompetitionDetailPage() {
             <TabsTrigger value="hebergement" className="w-full justify-center gap-2">
               <Hotel className="h-4 w-4" />
               Hebergement
-            </TabsTrigger>
-            <TabsTrigger value="documents" className="w-full justify-center gap-2">
-              <FileText className="h-4 w-4" />
-              Documents
             </TabsTrigger>
           </TabsList>
 
@@ -336,10 +326,6 @@ export default function CompetitionDetailPage() {
                       <SelectItem value="medecin">Medecins</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button variant="outline" size="sm">
-                    <Download className="h-4 w-4 mr-2" />
-                    Exporter
-                  </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
@@ -396,10 +382,6 @@ export default function CompetitionDetailPage() {
                       <SelectItem value="en_attente">En attente</SelectItem>
                     </SelectContent>
                   </Select>
-                  <Button variant="outline" size="sm">
-                    <Download className="h-4 w-4 mr-2" />
-                    Exporter
-                  </Button>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
@@ -409,7 +391,6 @@ export default function CompetitionDetailPage() {
                       <TableHead>Nom</TableHead>
                       <TableHead>Date depart</TableHead>
                       <TableHead>Date arrivee</TableHead>
-                      <TableHead>Vol / Moyen</TableHead>
                       <TableHead>Statut</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -421,17 +402,10 @@ export default function CompetitionDetailPage() {
                           <TableCell>
                             <div>
                               <p className="font-medium">{participant.nom}</p>
-                              <p className="text-sm text-muted-foreground">{participant.role}</p>
                             </div>
                           </TableCell>
                           <TableCell>{participant.dateDepart}</TableCell>
                           <TableCell>{participant.dateArrivee}</TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Plane className="h-4 w-4 text-muted-foreground" />
-                              {participant.vol}
-                            </div>
-                          </TableCell>
                           <TableCell>
                             <Badge className={cn("text-xs gap-1", transportStatusConfig[participant.statutTransport].className)}>
                               <StatusIcon className="h-3 w-3" />
@@ -452,10 +426,6 @@ export default function CompetitionDetailPage() {
             <Card className="border-border/50">
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Details de l&apos;hebergement</CardTitle>
-                <Button variant="outline" size="sm">
-                  <Download className="h-4 w-4 mr-2" />
-                  Exporter
-                </Button>
               </CardHeader>
               <CardContent className="p-0">
                 <Table>
@@ -491,40 +461,6 @@ export default function CompetitionDetailPage() {
                     ))}
                   </TableBody>
                 </Table>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          {/* Documents Tab */}
-          <TabsContent value="documents">
-            <Card className="border-border/50">
-              <CardHeader>
-                <CardTitle>Documents de la competition</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {[
-                    { nom: "Programme officiel.pdf", type: "PDF", date: "15/07/2025" },
-                    { nom: "Liste des delegations.pdf", type: "PDF", date: "20/07/2025" },
-                    { nom: "Plan du village.pdf", type: "PDF", date: "18/07/2025" },
-                    { nom: "Reglement interieur.pdf", type: "PDF", date: "10/07/2025" },
-                  ].map((doc, i) => (
-                    <div key={i} className="flex items-center justify-between p-3 rounded-lg border border-border/50 hover:bg-muted/50 transition-colors">
-                      <div className="flex items-center gap-3">
-                        <div className="rounded-lg p-2 bg-red-100 text-red-600">
-                          <FileText className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className="font-medium">{doc.nom}</p>
-                          <p className="text-sm text-muted-foreground">Ajoute le {doc.date}</p>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="sm">
-                        <Download className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
               </CardContent>
             </Card>
           </TabsContent>

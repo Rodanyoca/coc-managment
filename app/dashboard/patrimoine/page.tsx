@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Plus, Building2, Car, Package, DollarSign } from "lucide-react"
+import { Search, Plus, Package, CheckCircle, Calendar } from "lucide-react"
 import { useState } from "react"
 
 const patrimoine = [
@@ -127,16 +127,10 @@ export default function PatrimoinePage() {
     return matchesSearch && matchesCategorie
   })
 
-  const totalValeur = patrimoine.reduce((sum, item) => sum + item.valeur, 0)
   const totalBiens = patrimoine.reduce((sum, item) => sum + item.nombre, 0)
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-    }).format(value)
-  }
+  const totalReferences = patrimoine.length
+  const totalBonEtat = patrimoine.filter((item) => item.etat === "bon").length
+  const acquisitions2024 = patrimoine.filter((item) => item.dateAcquisition.endsWith("/2024")).length
 
   const etatLabel = (etat: string) => {
     if (etat === "bon") return "Bon"
@@ -158,11 +152,11 @@ export default function PatrimoinePage() {
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="rounded-lg p-3 bg-primary/10 text-primary">
-                <DollarSign className="h-5 w-5" />
+                <Package className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{formatCurrency(totalValeur)}</p>
-                <p className="text-sm text-muted-foreground">Valeur totale</p>
+                <p className="text-2xl font-bold">{totalBiens}</p>
+                <p className="text-sm text-muted-foreground">Quantité totale</p>
               </div>
             </CardContent>
           </Card>
@@ -172,30 +166,30 @@ export default function PatrimoinePage() {
                 <Package className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{totalBiens}</p>
-                <p className="text-sm text-muted-foreground">Total des biens</p>
+                <p className="text-2xl font-bold">{totalReferences}</p>
+                <p className="text-sm text-muted-foreground">Références</p>
               </div>
             </CardContent>
           </Card>
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="rounded-lg p-3 bg-chart-2/10 text-chart-2">
-                <Building2 className="h-5 w-5" />
+                <CheckCircle className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{patrimoine.filter(p => p.categorie === "Immobilier").length}</p>
-                <p className="text-sm text-muted-foreground">Biens immobiliers</p>
+                <p className="text-2xl font-bold">{totalBonEtat}</p>
+                <p className="text-sm text-muted-foreground">Bon état</p>
               </div>
             </CardContent>
           </Card>
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="rounded-lg p-3 bg-chart-3/10 text-chart-3">
-                <Car className="h-5 w-5" />
+                <Calendar className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{patrimoine.filter(p => p.categorie === "Véhicules").reduce((s, p) => s + p.nombre, 0)}</p>
-                <p className="text-sm text-muted-foreground">Véhicules</p>
+                <p className="text-2xl font-bold">{acquisitions2024}</p>
+                <p className="text-sm text-muted-foreground">Acquisitions 2024</p>
               </div>
             </CardContent>
           </Card>

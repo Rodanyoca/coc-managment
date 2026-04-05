@@ -31,6 +31,7 @@ const competitions = [
     nom: "Jeux Olympiques Paris 2024",
     pays: "France",
     ville: "Paris",
+    sites: ["Stade de France", "Bercy Arena", "Roland-Garros"],
     dateDebut: "26/07/2024",
     dateFin: "11/08/2024",
     statut: "termine" as const,
@@ -42,6 +43,7 @@ const competitions = [
     nom: "Championnats d'Afrique d'Athlétisme 2026",
     pays: "Cameroun",
     ville: "Douala",
+    sites: ["Stade de la Reunification"],
     dateDebut: "15/06/2026",
     dateFin: "20/06/2026",
     statut: "a_venir" as const,
@@ -53,6 +55,7 @@ const competitions = [
     nom: "Jeux Africains 2027",
     pays: "Ghana",
     ville: "Accra",
+    sites: ["Accra Sports Stadium", "University of Ghana Stadium"],
     dateDebut: "04/09/2027",
     dateFin: "18/09/2027",
     statut: "a_venir" as const,
@@ -64,6 +67,7 @@ const competitions = [
     nom: "Jeux de la Francophonie 2025",
     pays: "RDC",
     ville: "Kinshasa",
+    sites: ["Stade des Martyrs", "Palais du Peuple"],
     dateDebut: "28/07/2025",
     dateFin: "06/08/2025",
     statut: "en_cours" as const,
@@ -75,6 +79,7 @@ const competitions = [
     nom: "Championnats du Monde de Judo 2025",
     pays: "Hongrie",
     ville: "Budapest",
+    sites: ["Laszlo Papp Arena"],
     dateDebut: "08/06/2025",
     dateFin: "15/06/2025",
     statut: "a_venir" as const,
@@ -86,6 +91,7 @@ const competitions = [
     nom: "Jeux Olympiques Los Angeles 2028",
     pays: "USA",
     ville: "Los Angeles",
+    sites: ["SoFi Stadium", "LA Memorial Coliseum", "Staples Center"],
     dateDebut: "14/07/2028",
     dateFin: "30/07/2028",
     statut: "a_venir" as const,
@@ -214,7 +220,7 @@ export default function CompetitionsPage() {
                 <TableRow className="hover:bg-transparent">
                   <TableHead>Nom</TableHead>
                   <TableHead>Periode</TableHead>
-                  <TableHead>Pays</TableHead>
+                  <TableHead>Sites</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Participants</TableHead>
                   <TableHead>Statut</TableHead>
@@ -236,7 +242,9 @@ export default function CompetitionsPage() {
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <MapPin className="h-4 w-4 text-muted-foreground" />
-                        {competition.pays}
+                        <span className="text-sm text-muted-foreground whitespace-normal break-words max-w-[220px]">
+                          {competition.sites.join(", ")}
+                        </span>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -261,9 +269,8 @@ export default function CompetitionsPage() {
                     <TableCell className="text-right">
                       <div className="flex justify-end">
                         <Link href={`/dashboard/competitions/${competition.id}`}>
-                          <Button variant="ghost" className="h-8 gap-2">
+                          <Button variant="ghost" size="icon" className="h-8 w-8">
                             <Eye className="h-4 w-4" />
-                            Voir plus
                           </Button>
                         </Link>
                       </div>

@@ -191,7 +191,7 @@ export default function EntraineurDetailPage({ params }: { params: Promise<{ id:
       backHref="/dashboard/acteurs/entraineurs"
       backLabel="Retour aux entraineurs"
       title={`${entraineur.prenom} ${entraineur.nom}`}
-      subtitle={`${entraineur.discipline} - ${entraineur.specialite} | ${entraineur.sexe === "M" ? "H" : "F"}`}
+      subtitle={`${entraineur.discipline} - ${entraineur.specialite} | ${entraineur.niveau} | ${entraineur.sexe === "M" ? "H" : "F"}`}
       avatarInitials={`${entraineur.prenom[0]}${entraineur.nom[0]}`}
       avatarColorClass="bg-chart-3/10 text-chart-3"
       status={entraineur.statut}

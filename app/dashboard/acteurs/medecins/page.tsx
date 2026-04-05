@@ -30,6 +30,7 @@ const medecins = [
     id: "1",
     nom: "Mukendi",
     prenom: "Dr. Albert",
+    sexe: "M",
     specialite: "Médecine du sport",
     hopital: "Clinique Ngaliema",
     role: "Médecin chef",
@@ -41,6 +42,7 @@ const medecins = [
     id: "2",
     nom: "Kabasele",
     prenom: "Dr. Françoise",
+    sexe: "F",
     specialite: "Traumatologie",
     hopital: "Hôpital Général",
     role: "Médecin",
@@ -52,6 +54,7 @@ const medecins = [
     id: "3",
     nom: "Lumbala",
     prenom: "Dr. Robert",
+    sexe: "M",
     specialite: "Kinésithérapie",
     hopital: "Centre Olympique",
     role: "Kinésithérapeute",
@@ -63,6 +66,7 @@ const medecins = [
     id: "4",
     nom: "Nkulu",
     prenom: "Dr. Marie",
+    sexe: "F",
     specialite: "Nutrition sportive",
     hopital: "Cabinet privé",
     role: "Nutritionniste",
@@ -74,6 +78,7 @@ const medecins = [
     id: "5",
     nom: "Tshilombo",
     prenom: "Dr. Jacques",
+    sexe: "M",
     specialite: "Cardiologie du sport",
     hopital: "CMK",
     role: "Cardiologue",
@@ -156,7 +161,15 @@ export default function MedecinsPage() {
                           </AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="font-medium">{medecin.prenom} {medecin.nom}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{medecin.prenom} {medecin.nom}</p>
+                            <Badge
+                              variant="outline"
+                              className="h-5 px-1.5 text-[10px] leading-none"
+                            >
+                              {medecin.sexe === "M" ? "H" : "F"}
+                            </Badge>
+                          </div>
                           <p className="text-xs text-muted-foreground">{medecin.role}</p>
                         </div>
                       </div>

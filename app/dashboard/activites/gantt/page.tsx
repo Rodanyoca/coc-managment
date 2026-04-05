@@ -3,7 +3,6 @@
 import { Header } from "@/components/dashboard/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import {
   Select,
   SelectContent,
@@ -11,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { ChevronLeft, ChevronRight, Calendar, ZoomIn, ZoomOut, Download } from "lucide-react"
+import { ChevronLeft, ChevronRight, Calendar } from "lucide-react"
 import { useState, useMemo } from "react"
 import { cn } from "@/lib/utils"
 
@@ -115,7 +114,6 @@ const statutConfig = {
 export default function GanttPage() {
   const [annee, setAnnee] = useState(2026)
   const [trimestre, setTrimestre] = useState("all")
-  const [zoom, setZoom] = useState(1) // 1 = mois, 2 = semaines
 
   // Calcul des mois à afficher
   const moisAffiches = useMemo(() => {
@@ -219,32 +217,6 @@ export default function GanttPage() {
                     <SelectItem value="4">T4 (Oct-Déc)</SelectItem>
                   </SelectContent>
                 </Select>
-
-                <div className="flex items-center border rounded-lg">
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="h-9 w-9"
-                    onClick={() => setZoom(z => Math.max(1, z - 1))}
-                    disabled={zoom <= 1}
-                  >
-                    <ZoomOut className="h-4 w-4" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="h-9 w-9"
-                    onClick={() => setZoom(z => Math.min(2, z + 1))}
-                    disabled={zoom >= 2}
-                  >
-                    <ZoomIn className="h-4 w-4" />
-                  </Button>
-                </div>
-
-                <Button variant="outline" className="gap-2">
-                  <Download className="h-4 w-4" />
-                  Exporter
-                </Button>
               </div>
             </div>
           </CardContent>

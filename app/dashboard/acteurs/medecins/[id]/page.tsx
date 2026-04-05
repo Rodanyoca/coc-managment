@@ -5,10 +5,29 @@ import { Badge } from "@/components/ui/badge"
 import { Mail, Phone, MapPin, Stethoscope, GraduationCap } from "lucide-react"
 import { use } from "react"
 
+function getAgeFromDateString(dateString: string) {
+  const [dd, mm, yyyy] = dateString.split("/").map((part) => Number(part))
+  if (!dd || !mm || !yyyy) return null
+
+  const birthDate = new Date(yyyy, mm - 1, dd)
+  if (Number.isNaN(birthDate.getTime())) return null
+
+  const today = new Date()
+  let age = today.getFullYear() - birthDate.getFullYear()
+  const monthDiff = today.getMonth() - birthDate.getMonth()
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    age -= 1
+  }
+
+  return age
+}
+
 const medecinsData: Record<string, {
   id: string
   nom: string
   prenom: string
+  sexe: "M" | "F"
+  dateNaissance: string
   specialite: string
   numeroOrdre: string
   etablissement: string
@@ -24,6 +43,8 @@ const medecinsData: Record<string, {
     id: "1",
     nom: "Kasanda",
     prenom: "Dr. Robert",
+    sexe: "M",
+    dateNaissance: "10/03/1980",
     specialite: "Medecine du Sport",
     numeroOrdre: "MED-2015-4521",
     etablissement: "Centre Medical du Sport, Kinshasa",
@@ -49,6 +70,8 @@ const medecinsData: Record<string, {
     id: "2",
     nom: "Mbaya",
     prenom: "Dr. Sylvie",
+    sexe: "F",
+    dateNaissance: "22/07/1986",
     specialite: "Kinesitherapie",
     numeroOrdre: "KIN-2018-7823",
     etablissement: "Clinique Ngaliema",
@@ -73,10 +96,19 @@ export default function MedecinDetailPage({ params }: { params: Promise<{ id: st
   const { id } = use(params)
   const medecin = medecinsData[id] || medecinsData["1"]
 
+  const age = getAgeFromDateString(medecin.dateNaissance)
+
   const mainInfo = [
     { label: "ID", value: medecin.id },
+    { label: "Sexe", value: medecin.sexe === "M" ? "H" : "F" },
+    {
+      label: "Date de naissance",
+      value:
+        age === null
+          ? medecin.dateNaissance
+          : `${medecin.dateNaissance} (${age} ans)`,
+    },
     { label: "Specialite", value: medecin.specialite },
-    { label: "Numero d'ordre", value: <Badge variant="outline">{medecin.numeroOrdre}</Badge> },
     { label: "Etablissement", value: medecin.etablissement },
     { label: "En activite depuis", value: medecin.dateDebut },
   ]
@@ -141,7 +173,7 @@ export default function MedecinDetailPage({ params }: { params: Promise<{ id: st
       backHref="/dashboard/acteurs/medecins"
       backLabel="Retour aux medecins"
       title={medecin.prenom + " " + medecin.nom}
-      subtitle={medecin.specialite}
+      subtitle={`${medecin.specialite} | ${medecin.sexe === "M" ? "H" : "F"}`}
       avatarInitials={medecin.prenom.replace("Dr. ", "")[0] + medecin.nom[0]}
       avatarColorClass="bg-chart-4/10 text-chart-4"
       status={medecin.statut}
