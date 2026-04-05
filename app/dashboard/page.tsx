@@ -3,6 +3,7 @@ import { KpiCard } from "@/components/dashboard/kpi-card"
 import { ActorsChart } from "@/components/dashboard/actors-chart"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { getSheetRows } from "@/lib/google/sheets"
 import {
   Table,
   TableBody,
@@ -29,14 +30,85 @@ import {
   Activity,
 } from "lucide-react"
 
-export default function DashboardPage() {
-  const acteurs = {
-    athletes: { total: 245, male: 160, female: 85 },
-    officiels: { total: 38, male: 24, female: 14 },
-    arbitres: { total: 28, male: 18, female: 10 },
-    medecins: { total: 15, male: 9, female: 6 },
-    entraineurs: { total: 42, male: 32, female: 10 },
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
+function normalizeGender(value: string): "M" | "F" | null {
+  const v = (value || "").trim().toLowerCase()
+  if (!v) return null
+  if (v === "m" || v === "h" || v === "homme" || v === "masculin" || v === "male") return "M"
+  if (v === "f" || v === "femme" || v === "feminin" || v === "féminin" || v === "female") return "F"
+  return null
+}
+
+function countByGender(rows: Record<string, string>[], idKey: string) {
+  let total = 0
+  let male = 0
+  let female = 0
+
+  for (const r of rows) {
+    const id = (r[idKey] || "").trim()
+    if (!id) continue
+    total += 1
+
+    const g = normalizeGender(r["genre"])
+    if (g === "M") male += 1
+    if (g === "F") female += 1
   }
+
+  return { total, male, female }
+}
+
+export default async function DashboardPage() {
+  let loadError: string | null = null
+  let athletesRows: Record<string, string>[] = []
+  let officielsRows: Record<string, string>[] = []
+  let arbitresRows: Record<string, string>[] = []
+  let medecinsRows: Record<string, string>[] = []
+  let entraineursRows: Record<string, string>[] = []
+
+  try {
+    ;[
+      athletesRows,
+      officielsRows,
+      arbitresRows,
+      medecinsRows,
+      entraineursRows,
+    ] = await Promise.all([
+      getSheetRows({ sheetName: "ATHLETES" }),
+      getSheetRows({ sheetName: "OFFICIELS" }),
+      getSheetRows({ sheetName: "ARBITRES" }),
+      getSheetRows({ sheetName: "MEDECINS" }),
+      getSheetRows({ sheetName: "COACHS" }),
+    ])
+  } catch (e) {
+    loadError = e instanceof Error ? e.message : String(e)
+  }
+
+  if (loadError) {
+    return (
+      <div className="p-6">
+        <p className="text-sm text-destructive">{loadError}</p>
+      </div>
+    )
+  }
+
+  const acteurs = {
+    athletes: countByGender(athletesRows, "id_athlete"),
+    officiels: countByGender(officielsRows, "id_officiel"),
+    arbitres: countByGender(arbitresRows, "id_arbitre"),
+    medecins: countByGender(medecinsRows, "id_medecin"),
+    entraineurs: countByGender(entraineursRows, "id_coach"),
+  }
+
+  const acteursChartData = [
+    { name: "Athletes", value: acteurs.athletes.total, color: "hsl(221, 83%, 53%)" },
+    { name: "Entraineurs", value: acteurs.entraineurs.total, color: "hsl(142, 71%, 45%)" },
+    { name: "Officiels", value: acteurs.officiels.total, color: "hsl(47, 100%, 50%)" },
+    { name: "Medecins", value: acteurs.medecins.total, color: "hsl(262, 83%, 58%)" },
+    { name: "Arbitres", value: acteurs.arbitres.total, color: "hsl(0, 84%, 60%)" },
+  ]
 
   const totalActeurs = Object.values(acteurs).reduce((s, v) => s + v.total, 0)
   const totalMale = Object.values(acteurs).reduce((s, v) => s + v.male, 0)
@@ -251,7 +323,7 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div className="space-y-6">
-                <ActorsChart />
+                <ActorsChart data={acteursChartData} />
               </div>
             </div>
           </CardContent>

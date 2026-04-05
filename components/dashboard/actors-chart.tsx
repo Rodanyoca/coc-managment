@@ -10,15 +10,13 @@ import {
 } from "recharts"
 import { useEffect, useState } from "react"
 
-const data = [
-  { name: "Athletes", value: 245, color: "hsl(221, 83%, 53%)" },
-  { name: "Entraineurs", value: 42, color: "hsl(142, 71%, 45%)" },
-  { name: "Officiels", value: 38, color: "hsl(47, 100%, 50%)" },
-  { name: "Medecins", value: 15, color: "hsl(262, 83%, 58%)" },
-  { name: "Arbitres", value: 28, color: "hsl(0, 84%, 60%)" },
-]
+export type ActorsChartItem = {
+  name: string
+  value: number
+  color: string
+}
 
-export function ActorsChart() {
+export function ActorsChart({ data }: { data: ActorsChartItem[] }) {
   const [mounted, setMounted] = useState(false)
   const total = data.reduce((sum, item) => sum + item.value, 0)
 
