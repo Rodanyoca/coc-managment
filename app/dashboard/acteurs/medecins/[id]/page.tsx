@@ -1,186 +1,108 @@
-"use client"
+import { getSheetRows } from "@/lib/google/sheets"
+import { MedecinDetailClient, type MedecinDetail } from "./medecin-detail-client"
 
-import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
-import { Badge } from "@/components/ui/badge"
-import { Mail, Phone, MapPin, Stethoscope, GraduationCap } from "lucide-react"
-import { use } from "react"
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
-function getAgeFromDateString(dateString: string) {
-  const [dd, mm, yyyy] = dateString.split("/").map((part) => Number(part))
-  if (!dd || !mm || !yyyy) return null
+function splitNomComplet(nomComplet: string) {
+  const trimmed = (nomComplet || "").trim()
+  if (!trimmed) return { prenom: "", nom: "" }
 
-  const birthDate = new Date(yyyy, mm - 1, dd)
-  if (Number.isNaN(birthDate.getTime())) return null
+  const parts = trimmed.split(/\s+/)
+  if (parts.length === 1) return { prenom: parts[0], nom: "" }
 
-  const today = new Date()
-  let age = today.getFullYear() - birthDate.getFullYear()
-  const monthDiff = today.getMonth() - birthDate.getMonth()
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age -= 1
+  return {
+    prenom: parts.slice(0, -1).join(" "),
+    nom: parts[parts.length - 1],
+  }
+}
+
+function normalizeGender(value: string): "M" | "F" {
+  const v = (value || "").trim().toLowerCase()
+  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
+  return "F"
+}
+
+function normalizeStatus(value: string): "actif" | "inactif" {
+  const v = (value || "").trim().toLowerCase()
+  if (v === "inactif" || v === "inactive" || v === "0" || v === "non") return "inactif"
+  return "actif"
+}
+
+export default async function MedecinDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}) {
+  const { id } = await params
+  const medecinId = (id || "").trim()
+
+  let rows: Record<string, string>[] = []
+  let loadError: string | null = null
+
+  try {
+    rows = await getSheetRows({ sheetName: "MEDECINS" })
+  } catch (e) {
+    loadError = e instanceof Error ? e.message : String(e)
   }
 
-  return age
-}
-
-const medecinsData: Record<string, {
-  id: string
-  nom: string
-  prenom: string
-  sexe: "M" | "F"
-  dateNaissance: string
-  specialite: string
-  numeroOrdre: string
-  etablissement: string
-  dateDebut: string
-  statut: "actif" | "inactif"
-  telephone: string
-  email: string
-  cabinet: string
-  diplomes: string[]
-  competences: string[]
-}> = {
-  "1": {
-    id: "1",
-    nom: "Kasanda",
-    prenom: "Dr. Robert",
-    sexe: "M",
-    dateNaissance: "10/03/1980",
-    specialite: "Medecine du Sport",
-    numeroOrdre: "MED-2015-4521",
-    etablissement: "Centre Medical du Sport, Kinshasa",
-    dateDebut: "01/06/2015",
-    statut: "actif",
-    telephone: "+243 81 567 8901",
-    email: "r.kasanda@cms.cd",
-    cabinet: "Centre Medical du Sport, Avenue Colonel Ebeya, Kinshasa",
-    diplomes: [
-      "Doctorat en Medecine - Universite de Kinshasa",
-      "Specialisation Medecine du Sport - Paris",
-      "DU Traumatologie du Sport",
-    ],
-    competences: [
-      "Suivi medical des athletes de haut niveau",
-      "Prevention des blessures sportives",
-      "Reeducation fonctionnelle",
-      "Controle antidopage",
-      "Certificats d'aptitude sportive",
-    ],
-  },
-  "2": {
-    id: "2",
-    nom: "Mbaya",
-    prenom: "Dr. Sylvie",
-    sexe: "F",
-    dateNaissance: "22/07/1986",
-    specialite: "Kinesitherapie",
-    numeroOrdre: "KIN-2018-7823",
-    etablissement: "Clinique Ngaliema",
-    dateDebut: "15/03/2018",
-    statut: "actif",
-    telephone: "+243 82 678 9012",
-    email: "s.mbaya@ngaliema.cd",
-    cabinet: "Clinique Ngaliema, Avenue des Cliniques, Kinshasa",
-    diplomes: [
-      "Licence en Kinesitherapie",
-      "Master en Reeducation Sportive",
-    ],
-    competences: [
-      "Reeducation post-traumatique",
-      "Preparation physique",
-      "Massage sportif",
-    ],
-  },
-}
-
-export default function MedecinDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params)
-  const medecin = medecinsData[id] || medecinsData["1"]
-
-  const age = getAgeFromDateString(medecin.dateNaissance)
-
-  const mainInfo = [
-    { label: "ID", value: medecin.id },
-    { label: "Sexe", value: medecin.sexe === "M" ? "H" : "F" },
-    {
-      label: "Date de naissance",
-      value:
-        age === null
-          ? medecin.dateNaissance
-          : `${medecin.dateNaissance} (${age} ans)`,
-    },
-    { label: "Specialite", value: medecin.specialite },
-    { label: "Etablissement", value: medecin.etablissement },
-    { label: "En activite depuis", value: medecin.dateDebut },
-  ]
-
-  const contactInfo = [
-    { label: "Telephone", value: medecin.telephone, icon: <Phone className="h-4 w-4" /> },
-    { label: "Email", value: medecin.email, icon: <Mail className="h-4 w-4" /> },
-    { label: "Cabinet", value: medecin.cabinet, icon: <MapPin className="h-4 w-4" /> },
-  ]
-
-  const documents = [
-    { name: "Diplome de medecine", type: "PDF", date: "15/07/2010" },
-    { name: "Certificat de specialisation", type: "PDF", date: "20/09/2015" },
-    { name: "Autorisation d'exercer 2024", type: "PDF", date: "01/01/2024" },
-  ]
-
-  const competencesSection = {
-    id: "competences",
-    label: "Competences",
-    content: (
-      <div className="space-y-6">
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <GraduationCap className="h-5 w-5 text-chart-4" />
-            <p className="font-medium">Diplomes et formations</p>
-          </div>
-          <div className="space-y-2">
-            {medecin.diplomes.map((diplome, index) => (
-              <div
-                key={index}
-                className="p-3 rounded-lg bg-muted/30 text-sm"
-              >
-                {diplome}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <Stethoscope className="h-5 w-5 text-chart-4" />
-            <p className="font-medium">Domaines de competence</p>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {medecin.competences.map((comp, index) => (
-              <Badge
-                key={index}
-                variant="secondary"
-                className="bg-chart-4/10 text-chart-4"
-              >
-                {comp}
-              </Badge>
-            ))}
-          </div>
-        </div>
+  if (loadError) {
+    return (
+      <div className="p-6">
+        <p className="text-sm text-destructive">{loadError}</p>
       </div>
-    ),
+    )
   }
 
-  return (
-    <ActorDetailLayout
-      backHref="/dashboard/acteurs/medecins"
-      backLabel="Retour aux medecins"
-      title={medecin.prenom + " " + medecin.nom}
-      subtitle={`${medecin.specialite} | ${medecin.sexe === "M" ? "H" : "F"}`}
-      avatarInitials={medecin.prenom.replace("Dr. ", "")[0] + medecin.nom[0]}
-      avatarColorClass="bg-chart-4/10 text-chart-4"
-      status={medecin.statut}
-      mainInfo={mainInfo}
-      contactInfo={contactInfo}
-      documents={documents}
-      additionalSections={[competencesSection]}
-    />
-  )
+  const found = rows.find((r: Record<string, string>) => (r["id_medecin"] || "").trim() === medecinId)
+  const r = found ?? null
+
+  if (!r) {
+    const sampleIds = rows
+      .map((row: Record<string, string>) => (row["id_medecin"] || "").trim())
+      .filter(Boolean)
+      .slice(0, 15)
+
+    return (
+      <div className="p-6 space-y-3">
+        <p className="text-sm text-destructive">
+          Médecin introuvable dans l'onglet MEDECINS pour id_medecin="{medecinId || id}".
+        </p>
+        {sampleIds.length > 0 && (
+          <div className="text-sm text-muted-foreground">
+            <p className="mb-2">Exemples de id_medecin trouvés :</p>
+            <pre className="whitespace-pre-wrap break-words rounded-md border border-border/50 bg-muted/30 p-3">
+              {sampleIds.join("\n")}
+            </pre>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  const { prenom, nom } = splitNomComplet(r["nom_complet"])
+  const statut = normalizeStatus(r["statut"])
+
+  const medecin: MedecinDetail = {
+    id: (r["id_medecin"] || "").trim(),
+    nomComplet: r["nom_complet"] || `${prenom} ${nom}`.trim() || (r["id_medecin"] || "").trim(),
+    prenom,
+    nom,
+    sexe: normalizeGender(r["genre"]),
+    dateNaissance: r["date_de_naissance"] || undefined,
+    specialite: r["specialite"] || undefined,
+    grade: r["grade"] || undefined,
+    telephone: r["telephone"] || undefined,
+    email: r["email"] || undefined,
+    adresse: r["adresse"] || undefined,
+    numeroOrdre: r["numero_ordre"] || undefined,
+    etablissement: r["etablissement"] || undefined,
+    dateAffiliation: r["date_affiliation"] || undefined,
+    urlPasseport: r["url_passeport"] || null,
+    statut,
+    avatarUrl: r["avatar_url"] || null,
+  }
+
+  return <MedecinDetailClient medecin={medecin} />
 }

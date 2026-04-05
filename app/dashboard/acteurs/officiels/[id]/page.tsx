@@ -4,6 +4,8 @@ import { getSheetRows } from "@/lib/google/sheets"
 import { OfficielDetailClient, type OfficielDetail } from "./officiel-detail-client"
 
 export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
 function splitNomComplet(nomComplet: string) {
   const trimmed = (nomComplet || "").trim()

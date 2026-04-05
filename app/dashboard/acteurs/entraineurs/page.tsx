@@ -1,250 +1,74 @@
-"use client"
+import { getSheetRows } from "@/lib/google/sheets"
+import EntraineursClient, { type CoachListItem } from "./entraineurs-client"
 
-import { Header } from "@/components/dashboard/header"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Search, Eye, Award } from "lucide-react"
-import { useState } from "react"
-import Link from "next/link"
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
-const entraineurs = [
-  {
-    id: "1",
-    nom: "Mwamba",
-    prenom: "Christian",
-    sexe: "M",
-    discipline: "Athlétisme",
-    specialite: "Sprint",
-    niveau: "International",
-    federation: "FECOATH",
-    athletesSuivis: 8,
-    statut: "actif",
-  },
-  {
-    id: "2",
-    nom: "Kasongo",
-    prenom: "Bernadette",
-    sexe: "F",
-    discipline: "Basketball",
-    specialite: "Préparation physique",
-    niveau: "National",
-    federation: "FECOBA",
-    athletesSuivis: 12,
-    statut: "actif",
-  },
-  {
-    id: "3",
-    nom: "Ilunga",
-    prenom: "Patrick",
-    sexe: "M",
-    discipline: "Judo",
-    specialite: "Technique",
-    niveau: "Continental",
-    federation: "FECOJU",
-    athletesSuivis: 6,
-    statut: "actif",
-  },
-  {
-    id: "4",
-    nom: "Ngoy",
-    prenom: "Sylvie",
-    sexe: "F",
-    discipline: "Natation",
-    specialite: "Nage libre",
-    niveau: "National",
-    federation: "FENACO",
-    athletesSuivis: 4,
-    statut: "inactif",
-  },
-  {
-    id: "5",
-    nom: "Banza",
-    prenom: "Jacques",
-    sexe: "M",
-    discipline: "Taekwondo",
-    specialite: "Combat",
-    niveau: "International",
-    federation: "FECOTAE",
-    athletesSuivis: 5,
-    statut: "actif",
-  },
-]
+function splitNomComplet(nomComplet: string) {
+  const trimmed = (nomComplet || "").trim()
+  if (!trimmed) return { prenom: "", nom: "" }
 
-const disciplines = ["Toutes", "Athlétisme", "Basketball", "Judo", "Natation", "Taekwondo"]
-const niveaux = ["Tous", "National", "Continental", "International"]
+  const parts = trimmed.split(/\s+/)
+  if (parts.length === 1) return { prenom: parts[0], nom: "" }
 
-export default function EntraineursPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [disciplineFilter, setDisciplineFilter] = useState("Toutes")
-  const [niveauFilter, setNiveauFilter] = useState("Tous")
+  return {
+    prenom: parts.slice(0, -1).join(" "),
+    nom: parts[parts.length - 1],
+  }
+}
 
-  const filteredEntraineurs = entraineurs.filter((entraineur) => {
-    const matchesSearch = 
-      entraineur.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entraineur.prenom.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesDiscipline = disciplineFilter === "Toutes" || entraineur.discipline === disciplineFilter
-    const matchesNiveau = niveauFilter === "Tous" || entraineur.niveau === niveauFilter
-    return matchesSearch && matchesDiscipline && matchesNiveau
-  })
+function normalizeGender(value: string): "M" | "F" | null {
+  const v = (value || "").trim().toLowerCase()
+  if (!v) return null
+  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
+  if (v === "f" || v === "femme" || v === "feminin" || v === "féminin") return "F"
+  return null
+}
 
-  const niveauConfig: Record<string, string> = {
-    "National": "bg-muted text-muted-foreground",
-    "Continental": "bg-chart-2/10 text-chart-2",
-    "International": "bg-chart-1/10 text-chart-1",
+function normalizeStatus(value: string): "actif" | "inactif" {
+  const v = (value || "").trim().toLowerCase()
+  if (v === "inactif" || v === "inactive" || v === "0" || v === "non") return "inactif"
+  return "actif"
+}
+
+export default async function EntraineursPage() {
+  let rows: Record<string, string>[] = []
+  let loadError: string | null = null
+
+  try {
+    rows = await getSheetRows({ sheetName: "COACHS" })
+  } catch (e) {
+    loadError = e instanceof Error ? e.message : String(e)
   }
 
-  return (
-    <div className="min-h-screen">
-      <Header 
-        title="Entraîneurs" 
-        subtitle="Coachs et préparateurs sportifs"
-      />
-      
-      <div className="p-6 space-y-6">
-        {/* Filters and Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="flex flex-1 gap-4 flex-wrap">
-            <div className="relative flex-1 min-w-[200px] max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Rechercher un entraîneur..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <Select value={disciplineFilter} onValueChange={setDisciplineFilter}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Sport" />
-              </SelectTrigger>
-              <SelectContent>
-                {disciplines.map((disc) => (
-                  <SelectItem key={disc} value={disc}>{disc}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={niveauFilter} onValueChange={setNiveauFilter}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Niveau" />
-              </SelectTrigger>
-              <SelectContent>
-                {niveaux.map((niv) => (
-                  <SelectItem key={niv} value={niv}>{niv}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Table */}
-        <Card className="border-border/50">
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead className="w-[250px]">Entraîneur</TableHead>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Sport</TableHead>
-                  <TableHead>Discipline</TableHead>
-                  <TableHead>Niveau</TableHead>
-                  <TableHead>Athlètes</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredEntraineurs.map((entraineur) => (
-                  <TableRow key={entraineur.id} className="hover:bg-muted/30">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-chart-3/10 text-chart-3 text-sm">
-                            {entraineur.prenom[0]}{entraineur.nom[0]}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium">{entraineur.prenom} {entraineur.nom}</p>
-                            <Badge
-                              variant="outline"
-                              className="h-5 px-1.5 text-[10px] leading-none"
-                            >
-                              {entraineur.sexe === "M" ? "H" : "F"}
-                            </Badge>
-                          </div>
-                          <p className="text-xs text-muted-foreground">{entraineur.federation}</p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-muted-foreground">{entraineur.id}</span>
-                    </TableCell>
-                    <TableCell>{entraineur.discipline}</TableCell>
-                    <TableCell className="text-muted-foreground">{entraineur.specialite}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary"
-                        className={niveauConfig[entraineur.niveau]}
-                      >
-                        <Award className="h-3 w-3 mr-1" />
-                        {entraineur.niveau}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-medium">{entraineur.athletesSuivis}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary"
-                        className={entraineur.statut === "actif" 
-                          ? "bg-coc-green/10 text-coc-green" 
-                          : "bg-muted text-muted-foreground"
-                        }
-                      >
-                        {entraineur.statut === "actif" ? "Actif" : "Inactif"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end">
-                        <Link href={`/dashboard/acteurs/entraineurs/${entraineur.id}`}>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* Pagination */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>Affichage de {filteredEntraineurs.length} sur {entraineurs.length} entraîneurs</span>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>Précédent</Button>
-            <Button variant="outline" size="sm" disabled>Suivant</Button>
-          </div>
-        </div>
+  if (loadError) {
+    return (
+      <div className="p-6">
+        <p className="text-sm text-destructive">{loadError}</p>
       </div>
-    </div>
-  )
+    )
+  }
+  
+  const coachs: CoachListItem[] = rows
+    .filter((r: Record<string, string>) => (r["id_coach"] || "").trim() !== "")
+    .map((r: Record<string, string>) => {
+      const { prenom, nom } = splitNomComplet(r["nom_complet"])
+      const id = (r["id_coach"] || "").trim()
+
+      return {
+        id,
+        nom,
+        prenom,
+        sexe: normalizeGender(r["genre"]),
+        sport: r["nom_sport"] || "",
+        discipline: "",
+        niveau: r["niveau"] || "",
+        federation: r["sigle_federation"] || "",
+        athletesSuivis: null,
+        statut: normalizeStatus(r["statut"]),
+      }
+    })
+
+  return <EntraineursClient coachs={coachs} />
 }
