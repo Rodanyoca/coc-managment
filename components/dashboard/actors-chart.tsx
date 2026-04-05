@@ -16,9 +16,10 @@ export type ActorsChartItem = {
   color: string
 }
 
-export function ActorsChart({ data }: { data: ActorsChartItem[] }) {
+export function ActorsChart({ data }: { data?: ActorsChartItem[] }) {
+  const safeData = Array.isArray(data) ? data : []
   const [mounted, setMounted] = useState(false)
-  const total = data.reduce((sum, item) => sum + item.value, 0)
+  const total = safeData.reduce((sum, item) => sum + item.value, 0)
 
   useEffect(() => {
     setMounted(true)
@@ -49,7 +50,7 @@ export function ActorsChart({ data }: { data: ActorsChartItem[] }) {
           <ResponsiveContainer width="100%" height={220}>
             <PieChart>
               <Pie
-                data={data}
+                data={safeData}
                 cx="50%"
                 cy="52%"
                 innerRadius={60}
@@ -57,7 +58,7 @@ export function ActorsChart({ data }: { data: ActorsChartItem[] }) {
                 paddingAngle={2}
                 dataKey="value"
               >
-                {data.map((entry, index) => (
+                {safeData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
@@ -73,7 +74,7 @@ export function ActorsChart({ data }: { data: ActorsChartItem[] }) {
           </ResponsiveContainer>
         </div>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
-          {data.map((item) => (
+          {safeData.map((item) => (
             <div key={item.name} className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-sm" style={{ backgroundColor: item.color }} />
               <span className="whitespace-nowrap">{item.name}</span>
