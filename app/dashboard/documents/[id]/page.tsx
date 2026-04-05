@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, FileText, Image, ExternalLink } from "lucide-react"
+import { ArrowLeft, FileText, Image, Download } from "lucide-react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
@@ -19,6 +19,7 @@ const documents = [
     dateAjout: "28/03/2026",
     taille: "2.4 MB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "2",
@@ -29,6 +30,7 @@ const documents = [
     dateAjout: "15/08/2024",
     taille: "1.8 MB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "3",
@@ -39,6 +41,7 @@ const documents = [
     dateAjout: "22/03/2026",
     taille: "450 KB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "4",
@@ -49,6 +52,7 @@ const documents = [
     dateAjout: "20/03/2026",
     taille: "1.2 MB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "5",
@@ -59,6 +63,7 @@ const documents = [
     dateAjout: "18/03/2026",
     taille: "156 KB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "6",
@@ -69,6 +74,7 @@ const documents = [
     dateAjout: "15/03/2026",
     taille: "890 KB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "7",
@@ -79,6 +85,7 @@ const documents = [
     dateAjout: "10/03/2026",
     taille: "2.1 MB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "8",
@@ -89,6 +96,7 @@ const documents = [
     dateAjout: "05/03/2026",
     taille: "3.5 MB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "9",
@@ -99,6 +107,7 @@ const documents = [
     dateAjout: "01/03/2026",
     taille: "1.8 MB",
     driveLink: "#",
+    notes: "",
   },
   {
     id: "10",
@@ -109,6 +118,7 @@ const documents = [
     dateAjout: "25/02/2026",
     taille: "4.2 MB",
     driveLink: "#",
+    notes: "",
   },
 ]
 
@@ -158,58 +168,46 @@ export default function DocumentDetailPage() {
                 <CardTitle className="text-base">Aperçu</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center gap-3">
-                  {doc.type === "pdf" ? (
-                    <FileText className="h-5 w-5 text-destructive" />
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    {doc.type === "pdf" ? (
+                      <FileText className="h-5 w-5 text-destructive" />
+                    ) : (
+                      <Image className="h-5 w-5 text-chart-4" />
+                    )}
+                    <p className="text-muted-foreground">{doc.type === "pdf" ? "Document PDF" : "Image"}</p>
+                  </div>
+
+                  {doc.driveLink !== "#" ? (
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={doc.driveLink} download>
+                        <Download className="h-4 w-4 mr-2" />
+                        Télécharger
+                      </a>
+                    </Button>
                   ) : (
-                    <Image className="h-5 w-5 text-chart-4" />
+                    <Button variant="outline" size="sm" disabled>
+                      <Download className="h-4 w-4 mr-2" />
+                      Télécharger
+                    </Button>
                   )}
-                  <p className="text-muted-foreground">{doc.type === "pdf" ? "Document PDF" : "Image"}</p>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border/50">
-              <CardHeader>
-                <CardTitle className="text-base">Informations</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-muted-foreground">Module</p>
-                  <Badge variant="outline" className="text-xs">
-                    {doc.module}
-                  </Badge>
                 </div>
 
-                <Separator />
-
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-muted-foreground">Entité liée</p>
-                  <p className="text-sm font-medium">{doc.entite}</p>
-                </div>
-
-                <Separator />
-
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-muted-foreground">Date d&apos;ajout</p>
-                  <p className="text-sm font-medium">{doc.dateAjout}</p>
-                </div>
-
-                <Separator />
-
-                <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm text-muted-foreground">Taille</p>
-                  <p className="text-sm font-medium">{doc.taille}</p>
-                </div>
-
-                <Separator />
-
-                <Button variant="outline" className="w-full" asChild>
-                  <a href={doc.driveLink} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Ouvrir
-                  </a>
-                </Button>
+                {doc.type === "pdf" ? (
+                  <div className="mt-4 overflow-hidden rounded-lg border border-border/50 bg-muted/20">
+                    {doc.driveLink !== "#" ? (
+                      <iframe
+                        title={`Aperçu PDF - ${doc.nom}`}
+                        src={doc.driveLink}
+                        className="h-[80vh] min-h-[560px] w-full"
+                      />
+                    ) : (
+                      <div className="h-[80vh] min-h-[560px] w-full flex items-center justify-center">
+                        <p className="text-sm text-muted-foreground">Aucun aperçu disponible</p>
+                      </div>
+                    )}
+                  </div>
+                ) : null}
               </CardContent>
             </Card>
           </div>
@@ -223,6 +221,54 @@ export default function DocumentDetailPage() {
                 <div>
                   <p className="text-xs text-muted-foreground mb-1">ID</p>
                   <p className="font-mono text-sm">{doc.id}</p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Module</p>
+                  <Badge variant="outline" className="text-xs">
+                    {doc.module}
+                  </Badge>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Entité liée</p>
+                  <p className="text-sm font-medium">{doc.entite}</p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Type</p>
+                  <p className="text-sm font-medium">{doc.type === "pdf" ? "PDF" : "Image"}</p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Date d&apos;ajout</p>
+                  <p className="text-sm">{doc.dateAjout}</p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Taille</p>
+                  <p className="text-sm">{doc.taille}</p>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Notes</p>
+                  <div className="rounded-lg border border-border/50 bg-muted/20 p-3">
+                    <p className="text-sm text-muted-foreground">
+                      {doc.notes ? doc.notes : "Aucune note"}
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>

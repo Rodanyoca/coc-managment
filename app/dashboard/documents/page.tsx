@@ -20,9 +20,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, FileText, Image, Eye } from "lucide-react"
+import { Search, FileText, Folder, HardDrive, Eye } from "lucide-react"
 import { useState } from "react"
-import { cn } from "@/lib/utils"
 import Link from "next/link"
 
 const documents = [
@@ -133,21 +132,23 @@ const modules = ["Tous", "Acteurs", "Compétitions", "Courriers", "Activités", 
 export default function DocumentsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [moduleFilter, setModuleFilter] = useState("Tous")
-  const [typeFilter, setTypeFilter] = useState("Tous")
 
   const filteredDocuments = documents.filter((doc) => {
     const matchesSearch = doc.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          doc.entite.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesModule = moduleFilter === "Tous" || doc.module === moduleFilter
-    const matchesType = typeFilter === "Tous" || doc.type === typeFilter
-    return matchesSearch && matchesModule && matchesType
+    return matchesSearch && matchesModule
   })
 
-  const stats = {
-    total: documents.length,
-    pdf: documents.filter(d => d.type === "pdf").length,
-    image: documents.filter(d => d.type === "image").length,
+  const parseSizeToMB = (size: string) => {
+    const value = Number(size.replace(/[^0-9.]/g, ""))
+    if (Number.isNaN(value)) return 0
+    if (size.toLowerCase().includes("kb")) return value / 1024
+    return value
   }
+
+  const totalStorageMB = documents.reduce((sum, d) => sum + parseSizeToMB(d.taille), 0)
+  const modulesCount = new Set(documents.map((d) => d.module)).size
 
   return (
     <div className="min-h-screen">
@@ -165,30 +166,30 @@ export default function DocumentsPage() {
                 <FileText className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{stats.total}</p>
+                <p className="text-2xl font-bold">{documents.length}</p>
                 <p className="text-sm text-muted-foreground">Total fichiers</p>
               </div>
             </CardContent>
           </Card>
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
-              <div className="rounded-lg p-3 bg-destructive/10 text-destructive">
-                <FileText className="h-5 w-5" />
+              <div className="rounded-lg p-3 bg-chart-2/10 text-chart-2">
+                <Folder className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{stats.pdf}</p>
-                <p className="text-sm text-muted-foreground">Documents PDF</p>
+                <p className="text-2xl font-bold">{modulesCount}</p>
+                <p className="text-sm text-muted-foreground">Modules</p>
               </div>
             </CardContent>
           </Card>
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="rounded-lg p-3 bg-chart-4/10 text-chart-4">
-                <Image className="h-5 w-5" />
+                <HardDrive className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{stats.image}</p>
-                <p className="text-sm text-muted-foreground">Images</p>
+                <p className="text-2xl font-bold">{totalStorageMB.toFixed(1)} MB</p>
+                <p className="text-sm text-muted-foreground">Stockage</p>
               </div>
             </CardContent>
           </Card>
@@ -216,16 +217,6 @@ export default function DocumentsPage() {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[130px]">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Tous">Tous types</SelectItem>
-                <SelectItem value="pdf">PDF</SelectItem>
-                <SelectItem value="image">Images</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
         </div>
 
@@ -235,11 +226,9 @@ export default function DocumentsPage() {
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
-                  <TableHead className="w-[40px]">Type</TableHead>
                   <TableHead>Nom du fichier</TableHead>
                   <TableHead>Module</TableHead>
                   <TableHead>Entité liée</TableHead>
-                  <TableHead>Date d&apos;ajout</TableHead>
                   <TableHead>Taille</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -247,20 +236,6 @@ export default function DocumentsPage() {
               <TableBody>
                 {filteredDocuments.map((doc) => (
                   <TableRow key={doc.id}>
-                    <TableCell>
-                      <div className={cn(
-                        "rounded p-1.5 w-fit",
-                        doc.type === "pdf" 
-                          ? "bg-destructive/10" 
-                          : "bg-chart-4/10"
-                      )}>
-                        {doc.type === "pdf" ? (
-                          <FileText className="h-4 w-4 text-destructive" />
-                        ) : (
-                          <Image className="h-4 w-4 text-chart-4" />
-                        )}
-                      </div>
-                    </TableCell>
                     <TableCell>
                       <div className="flex flex-col">
                         <span className="font-medium">{doc.nom}</span>
@@ -273,9 +248,6 @@ export default function DocumentsPage() {
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {doc.entite}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {doc.dateAjout}
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {doc.taille}
