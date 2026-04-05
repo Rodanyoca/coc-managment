@@ -1,260 +1,73 @@
-"use client"
+import { getSheetRows } from "@/lib/google/sheets"
+import ArbitresClient, { type ArbitreListItem } from "./arbitres-client"
 
-import { Header } from "@/components/dashboard/header"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Search, Eye, Award } from "lucide-react"
-import { useState } from "react"
-import Link from "next/link"
+export const runtime = "nodejs"
+export const dynamic = "force-dynamic"
+export const revalidate = 0
 
-const arbitres = [
-  {
-    id: "1",
-    nom: "Kanyinda",
-    prenom: "Emmanuel",
-    sexe: "M",
-    discipline: "Athlétisme",
-    grade: "International",
-    federation: "FECOATH",
-    licenceValide: true,
-    competitionsArbitrees: 45,
-    statut: "actif",
-  },
-  {
-    id: "2",
-    nom: "Mwana",
-    prenom: "Solange",
-    sexe: "F",
-    discipline: "Basketball",
-    grade: "Continental",
-    federation: "FECOBA",
-    licenceValide: true,
-    competitionsArbitrees: 32,
-    statut: "actif",
-  },
-  {
-    id: "3",
-    nom: "Kabamba",
-    prenom: "Freddy",
-    sexe: "M",
-    discipline: "Judo",
-    grade: "International",
-    federation: "FECOJU",
-    licenceValide: true,
-    competitionsArbitrees: 67,
-    statut: "actif",
-  },
-  {
-    id: "4",
-    nom: "Lufuma",
-    prenom: "Christine",
-    sexe: "F",
-    discipline: "Taekwondo",
-    grade: "National",
-    federation: "FECOTAE",
-    licenceValide: false,
-    competitionsArbitrees: 18,
-    statut: "inactif",
-  },
-  {
-    id: "5",
-    nom: "Ngandu",
-    prenom: "Michel",
-    sexe: "M",
-    discipline: "Volleyball",
-    grade: "Continental",
-    federation: "FECOVO",
-    licenceValide: true,
-    competitionsArbitrees: 28,
-    statut: "actif",
-  },
-  {
-    id: "6",
-    nom: "Tshibangu",
-    prenom: "Alice",
-    sexe: "F",
-    discipline: "Natation",
-    grade: "National",
-    federation: "FENACO",
-    licenceValide: true,
-    competitionsArbitrees: 12,
-    statut: "actif",
-  },
-]
+function splitNomComplet(nomComplet: string) {
+  const trimmed = (nomComplet || "").trim()
+  if (!trimmed) return { prenom: "", nom: "" }
 
-const disciplines = ["Toutes", "Athlétisme", "Basketball", "Judo", "Taekwondo", "Volleyball", "Natation"]
-const grades = ["Tous", "National", "Continental", "International"]
+  const parts = trimmed.split(/\s+/)
+  if (parts.length === 1) return { prenom: parts[0], nom: "" }
 
-export default function ArbitresPage() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [disciplineFilter, setDisciplineFilter] = useState("Toutes")
-  const [gradeFilter, setGradeFilter] = useState("Tous")
+  return {
+    prenom: parts.slice(0, -1).join(" "),
+    nom: parts[parts.length - 1],
+  }
+}
 
-  const filteredArbitres = arbitres.filter((arbitre) => {
-    const matchesSearch = 
-      arbitre.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      arbitre.prenom.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesDiscipline = disciplineFilter === "Toutes" || arbitre.discipline === disciplineFilter
-    const matchesGrade = gradeFilter === "Tous" || arbitre.grade === gradeFilter
-    return matchesSearch && matchesDiscipline && matchesGrade
-  })
+function normalizeGender(value: string): "M" | "F" | null {
+  const v = (value || "").trim().toLowerCase()
+  if (!v) return null
+  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
+  if (v === "f" || v === "femme" || v === "feminin" || v === "féminin") return "F"
+  return null
+}
 
-  const gradeConfig: Record<string, string> = {
-    "National": "bg-muted text-muted-foreground",
-    "Continental": "bg-chart-2/10 text-chart-2",
-    "International": "bg-chart-1/10 text-chart-1",
+function normalizeStatus(value: string): "actif" | "inactif" {
+  const v = (value || "").trim().toLowerCase()
+  if (v === "inactif" || v === "inactive" || v === "0" || v === "non") return "inactif"
+  return "actif"
+}
+
+export default async function ArbitresPage() {
+  let rows: Record<string, string>[] = []
+  let loadError: string | null = null
+
+  try {
+    rows = await getSheetRows({ sheetName: "ARBITRES" })
+  } catch (e) {
+    loadError = e instanceof Error ? e.message : String(e)
   }
 
-  return (
-    <div className="min-h-screen">
-      <Header 
-        title="Arbitres" 
-        subtitle="Arbitres et juges officiels"
-      />
-      
-      <div className="p-6 space-y-6">
-        {/* Filters and Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="flex flex-1 gap-4 flex-wrap">
-            <div className="relative flex-1 min-w-[200px] max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Rechercher un arbitre..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <Select value={disciplineFilter} onValueChange={setDisciplineFilter}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Sport" />
-              </SelectTrigger>
-              <SelectContent>
-                {disciplines.map((disc) => (
-                  <SelectItem key={disc} value={disc}>{disc}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={gradeFilter} onValueChange={setGradeFilter}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Grade" />
-              </SelectTrigger>
-              <SelectContent>
-                {grades.map((grade) => (
-                  <SelectItem key={grade} value={grade}>{grade}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Table */}
-        <Card className="border-border/50">
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead className="w-[250px]">Arbitre</TableHead>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Sport</TableHead>
-                  <TableHead>Grade</TableHead>
-                  <TableHead>Compétitions</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredArbitres.map((arbitre) => (
-                  <TableRow key={arbitre.id} className="hover:bg-muted/30">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-chart-5/10 text-chart-5 text-sm">
-                            {arbitre.prenom[0]}{arbitre.nom[0]}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium">{arbitre.prenom} {arbitre.nom}</p>
-                            <Badge
-                              variant="outline"
-                              className="h-5 px-1.5 text-[10px] leading-none text-muted-foreground"
-                            >
-                              {arbitre.sexe === "M" ? "H" : "F"}
-                            </Badge>
-                          </div>
-                          <p className="text-xs text-muted-foreground">{arbitre.federation}</p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-muted-foreground">{arbitre.id}</span>
-                    </TableCell>
-                    <TableCell>{arbitre.discipline}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary"
-                        className={gradeConfig[arbitre.grade]}
-                      >
-                        <Award className="h-3 w-3 mr-1" />
-                        {arbitre.grade}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-medium">{arbitre.competitionsArbitrees}</TableCell>
-                    <TableCell>
-                      <Badge 
-                        variant="secondary"
-                        className={arbitre.statut === "actif" 
-                          ? "bg-primary/10 text-primary" 
-                          : "bg-muted text-muted-foreground"
-                        }
-                      >
-                        {arbitre.statut === "actif" ? "Actif" : "Inactif"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end">
-                        <Link href={`/dashboard/acteurs/arbitres/${arbitre.id}`}>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* Pagination */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>Affichage de {filteredArbitres.length} sur {arbitres.length} arbitres</span>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>Précédent</Button>
-            <Button variant="outline" size="sm" disabled>Suivant</Button>
-          </div>
-        </div>
+  if (loadError) {
+    return (
+      <div className="p-6">
+        <p className="text-sm text-destructive">{loadError}</p>
       </div>
-    </div>
-  )
+    )
+  }
+
+  const arbitres: ArbitreListItem[] = rows
+    .filter((r: Record<string, string>) => (r["id_arbitre"] || "").trim() !== "")
+    .map((r: Record<string, string>) => {
+      const { prenom, nom } = splitNomComplet(r["nom_complet"])
+      const id = (r["id_arbitre"] || "").trim()
+
+      return {
+        id,
+        nom,
+        prenom,
+        sexe: normalizeGender(r["genre"]),
+        sport: r["nom_sport"] || "",
+        grade: r["grade"] || "",
+        federation: r["sigle_federation"] || "",
+        competitionsArbitrees: null,
+        statut: normalizeStatus(r["statut"]),
+      }
+    })
+
+  return <ArbitresClient arbitres={arbitres} />
 }
