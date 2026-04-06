@@ -23,6 +23,14 @@ function normalizePriorite(value: string): ActiviteListItem["priorite"] {
   return "normale"
 }
 
+function fallbackYearFromDate(value: string): string {
+  const v = String(value ?? "").trim()
+  if (!v) return ""
+
+  const m = v.match(/(\d{4})/)
+  return m?.[1] ?? ""
+}
+
 export default async function ActivitesPage() {
   let rows: Record<string, string>[] = []
   let loadError: string | null = null
@@ -47,11 +55,13 @@ export default async function ActivitesPage() {
   const activites: ActiviteListItem[] = (rows ?? [])
     .map((r) => {
       const id = String(r.id_activite ?? "").trim()
+      const annee = String((r as any).annee ?? "").trim() || fallbackYearFromDate(String(r.date_debut ?? ""))
       return {
         id,
         titre: String(r.nom_activite ?? "").trim(),
         dateDebut: String(r.date_debut ?? "").trim(),
         dateFin: String(r.date_fin ?? "").trim(),
+        annee,
         responsable: String(r.responsable ?? "").trim(),
         priorite: normalizePriorite(String(r.priorite ?? "")),
         lieu: String(r.lieu ?? "").trim(),

@@ -30,6 +30,7 @@ export type ActiviteListItem = {
   titre: string
   dateDebut: string
   dateFin: string
+  annee?: string
   responsable: string
   priorite: "haute" | "moyenne" | "normale"
   lieu: string
@@ -54,15 +55,27 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
 
   const [searchQuery, setSearchQuery] = useState("")
   const [statutFilter, setStatutFilter] = useState("tous")
+  const [anneeFilter, setAnneeFilter] = useState("toutes")
+
+  const anneesDisponibles = useMemo(() => {
+    const set = new Set<string>()
+    for (const a of activites) {
+      const y = String(a.annee ?? "").trim()
+      if (y) set.add(y)
+    }
+    return Array.from(set).sort((a, b) => b.localeCompare(a))
+  }, [activites])
 
   const filteredActivites = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
     return activites.filter((activite) => {
       const matchesSearch = q.length === 0 || activite.titre.toLowerCase().includes(q)
       const matchesStatut = statutFilter === "tous" || activite.statut === statutFilter
-      return matchesSearch && matchesStatut
+      const matchesAnnee =
+        anneeFilter === "toutes" || String(activite.annee ?? "").trim() === anneeFilter
+      return matchesSearch && matchesStatut && matchesAnnee
     })
-  }, [activites, searchQuery, statutFilter])
+  }, [activites, searchQuery, statutFilter, anneeFilter])
 
   const stats = useMemo(() => {
     return {
@@ -136,6 +149,19 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
                 className="pl-9"
               />
             </div>
+            <Select value={anneeFilter} onValueChange={setAnneeFilter}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Année" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="toutes">Toutes</SelectItem>
+                {anneesDisponibles.map((y) => (
+                  <SelectItem key={y} value={y}>
+                    {y}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Select value={statutFilter} onValueChange={setStatutFilter}>
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Statut" />

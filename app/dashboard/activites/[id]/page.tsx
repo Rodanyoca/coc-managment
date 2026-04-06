@@ -37,7 +37,7 @@ export default async function ActiviteDetailPage(props: { params: Promise<{ id: 
   try {
     ;[activitesRows, participantsRows] = await Promise.all([
       getSheetRows({ sheetName: "ACTIVITES" }),
-      getSheetRows({ sheetName: "ACTIVITES8PARTICIPANTS" }),
+      getSheetRows({ sheetName: "ACTIVITES_PARTICIPANTS" }),
     ])
   } catch (err) {
     loadError = err instanceof Error ? err.message : String(err)

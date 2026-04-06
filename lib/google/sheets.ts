@@ -53,7 +53,8 @@ export async function getSheetRows(params: {
   })
 
   const sheets = google.sheets({ version: "v4", auth })
-  const range = params.range ?? `${params.sheetName}!A:Z`
+  const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
+  const range = params.range ?? `'${safeSheetName}'!A:Z`
 
   const controller = new AbortController()
   const timeoutMs = Number.parseInt(process.env.GOOGLE_SHEETS_TIMEOUT_MS ?? "20000", 10)
