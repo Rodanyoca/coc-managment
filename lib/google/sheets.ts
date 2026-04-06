@@ -56,15 +56,14 @@ export async function getSheetRows(params: {
   const range = params.range ?? `${params.sheetName}!A:Z`
 
   const controller = new AbortController()
-  const timeoutMs = 8000
+  const timeoutMs = Number.parseInt(process.env.GOOGLE_SHEETS_TIMEOUT_MS ?? "20000", 10)
 
   const res = await withTimeout(
     (sheets.spreadsheets.values.get({
       spreadsheetId,
       range,
-      requestBody: undefined,
       signal: controller.signal,
-    }) as unknown as Promise<any>),
+    } as any) as unknown as Promise<any>),
     timeoutMs,
     () => controller.abort()
   ).catch((err) => {
