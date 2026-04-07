@@ -11,7 +11,7 @@ export default async function DocumentsPage() {
   let loadError: string | null = null
 
   try {
-    rows = await getSheetRows({ sheetName: "DOCUMENTS" })
+    rows = await getSheetRows({ sheetName: "DOCUMENT" })
   } catch (err) {
     loadError = err instanceof Error ? err.message : String(err)
   }
