@@ -374,9 +374,9 @@ export default async function DashboardPage() {
             <CardTitle className="text-base font-semibold">Performance</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-4">
+            <div className="grid gap-4 lg:grid-cols-2">
               {categorieKeys.length === 0 && (
-                <p className="text-sm text-muted-foreground">Aucun sport référencé.</p>
+                <p className="text-sm text-muted-foreground lg:col-span-2">Aucun sport référencé.</p>
               )}
               {categorieKeys.map((cat) => (
                 <Card key={cat} className="border-border/50">
@@ -469,7 +469,7 @@ export default async function DashboardPage() {
             <CardTitle className="text-base font-semibold">Documentation</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <KpiCard
                 title="Complétude globale"
                 value={`${completude.globale}%`}
@@ -504,120 +504,118 @@ export default async function DashboardPage() {
               />
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-3">
-              <div className="lg:col-span-2 space-y-6">
-                <Card className="border-border/50">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-semibold">Taux de complétude</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-5">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Global</span>
-                        <span>{completude.globale}%</span>
-                      </div>
-                      <Progress value={completude.globale} />
-                    </div>
-                    <div className="grid gap-4 sm:grid-cols-2">
-                      {completude.categories.map((c) => (
-                        <div key={c.label} className="space-y-2">
-                          <div className="flex items-center justify-between text-xs text-muted-foreground">
-                            <span>{c.label}</span>
-                            <span>{c.value}%</span>
-                          </div>
-                          <Progress value={c.value} />
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <div className="grid gap-6 lg:grid-cols-2">
-                  <Card className="border-border/50">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base font-semibold">Activités ({activites.total})</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-muted-foreground">Programmées</p>
-                        <p className="text-sm font-medium">{activites.programmees}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-muted-foreground">En cours</p>
-                        <p className="text-sm font-medium">{activites.enCours}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-muted-foreground">Réalisées</p>
-                        <p className="text-sm font-medium">{activites.realisees}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="border-border/50">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="text-base font-semibold">Compétitions ({competitions.total})</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-muted-foreground">Programmées</p>
-                        <p className="text-sm font-medium">{competitions.programmees}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-muted-foreground">En cours</p>
-                        <p className="text-sm font-medium">{competitions.enCours}</p>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm text-muted-foreground">Réalisées</p>
-                        <p className="text-sm font-medium">{competitions.realisees}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+            <Card className="border-border/50">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base font-semibold">Taux de complétude des dossiers</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-5">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span>Global</span>
+                    <span>{completude.globale}%</span>
+                  </div>
+                  <Progress value={completude.globale} />
                 </div>
-              </div>
-
-              <div className="space-y-6">
-                <Card className="border-border/50">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-semibold">Documents</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm text-muted-foreground">Fichiers référencés</p>
-                      <p className="text-sm font-medium">{totalDocuments}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-border/50">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-semibold">Taux de réalisation</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                  {completude.categories.map((c) => (
+                    <div key={c.label} className="space-y-2">
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Activités réalisées</span>
-                        <span>
-                          {activites.total === 0 ? 0 : Math.round((activites.realisees / activites.total) * 100)}%
-                        </span>
+                        <span>{c.label}</span>
+                        <span>{c.value}%</span>
                       </div>
-                      <Progress
-                        value={activites.total === 0 ? 0 : (activites.realisees / activites.total) * 100}
-                      />
+                      <Progress value={c.value} />
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Compétitions réalisées</span>
-                        <span>
-                          {competitions.total === 0 ? 0 : Math.round((competitions.realisees / competitions.total) * 100)}%
-                        </span>
-                      </div>
-                      <Progress
-                        value={competitions.total === 0 ? 0 : (competitions.realisees / competitions.total) * 100}
-                      />
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="grid gap-6 lg:grid-cols-4">
+              <Card className="border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base font-semibold">Activités ({activites.total})</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Programmées</p>
+                    <p className="text-sm font-medium">{activites.programmees}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">En cours</p>
+                    <p className="text-sm font-medium">{activites.enCours}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Réalisées</p>
+                    <p className="text-sm font-medium">{activites.realisees}</p>
+                  </div>
+                  <div className="space-y-2 pt-2 border-t border-border/50">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>Réalisation</span>
+                      <span>{activites.total === 0 ? 0 : Math.round((activites.realisees / activites.total) * 100)}%</span>
                     </div>
-                  </CardContent>
-                </Card>
-              </div>
+                    <Progress value={activites.total === 0 ? 0 : (activites.realisees / activites.total) * 100} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base font-semibold">Compétitions ({competitions.total})</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Programmées</p>
+                    <p className="text-sm font-medium">{competitions.programmees}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">En cours</p>
+                    <p className="text-sm font-medium">{competitions.enCours}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Réalisées</p>
+                    <p className="text-sm font-medium">{competitions.realisees}</p>
+                  </div>
+                  <div className="space-y-2 pt-2 border-t border-border/50">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>Réalisation</span>
+                      <span>{competitions.total === 0 ? 0 : Math.round((competitions.realisees / competitions.total) * 100)}%</span>
+                    </div>
+                    <Progress value={competitions.total === 0 ? 0 : (competitions.realisees / competitions.total) * 100} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base font-semibold">Documents</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Fichiers référencés</p>
+                    <p className="text-2xl font-bold">{totalDocuments}</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/50">
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-base font-semibold">Sports</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Sports référencés</p>
+                    <p className="text-sm font-medium">{totalSports}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Fédérations</p>
+                    <p className="text-sm font-medium">{totalFederations}</p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-muted-foreground">Catégories</p>
+                    <p className="text-sm font-medium">{categorieKeys.length}</p>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </CardContent>
         </Card>
