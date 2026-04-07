@@ -132,6 +132,9 @@ export default async function DashboardPage() {
   }
   const categorieKeys = Object.keys(sportsByCategorie).sort()
   const totalSports = sportsRows.filter((r) => (r.id_sport || "").trim()).length
+  const totalFederations = new Set(
+    sportsRows.map((r) => (r.id_federation || "").trim()).filter(Boolean)
+  ).size
 
   const completude = {
     globale: 74,
@@ -336,7 +339,15 @@ export default async function DashboardPage() {
               {categorieKeys.map((cat) => (
                 <Card key={cat} className="border-border/50">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-semibold">{cat}</CardTitle>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-sm font-semibold">{cat}</CardTitle>
+                      <div className="flex gap-4 text-xs text-muted-foreground">
+                        <span><strong>{sportsByCategorie[cat].length}</strong> sports</span>
+                        <span><strong>-</strong> acteurs</span>
+                        <span><strong>-</strong> participations</span>
+                        <span><strong>-</strong> médailles</span>
+                      </div>
+                    </div>
                   </CardHeader>
                   <CardContent className="p-0">
                     <Table>
@@ -344,6 +355,9 @@ export default async function DashboardPage() {
                         <TableRow className="bg-muted/30">
                           <TableHead>Sport</TableHead>
                           <TableHead>Fédération</TableHead>
+                          <TableHead className="text-right">Acteurs</TableHead>
+                          <TableHead className="text-right">Part.</TableHead>
+                          <TableHead className="text-right">Méd.</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -351,6 +365,9 @@ export default async function DashboardPage() {
                           <TableRow key={`${cat}-${i}`} className="hover:bg-muted/30">
                             <TableCell className="font-medium">{s.sport || "-"}</TableCell>
                             <TableCell className="text-muted-foreground">{s.federation || "-"}</TableCell>
+                            <TableCell className="text-right text-muted-foreground">-</TableCell>
+                            <TableCell className="text-right text-muted-foreground">-</TableCell>
+                            <TableCell className="text-right text-muted-foreground">-</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -360,7 +377,7 @@ export default async function DashboardPage() {
               ))}
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               <KpiCard
                 title="Sports"
                 value={totalSports}
@@ -370,9 +387,9 @@ export default async function DashboardPage() {
                 iconColor="bg-chart-2/10 text-chart-2"
               />
               <KpiCard
-                title="Catégories"
-                value={categorieKeys.length}
-                change="Groupes de sports"
+                title="Fédérations"
+                value={totalFederations}
+                change="Distinctes"
                 changeType="neutral"
                 icon={Trophy}
                 iconColor="bg-chart-3/10 text-chart-3"
@@ -384,6 +401,22 @@ export default async function DashboardPage() {
                 changeType="neutral"
                 icon={User}
                 iconColor="bg-primary/10 text-primary"
+              />
+              <KpiCard
+                title="Participations"
+                value="-"
+                change="Total COC"
+                changeType="neutral"
+                icon={Calendar}
+                iconColor="bg-chart-1/10 text-chart-1"
+              />
+              <KpiCard
+                title="Médailles"
+                value="-"
+                change="Total COC"
+                changeType="neutral"
+                icon={Trophy}
+                iconColor="bg-coc-green/10 text-coc-green"
               />
             </div>
           </CardContent>
