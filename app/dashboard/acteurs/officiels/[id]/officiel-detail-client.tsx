@@ -105,6 +105,10 @@ export function OfficielDetailClient({ officiel }: { officiel: OfficielDetail })
       subtitle={subtitle}
       avatarInitials={`${officiel.prenom?.[0] || ""}${officiel.nom?.[0] || ""}`}
       avatarColorClass="bg-chart-2/10 text-chart-2"
+      avatarUrl={officiel.avatarUrl}
+      actorType="officiels"
+      actorId={officiel.id}
+      actorDateNaissance={officiel.dateNaissance}
       status={officiel.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}

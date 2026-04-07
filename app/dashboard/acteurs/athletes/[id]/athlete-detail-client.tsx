@@ -103,6 +103,10 @@ export function AthleteDetailClient({ athlete }: { athlete: AthleteDetail }) {
       subtitle={subtitle}
       avatarInitials={`${athlete.prenom?.[0] || ""}${athlete.nom?.[0] || ""}`}
       avatarColorClass="bg-primary/10 text-primary"
+      avatarUrl={athlete.avatarUrl}
+      actorType="athletes"
+      actorId={athlete.id}
+      actorDateNaissance={athlete.dateNaissance}
       status={athlete.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}

@@ -86,6 +86,10 @@ export function MedecinDetailClient({ medecin }: { medecin: MedecinDetail }) {
       subtitle={subtitle}
       avatarInitials={`${medecin.prenom?.[0] || ""}${medecin.nom?.[0] || ""}`}
       avatarColorClass="bg-chart-4/10 text-chart-4"
+      avatarUrl={medecin.avatarUrl}
+      actorType="medecins"
+      actorId={medecin.id}
+      actorDateNaissance={medecin.dateNaissance}
       status={medecin.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}

@@ -101,6 +101,10 @@ export function EntraineurDetailClient({ coach }: { coach: CoachDetail }) {
       subtitle={subtitle}
       avatarInitials={`${coach.prenom?.[0] || ""}${coach.nom?.[0] || ""}`}
       avatarColorClass="bg-chart-3/10 text-chart-3"
+      avatarUrl={coach.avatarUrl}
+      actorType="entraineurs"
+      actorId={coach.id}
+      actorDateNaissance={coach.dateNaissance}
       status={coach.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
