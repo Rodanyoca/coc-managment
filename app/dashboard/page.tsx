@@ -67,6 +67,7 @@ export default async function DashboardPage() {
   let arbitresRows: Record<string, string>[] = []
   let medecinsRows: Record<string, string>[] = []
   let entraineursRows: Record<string, string>[] = []
+  let sportsRows: Record<string, string>[] = []
 
   try {
     ;[
@@ -75,12 +76,14 @@ export default async function DashboardPage() {
       arbitresRows,
       medecinsRows,
       entraineursRows,
+      sportsRows,
     ] = await Promise.all([
       getSheetRows({ sheetName: "ATHLETES" }),
       getSheetRows({ sheetName: "OFFICIELS" }),
       getSheetRows({ sheetName: "ARBITRES" }),
       getSheetRows({ sheetName: "MEDECINS" }),
       getSheetRows({ sheetName: "COACHS" }),
+      getSheetRows({ sheetName: "SPORTS" }),
     ])
   } catch (e) {
     loadError = e instanceof Error ? e.message : String(e)
@@ -116,27 +119,19 @@ export default async function DashboardPage() {
   const pctFemale = totalActeurs === 0 ? 0 : Math.round((totalFemale / totalActeurs) * 100)
   const pctMale = totalActeurs === 0 ? 0 : Math.round((totalMale / totalActeurs) * 100)
 
-  const sports = {
-    collectif: [
-      { sport: "Football", athletes: 42, participations: 6, medals: 1 },
-      { sport: "Basketball", athletes: 18, participations: 4, medals: 0 },
-      { sport: "Volleyball", athletes: 16, participations: 3, medals: 0 },
-    ],
-    combat: [
-      { sport: "Judo", athletes: 26, participations: 8, medals: 2 },
-      { sport: "Boxe", athletes: 19, participations: 5, medals: 1 },
-      { sport: "Lutte", athletes: 14, participations: 4, medals: 0 },
-    ],
-    individuel: [
-      { sport: "Badminton", athletes: 12, participations: 3, medals: 0 },
-      { sport: "Tennis", athletes: 10, participations: 2, medals: 0 },
-      { sport: "Tennis de table", athletes: 16, participations: 4, medals: 1 },
-    ],
-    podium: [
-      { sport: "Athlétisme", athletes: 34, participations: 9, medals: 3 },
-      { sport: "Natation", athletes: 22, participations: 6, medals: 1 },
-    ],
+  // Group sports by categorie from the SPORTS sheet
+  const sportsByCategorie: Record<string, { sport: string; federation: string }[]> = {}
+  for (const r of sportsRows) {
+    const id = (r.id_sport || "").trim()
+    if (!id) continue
+    const nom = (r.nom_sport || "").trim()
+    const cat = (r.categorie || "Autres").trim()
+    const fed = (r.sigle_federation || r.nom_federation || "").trim()
+    if (!sportsByCategorie[cat]) sportsByCategorie[cat] = []
+    sportsByCategorie[cat].push({ sport: nom, federation: fed })
   }
+  const categorieKeys = Object.keys(sportsByCategorie).sort()
+  const totalSports = sportsRows.filter((r) => (r.id_sport || "").trim()).length
 
   const completude = {
     globale: 74,
@@ -335,155 +330,60 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-semibold">Sports collectifs</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-muted/30">
-                        <TableHead>Sport</TableHead>
-                        <TableHead className="text-right">Athl.</TableHead>
-                        <TableHead className="text-right">Part.</TableHead>
-                        <TableHead className="text-right">Méd.</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sports.collectif.map((s) => (
-                        <TableRow key={s.sport} className="hover:bg-muted/30">
-                          <TableCell className="font-medium">{s.sport}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.athletes}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.participations}</TableCell>
-                          <TableCell className="text-right font-medium">{s.medals}</TableCell>
+              {categorieKeys.length === 0 && (
+                <p className="text-sm text-muted-foreground">Aucun sport référencé.</p>
+              )}
+              {categorieKeys.map((cat) => (
+                <Card key={cat} className="border-border/50">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-sm font-semibold">{cat}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-0">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="bg-muted/30">
+                          <TableHead>Sport</TableHead>
+                          <TableHead>Fédération</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-semibold">Sports de combat</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-muted/30">
-                        <TableHead>Sport</TableHead>
-                        <TableHead className="text-right">Athl.</TableHead>
-                        <TableHead className="text-right">Part.</TableHead>
-                        <TableHead className="text-right">Méd.</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sports.combat.map((s) => (
-                        <TableRow key={s.sport} className="hover:bg-muted/30">
-                          <TableCell className="font-medium">{s.sport}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.athletes}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.participations}</TableCell>
-                          <TableCell className="text-right font-medium">{s.medals}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-semibold">Sports individuels</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-muted/30">
-                        <TableHead>Sport</TableHead>
-                        <TableHead className="text-right">Athl.</TableHead>
-                        <TableHead className="text-right">Part.</TableHead>
-                        <TableHead className="text-right">Méd.</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sports.individuel.map((s) => (
-                        <TableRow key={s.sport} className="hover:bg-muted/30">
-                          <TableCell className="font-medium">{s.sport}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.athletes}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.participations}</TableCell>
-                          <TableCell className="text-right font-medium">{s.medals}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-semibold">Sports de podium</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="bg-muted/30">
-                        <TableHead>Sport</TableHead>
-                        <TableHead className="text-right">Athl.</TableHead>
-                        <TableHead className="text-right">Part.</TableHead>
-                        <TableHead className="text-right">Méd.</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {sports.podium.map((s) => (
-                        <TableRow key={s.sport} className="hover:bg-muted/30">
-                          <TableCell className="font-medium">{s.sport}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.athletes}</TableCell>
-                          <TableCell className="text-right text-muted-foreground">{s.participations}</TableCell>
-                          <TableCell className="text-right font-medium">{s.medals}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </CardContent>
-              </Card>
+                      </TableHeader>
+                      <TableBody>
+                        {sportsByCategorie[cat].map((s, i) => (
+                          <TableRow key={`${cat}-${i}`} className="hover:bg-muted/30">
+                            <TableCell className="font-medium">{s.sport || "-"}</TableCell>
+                            <TableCell className="text-muted-foreground">{s.federation || "-"}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <KpiCard
-                title="Participations"
-                value={
-                  Object.values(sports)
-                    .flat()
-                    .reduce((s, v) => s + v.participations, 0)
-                }
-                change="Total compétitions"
+                title="Sports"
+                value={totalSports}
+                change="Référencés"
+                changeType="neutral"
+                icon={Activity}
+                iconColor="bg-chart-2/10 text-chart-2"
+              />
+              <KpiCard
+                title="Catégories"
+                value={categorieKeys.length}
+                change="Groupes de sports"
                 changeType="neutral"
                 icon={Trophy}
                 iconColor="bg-chart-3/10 text-chart-3"
               />
               <KpiCard
-                title="Médailles"
-                value={Object.values(sports).flat().reduce((s, v) => s + v.medals, 0)}
-                change="Cumul global"
-                changeType="positive"
-                icon={Trophy}
-                iconColor="bg-coc-green/10 text-coc-green"
-              />
-              <KpiCard
-                title="Athlètes suivis"
-                value={Object.values(sports).flat().reduce((s, v) => s + v.athletes, 0)}
-                change="Dans les sports listés"
+                title="Athlètes"
+                value={acteurs.athletes.total}
+                change="Tous sports confondus"
                 changeType="neutral"
                 icon={User}
                 iconColor="bg-primary/10 text-primary"
-              />
-              <KpiCard
-                title="Sports"
-                value={Object.values(sports).flat().length}
-                change="Référencés"
-                changeType="neutral"
-                icon={Activity}
-                iconColor="bg-chart-2/10 text-chart-2"
               />
             </div>
           </CardContent>
