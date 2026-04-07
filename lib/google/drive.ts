@@ -1,7 +1,6 @@
 import "server-only"
 
 import { google } from "googleapis"
-import { Readable } from "stream"
 
 function getPrivateKey() {
   const key = process.env.GOOGLE_PRIVATE_KEY
@@ -38,7 +37,7 @@ export async function uploadFileToDrive(params: {
 
   const media = {
     mimeType: params.mimeType,
-    body: Readable.from(params.buffer),
+    body: require("stream").Readable.from(params.buffer),
   }
 
   const res = await drive.files.create({

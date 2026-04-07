@@ -81,7 +81,7 @@ export function OfficielDetailClient({ officiel }: { officiel: OfficielDetail })
     officiel.email ? { label: "Email", value: officiel.email, icon: <Mail className="h-4 w-4" /> } : null,
     officiel.bureau ? { label: "Bureau", value: officiel.bureau, icon: <Building className="h-4 w-4" /> } : null,
     officiel.bureau ? null : officiel.entite ? { label: "Entité", value: officiel.entite, icon: <MapPin className="h-4 w-4" /> } : null,
-  ].filter(Boolean) as { label: string; value: string; icon: JSX.Element }[]
+  ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
   const documents = officiel.urlPasseport ? [{ name: "Passeport", type: "URL", date: "-" }] : []
 

@@ -77,7 +77,7 @@ export function AthleteDetailClient({ athlete }: { athlete: AthleteDetail }) {
     athlete.telephone ? { label: "Telephone", value: athlete.telephone, icon: <Phone className="h-4 w-4" /> } : null,
     athlete.email ? { label: "Email", value: athlete.email, icon: <Mail className="h-4 w-4" /> } : null,
     athlete.adresse ? { label: "Adresse", value: athlete.adresse, icon: <MapPin className="h-4 w-4" /> } : null,
-  ].filter(Boolean) as { label: string; value: string; icon: JSX.Element }[]
+  ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
   const documents = athlete.urlPasseport
     ? [{ name: "Passeport", type: "URL", date: "-" }]

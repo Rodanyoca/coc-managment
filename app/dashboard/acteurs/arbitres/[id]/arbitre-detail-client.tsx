@@ -83,7 +83,7 @@ export function ArbitreDetailClient({ arbitre }: { arbitre: ArbitreDetail }) {
     arbitre.adresse
       ? { label: "Adresse", value: arbitre.adresse, icon: <MapPin className="h-4 w-4" /> }
       : null,
-  ].filter(Boolean) as { label: string; value: string; icon: JSX.Element }[]
+  ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
   const documents = arbitre.urlPasseport ? [{ name: "Passeport", type: "URL", date: "-" }] : []
 
