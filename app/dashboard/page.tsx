@@ -83,7 +83,7 @@ export default async function DashboardPage() {
       getSheetRows({ sheetName: "ARBITRES" }),
       getSheetRows({ sheetName: "MEDECINS" }),
       getSheetRows({ sheetName: "COACHS" }),
-      getSheetRows({ sheetName: "SPORTS" }),
+      getSheetRows({ sheetName: "SPORT" }),
     ])
   } catch (e) {
     loadError = e instanceof Error ? e.message : String(e)
