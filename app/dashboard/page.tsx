@@ -23,8 +23,6 @@ import {
   Mars,
   Trophy,
   Calendar,
-  Clock,
-  CheckCircle2,
   FileText,
   HardDrive,
   Activity,
@@ -68,6 +66,9 @@ export default async function DashboardPage() {
   let medecinsRows: Record<string, string>[] = []
   let entraineursRows: Record<string, string>[] = []
   let sportsRows: Record<string, string>[] = []
+  let activitesRows: Record<string, string>[] = []
+  let competitionsRows: Record<string, string>[] = []
+  let documentsRows: Record<string, string>[] = []
 
   try {
     ;[
@@ -77,6 +78,9 @@ export default async function DashboardPage() {
       medecinsRows,
       entraineursRows,
       sportsRows,
+      activitesRows,
+      competitionsRows,
+      documentsRows,
     ] = await Promise.all([
       getSheetRows({ sheetName: "ATHLETES" }),
       getSheetRows({ sheetName: "OFFICIELS" }),
@@ -84,6 +88,9 @@ export default async function DashboardPage() {
       getSheetRows({ sheetName: "MEDECINS" }),
       getSheetRows({ sheetName: "COACHS" }),
       getSheetRows({ sheetName: "SPORT" }),
+      getSheetRows({ sheetName: "ACTIVITES" }),
+      getSheetRows({ sheetName: "COMPETITIONS" }),
+      getSheetRows({ sheetName: "DOCUMENT" }),
     ])
   } catch (e) {
     loadError = e instanceof Error ? e.message : String(e)
@@ -136,33 +143,68 @@ export default async function DashboardPage() {
     sportsRows.map((r) => (r.id_federation || "").trim()).filter(Boolean)
   ).size
 
+  // --- Complétude réelle : % de champs-clés remplis par catégorie d'acteurs ---
+  function fieldFillRate(rows: Record<string, string>[], idKey: string, fields: string[]): number {
+    const validRows = rows.filter((r) => (r[idKey] || "").trim())
+    if (validRows.length === 0 || fields.length === 0) return 0
+    let filled = 0
+    const total = validRows.length * fields.length
+    for (const r of validRows) {
+      for (const f of fields) {
+        if ((r[f] || "").trim()) filled++
+      }
+    }
+    return Math.round((filled / total) * 100)
+  }
+
+  const completudeAthletes = fieldFillRate(athletesRows, "id_athlete", ["nom_complet", "genre", "date_de_naissance", "nom_sport", "discipline", "statut"])
+  const completudeOfficiels = fieldFillRate(officielsRows, "id_officiel", ["nom_complet", "genre", "fonction", "statut"])
+  const completudeArbitres = fieldFillRate(arbitresRows, "id_arbitre", ["nom_complet", "genre", "nom_sport", "statut"])
+  const completudeMedecins = fieldFillRate(medecinsRows, "id_medecin", ["nom_complet", "genre", "specialite", "statut"])
+  const completudeEntraineurs = fieldFillRate(entraineursRows, "id_coach", ["nom_complet", "genre", "nom_sport", "statut"])
+
+  const completudeValues = [completudeAthletes, completudeOfficiels, completudeArbitres, completudeMedecins, completudeEntraineurs]
+  const completudeGlobale = completudeValues.length === 0 ? 0 : Math.round(completudeValues.reduce((a, b) => a + b, 0) / completudeValues.length)
+
   const completude = {
-    globale: 74,
+    globale: completudeGlobale,
     categories: [
-      { label: "Identités", value: 82 },
-      { label: "Médical", value: 68 },
-      { label: "Compétitions", value: 71 },
-      { label: "Administratif", value: 76 },
+      { label: "Athlètes", value: completudeAthletes },
+      { label: "Officiels", value: completudeOfficiels },
+      { label: "Arbitres", value: completudeArbitres },
+      { label: "Médecins", value: completudeMedecins },
+      { label: "Entraîneurs", value: completudeEntraineurs },
     ],
   }
 
-  const stockage = {
-    totalGb: 5,
-    usedGb: 3.2,
+  // --- Activités réelles depuis la feuille ACTIVITES ---
+  function normalizeStatut(s: string): string {
+    const v = (s || "").trim().toLowerCase()
+    if (v.includes("programme") || v.includes("planifi")) return "programmee"
+    if (v.includes("cours") || v.includes("progress")) return "en_cours"
+    if (v.includes("realis") || v.includes("termin") || v.includes("clotur") || v.includes("achev")) return "realisee"
+    return v
   }
-  const stockagePct = Math.min(100, Math.round((stockage.usedGb / stockage.totalGb) * 100))
 
+  const activitesValid = activitesRows.filter((r) => (r.id_activite || "").trim())
   const activites = {
-    programmees: 12,
-    enCours: 4,
-    realisees: 18,
+    programmees: activitesValid.filter((r) => normalizeStatut(r.statut) === "programmee").length,
+    enCours: activitesValid.filter((r) => normalizeStatut(r.statut) === "en_cours").length,
+    realisees: activitesValid.filter((r) => normalizeStatut(r.statut) === "realisee").length,
+    total: activitesValid.length,
   }
 
+  // --- Compétitions réelles depuis la feuille COMPETITIONS ---
+  const competitionsValid = competitionsRows.filter((r) => (r.id_competition || "").trim())
   const competitions = {
-    programmees: 3,
-    enCours: 1,
-    realisees: 4,
+    programmees: competitionsValid.filter((r) => normalizeStatut(r.statut) === "programmee").length,
+    enCours: competitionsValid.filter((r) => normalizeStatut(r.statut) === "en_cours").length,
+    realisees: competitionsValid.filter((r) => normalizeStatut(r.statut) === "realisee").length,
+    total: competitionsValid.length,
   }
+
+  // --- Documents réels ---
+  const totalDocuments = documentsRows.filter((r) => (r.id_document || "").trim()).length
 
   return (
     <div className="min-h-screen">
@@ -431,42 +473,34 @@ export default async function DashboardPage() {
               <KpiCard
                 title="Complétude globale"
                 value={`${completude.globale}%`}
-                change="Dossiers conformes"
-                changeType="neutral"
+                change="Taux de remplissage moyen"
+                changeType={completude.globale >= 75 ? "positive" : completude.globale >= 50 ? "neutral" : "negative"}
                 icon={FileText}
                 iconColor="bg-chart-4/10 text-chart-4"
               />
               <KpiCard
-                title="Stockage"
-                value={`${stockage.usedGb}GB / ${stockage.totalGb}GB`}
-                change={`${stockagePct}% utilisé`}
-                changeType={stockagePct > 85 ? "negative" : "neutral"}
+                title="Documents"
+                value={totalDocuments}
+                change="Fichiers référencés"
+                changeType="neutral"
                 icon={HardDrive}
                 iconColor="bg-muted text-muted-foreground"
               />
               <KpiCard
-                title="Activités programmées"
-                value={activites.programmees}
-                change="À venir"
+                title="Activités"
+                value={activites.total}
+                change={`${activites.realisees} réalisées · ${activites.enCours} en cours · ${activites.programmees} prog.`}
                 changeType="neutral"
                 icon={Calendar}
                 iconColor="bg-chart-1/10 text-chart-1"
               />
               <KpiCard
-                title="Activités en cours"
-                value={activites.enCours}
-                change="En exécution"
+                title="Compétitions"
+                value={competitions.total}
+                change={`${competitions.realisees} réalisées · ${competitions.enCours} en cours · ${competitions.programmees} prog.`}
                 changeType="neutral"
-                icon={Clock}
-                iconColor="bg-chart-2/10 text-chart-2"
-              />
-              <KpiCard
-                title="Activités réalisées"
-                value={activites.realisees}
-                change="Clôturées"
-                changeType="positive"
-                icon={CheckCircle2}
-                iconColor="bg-coc-green/10 text-coc-green"
+                icon={Trophy}
+                iconColor="bg-chart-3/10 text-chart-3"
               />
             </div>
 
@@ -501,7 +535,7 @@ export default async function DashboardPage() {
                 <div className="grid gap-6 lg:grid-cols-2">
                   <Card className="border-border/50">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-base font-semibold">Rapport Activités</CardTitle>
+                      <CardTitle className="text-base font-semibold">Activités ({activites.total})</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
@@ -521,7 +555,7 @@ export default async function DashboardPage() {
 
                   <Card className="border-border/50">
                     <CardHeader className="pb-2">
-                      <CardTitle className="text-base font-semibold">Rapport Compétitions</CardTitle>
+                      <CardTitle className="text-base font-semibold">Compétitions ({competitions.total})</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex items-center justify-between">
@@ -544,62 +578,41 @@ export default async function DashboardPage() {
               <div className="space-y-6">
                 <Card className="border-border/50">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-semibold">Stockage</CardTitle>
+                    <CardTitle className="text-base font-semibold">Documents</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <p className="text-sm text-muted-foreground">Capacité totale</p>
-                      <p className="text-sm font-medium">{stockage.totalGb}GB</p>
+                      <p className="text-sm text-muted-foreground">Fichiers référencés</p>
+                      <p className="text-sm font-medium">{totalDocuments}</p>
                     </div>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Utilisé</span>
-                        <span>{stockage.usedGb}GB</span>
-                      </div>
-                      <Progress value={stockagePct} />
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {stockagePct > 85 ? "Seuil d'alerte dépassé" : "Niveau normal"}
-                    </p>
                   </CardContent>
                 </Card>
 
                 <Card className="border-border/50">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-semibold">Activités</CardTitle>
+                    <CardTitle className="text-base font-semibold">Taux de réalisation</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-2">
-                      <div className="flex items-center justify-between text-sm">
-                        <p className="text-muted-foreground">Programmées</p>
-                        <p className="font-medium">{activites.programmees}</p>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <p className="text-muted-foreground">En cours</p>
-                        <p className="font-medium">{activites.enCours}</p>
-                      </div>
-                      <div className="flex items-center justify-between text-sm">
-                        <p className="text-muted-foreground">Réalisées</p>
-                        <p className="font-medium">{activites.realisees}</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>Réalisées / Total</span>
+                        <span>Activités réalisées</span>
                         <span>
-                          {Math.round(
-                            (activites.realisees /
-                              Math.max(1, activites.programmees + activites.enCours + activites.realisees)) *
-                              100
-                          )}%
+                          {activites.total === 0 ? 0 : Math.round((activites.realisees / activites.total) * 100)}%
                         </span>
                       </div>
                       <Progress
-                        value={
-                          (activites.realisees /
-                            Math.max(1, activites.programmees + activites.enCours + activites.realisees)) *
-                          100
-                        }
+                        value={activites.total === 0 ? 0 : (activites.realisees / activites.total) * 100}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
+                        <span>Compétitions réalisées</span>
+                        <span>
+                          {competitions.total === 0 ? 0 : Math.round((competitions.realisees / competitions.total) * 100)}%
+                        </span>
+                      </div>
+                      <Progress
+                        value={competitions.total === 0 ? 0 : (competitions.realisees / competitions.total) * 100}
                       />
                     </div>
                   </CardContent>
