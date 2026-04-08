@@ -3,7 +3,7 @@ import { uploadFileToDrive } from "@/lib/google/drive"
 import { updateSheetCell } from "@/lib/google/sheets"
 
 const ACCEPTED_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp"]
-const MAX_SIZE_BYTES = 2 * 1024 * 1024 // 2 MB
+const MAX_SIZE_BYTES = 5 * 1024 * 1024 // 5 MB
 
 const ACTOR_CONFIG: Record<string, { sheetName: string; idColumn: string }> = {
   athletes: { sheetName: "ATHLETES", idColumn: "id_athlete" },

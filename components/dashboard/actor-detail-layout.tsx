@@ -20,7 +20,7 @@ import { ReactNode, useCallback, useRef, useState } from "react"
 
 const ACCEPTED_EXTENSIONS = ".png,.jpg,.jpeg,.webp"
 const ACCEPTED_MIME = ["image/png", "image/jpeg", "image/jpg", "image/webp"]
-const MAX_SIZE_MB = 2
+const MAX_SIZE_MB = 5
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
 
 interface InfoField {
@@ -231,12 +231,8 @@ export function ActorDetailLayout({
                             )}
                             <span className="text-muted-foreground">Nom</span>
                             <span className="font-medium">{title}</span>
-                            {actorDateNaissance && (
-                              <>
-                                <span className="text-muted-foreground">Date de naissance</span>
-                                <span className="font-medium">{actorDateNaissance}</span>
-                              </>
-                            )}
+                            <span className="text-muted-foreground">Date de naissance</span>
+                            <span className="font-medium">{actorDateNaissance || "-"}</span>
                             {actorSexe && (
                               <>
                                 <span className="text-muted-foreground">Sexe</span>
