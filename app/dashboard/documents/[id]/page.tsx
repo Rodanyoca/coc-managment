@@ -16,7 +16,7 @@ export default async function DocumentDetailPage({
 
   let rows: Record<string, string>[] = []
   try {
-    rows = await getSheetRows({ sheetName: "DOCUMENTS" })
+    rows = await getSheetRows({ sheetName: "DOCUMENT" })
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     return (
