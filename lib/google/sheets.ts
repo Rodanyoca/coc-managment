@@ -2,6 +2,24 @@ import "server-only"
 
 import { google } from "googleapis"
 
+// --- In-memory cache to avoid Google Sheets API quota limits ---
+const CACHE_TTL_MS = 60_000 // 60 seconds
+const cache = new Map<string, { data: Record<string, string>[]; ts: number }>()
+
+function getCached(key: string): Record<string, string>[] | null {
+  const entry = cache.get(key)
+  if (!entry) return null
+  if (Date.now() - entry.ts > CACHE_TTL_MS) {
+    cache.delete(key)
+    return null
+  }
+  return entry.data
+}
+
+function setCache(key: string, data: Record<string, string>[]) {
+  cache.set(key, { data, ts: Date.now() })
+}
+
 function getPrivateKey() {
   const key = process.env.GOOGLE_PRIVATE_KEY
   if (!key) return ""
@@ -45,6 +63,13 @@ export async function getSheetRows(params: {
   range?: string
 }): Promise<Record<string, string>[]> {
   const { spreadsheetId, clientEmail, privateKey } = getSheetCredentials()
+  const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
+  const range = params.range ?? `'${safeSheetName}'!A:Z`
+
+  // Check cache first
+  const cacheKey = `${spreadsheetId}:${range}`
+  const cached = getCached(cacheKey)
+  if (cached) return cached
 
   const auth = new google.auth.JWT({
     email: clientEmail,
@@ -53,8 +78,6 @@ export async function getSheetRows(params: {
   })
 
   const sheets = google.sheets({ version: "v4", auth })
-  const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
-  const range = params.range ?? `'${safeSheetName}'!A:Z`
 
   const controller = new AbortController()
   const timeoutMs = Number.parseInt(process.env.GOOGLE_SHEETS_TIMEOUT_MS ?? "20000", 10)
@@ -83,13 +106,18 @@ export async function getSheetRows(params: {
     headerIndex.set(String(h ?? "").trim(), idx)
   })
 
-  return (rows ?? []).map((row: unknown[]) => {
+  const result = (rows ?? []).map((row: unknown[]) => {
     const record: Record<string, string> = {}
     for (const [key, idx] of headerIndex.entries()) {
       record[key] = row?.[idx] === undefined ? "" : String(row[idx])
     }
     return record
   })
+
+  // Store in cache
+  setCache(cacheKey, result)
+
+  return result
 }
 
 export async function updateSheetCell(params: {
