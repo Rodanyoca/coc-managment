@@ -143,3 +143,67 @@ export async function updateSheetCell(params: {
     requestBody: { values: [[params.value]] },
   } as any)
 }
+
+function columnToLetter(colIdx: number): string {
+  if (colIdx < 26) return String.fromCharCode(65 + colIdx)
+  return (
+    String.fromCharCode(64 + Math.floor(colIdx / 26)) +
+    String.fromCharCode(65 + (colIdx % 26))
+  )
+}
+
+export async function updateSheetCells(params: {
+  sheetName: string
+  idColumn: string
+  idValue: string
+  updates: { column: string; value: string }[]
+}): Promise<void> {
+  const { spreadsheetId, clientEmail, privateKey } = getSheetCredentials()
+
+  const auth = new google.auth.JWT({
+    email: clientEmail,
+    key: privateKey,
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+  })
+
+  const sheets = google.sheets({ version: "v4", auth })
+  const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
+  const range = `'${safeSheetName}'!A:Z`
+
+  const res = await sheets.spreadsheets.values.get({ spreadsheetId, range } as any) as any
+  const values: unknown[][] = (res?.data?.values ?? []) as unknown[][]
+  if (values.length === 0) throw new Error("La feuille est vide")
+
+  const headers = (values[0] ?? []).map((h: unknown) => String(h ?? "").trim())
+  const idColIdx = headers.indexOf(params.idColumn)
+  if (idColIdx === -1) throw new Error(`Colonne "${params.idColumn}" introuvable dans "${params.sheetName}"`)
+
+  const columnIndices: { colIdx: number; value: string }[] = []
+  for (const upd of params.updates) {
+    const idx = headers.indexOf(upd.column)
+    if (idx === -1) throw new Error(`Colonne "${upd.column}" introuvable dans "${params.sheetName}"`)
+    columnIndices.push({ colIdx: idx, value: upd.value })
+  }
+
+  let rowIndex = -1
+  for (let i = 1; i < values.length; i++) {
+    if (String(values[i]?.[idColIdx] ?? "").trim() === params.idValue) {
+      rowIndex = i
+      break
+    }
+  }
+  if (rowIndex === -1) throw new Error(`Ligne avec ${params.idColumn}="${params.idValue}" introuvable`)
+
+  const data = columnIndices.map(({ colIdx, value }) => ({
+    range: `'${safeSheetName}'!${columnToLetter(colIdx)}${rowIndex + 1}`,
+    values: [[value]],
+  }))
+
+  await (sheets.spreadsheets.values.batchUpdate as any)({
+    spreadsheetId,
+    requestBody: {
+      valueInputOption: "RAW",
+      data,
+    },
+  })
+}

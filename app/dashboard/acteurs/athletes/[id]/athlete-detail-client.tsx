@@ -79,10 +79,6 @@ export function AthleteDetailClient({ athlete }: { athlete: AthleteDetail }) {
     athlete.adresse ? { label: "Adresse", value: athlete.adresse, icon: <MapPin className="h-4 w-4" /> } : null,
   ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
-  const documents = athlete.urlPasseport
-    ? [{ name: "Passeport", type: "URL", date: "-" }]
-    : []
-
   const palmaresSection = {
     id: "palmares",
     label: "Palmares",
@@ -104,6 +100,7 @@ export function AthleteDetailClient({ athlete }: { athlete: AthleteDetail }) {
       avatarInitials={`${athlete.prenom?.[0] || ""}${athlete.nom?.[0] || ""}`}
       avatarColorClass="bg-primary/10 text-primary"
       avatarUrl={athlete.avatarUrl}
+      urlPasseport={athlete.urlPasseport}
       actorType="athletes"
       actorId={athlete.id}
       actorDateNaissance={athlete.dateNaissance}
@@ -111,7 +108,6 @@ export function AthleteDetailClient({ athlete }: { athlete: AthleteDetail }) {
       status={athlete.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
-      documents={documents}
       additionalSections={[palmaresSection]}
     />
   )

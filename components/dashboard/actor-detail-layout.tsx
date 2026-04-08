@@ -1,27 +1,15 @@
 "use client"
 
 import { Header } from "@/components/dashboard/header"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { MediaUploadDialog } from "@/components/dashboard/media-upload-dialog"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { ArrowLeft, Camera, FileText, Loader2, Upload, X } from "lucide-react"
+import { ArrowLeft, Camera, ExternalLink, FileText, Upload } from "lucide-react"
 import Link from "next/link"
-import { ReactNode, useCallback, useRef, useState } from "react"
-
-const ACCEPTED_EXTENSIONS = ".png,.jpg,.jpeg,.webp"
-const ACCEPTED_MIME = ["image/png", "image/jpeg", "image/jpg", "image/webp"]
-const MAX_SIZE_MB = 5
-const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
+import { ReactNode, useState } from "react"
 
 interface InfoField {
   label: string
@@ -37,6 +25,7 @@ interface ActorDetailLayoutProps {
   avatarInitials: string
   avatarColorClass: string
   avatarUrl?: string | null
+  urlPasseport?: string | null
   actorType?: string
   actorId?: string
   actorDateNaissance?: string
@@ -53,6 +42,7 @@ interface ActorDetailLayoutProps {
     name: string
     type: string
     date: string
+    url?: string | null
   }[]
   children?: ReactNode
 }
@@ -65,6 +55,7 @@ export function ActorDetailLayout({
   avatarInitials,
   avatarColorClass,
   avatarUrl,
+  urlPasseport,
   actorType,
   actorId,
   actorDateNaissance,
@@ -76,72 +67,20 @@ export function ActorDetailLayout({
   documents = [],
   children,
 }: ActorDetailLayoutProps) {
-  const [dialogOpen, setDialogOpen] = useState(false)
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<string | null>(null)
-  const [uploading, setUploading] = useState(false)
-  const [uploadError, setUploadError] = useState<string | null>(null)
-  const [uploadedUrl, setUploadedUrl] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [uploadedAvatarUrl, setUploadedAvatarUrl] = useState<string | null>(null)
+  const [uploadedPasseportUrl, setUploadedPasseportUrl] = useState<string | null>(null)
 
-  const currentAvatarUrl = uploadedUrl || avatarUrl || null
+  const currentAvatarUrl = uploadedAvatarUrl || avatarUrl || null
+  const currentPasseportUrl = uploadedPasseportUrl || urlPasseport || null
 
-  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setUploadError(null)
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    if (!ACCEPTED_MIME.includes(file.type)) {
-      setUploadError("Format non supporté. Utilisez PNG, JPG ou WebP.")
-      return
-    }
-    if (file.size > MAX_SIZE_BYTES) {
-      setUploadError(`Le fichier dépasse ${MAX_SIZE_MB} Mo.`)
-      return
-    }
-
-    setSelectedFile(file)
-    const reader = new FileReader()
-    reader.onload = (ev) => setPreview(ev.target?.result as string)
-    reader.readAsDataURL(file)
-  }, [])
-
-  const handleUpload = useCallback(async () => {
-    if (!selectedFile || !actorType || !actorId) return
-
-    setUploading(true)
-    setUploadError(null)
-
-    try {
-      const formData = new FormData()
-      formData.append("file", selectedFile)
-      formData.append("actorType", actorType)
-      formData.append("actorId", actorId)
-
-      const res = await fetch("/api/upload-photo", { method: "POST", body: formData })
-      const data = await res.json()
-
-      if (!res.ok) {
-        setUploadError(data.error || "Erreur lors de l'upload")
-        return
-      }
-
-      setUploadedUrl(data.url)
-      setDialogOpen(false)
-      setSelectedFile(null)
-      setPreview(null)
-    } catch {
-      setUploadError("Erreur réseau. Veuillez réessayer.")
-    } finally {
-      setUploading(false)
-    }
-  }, [selectedFile, actorType, actorId])
-
-  const resetDialog = useCallback(() => {
-    setSelectedFile(null)
-    setPreview(null)
-    setUploadError(null)
-  }, [])
+  const identityFields = [
+    ...(actorId ? [{ label: "ID", value: actorId }] : []),
+    { label: "Nom", value: title },
+    { label: "Date de naissance", value: actorDateNaissance || "-" },
+    ...(actorSexe
+      ? [{ label: "Sexe", value: actorSexe === "M" ? "Homme" : actorSexe === "F" ? "Femme" : actorSexe }]
+      : []),
+  ]
 
   return (
     <div className="min-h-screen">
@@ -203,114 +142,20 @@ export function ActorDetailLayout({
                 </div>
 
                 <div className="flex gap-2 mt-6 w-full">
-                  <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetDialog() }}>
-                    <DialogTrigger asChild>
+                  <MediaUploadDialog
+                    mediaType="avatar"
+                    title="Photo de profil"
+                    actorType={actorType}
+                    actorId={actorId}
+                    identityFields={identityFields}
+                    trigger={
                       <Button variant="outline" className="flex-1 gap-2">
                         <Camera className="h-4 w-4" />
                         {currentAvatarUrl ? "Changer la photo" : "Ajouter la photo"}
                       </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-md">
-                      <DialogHeader>
-                        <DialogTitle>Photo de profil</DialogTitle>
-                        <DialogDescription>
-                          Formats acceptés : PNG, JPG, JPEG, WebP — Taille max : {MAX_SIZE_MB} Mo
-                        </DialogDescription>
-                      </DialogHeader>
-
-                      <div className="space-y-4">
-                        {/* Fiche d'identification */}
-                        <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Vérification de l'identité</p>
-                          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
-                            {actorId && (
-                              <>
-                                <span className="text-muted-foreground">ID</span>
-                                <span className="font-medium font-mono text-xs">{actorId}</span>
-                              </>
-                            )}
-                            <span className="text-muted-foreground">Nom</span>
-                            <span className="font-medium">{title}</span>
-                            <span className="text-muted-foreground">Date de naissance</span>
-                            <span className="font-medium">{actorDateNaissance || "-"}</span>
-                            {actorSexe && (
-                              <>
-                                <span className="text-muted-foreground">Sexe</span>
-                                <span className="font-medium">{actorSexe === "M" ? "Homme" : actorSexe === "F" ? "Femme" : actorSexe}</span>
-                              </>
-                            )}
-                          </div>
-                        </div>
-
-                        {!preview ? (
-                          <div
-                            className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/30 transition-colors"
-                            onClick={() => fileInputRef.current?.click()}
-                          >
-                            <Upload className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
-                            <p className="font-medium text-sm">Cliquez pour sélectionner un fichier</p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                              PNG, JPG, JPEG ou WebP — max {MAX_SIZE_MB} Mo
-                            </p>
-                          </div>
-                        ) : (
-                          <div className="relative">
-                            <img
-                              src={preview}
-                              alt="Aperçu"
-                              className="w-full max-h-64 object-contain rounded-lg border border-border"
-                            />
-                            <Button
-                              variant="destructive"
-                              size="icon"
-                              className="absolute top-2 right-2 h-7 w-7"
-                              onClick={resetDialog}
-                            >
-                              <X className="h-4 w-4" />
-                            </Button>
-                            <p className="text-xs text-muted-foreground mt-2">
-                              {selectedFile?.name} ({(selectedFile?.size ?? 0 / 1024 / 1024).toFixed(1)} Ko)
-                            </p>
-                          </div>
-                        )}
-
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept={ACCEPTED_EXTENSIONS}
-                          className="hidden"
-                          onChange={handleFileSelect}
-                        />
-
-                        {uploadError && (
-                          <p className="text-sm text-destructive">{uploadError}</p>
-                        )}
-
-                        <div className="flex gap-2 justify-end">
-                          <Button variant="outline" onClick={() => { setDialogOpen(false); resetDialog() }}>
-                            Annuler
-                          </Button>
-                          <Button
-                            onClick={handleUpload}
-                            disabled={!selectedFile || uploading}
-                            className="gap-2"
-                          >
-                            {uploading ? (
-                              <>
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                                Envoi...
-                              </>
-                            ) : (
-                              <>
-                                <Upload className="h-4 w-4" />
-                                Envoyer
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
+                    }
+                    onSuccess={({ url }) => setUploadedAvatarUrl(url)}
+                  />
                 </div>
               </div>
 
@@ -359,9 +204,51 @@ export function ActorDetailLayout({
                 </TabsContent>
 
                 <TabsContent value="documents" className="mt-0">
-                  {documents.length > 0 ? (
-                    <div className="space-y-3">
-                      {documents.map((doc, index) => (
+                  <div className="space-y-4">
+                    {/* Passeport section */}
+                    <div className="rounded-lg border border-border p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-destructive/10">
+                            <FileText className="h-4 w-4 text-destructive" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm">Passeport</p>
+                            <p className="text-xs text-muted-foreground">
+                              {currentPasseportUrl ? "PDF attaché" : "Aucun fichier"}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {currentPasseportUrl && (
+                            <Button variant="ghost" size="sm" asChild>
+                              <a href={currentPasseportUrl} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="h-4 w-4 mr-1" />
+                                Ouvrir
+                              </a>
+                            </Button>
+                          )}
+                          <MediaUploadDialog
+                            mediaType="passeport"
+                            title="Passeport / Pièce d'identité"
+                            actorType={actorType}
+                            actorId={actorId}
+                            identityFields={identityFields}
+                            trigger={
+                              <Button variant="outline" size="sm" className="gap-1">
+                                <Upload className="h-3 w-3" />
+                                {currentPasseportUrl ? "Remplacer" : "Ajouter"}
+                              </Button>
+                            }
+                            onSuccess={({ url }) => setUploadedPasseportUrl(url)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Other documents */}
+                    {documents.length > 0 ? (
+                      documents.map((doc, index) => (
                         <div
                           key={index}
                           className="flex items-center justify-between p-3 rounded-lg border border-border hover:bg-muted/30 transition-colors"
@@ -377,18 +264,17 @@ export function ActorDetailLayout({
                               </p>
                             </div>
                           </div>
-                          <Button variant="ghost" size="sm">
-                            Voir
-                          </Button>
+                          {doc.url && (
+                            <Button variant="ghost" size="sm" asChild>
+                              <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                                Voir
+                              </a>
+                            </Button>
+                          )}
                         </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-8 text-muted-foreground">
-                      <FileText className="h-12 w-12 mx-auto mb-3 opacity-30" />
-                      <p>Aucun document disponible</p>
-                    </div>
-                  )}
+                      ))
+                    ) : null}
+                  </div>
                 </TabsContent>
 
                 {additionalSections.map((section) => (

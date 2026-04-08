@@ -91,8 +91,6 @@ export function EntraineurDetailClient({ coach }: { coach: CoachDetail }) {
       : null,
   ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
-  const documents = coach.urlPasseport ? [{ name: "Passeport", type: "URL", date: "-" }] : []
-
   return (
     <ActorDetailLayout
       backHref="/dashboard/acteurs/entraineurs"
@@ -102,6 +100,7 @@ export function EntraineurDetailClient({ coach }: { coach: CoachDetail }) {
       avatarInitials={`${coach.prenom?.[0] || ""}${coach.nom?.[0] || ""}`}
       avatarColorClass="bg-chart-3/10 text-chart-3"
       avatarUrl={coach.avatarUrl}
+      urlPasseport={coach.urlPasseport}
       actorType="entraineurs"
       actorId={coach.id}
       actorDateNaissance={coach.dateNaissance}
@@ -109,7 +108,6 @@ export function EntraineurDetailClient({ coach }: { coach: CoachDetail }) {
       status={coach.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
-      documents={documents}
     />
   )
 }

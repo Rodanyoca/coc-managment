@@ -85,8 +85,6 @@ export function ArbitreDetailClient({ arbitre }: { arbitre: ArbitreDetail }) {
       : null,
   ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
-  const documents = arbitre.urlPasseport ? [{ name: "Passeport", type: "URL", date: "-" }] : []
-
   return (
     <ActorDetailLayout
       backHref="/dashboard/acteurs/arbitres"
@@ -96,6 +94,7 @@ export function ArbitreDetailClient({ arbitre }: { arbitre: ArbitreDetail }) {
       avatarInitials={`${arbitre.prenom?.[0] || ""}${arbitre.nom?.[0] || ""}`}
       avatarColorClass="bg-chart-5/10 text-chart-5"
       avatarUrl={arbitre.avatarUrl}
+      urlPasseport={arbitre.urlPasseport}
       actorType="arbitres"
       actorId={arbitre.id}
       actorDateNaissance={arbitre.dateNaissance}
@@ -103,7 +102,6 @@ export function ArbitreDetailClient({ arbitre }: { arbitre: ArbitreDetail }) {
       status={arbitre.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
-      documents={documents}
     />
   )
 }

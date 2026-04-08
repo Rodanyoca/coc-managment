@@ -83,8 +83,6 @@ export function OfficielDetailClient({ officiel }: { officiel: OfficielDetail })
     officiel.bureau ? null : officiel.entite ? { label: "Entité", value: officiel.entite, icon: <MapPin className="h-4 w-4" /> } : null,
   ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
-  const documents = officiel.urlPasseport ? [{ name: "Passeport", type: "URL", date: "-" }] : []
-
   const section = {
     id: "palmares",
     label: "Palmarès",
@@ -106,6 +104,7 @@ export function OfficielDetailClient({ officiel }: { officiel: OfficielDetail })
       avatarInitials={`${officiel.prenom?.[0] || ""}${officiel.nom?.[0] || ""}`}
       avatarColorClass="bg-chart-2/10 text-chart-2"
       avatarUrl={officiel.avatarUrl}
+      urlPasseport={officiel.urlPasseport}
       actorType="officiels"
       actorId={officiel.id}
       actorDateNaissance={officiel.dateNaissance}
@@ -113,7 +112,6 @@ export function OfficielDetailClient({ officiel }: { officiel: OfficielDetail })
       status={officiel.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
-      documents={documents}
       additionalSections={[section]}
     />
   )

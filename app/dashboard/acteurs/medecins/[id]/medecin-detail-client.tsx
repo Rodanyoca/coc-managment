@@ -76,8 +76,6 @@ export function MedecinDetailClient({ medecin }: { medecin: MedecinDetail }) {
       : null,
   ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
-  const documents = medecin.urlPasseport ? [{ name: "Passeport", type: "URL", date: "-" }] : []
-
   return (
     <ActorDetailLayout
       backHref="/dashboard/acteurs/medecins"
@@ -87,6 +85,7 @@ export function MedecinDetailClient({ medecin }: { medecin: MedecinDetail }) {
       avatarInitials={`${medecin.prenom?.[0] || ""}${medecin.nom?.[0] || ""}`}
       avatarColorClass="bg-chart-4/10 text-chart-4"
       avatarUrl={medecin.avatarUrl}
+      urlPasseport={medecin.urlPasseport}
       actorType="medecins"
       actorId={medecin.id}
       actorDateNaissance={medecin.dateNaissance}
@@ -94,7 +93,6 @@ export function MedecinDetailClient({ medecin }: { medecin: MedecinDetail }) {
       status={medecin.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
-      documents={documents}
     />
   )
 }
