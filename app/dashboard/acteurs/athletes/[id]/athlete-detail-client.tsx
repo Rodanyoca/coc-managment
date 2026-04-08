@@ -23,6 +23,9 @@ export type AthleteDetail = {
   statut: "actif" | "inactif"
   avatarUrl?: string | null
   urlPasseport?: string | null
+  numeroPasseport?: string
+  dateDelivrancePasseport?: string
+  dateExpirationPasseport?: string
 }
 
 function getAgeFromDateString(dateString?: string) {
@@ -101,6 +104,11 @@ export function AthleteDetailClient({ athlete }: { athlete: AthleteDetail }) {
       avatarColorClass="bg-primary/10 text-primary"
       avatarUrl={athlete.avatarUrl}
       urlPasseport={athlete.urlPasseport}
+      passportInfo={[
+        { label: "N° Passeport", value: athlete.numeroPasseport || "-" },
+        { label: "Délivré le", value: athlete.dateDelivrancePasseport || "-" },
+        { label: "Expire le", value: athlete.dateExpirationPasseport || "-" },
+      ]}
       actorType="athletes"
       actorId={athlete.id}
       actorDateNaissance={athlete.dateNaissance}

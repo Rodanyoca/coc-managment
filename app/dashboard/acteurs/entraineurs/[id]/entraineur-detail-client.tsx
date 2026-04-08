@@ -20,6 +20,9 @@ export type CoachDetail = {
   email?: string
   adresse?: string
   urlPasseport?: string | null
+  numeroPasseport?: string
+  dateDelivrancePasseport?: string
+  dateExpirationPasseport?: string
   statut: "actif" | "inactif"
   avatarUrl?: string | null
 }
@@ -101,6 +104,11 @@ export function EntraineurDetailClient({ coach }: { coach: CoachDetail }) {
       avatarColorClass="bg-chart-3/10 text-chart-3"
       avatarUrl={coach.avatarUrl}
       urlPasseport={coach.urlPasseport}
+      passportInfo={[
+        { label: "N° Passeport", value: coach.numeroPasseport || "-" },
+        { label: "Délivré le", value: coach.dateDelivrancePasseport || "-" },
+        { label: "Expire le", value: coach.dateExpirationPasseport || "-" },
+      ]}
       actorType="entraineurs"
       actorId={coach.id}
       actorDateNaissance={coach.dateNaissance}

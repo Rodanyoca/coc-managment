@@ -100,6 +100,9 @@ export default async function MedecinDetailPage({
     etablissement: r["etablissement"] || undefined,
     dateAffiliation: r["date_affiliation"] || undefined,
     urlPasseport: r["url_passeport"] || null,
+    numeroPasseport: r["numéro_passeport"] || "",
+    dateDelivrancePasseport: r["date_de_delivrance_passeport"] || "",
+    dateExpirationPasseport: r["date_expiration passeport"] || "",
     statut,
     avatarUrl: r["avatar_url"] || null,
   }

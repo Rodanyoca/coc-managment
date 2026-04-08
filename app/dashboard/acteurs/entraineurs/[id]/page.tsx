@@ -99,6 +99,9 @@ export default async function EntraineurDetailPage({
     email: r["email"] || undefined,
     adresse: r["adresse"] || undefined,
     urlPasseport: r["url_passeport"] || null,
+    numeroPasseport: r["numéro_passeport"] || "",
+    dateDelivrancePasseport: r["date_de_delivrance_passeport"] || "",
+    dateExpirationPasseport: r["date_expiration passeport"] || "",
     statut: normalizeStatus(r["statut"]),
     avatarUrl: r["avatar_url"] || null,
   }

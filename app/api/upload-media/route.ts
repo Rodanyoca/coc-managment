@@ -9,10 +9,10 @@ const PDF_TYPES = ["application/pdf"]
 type MediaType = "avatar" | "passeport" | "courrier" | "document"
 
 const FOLDER_ENV: Record<MediaType, string> = {
-  avatar: "GOOGLE_DRIVE_AVATAR_FOLDER_ID",
-  passeport: "GOOGLE_DRIVE_PASSEPORT_FOLDER_ID",
-  courrier: "GOOGLE_DRIVE_COURRIER_FOLDER_ID",
-  document: "GOOGLE_DRIVE_DOCUMENT_FOLDER_ID",
+  avatar: "GOOGLE_DRIVE_ACTEURS_AVATARS_FOLDER_ID",
+  passeport: "GOOGLE_DRIVE_ACTEURS_PASSEPORTS_FOLDER_ID",
+  courrier: "GOOGLE_DRIVE_COURRIERS_FOLDER_ID",
+  document: "GOOGLE_DRIVE_DOCUMENTS_FOLDER_ID",
 }
 
 const ACCEPTED_TYPES: Record<MediaType, string[]> = {

@@ -5,10 +5,11 @@ import { MediaUploadDialog } from "@/components/dashboard/media-upload-dialog"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, Camera, ExternalLink, FileText, Upload } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ReactNode, useState } from "react"
 
 interface InfoField {
@@ -26,6 +27,7 @@ interface ActorDetailLayoutProps {
   avatarColorClass: string
   avatarUrl?: string | null
   urlPasseport?: string | null
+  passportInfo?: { label: string; value: string }[]
   actorType?: string
   actorId?: string
   actorDateNaissance?: string
@@ -56,6 +58,7 @@ export function ActorDetailLayout({
   avatarColorClass,
   avatarUrl,
   urlPasseport,
+  passportInfo,
   actorType,
   actorId,
   actorDateNaissance,
@@ -67,8 +70,10 @@ export function ActorDetailLayout({
   documents = [],
   children,
 }: ActorDetailLayoutProps) {
+  const router = useRouter()
   const [uploadedAvatarUrl, setUploadedAvatarUrl] = useState<string | null>(null)
   const [uploadedPasseportUrl, setUploadedPasseportUrl] = useState<string | null>(null)
+  const [avatarError, setAvatarError] = useState(false)
 
   const currentAvatarUrl = uploadedAvatarUrl || avatarUrl || null
   const currentPasseportUrl = uploadedPasseportUrl || urlPasseport || null
@@ -101,12 +106,19 @@ export function ActorDetailLayout({
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
                 <Avatar className="h-24 w-24 mb-4">
-                  {currentAvatarUrl && (
-                    <AvatarImage src={currentAvatarUrl} alt={title} />
+                  {currentAvatarUrl && !avatarError ? (
+                    <img
+                      src={currentAvatarUrl}
+                      alt={title}
+                      className="h-full w-full object-cover rounded-full"
+                      referrerPolicy="no-referrer"
+                      onError={() => setAvatarError(true)}
+                    />
+                  ) : (
+                    <AvatarFallback className={`${avatarColorClass} text-2xl`}>
+                      {avatarInitials}
+                    </AvatarFallback>
                   )}
-                  <AvatarFallback className={`${avatarColorClass} text-2xl`}>
-                    {avatarInitials}
-                  </AvatarFallback>
                 </Avatar>
                 <h2 className="text-xl font-semibold">{title}</h2>
                 {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
@@ -154,9 +166,26 @@ export function ActorDetailLayout({
                         {currentAvatarUrl ? "Changer la photo" : "Ajouter la photo"}
                       </Button>
                     }
-                    onSuccess={({ url }) => setUploadedAvatarUrl(url)}
+                    onSuccess={({ url }) => {
+                      setAvatarError(false)
+                      setUploadedAvatarUrl(url)
+                      router.refresh()
+                    }}
                   />
                 </div>
+
+                {/* Passport info fields */}
+                {passportInfo && passportInfo.length > 0 && (
+                  <div className="mt-4 w-full space-y-1 text-sm border-t border-border pt-4">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Passeport</p>
+                    {passportInfo.map((f, i) => (
+                      <div key={i} className="flex justify-between">
+                        <span className="text-muted-foreground">{f.label}</span>
+                        <span className="font-medium">{f.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Contact Info */}
@@ -240,7 +269,10 @@ export function ActorDetailLayout({
                                 {currentPasseportUrl ? "Remplacer" : "Ajouter"}
                               </Button>
                             }
-                            onSuccess={({ url }) => setUploadedPasseportUrl(url)}
+                            onSuccess={({ url }) => {
+                              setUploadedPasseportUrl(url)
+                              router.refresh()
+                            }}
                           />
                         </div>
                       </div>

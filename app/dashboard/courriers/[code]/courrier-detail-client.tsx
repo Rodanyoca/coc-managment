@@ -1,6 +1,7 @@
 "use client"
 
 import { Header } from "@/components/dashboard/header"
+import { MediaUploadDialog } from "@/components/dashboard/media-upload-dialog"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -22,6 +23,8 @@ import {
   Clock,
 } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 
 export type CourrierDetail = {
@@ -50,6 +53,17 @@ const statutConfig = {
 
 export default function CourrierDetailClient(props: { courrier: CourrierDetail }) {
   const courrier = props.courrier
+  const router = useRouter()
+  const [uploadedPdfUrl, setUploadedPdfUrl] = useState<string | null>(null)
+  const currentPdfUrl = uploadedPdfUrl || courrier.pdfUrl
+
+  const identityFields = [
+    { label: "Code", value: courrier.code },
+    { label: "Référence", value: courrier.reference || "-" },
+    { label: "Objet", value: courrier.objet || "-" },
+    { label: "Expéditeur", value: courrier.expediteur || "-" },
+    { label: "Date", value: courrier.dateReception || "-" },
+  ]
 
   return (
     <div className="min-h-screen">
@@ -183,7 +197,7 @@ export default function CourrierDetailClient(props: { courrier: CourrierDetail }
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {courrier.pdfUrl ? (
+                {currentPdfUrl ? (
                   <div className="space-y-3">
                     <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-4 text-center">
                       <FileText className="h-12 w-12 mx-auto text-destructive mb-2" />
@@ -192,24 +206,34 @@ export default function CourrierDetailClient(props: { courrier: CourrierDetail }
                     </div>
                     <div className="flex gap-2">
                       <Button variant="outline" className="flex-1" asChild>
-                        <a href={courrier.pdfUrl} target="_blank" rel="noopener noreferrer">
+                        <a href={currentPdfUrl} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="h-4 w-4 mr-2" />
                           Ouvrir
                         </a>
                       </Button>
                       <Button variant="outline" className="flex-1" asChild>
-                        <a href={courrier.pdfUrl} download>
+                        <a href={currentPdfUrl} download>
                           <Download className="h-4 w-4 mr-2" />
                           Télécharger
                         </a>
                       </Button>
                     </div>
-                    <Link href={`/dashboard/courriers/${courrier.code}/lier-pdf`} className="block">
-                      <Button variant="outline" className="w-full">
-                        <Link2 className="h-4 w-4 mr-2" />
-                        Ajouter
-                      </Button>
-                    </Link>
+                    <MediaUploadDialog
+                      mediaType="courrier"
+                      title="Remplacer le PDF"
+                      courrierCode={courrier.code}
+                      identityFields={identityFields}
+                      trigger={
+                        <Button variant="outline" className="w-full">
+                          <Link2 className="h-4 w-4 mr-2" />
+                          Remplacer
+                        </Button>
+                      }
+                      onSuccess={({ url }) => {
+                        setUploadedPdfUrl(url)
+                        router.refresh()
+                      }}
+                    />
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -218,12 +242,22 @@ export default function CourrierDetailClient(props: { courrier: CourrierDetail }
                       <p className="text-sm text-muted-foreground mb-1">Aucun PDF attaché</p>
                       <p className="text-xs text-muted-foreground">Liez un document PDF à ce courrier</p>
                     </div>
-                    <Link href={`/dashboard/courriers/${courrier.code}/lier-pdf`} className="block">
-                      <Button className="w-full bg-primary hover:bg-primary/90">
-                        <Link2 className="h-4 w-4 mr-2" />
-                        Ajouter
-                      </Button>
-                    </Link>
+                    <MediaUploadDialog
+                      mediaType="courrier"
+                      title="Lier un PDF au courrier"
+                      courrierCode={courrier.code}
+                      identityFields={identityFields}
+                      trigger={
+                        <Button className="w-full bg-primary hover:bg-primary/90">
+                          <Link2 className="h-4 w-4 mr-2" />
+                          Ajouter
+                        </Button>
+                      }
+                      onSuccess={({ url }) => {
+                        setUploadedPdfUrl(url)
+                        router.refresh()
+                      }}
+                    />
                   </div>
                 )}
               </CardContent>

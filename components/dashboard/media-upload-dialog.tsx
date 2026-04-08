@@ -153,7 +153,7 @@ export function MediaUploadDialog({
       }}
     >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
@@ -180,7 +180,7 @@ export function MediaUploadDialog({
                   {identityFields.map((f, i) => (
                     <Fragment key={i}>
                       <span className="text-muted-foreground">{f.label}</span>
-                      <span className="font-medium">{f.value}</span>
+                      <span className="font-medium truncate" title={f.value}>{f.value}</span>
                     </Fragment>
                   ))}
                 </div>
@@ -222,12 +222,12 @@ export function MediaUploadDialog({
                     </Button>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 rounded-lg border border-border p-4">
-                    <div className="rounded-lg bg-destructive/10 p-2">
+                  <div className="flex items-center gap-3 rounded-lg border border-border p-4 overflow-hidden">
+                    <div className="shrink-0 rounded-lg bg-destructive/10 p-2">
                       <FileText className="h-5 w-5 text-destructive" />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-medium text-sm truncate">{file.name}</p>
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <p className="font-medium text-sm truncate" title={file.name}>{file.name}</p>
                       <p className="text-xs text-muted-foreground">
                         {(file.size / 1024 / 1024).toFixed(2)} Mo
                       </p>

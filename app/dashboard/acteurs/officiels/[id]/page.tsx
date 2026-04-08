@@ -65,6 +65,9 @@ export default async function OfficielDetailPage({ params }: { params: Promise<{
     membreCoc: parseBoolean(row["membre_coc"]),
     mandatFin: row["date_de_fin_de_mandat"] || "",
     urlPasseport: row["url_passeport"] || null,
+    numeroPasseport: row["numéro_passeport"] || "",
+    dateDelivrancePasseport: row["date_de_delivrance_passeport"] || "",
+    dateExpirationPasseport: row["date_expiration passeport"] || "",
     statut,
     avatarUrl: row["avatar_url"] || null,
   }

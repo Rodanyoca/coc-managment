@@ -20,6 +20,9 @@ export type MedecinDetail = {
   etablissement?: string
   dateAffiliation?: string
   urlPasseport?: string | null
+  numeroPasseport?: string
+  dateDelivrancePasseport?: string
+  dateExpirationPasseport?: string
   statut: "actif" | "inactif"
   avatarUrl?: string | null
 }
@@ -86,6 +89,11 @@ export function MedecinDetailClient({ medecin }: { medecin: MedecinDetail }) {
       avatarColorClass="bg-chart-4/10 text-chart-4"
       avatarUrl={medecin.avatarUrl}
       urlPasseport={medecin.urlPasseport}
+      passportInfo={[
+        { label: "N° Passeport", value: medecin.numeroPasseport || "-" },
+        { label: "Délivré le", value: medecin.dateDelivrancePasseport || "-" },
+        { label: "Expire le", value: medecin.dateExpirationPasseport || "-" },
+      ]}
       actorType="medecins"
       actorId={medecin.id}
       actorDateNaissance={medecin.dateNaissance}

@@ -143,25 +143,32 @@ export default async function DashboardPage() {
     sportsRows.map((r) => (r.id_federation || "").trim()).filter(Boolean)
   ).size
 
-  // --- Complétude réelle : % de champs-clés remplis par catégorie d'acteurs ---
-  function fieldFillRate(rows: Record<string, string>[], idKey: string, fields: string[]): number {
+  // --- Complétude réelle : % de cellules remplies (toutes colonnes) par catégorie d'acteurs ---
+  function fieldFillRate(rows: Record<string, string>[], idKey: string): number {
     const validRows = rows.filter((r) => (r[idKey] || "").trim())
-    if (validRows.length === 0 || fields.length === 0) return 0
-    let filled = 0
-    const total = validRows.length * fields.length
+    if (validRows.length === 0) return 0
+    // Collect all column keys across all rows
+    const allKeys = new Set<string>()
     for (const r of validRows) {
-      for (const f of fields) {
-        if ((r[f] || "").trim()) filled++
+      for (const k of Object.keys(r)) allKeys.add(k)
+    }
+    const columns = Array.from(allKeys)
+    if (columns.length === 0) return 0
+    let filled = 0
+    const total = validRows.length * columns.length
+    for (const r of validRows) {
+      for (const col of columns) {
+        if ((r[col] || "").trim()) filled++
       }
     }
     return Math.round((filled / total) * 100)
   }
 
-  const completudeAthletes = fieldFillRate(athletesRows, "id_athlete", ["nom_complet", "genre", "date_de_naissance", "nom_sport", "discipline", "statut"])
-  const completudeOfficiels = fieldFillRate(officielsRows, "id_officiel", ["nom_complet", "genre", "fonction", "statut"])
-  const completudeArbitres = fieldFillRate(arbitresRows, "id_arbitre", ["nom_complet", "genre", "nom_sport", "statut"])
-  const completudeMedecins = fieldFillRate(medecinsRows, "id_medecin", ["nom_complet", "genre", "specialite", "statut"])
-  const completudeEntraineurs = fieldFillRate(entraineursRows, "id_coach", ["nom_complet", "genre", "nom_sport", "statut"])
+  const completudeAthletes = fieldFillRate(athletesRows, "id_athlete")
+  const completudeOfficiels = fieldFillRate(officielsRows, "id_officiel")
+  const completudeArbitres = fieldFillRate(arbitresRows, "id_arbitre")
+  const completudeMedecins = fieldFillRate(medecinsRows, "id_medecin")
+  const completudeEntraineurs = fieldFillRate(entraineursRows, "id_coach")
 
   const completudeValues = [completudeAthletes, completudeOfficiels, completudeArbitres, completudeMedecins, completudeEntraineurs]
   const completudeGlobale = completudeValues.length === 0 ? 0 : Math.round(completudeValues.reduce((a, b) => a + b, 0) / completudeValues.length)

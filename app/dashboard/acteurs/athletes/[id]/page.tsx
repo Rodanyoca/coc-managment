@@ -57,6 +57,9 @@ export default async function AthleteDetailPage({ params }: { params: Promise<{ 
     statut: (row["statut"] || "actif").toLowerCase() === "inactif" ? "inactif" : "actif",
     avatarUrl: row["avatar_url"] || null,
     urlPasseport: row["url_passeport"] || null,
+    numeroPasseport: row["numéro_passeport"] || "",
+    dateDelivrancePasseport: row["date_de_delivrance_passeport"] || "",
+    dateExpirationPasseport: row["date_expiration passeport"] || "",
   }
 
   return <AthleteDetailClient athlete={athlete} />

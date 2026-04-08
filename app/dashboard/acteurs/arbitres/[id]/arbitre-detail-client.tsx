@@ -18,6 +18,9 @@ export type ArbitreDetail = {
   email?: string
   adresse?: string
   urlPasseport?: string | null
+  numeroPasseport?: string
+  dateDelivrancePasseport?: string
+  dateExpirationPasseport?: string
   statut: "actif" | "inactif"
   avatarUrl?: string | null
 }
@@ -95,6 +98,11 @@ export function ArbitreDetailClient({ arbitre }: { arbitre: ArbitreDetail }) {
       avatarColorClass="bg-chart-5/10 text-chart-5"
       avatarUrl={arbitre.avatarUrl}
       urlPasseport={arbitre.urlPasseport}
+      passportInfo={[
+        { label: "N° Passeport", value: arbitre.numeroPasseport || "-" },
+        { label: "Délivré le", value: arbitre.dateDelivrancePasseport || "-" },
+        { label: "Expire le", value: arbitre.dateExpirationPasseport || "-" },
+      ]}
       actorType="arbitres"
       actorId={arbitre.id}
       actorDateNaissance={arbitre.dateNaissance}

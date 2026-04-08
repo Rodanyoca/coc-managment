@@ -2,24 +2,20 @@ import "server-only"
 
 import { google } from "googleapis"
 
-function getPrivateKey() {
-  const key = process.env.GOOGLE_PRIVATE_KEY
-  if (!key) return ""
-  return key.replace(/\\n/g, "\n")
-}
-
 function getDriveAuth() {
-  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
-  const privateKey = getPrivateKey()
+  const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID
+  const clientSecret = process.env.GOOGLE_OAUTH_CLIENT_SECRET
+  const refreshToken = process.env.GOOGLE_DRIVE_REFRESH_TOKEN
 
-  if (!clientEmail) throw new Error("Missing GOOGLE_SERVICE_ACCOUNT_EMAIL")
-  if (!privateKey) throw new Error("Missing GOOGLE_PRIVATE_KEY")
+  if (!clientId || !clientSecret || !refreshToken) {
+    throw new Error(
+      "Variables OAuth2 manquantes : GOOGLE_OAUTH_CLIENT_ID, GOOGLE_OAUTH_CLIENT_SECRET, GOOGLE_DRIVE_REFRESH_TOKEN"
+    )
+  }
 
-  return new google.auth.JWT({
-    email: clientEmail,
-    key: privateKey,
-    scopes: ["https://www.googleapis.com/auth/drive.file"],
-  })
+  const oauth2Client = new google.auth.OAuth2(clientId, clientSecret)
+  oauth2Client.setCredentials({ refresh_token: refreshToken })
+  return oauth2Client
 }
 
 export type DriveUploadResult = {
@@ -56,6 +52,6 @@ export async function uploadFileToDrive(params: {
     requestBody: { role: "reader", type: "anyone" },
   } as any)
 
-  const url = `https://drive.google.com/uc?export=view&id=${fileId}`
+  const url = `https://drive.google.com/thumbnail?id=${fileId}&sz=w400`
   return { fileId, url }
 }

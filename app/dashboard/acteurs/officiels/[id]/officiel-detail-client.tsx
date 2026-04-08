@@ -22,6 +22,9 @@ export type OfficielDetail = {
   membreCoc?: boolean
   mandatFin?: string
   urlPasseport?: string | null
+  numeroPasseport?: string
+  dateDelivrancePasseport?: string
+  dateExpirationPasseport?: string
   statut: "actif" | "inactif"
   avatarUrl?: string | null
 }
@@ -105,6 +108,11 @@ export function OfficielDetailClient({ officiel }: { officiel: OfficielDetail })
       avatarColorClass="bg-chart-2/10 text-chart-2"
       avatarUrl={officiel.avatarUrl}
       urlPasseport={officiel.urlPasseport}
+      passportInfo={[
+        { label: "N° Passeport", value: officiel.numeroPasseport || "-" },
+        { label: "Délivré le", value: officiel.dateDelivrancePasseport || "-" },
+        { label: "Expire le", value: officiel.dateExpirationPasseport || "-" },
+      ]}
       actorType="officiels"
       actorId={officiel.id}
       actorDateNaissance={officiel.dateNaissance}
