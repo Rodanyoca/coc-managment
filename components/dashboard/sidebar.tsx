@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   LayoutDashboard,
@@ -12,7 +12,6 @@ import {
   Building2,
   FileText,
   ChevronDown,
-  LogOut,
 } from "lucide-react"
 import { useState, useEffect } from "react"
 
@@ -83,10 +82,8 @@ const allNavigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const router = useRouter()
   const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Compétitions", "Courriers", "Activités", "Documents"])
   const [role, setRole] = useState<string>("coc")
-  const [userName, setUserName] = useState<string>("")
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -94,18 +91,12 @@ export function Sidebar() {
       .then((d) => {
         if (d.user) {
           setRole(d.user.role)
-          setUserName(d.user.nom)
         }
       })
       .catch(() => {})
   }, [])
 
   const navigation = allNavigation.filter((item) => item.roles.includes(role))
-
-  async function handleLogout() {
-    await fetch("/api/auth/logout", { method: "POST" })
-    router.push("/login")
-  }
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
@@ -203,19 +194,7 @@ export function Sidebar() {
             })}
           </div>
         </nav>
-        <div className="shrink-0 border-t border-sidebar-border px-3 py-3 space-y-2">
-          {userName && (
-            <p className="text-xs text-sidebar-foreground/80 text-center truncate" title={userName}>
-              {userName}
-            </p>
-          )}
-          <button
-            onClick={handleLogout}
-            className="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
-          >
-            <LogOut className="h-4 w-4" />
-            Déconnexion
-          </button>
+        <div className="shrink-0 border-t border-sidebar-border px-3 py-2">
           <p className="text-center text-[11px] text-sidebar-foreground/60">
             propulse by DS Concept
           </p>
