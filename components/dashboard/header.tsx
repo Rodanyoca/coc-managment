@@ -31,7 +31,10 @@ export function Header({ title, subtitle }: HeaderProps) {
           variant="outline"
           size="sm"
           className="gap-2"
-          onClick={() => router.push("/")}
+          onClick={async () => {
+            await fetch("/api/auth/logout", { method: "POST" })
+            router.push("/login")
+          }}
         >
           <LogOut className="h-4 w-4" />
           <span className="hidden sm:inline">Déconnexion</span>

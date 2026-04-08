@@ -1,0 +1,45 @@
+import { NextResponse } from "next/server"
+import { getSheetRows } from "@/lib/google/sheets"
+import { createSession, type UserRole } from "@/lib/auth"
+
+export const runtime = "nodejs"
+
+export async function POST(req: Request) {
+  try {
+    const { email, password } = await req.json()
+
+    if (!email || !password) {
+      return NextResponse.json({ error: "Email et mot de passe requis" }, { status: 400 })
+    }
+
+    const rows = await getSheetRows({ sheetName: "USERS" })
+
+    const user = rows.find((r) => {
+      const e = (r.email || "").trim().toLowerCase()
+      const p = (r.password || "").trim()
+      const s = (r.statut || "").trim().toUpperCase()
+      return e === email.trim().toLowerCase() && p === password && s === "ACTIF"
+    })
+
+    if (!user) {
+      return NextResponse.json({ error: "Identifiants incorrects ou compte inactif" }, { status: 401 })
+    }
+
+    const role = (user.role || "").trim().toLowerCase() as UserRole
+    if (role !== "coc" && role !== "technique") {
+      return NextResponse.json({ error: "Rôle non reconnu" }, { status: 403 })
+    }
+
+    await createSession({
+      id: (user.id_user || "").trim(),
+      nom: (user.nom_complet || "").trim(),
+      email: (user.email || "").trim(),
+      role,
+    })
+
+    return NextResponse.json({ ok: true, nom: (user.nom_complet || "").trim(), role })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    return NextResponse.json({ error: message }, { status: 500 })
+  }
+}

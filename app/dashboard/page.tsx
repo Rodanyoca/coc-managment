@@ -4,6 +4,7 @@ import { ActorsChart } from "@/components/dashboard/actors-chart"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { getSheetRows } from "@/lib/google/sheets"
+import { getSession } from "@/lib/auth"
 import {
   Table,
   TableBody,
@@ -59,6 +60,10 @@ function countByGender(rows: Record<string, string>[], idKey: string) {
 }
 
 export default async function DashboardPage() {
+  const session = await getSession()
+  const role = session?.role ?? "coc"
+  const isCoc = role === "coc"
+
   let loadError: string | null = null
   let athletesRows: Record<string, string>[] = []
   let officielsRows: Record<string, string>[] = []
@@ -71,6 +76,17 @@ export default async function DashboardPage() {
   let documentsRows: Record<string, string>[] = []
 
   try {
+    const commonSheets = [
+      getSheetRows({ sheetName: "ATHLETES" }),
+      getSheetRows({ sheetName: "OFFICIELS" }),
+      getSheetRows({ sheetName: "ARBITRES" }),
+      getSheetRows({ sheetName: "MEDECINS" }),
+      getSheetRows({ sheetName: "COACHS" }),
+      getSheetRows({ sheetName: "SPORT" }),
+      getSheetRows({ sheetName: "ACTIVITES" }),
+      getSheetRows({ sheetName: "COMPETITIONS" }),
+    ]
+    const results = await Promise.all(commonSheets)
     ;[
       athletesRows,
       officielsRows,
@@ -80,18 +96,12 @@ export default async function DashboardPage() {
       sportsRows,
       activitesRows,
       competitionsRows,
-      documentsRows,
-    ] = await Promise.all([
-      getSheetRows({ sheetName: "ATHLETES" }),
-      getSheetRows({ sheetName: "OFFICIELS" }),
-      getSheetRows({ sheetName: "ARBITRES" }),
-      getSheetRows({ sheetName: "MEDECINS" }),
-      getSheetRows({ sheetName: "COACHS" }),
-      getSheetRows({ sheetName: "SPORT" }),
-      getSheetRows({ sheetName: "ACTIVITES" }),
-      getSheetRows({ sheetName: "COMPETITIONS" }),
-      getSheetRows({ sheetName: "DOCUMENT" }),
-    ])
+    ] = results
+
+    // Only fetch DOCUMENT sheet for coc role (saves quota for technique)
+    if (isCoc) {
+      documentsRows = await getSheetRows({ sheetName: "DOCUMENT" })
+    }
   } catch (e) {
     loadError = e instanceof Error ? e.message : String(e)
   }
@@ -485,14 +495,16 @@ export default async function DashboardPage() {
                 icon={FileText}
                 iconColor="bg-chart-4/10 text-chart-4"
               />
-              <KpiCard
-                title="Documents"
-                value={totalDocuments}
-                change="Fichiers référencés"
-                changeType="neutral"
-                icon={HardDrive}
-                iconColor="bg-muted text-muted-foreground"
-              />
+              {isCoc && (
+                <KpiCard
+                  title="Documents"
+                  value={totalDocuments}
+                  change="Fichiers référencés"
+                  changeType="neutral"
+                  icon={HardDrive}
+                  iconColor="bg-muted text-muted-foreground"
+                />
+              )}
               <KpiCard
                 title="Activités"
                 value={activites.total}
@@ -592,17 +604,19 @@ export default async function DashboardPage() {
                 </CardContent>
               </Card>
 
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-base font-semibold">Documents</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Fichiers référencés</p>
-                    <p className="text-2xl font-bold">{totalDocuments}</p>
-                  </div>
-                </CardContent>
-              </Card>
+              {isCoc && (
+                <Card className="border-border/50">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-base font-semibold">Documents</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm text-muted-foreground">Fichiers référencés</p>
+                      <p className="text-2xl font-bold">{totalDocuments}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               <Card className="border-border/50">
                 <CardHeader className="pb-2">

@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   LayoutDashboard,
@@ -12,19 +12,22 @@ import {
   Building2,
   FileText,
   ChevronDown,
+  LogOut,
 } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
-const navigation = [
+const allNavigation = [
   {
     name: "Tableau de bord",
     href: "/dashboard",
     icon: LayoutDashboard,
+    roles: ["coc", "technique"],
   },
   {
     name: "Acteurs",
     href: "/dashboard/acteurs",
     icon: Users,
+    roles: ["coc", "technique"],
     children: [
       { name: "Athlètes", href: "/dashboard/acteurs/athletes" },
       { name: "Officiels", href: "/dashboard/acteurs/officiels" },
@@ -37,6 +40,7 @@ const navigation = [
     name: "Compétitions",
     href: "/dashboard/competitions",
     icon: Trophy,
+    roles: ["coc", "technique"],
     children: [
       { name: "Liste", href: "/dashboard/competitions" },
     ],
@@ -45,6 +49,7 @@ const navigation = [
     name: "Courriers",
     href: "/dashboard/courriers",
     icon: Mail,
+    roles: ["coc"],
     children: [
       { name: "Consultation", href: "/dashboard/courriers" },
     ],
@@ -53,6 +58,7 @@ const navigation = [
     name: "Activités",
     href: "/dashboard/activites",
     icon: Calendar,
+    roles: ["coc", "technique"],
     children: [
       { name: "Liste des activités", href: "/dashboard/activites" },
       { name: "Diagramme de Gantt", href: "/dashboard/activites/gantt" },
@@ -62,11 +68,13 @@ const navigation = [
     name: "Patrimoine",
     href: "/dashboard/patrimoine",
     icon: Building2,
+    roles: ["coc"],
   },
   {
     name: "Documents",
     href: "/dashboard/documents",
     icon: FileText,
+    roles: ["coc"],
     children: [
       { name: "Liste des fichiers", href: "/dashboard/documents" },
     ],
@@ -75,7 +83,29 @@ const navigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const router = useRouter()
   const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Compétitions", "Courriers", "Activités", "Documents"])
+  const [role, setRole] = useState<string>("coc")
+  const [userName, setUserName] = useState<string>("")
+
+  useEffect(() => {
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.user) {
+          setRole(d.user.role)
+          setUserName(d.user.nom)
+        }
+      })
+      .catch(() => {})
+  }, [])
+
+  const navigation = allNavigation.filter((item) => item.roles.includes(role))
+
+  async function handleLogout() {
+    await fetch("/api/auth/logout", { method: "POST" })
+    router.push("/login")
+  }
 
   const toggleExpand = (name: string) => {
     setExpandedItems((prev) =>
@@ -173,7 +203,19 @@ export function Sidebar() {
             })}
           </div>
         </nav>
-        <div className="shrink-0 border-t border-sidebar-border px-3 py-2">
+        <div className="shrink-0 border-t border-sidebar-border px-3 py-3 space-y-2">
+          {userName && (
+            <p className="text-xs text-sidebar-foreground/80 text-center truncate" title={userName}>
+              {userName}
+            </p>
+          )}
+          <button
+            onClick={handleLogout}
+            className="flex w-full items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground transition-colors"
+          >
+            <LogOut className="h-4 w-4" />
+            Déconnexion
+          </button>
           <p className="text-center text-[11px] text-sidebar-foreground/60">
             propulse by DS Concept
           </p>
