@@ -14,7 +14,21 @@ export default async function DocumentDetailPage({
   const { id } = await params
   const docId = (id || "").trim()
 
-  const rows = await getSheetRows({ sheetName: "DOCUMENTS" })
+  let rows: Record<string, string>[] = []
+  try {
+    rows = await getSheetRows({ sheetName: "DOCUMENTS" })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
+    return (
+      <div className="p-6">
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
+          <div className="font-semibold">Erreur Google Sheets</div>
+          <div className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">{message}</div>
+        </div>
+      </div>
+    )
+  }
+
   const row = rows.find((r) => (r["id_document"] || "").trim() === docId)
 
   if (!row) {
