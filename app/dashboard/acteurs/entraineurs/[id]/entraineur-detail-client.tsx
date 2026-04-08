@@ -105,6 +105,7 @@ export function EntraineurDetailClient({ coach }: { coach: CoachDetail }) {
       actorType="entraineurs"
       actorId={coach.id}
       actorDateNaissance={coach.dateNaissance}
+      actorSexe={coach.sexe}
       status={coach.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}

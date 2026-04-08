@@ -90,6 +90,7 @@ export function MedecinDetailClient({ medecin }: { medecin: MedecinDetail }) {
       actorType="medecins"
       actorId={medecin.id}
       actorDateNaissance={medecin.dateNaissance}
+      actorSexe={medecin.sexe}
       status={medecin.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}

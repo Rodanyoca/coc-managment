@@ -40,6 +40,7 @@ interface ActorDetailLayoutProps {
   actorType?: string
   actorId?: string
   actorDateNaissance?: string
+  actorSexe?: string
   status: "actif" | "inactif"
   mainInfo: InfoField[]
   contactInfo?: InfoField[]
@@ -67,6 +68,7 @@ export function ActorDetailLayout({
   actorType,
   actorId,
   actorDateNaissance,
+  actorSexe,
   status,
   mainInfo,
   contactInfo,
@@ -217,6 +219,33 @@ export function ActorDetailLayout({
                       </DialogHeader>
 
                       <div className="space-y-4">
+                        {/* Fiche d'identification */}
+                        <div className="rounded-lg border border-border bg-muted/30 p-4 space-y-2">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Vérification de l'identité</p>
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                            {actorId && (
+                              <>
+                                <span className="text-muted-foreground">ID</span>
+                                <span className="font-medium font-mono text-xs">{actorId}</span>
+                              </>
+                            )}
+                            <span className="text-muted-foreground">Nom</span>
+                            <span className="font-medium">{title}</span>
+                            {actorDateNaissance && (
+                              <>
+                                <span className="text-muted-foreground">Date de naissance</span>
+                                <span className="font-medium">{actorDateNaissance}</span>
+                              </>
+                            )}
+                            {actorSexe && (
+                              <>
+                                <span className="text-muted-foreground">Sexe</span>
+                                <span className="font-medium">{actorSexe === "M" ? "Homme" : actorSexe === "F" ? "Femme" : actorSexe}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
                         {!preview ? (
                           <div
                             className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/30 transition-colors"

@@ -99,6 +99,7 @@ export function ArbitreDetailClient({ arbitre }: { arbitre: ArbitreDetail }) {
       actorType="arbitres"
       actorId={arbitre.id}
       actorDateNaissance={arbitre.dateNaissance}
+      actorSexe={arbitre.sexe}
       status={arbitre.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}

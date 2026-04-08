@@ -109,6 +109,7 @@ export function OfficielDetailClient({ officiel }: { officiel: OfficielDetail })
       actorType="officiels"
       actorId={officiel.id}
       actorDateNaissance={officiel.dateNaissance}
+      actorSexe={officiel.sexe}
       status={officiel.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
