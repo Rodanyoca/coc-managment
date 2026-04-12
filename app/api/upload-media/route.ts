@@ -37,7 +37,7 @@ const SHEET_COLUMNS: Record<MediaType, { urlColumn: string; driveIdColumn: strin
   avatar: { urlColumn: "avatar_url", driveIdColumn: "avatar_drive_id" },
   passeport: { urlColumn: "url_passeport", driveIdColumn: "passeport_drive_id" },
   courrier: { urlColumn: "url_pdf", driveIdColumn: "courrier_drive_id" },
-  document: { urlColumn: "url_document", driveIdColumn: "document_drive_id" },
+  document: { urlColumn: "url_drive_document", driveIdColumn: "id_drive_document" },
 }
 
 function buildFileName(
@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
     const actorType = formData.get("actorType") as string | null
     const actorId = formData.get("actorId") as string | null
     const courrierCode = formData.get("courrierCode") as string | null
+    const documentId = formData.get("documentId") as string | null
 
     if (!file) {
       return NextResponse.json({ error: "Aucun fichier fourni" }, { status: 400 })
@@ -113,6 +114,9 @@ export async function POST(request: NextRequest) {
     if (mediaType === "courrier" && !courrierCode) {
       return NextResponse.json({ error: "Code courrier requis" }, { status: 400 })
     }
+    if (mediaType === "document" && !documentId) {
+      return NextResponse.json({ error: "ID document requis" }, { status: 400 })
+    }
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const ext = file.name.split(".").pop() || (mediaType === "avatar" ? "jpg" : "pdf")
@@ -143,6 +147,16 @@ export async function POST(request: NextRequest) {
         sheetName: "COURRIERS",
         idColumn: "id_courrier",
         idValue: courrierCode!,
+        updates: [
+          { column: columns.urlColumn, value: url },
+          { column: columns.driveIdColumn, value: fileId },
+        ],
+      })
+    } else if (mediaType === "document" && documentId) {
+      await updateSheetCells({
+        sheetName: "DOCUMENT",
+        idColumn: "id_document",
+        idValue: documentId,
         updates: [
           { column: columns.urlColumn, value: url },
           { column: columns.driveIdColumn, value: fileId },

@@ -50,6 +50,7 @@ interface MediaUploadDialogProps {
   actorType?: string
   actorId?: string
   courrierCode?: string
+  documentId?: string
   identityFields?: { label: string; value: string }[]
   trigger: ReactNode
   onSuccess?: (result: { fileId: string; url: string }) => void
@@ -62,6 +63,7 @@ export function MediaUploadDialog({
   actorType,
   actorId,
   courrierCode,
+  documentId,
   identityFields,
   trigger,
   onSuccess,
@@ -121,6 +123,7 @@ export function MediaUploadDialog({
       if (actorType) formData.append("actorType", actorType)
       if (actorId) formData.append("actorId", actorId)
       if (courrierCode) formData.append("courrierCode", courrierCode)
+      if (documentId) formData.append("documentId", documentId)
 
       const res = await fetch("/api/upload-media", { method: "POST", body: formData })
       const data = await res.json()
@@ -142,7 +145,7 @@ export function MediaUploadDialog({
     } finally {
       setUploading(false)
     }
-  }, [file, mediaType, actorType, actorId, courrierCode, onSuccess, reset])
+  }, [file, mediaType, actorType, actorId, courrierCode, documentId, onSuccess, reset])
 
   return (
     <Dialog

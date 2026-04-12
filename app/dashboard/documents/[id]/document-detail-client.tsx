@@ -5,8 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, FileText, Image, Download, ExternalLink } from "lucide-react"
+import { MediaUploadDialog } from "@/components/dashboard/media-upload-dialog"
+import { ArrowLeft, FileText, Image, Download, ExternalLink, Upload } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
 
 export type DocumentDetail = {
   id: string
@@ -20,6 +22,8 @@ export type DocumentDetail = {
 }
 
 export default function DocumentDetailClient({ doc }: { doc: DocumentDetail }) {
+  const [driveUrl, setDriveUrl] = useState(doc.driveUrl)
+
   const isPdf = (doc.type || "").toLowerCase().includes("pdf")
   const isImage = (doc.type || "").toLowerCase().match(/image|jpg|jpeg|png|webp/)
 
@@ -54,34 +58,47 @@ export default function DocumentDetailClient({ doc }: { doc: DocumentDetail }) {
                     </p>
                   </div>
 
-                  {doc.driveUrl ? (
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <a href={doc.driveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Ouvrir
-                        </a>
-                      </Button>
-                      <Button variant="outline" size="sm" asChild>
-                        <a href={doc.driveUrl} download>
-                          <Download className="h-4 w-4 mr-2" />
-                          Télécharger
-                        </a>
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button variant="outline" size="sm" disabled>
-                      <Download className="h-4 w-4 mr-2" />
-                      Télécharger
-                    </Button>
-                  )}
+                  <div className="flex gap-2">
+                    {driveUrl ? (
+                      <>
+                        <Button variant="outline" size="sm" asChild>
+                          <a href={driveUrl} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            Ouvrir
+                          </a>
+                        </Button>
+                        <Button variant="outline" size="sm" asChild>
+                          <a href={driveUrl} download>
+                            <Download className="h-4 w-4 mr-2" />
+                            Télécharger
+                          </a>
+                        </Button>
+                      </>
+                    ) : null}
+                    <MediaUploadDialog
+                      mediaType="document"
+                      title="Lier un PDF au document"
+                      documentId={doc.id}
+                      identityFields={[
+                        { label: "Document", value: doc.nom },
+                        { label: "Module", value: doc.module || "-" },
+                      ]}
+                      trigger={
+                        <Button variant={driveUrl ? "outline" : "default"} size="sm" className="gap-2">
+                          <Upload className="h-4 w-4" />
+                          {driveUrl ? "Remplacer le PDF" : "Ajouter un PDF"}
+                        </Button>
+                      }
+                      onSuccess={({ url }) => setDriveUrl(url)}
+                    />
+                  </div>
                 </div>
 
-                {isPdf && doc.driveUrl ? (
+                {isPdf && driveUrl ? (
                   <div className="mt-4 overflow-hidden rounded-lg border border-border/50 bg-muted/20">
                     <iframe
                       title={`Aperçu PDF - ${doc.nom}`}
-                      src={`https://drive.google.com/file/d/${doc.driveUrl.match(/[-\w]{25,}/)?.[0] || ""}/preview`}
+                      src={`https://drive.google.com/file/d/${driveUrl.match(/[-\w]{25,}/)?.[0] || ""}/preview`}
                       className="h-[80vh] min-h-[560px] w-full"
                     />
                   </div>
