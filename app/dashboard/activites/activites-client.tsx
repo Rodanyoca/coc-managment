@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Search, Calendar, CheckCircle2, Clock, AlertCircle, Eye } from "lucide-react"
+import { Search, Calendar, CheckCircle2, Clock, AlertCircle, Eye, ChevronLeft, ChevronRight } from "lucide-react"
 import { useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -56,6 +56,13 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
   const [searchQuery, setSearchQuery] = useState("")
   const [statutFilter, setStatutFilter] = useState("tous")
   const [anneeFilter, setAnneeFilter] = useState("toutes")
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 10
+
+  // Reset to page 1 when filters change
+  const handleSearch = (v: string) => { setSearchQuery(v); setPage(1) }
+  const handleStatut = (v: string) => { setStatutFilter(v); setPage(1) }
+  const handleAnnee = (v: string) => { setAnneeFilter(v); setPage(1) }
 
   const anneesDisponibles = useMemo(() => {
     const set = new Set<string>()
@@ -76,6 +83,9 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
       return matchesSearch && matchesStatut && matchesAnnee
     })
   }, [activites, searchQuery, statutFilter, anneeFilter])
+
+  const totalPages = Math.max(1, Math.ceil(filteredActivites.length / PAGE_SIZE))
+  const paginatedActivites = filteredActivites.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   const stats = useMemo(() => {
     return {
@@ -145,11 +155,11 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
               <Input
                 placeholder="Rechercher une activité..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => handleSearch(e.target.value)}
                 className="pl-9"
               />
             </div>
-            <Select value={anneeFilter} onValueChange={setAnneeFilter}>
+            <Select value={anneeFilter} onValueChange={handleAnnee}>
               <SelectTrigger className="w-[140px]">
                 <SelectValue placeholder="Année" />
               </SelectTrigger>
@@ -162,7 +172,7 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
                 ))}
               </SelectContent>
             </Select>
-            <Select value={statutFilter} onValueChange={setStatutFilter}>
+            <Select value={statutFilter} onValueChange={handleStatut}>
               <SelectTrigger className="w-[150px]">
                 <SelectValue placeholder="Statut" />
               </SelectTrigger>
@@ -176,37 +186,37 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
           </div>
         </div>
 
-        <Card className="border-border/50">
+        <Card className="border-border/50 overflow-hidden">
           <CardContent className="p-0">
-            <Table>
+            <Table className="table-fixed w-full text-xs">
               <TableHeader>
                 <TableRow className="bg-muted/30">
-                  <TableHead className="w-[300px]">Activité</TableHead>
-                  <TableHead>Période</TableHead>
-                  <TableHead>Responsable</TableHead>
-                  <TableHead>Priorité</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="w-[30%] text-xs">Activité</TableHead>
+                  <TableHead className="w-[17%] text-xs">Période</TableHead>
+                  <TableHead className="w-[15%] text-xs">Responsable</TableHead>
+                  <TableHead className="w-[12%] text-xs">Priorité</TableHead>
+                  <TableHead className="w-[14%] text-xs">Statut</TableHead>
+                  <TableHead className="w-[12%] text-xs text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredActivites.map((activite) => {
+                {paginatedActivites.map((activite) => {
                   const StatutIcon = statutConfig[activite.statut].icon
                   return (
                     <TableRow key={activite.id} className="hover:bg-muted/30">
                       <TableCell>
                         <div>
-                          <p className="font-medium">{activite.titre}</p>
+                          <p className="font-medium whitespace-normal break-words">{activite.titre}</p>
                         </div>
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        <div className="text-sm">
+                        <div className="whitespace-normal break-words">
                           {activite.dateDebut === activite.dateFin
                             ? activite.dateDebut
                             : `${activite.dateDebut} - ${activite.dateFin}`}
                         </div>
                       </TableCell>
-                      <TableCell className="text-muted-foreground text-sm">{activite.responsable}</TableCell>
+                      <TableCell className="text-muted-foreground whitespace-normal break-words">{activite.responsable}</TableCell>
                       <TableCell>
                         <Badge
                           variant="secondary"
@@ -243,6 +253,36 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
             </Table>
           </CardContent>
         </Card>
+
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-muted-foreground">
+              {filteredActivites.length} résultat{filteredActivites.length > 1 ? "s" : ""} — page {page}/{totalPages}
+            </p>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 gap-1 text-xs"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => p - 1)}
+              >
+                <ChevronLeft className="h-3.5 w-3.5" />
+                Précédent
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 gap-1 text-xs"
+                disabled={page >= totalPages}
+                onClick={() => setPage((p) => p + 1)}
+              >
+                Suivant
+                <ChevronRight className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

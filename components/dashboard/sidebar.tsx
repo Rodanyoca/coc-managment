@@ -60,7 +60,6 @@ const allNavigation = [
     roles: ["coc", "technique"],
     children: [
       { name: "Liste des activités", href: "/dashboard/activites" },
-      { name: "Diagramme de Gantt", href: "/dashboard/activites/gantt" },
     ],
   },
   {
