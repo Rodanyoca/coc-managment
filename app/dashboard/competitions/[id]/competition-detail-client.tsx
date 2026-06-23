@@ -6,6 +6,15 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
   Table,
   TableBody,
   TableCell,
@@ -31,6 +40,7 @@ import {
   Check,
   Clock,
   AlertCircle,
+  Copy,
 } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -97,6 +107,9 @@ export default function CompetitionDetailClient({
 }) {
   const [roleFilter, setRoleFilter] = useState("tous")
   const [transportFilter, setTransportFilter] = useState("tous")
+  const [activeTab, setActiveTab] = useState("participants")
+  const [exportOpen, setExportOpen] = useState(false)
+  const [generatedAt, setGeneratedAt] = useState("")
 
   const filteredParticipants = useMemo(() => {
     return participants.filter((p) => {
@@ -123,6 +136,39 @@ export default function CompetitionDetailClient({
     competitionStatusConfig[competition.statut]?.className ?? "bg-muted text-muted-foreground"
 
   const disciplines = competition.disciplines.length > 0 ? competition.disciplines : []
+
+  const visibleExportParticipants =
+    activeTab === "hebergement" ? participants : filteredParticipants
+
+  const exportText = useMemo(() => {
+    const lines = [
+      "Liste des participants",
+      `Date de génération : ${generatedAt || new Date().toLocaleString("fr-FR")}`,
+      `Compétition : ${competition.nom || "-"}`,
+      "",
+      ["Nom", "Rôle", "Entité", "Date d'arrivée", "Date de départ"].join("\t"),
+      ...visibleExportParticipants.map((participant) =>
+        [
+          participant.nom || "-",
+          participant.role || "-",
+          participant.discipline || "-",
+          participant.dateArrivee || "-",
+          participant.dateDepart || "-",
+        ].join("\t")
+      ),
+    ]
+
+    return lines.join("\n")
+  }, [competition.nom, generatedAt, visibleExportParticipants])
+
+  function openExportDialog() {
+    setGeneratedAt(new Date().toLocaleString("fr-FR"))
+    setExportOpen(true)
+  }
+
+  async function copyExportText() {
+    await navigator.clipboard.writeText(exportText)
+  }
 
   return (
     <div className="min-h-screen">
@@ -242,7 +288,7 @@ export default function CompetitionDetailClient({
           </Card>
         </div>
 
-        <Tabs defaultValue="participants" className="space-y-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3">
             <TabsTrigger value="participants" className="w-full justify-center gap-2">
               <Users className="h-4 w-4" />
@@ -263,6 +309,10 @@ export default function CompetitionDetailClient({
               <CardHeader className="flex flex-row items-center justify-between">
                 <CardTitle>Liste des participants</CardTitle>
                 <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="gap-2" onClick={openExportDialog}>
+                    <Copy className="h-4 w-4" />
+                    Export texte
+                  </Button>
                   <Select value={roleFilter} onValueChange={setRoleFilter}>
                     <SelectTrigger className="w-[140px]">
                       <SelectValue placeholder="Role" />
@@ -283,14 +333,14 @@ export default function CompetitionDetailClient({
                     <TableRow className="hover:bg-transparent">
                       <TableHead>Nom</TableHead>
                       <TableHead>Role</TableHead>
-                      <TableHead>Discipline</TableHead>
+                      <TableHead>Entité</TableHead>
                       <TableHead>Transport</TableHead>
                       <TableHead>Hebergement</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {filteredParticipants.map((participant) => (
-                      <TableRow key={participant.id}>
+                    {filteredParticipants.map((participant, index) => (
+                      <TableRow key={`${participant.id}-${index}`}>
                         <TableCell className="font-medium">{participant.nom}</TableCell>
                         <TableCell>
                           <Badge variant="outline">{participant.role}</Badge>
@@ -442,6 +492,46 @@ export default function CompetitionDetailClient({
             </Card>
           </TabsContent>
         </Tabs>
+
+        <Dialog open={exportOpen} onOpenChange={setExportOpen}>
+          <DialogContent className="sm:max-w-4xl">
+            <DialogHeader>
+              <DialogTitle>Liste des participants</DialogTitle>
+              <DialogDescription>
+                Export texte simple à copier dans Word.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div className="grid gap-1 text-sm">
+                <p>
+                  <span className="font-medium">Date de génération :</span>{" "}
+                  {generatedAt || "-"}
+                </p>
+                <p>
+                  <span className="font-medium">Compétition :</span>{" "}
+                  {competition.nom || "-"}
+                </p>
+              </div>
+
+              <div className="max-h-[50vh] overflow-auto rounded-md border border-border/50 bg-muted/20 p-4">
+                <pre className="whitespace-pre-wrap break-words text-xs leading-relaxed">
+                  {exportText}
+                </pre>
+              </div>
+            </div>
+
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="outline">Fermer</Button>
+              </DialogClose>
+              <Button className="gap-2" onClick={copyExportText}>
+                <Copy className="h-4 w-4" />
+                Copier le texte
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )

@@ -37,10 +37,14 @@ function splitSites(value: string): string[] {
 
 export default async function CompetitionsPage() {
   let rows: Record<string, string>[] = []
+  let participantsRows: Record<string, string>[] = []
   let loadError: string | null = null
 
   try {
-    rows = await getSheetRows({ sheetName: "COMPETITIONS" })
+    ;[rows, participantsRows] = await Promise.all([
+      getSheetRows({ sheetName: "COMPETITIONS" }),
+      getSheetRows({ sheetName: "COMPETITIONS_PARTICIPANTS" }),
+    ])
   } catch (e) {
     loadError = e instanceof Error ? e.message : String(e)
   }
@@ -50,6 +54,22 @@ export default async function CompetitionsPage() {
       <div className="p-6">
         <p className="text-sm text-destructive">{loadError}</p>
       </div>
+    )
+  }
+
+  const participantsByCompetition = new Map<string, number>()
+  for (const r of participantsRows) {
+    const competitionId = (r["id_competition"] || "").trim()
+    const participant =
+      (r["id_competition_participant"] || "").trim() ||
+      (r["id_participant"] || "").trim() ||
+      (r["nom_participant"] || "").trim()
+
+    if (!competitionId || !participant) continue
+
+    participantsByCompetition.set(
+      competitionId,
+      (participantsByCompetition.get(competitionId) || 0) + 1
     )
   }
 
@@ -67,7 +87,7 @@ export default async function CompetitionsPage() {
         dateFin: r["date_de_fin"] || "",
         statut: normalizeCompetitionStatus(r["statut"]),
         type: r["type"] || "",
-        participants: 0,
+        participants: participantsByCompetition.get(id) || 0,
       }
     })
 
