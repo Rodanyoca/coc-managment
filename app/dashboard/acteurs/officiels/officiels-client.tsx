@@ -136,8 +136,8 @@ export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredOfficiels.map((officiel) => (
-                  <TableRow key={officiel.id} className="hover:bg-muted/30">
+                {filteredOfficiels.map((officiel, index) => (
+                  <TableRow key={`${officiel.id}-${index}`} className="hover:bg-muted/30">
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">

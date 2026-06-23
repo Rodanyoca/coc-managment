@@ -1,9 +1,6 @@
 import { getSheetRows } from "@/lib/google/sheets"
 
-import ActiviteDetailClient, {
-  type ActiviteDetail,
-  type ActiviteParticipant,
-} from "./activite-detail-client"
+import ActiviteDetailClient, { type ActiviteDetail } from "./activite-detail-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
@@ -31,14 +28,10 @@ export default async function ActiviteDetailPage(props: { params: Promise<{ id: 
   const requestedId = String(id ?? "").trim()
 
   let activitesRows: Record<string, string>[] = []
-  let participantsRows: Record<string, string>[] = []
   let loadError: string | null = null
 
   try {
-    ;[activitesRows, participantsRows] = await Promise.all([
-      getSheetRows({ sheetName: "ACTIVITES" }),
-      getSheetRows({ sheetName: "ACTIVITES_PARTICIPANTS" }),
-    ])
+    activitesRows = await getSheetRows({ sheetName: "ACTIVITES" })
   } catch (err) {
     loadError = err instanceof Error ? err.message : String(err)
   }
@@ -93,23 +86,5 @@ export default async function ActiviteDetailPage(props: { params: Promise<{ id: 
     statut: normalizeStatut(String(activiteRow.statut ?? "")),
   }
 
-  const participants: ActiviteParticipant[] = (participantsRows ?? [])
-    .filter((r) => String(r.id_activite ?? "").trim() === activite.id)
-    .map((r) => {
-      const federation =
-        String(r.sigle_federation ?? "").trim() || String(r.id_federation ?? "").trim()
-      return {
-        id: String(r.id_activite_participant ?? "").trim(),
-        idActivite: String(r.id_activite ?? "").trim(),
-        idParticipant: String(r.id_participant ?? "").trim(),
-        nom: String(r.nom_participant ?? "").trim(),
-        sexe: String(r.sexe ?? "").trim(),
-        age: String(r.age ?? "").trim(),
-        categorie: String(r.categorie ?? "").trim(),
-        federation,
-      }
-    })
-    .filter((p) => p.id.length > 0)
-
-  return <ActiviteDetailClient activite={activite} participants={participants} />
+  return <ActiviteDetailClient activite={activite} />
 }

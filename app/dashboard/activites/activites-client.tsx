@@ -50,6 +50,26 @@ const prioriteConfig = {
   normale: { label: "Normale", className: "bg-muted text-muted-foreground" },
 }
 
+function getDateTimestamp(value: string) {
+  const v = String(value ?? "").trim()
+  if (!v) return 0
+
+  const isoMatch = v.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/)
+  if (isoMatch) {
+    const [, year, month, day] = isoMatch
+    return new Date(Number(year), Number(month) - 1, Number(day)).getTime()
+  }
+
+  const frMatch = v.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/)
+  if (frMatch) {
+    const [, day, month, year] = frMatch
+    return new Date(Number(year), Number(month) - 1, Number(day)).getTime()
+  }
+
+  const parsed = Date.parse(v)
+  return Number.isNaN(parsed) ? 0 : parsed
+}
+
 export default function ActivitesClient(props: { activites: ActiviteListItem[] }) {
   const activites = props.activites ?? []
 
@@ -75,13 +95,19 @@ export default function ActivitesClient(props: { activites: ActiviteListItem[] }
 
   const filteredActivites = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
-    return activites.filter((activite) => {
-      const matchesSearch = q.length === 0 || activite.titre.toLowerCase().includes(q)
-      const matchesStatut = statutFilter === "tous" || activite.statut === statutFilter
-      const matchesAnnee =
-        anneeFilter === "toutes" || String(activite.annee ?? "").trim() === anneeFilter
-      return matchesSearch && matchesStatut && matchesAnnee
-    })
+    return activites
+      .filter((activite) => {
+        const matchesSearch = q.length === 0 || activite.titre.toLowerCase().includes(q)
+        const matchesStatut = statutFilter === "tous" || activite.statut === statutFilter
+        const matchesAnnee =
+          anneeFilter === "toutes" || String(activite.annee ?? "").trim() === anneeFilter
+        return matchesSearch && matchesStatut && matchesAnnee
+      })
+      .sort((a, b) => {
+        const dateA = getDateTimestamp(a.dateDebut || a.dateFin)
+        const dateB = getDateTimestamp(b.dateDebut || b.dateFin)
+        return dateB - dateA
+      })
   }, [activites, searchQuery, statutFilter, anneeFilter])
 
   const totalPages = Math.max(1, Math.ceil(filteredActivites.length / PAGE_SIZE))

@@ -5,6 +5,27 @@ export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
+function normalizeCompetitionStatus(value: string): CompetitionListItem["statut"] {
+  const v = (value || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[\s-]+/g, "_")
+
+  if (v === "a_venir" || v === "avenir" || v.includes("programme") || v.includes("planifi")) {
+    return "a_venir"
+  }
+  if (v === "en_cours" || v.includes("cours") || v.includes("progress")) {
+    return "en_cours"
+  }
+  if (v === "termine" || v.includes("realis") || v.includes("clotur") || v.includes("achev")) {
+    return "termine"
+  }
+
+  return v
+}
+
 function splitSites(value: string): string[] {
   const v = (value || "").trim()
   if (!v) return []
@@ -44,7 +65,7 @@ export default async function CompetitionsPage() {
         sites: splitSites(r["site"]),
         dateDebut: r["date_de_debut"] || "",
         dateFin: r["date_de_fin"] || "",
-        statut: (r["statut"] || "").trim().toLowerCase(),
+        statut: normalizeCompetitionStatus(r["statut"]),
         type: r["type"] || "",
         participants: 0,
       }

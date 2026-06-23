@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Search, Calendar, MapPin, Users, Trophy, Eye } from "lucide-react"
+import { Search, Calendar, MapPin, Users, Trophy, Eye, Activity } from "lucide-react"
 import { useMemo, useState } from "react"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
@@ -39,9 +39,9 @@ export type CompetitionListItem = {
 }
 
 const statusConfig: Record<string, { label: string; className: string }> = {
-  a_venir: { label: "A venir", className: "bg-chart-1/10 text-chart-1" },
+  a_venir: { label: "À venir", className: "bg-chart-1/10 text-chart-1" },
   en_cours: { label: "En cours", className: "bg-chart-2/10 text-chart-2" },
-  termine: { label: "Termine", className: "bg-muted text-muted-foreground" },
+  termine: { label: "Terminée", className: "bg-muted text-muted-foreground" },
 }
 
 export default function CompetitionsClient({ competitions }: { competitions: CompetitionListItem[] }) {
@@ -65,29 +65,29 @@ export default function CompetitionsClient({ competitions }: { competitions: Com
     })
   }, [competitions, searchQuery, statutFilter, typeFilter])
 
-  const totalParticipants = useMemo(
-    () => competitions.reduce((sum, c) => sum + (Number.isFinite(c.participants) ? c.participants : 0), 0),
+  const competitionStats = useMemo(
+    () => ({
+      total: competitions.length,
+      aVenir: competitions.filter((c) => c.statut === "a_venir").length,
+      enCours: competitions.filter((c) => c.statut === "en_cours").length,
+      terminees: competitions.filter((c) => c.statut === "termine").length,
+    }),
     [competitions]
   )
-
-  const paysCount = useMemo(() => {
-    const uniq = new Set(competitions.map((c) => (c.pays || "").trim()).filter(Boolean))
-    return uniq.size
-  }, [competitions])
 
   return (
     <div className="min-h-screen">
       <Header title="Competitions" subtitle="Gestion des competitions internationales" />
 
       <div className="p-6 space-y-6">
-        <div className="grid gap-4 sm:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="rounded-lg p-3 bg-chart-1/10 text-chart-1">
                 <Trophy className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{competitions.length}</p>
+                <p className="text-2xl font-bold">{competitionStats.total}</p>
                 <p className="text-sm text-muted-foreground">Total</p>
               </div>
             </CardContent>
@@ -98,32 +98,30 @@ export default function CompetitionsClient({ competitions }: { competitions: Com
                 <Calendar className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">
-                  {competitions.filter((c) => c.statut === "a_venir").length}
-                </p>
-                <p className="text-sm text-muted-foreground">A venir</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-border/50">
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="rounded-lg p-3 bg-chart-3/10 text-chart-3">
-                <Users className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{totalParticipants}</p>
-                <p className="text-sm text-muted-foreground">Participants</p>
+                <p className="text-2xl font-bold">{competitionStats.aVenir}</p>
+                <p className="text-sm text-muted-foreground">À venir</p>
               </div>
             </CardContent>
           </Card>
           <Card className="border-border/50">
             <CardContent className="p-4 flex items-center gap-4">
               <div className="rounded-lg p-3 bg-chart-4/10 text-chart-4">
-                <MapPin className="h-5 w-5" />
+                <Activity className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-2xl font-bold">{paysCount}</p>
-                <p className="text-sm text-muted-foreground">Pays</p>
+                <p className="text-2xl font-bold">{competitionStats.enCours}</p>
+                <p className="text-sm text-muted-foreground">En cours</p>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-border/50">
+            <CardContent className="p-4 flex items-center gap-4">
+              <div className="rounded-lg p-3 bg-muted text-muted-foreground">
+                <Trophy className="h-5 w-5" />
+              </div>
+              <div>
+                <p className="text-2xl font-bold">{competitionStats.terminees}</p>
+                <p className="text-sm text-muted-foreground">Terminées</p>
               </div>
             </CardContent>
           </Card>
@@ -158,9 +156,9 @@ export default function CompetitionsClient({ competitions }: { competitions: Com
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="tous">Tous</SelectItem>
-                <SelectItem value="a_venir">A venir</SelectItem>
+                <SelectItem value="a_venir">À venir</SelectItem>
                 <SelectItem value="en_cours">En cours</SelectItem>
-                <SelectItem value="termine">Termine</SelectItem>
+                <SelectItem value="termine">Terminées</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -173,7 +171,7 @@ export default function CompetitionsClient({ competitions }: { competitions: Com
                 <TableRow className="hover:bg-transparent">
                   <TableHead>Nom</TableHead>
                   <TableHead>Periode</TableHead>
-                  <TableHead>Sites</TableHead>
+                  <TableHead>Pays</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Participants</TableHead>
                   <TableHead>Statut</TableHead>
@@ -181,8 +179,8 @@ export default function CompetitionsClient({ competitions }: { competitions: Com
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredCompetitions.map((competition) => (
-                  <TableRow key={competition.id}>
+                {filteredCompetitions.map((competition, index) => (
+                  <TableRow key={`${competition.id}-${index}`}>
                     <TableCell>
                       <div className="font-medium">{competition.nom}</div>
                       <div className="text-sm text-muted-foreground">{competition.ville}</div>

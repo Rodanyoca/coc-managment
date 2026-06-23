@@ -5,14 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import { ArrowLeft, Calendar, CheckCircle2, Clock, AlertCircle, User, Flag, MapPin } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -27,17 +19,6 @@ export type ActiviteDetail = {
   statut: "planifie" | "en_cours" | "termine" | "annule"
   priorite: "haute" | "moyenne" | "normale"
   responsable: string
-}
-
-export type ActiviteParticipant = {
-  id: string
-  idActivite: string
-  idParticipant: string
-  nom: string
-  sexe: string
-  age: string
-  categorie: string
-  federation: string
 }
 
 const statutConfig = {
@@ -55,10 +36,8 @@ const prioriteConfig = {
 
 export default function ActiviteDetailClient({
   activite,
-  participants,
 }: {
   activite: ActiviteDetail
-  participants: ActiviteParticipant[]
 }) {
   const StatutIcon = statutConfig[activite.statut].icon
 
@@ -157,44 +136,6 @@ export default function ActiviteDetailClient({
             </Card>
           </div>
         </div>
-
-        <Card className="border-border/50">
-          <CardHeader>
-            <CardTitle className="text-base">Participants</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead>Nom</TableHead>
-                  <TableHead>Catégorie</TableHead>
-                  <TableHead>Sexe</TableHead>
-                  <TableHead>Âge</TableHead>
-                  <TableHead>Fédération</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {participants.map((p) => (
-                  <TableRow key={p.id} className="hover:bg-muted/30">
-                    <TableCell className="font-medium">{p.nom || "-"}</TableCell>
-                    <TableCell className="text-muted-foreground">{p.categorie || "-"}</TableCell>
-                    <TableCell className="text-muted-foreground">{p.sexe || "-"}</TableCell>
-                    <TableCell className="text-muted-foreground">{p.age || "-"}</TableCell>
-                    <TableCell className="text-muted-foreground">{p.federation || "-"}</TableCell>
-                  </TableRow>
-                ))}
-
-                {participants.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
-                      Aucun participant
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
       </div>
     </div>
   )

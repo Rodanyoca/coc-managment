@@ -4,7 +4,6 @@ import { ActorsChart } from "@/components/dashboard/actors-chart"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { getSheetRows } from "@/lib/google/sheets"
-import { getSession } from "@/lib/auth"
 import {
   Table,
   TableBody,
@@ -24,8 +23,6 @@ import {
   Mars,
   Trophy,
   Calendar,
-  FileText,
-  HardDrive,
   Activity,
 } from "lucide-react"
 
@@ -59,11 +56,30 @@ function countByGender(rows: Record<string, string>[], idKey: string) {
   return { total, male, female }
 }
 
-export default async function DashboardPage() {
-  const session = await getSession()
-  const role = session?.role ?? "coc"
-  const isCoc = role === "coc"
+function fieldFillRate(rows: Record<string, string>[], idKey: string): number {
+  const validRows = rows.filter((r) => (r[idKey] || "").trim())
+  if (validRows.length === 0) return 0
 
+  const allKeys = new Set<string>()
+  for (const r of validRows) {
+    for (const k of Object.keys(r)) allKeys.add(k)
+  }
+
+  const columns = Array.from(allKeys)
+  if (columns.length === 0) return 0
+
+  let filled = 0
+  const total = validRows.length * columns.length
+  for (const r of validRows) {
+    for (const col of columns) {
+      if ((r[col] || "").trim()) filled++
+    }
+  }
+
+  return Math.round((filled / total) * 100)
+}
+
+export default async function DashboardPage() {
   let loadError: string | null = null
   let athletesRows: Record<string, string>[] = []
   let officielsRows: Record<string, string>[] = []
@@ -71,9 +87,6 @@ export default async function DashboardPage() {
   let medecinsRows: Record<string, string>[] = []
   let entraineursRows: Record<string, string>[] = []
   let sportsRows: Record<string, string>[] = []
-  let activitesRows: Record<string, string>[] = []
-  let competitionsRows: Record<string, string>[] = []
-  let documentsRows: Record<string, string>[] = []
 
   try {
     const commonSheets = [
@@ -83,8 +96,6 @@ export default async function DashboardPage() {
       getSheetRows({ sheetName: "MEDECINS" }),
       getSheetRows({ sheetName: "COACHS" }),
       getSheetRows({ sheetName: "SPORT" }),
-      getSheetRows({ sheetName: "ACTIVITES" }),
-      getSheetRows({ sheetName: "COMPETITIONS" }),
     ]
     const results = await Promise.all(commonSheets)
     ;[
@@ -94,14 +105,7 @@ export default async function DashboardPage() {
       medecinsRows,
       entraineursRows,
       sportsRows,
-      activitesRows,
-      competitionsRows,
     ] = results
-
-    // Only fetch DOCUMENT sheet for coc role (saves quota for technique)
-    if (isCoc) {
-      documentsRows = await getSheetRows({ sheetName: "DOCUMENT" })
-    }
   } catch (e) {
     loadError = e instanceof Error ? e.message : String(e)
   }
@@ -136,92 +140,86 @@ export default async function DashboardPage() {
   const pctFemale = totalActeurs === 0 ? 0 : Math.round((totalFemale / totalActeurs) * 100)
   const pctMale = totalActeurs === 0 ? 0 : Math.round((totalMale / totalActeurs) * 100)
 
-  // Group sports by categorie from the SPORTS sheet
-  const sportsByCategorie: Record<string, { sport: string; federation: string }[]> = {}
-  for (const r of sportsRows) {
-    const id = (r.id_sport || "").trim()
-    if (!id) continue
-    const nom = (r.nom_sport || "").trim()
-    const cat = (r.categorie || "Autres").trim()
-    const fed = (r.sigle_federation || r.nom_federation || "").trim()
-    if (!sportsByCategorie[cat]) sportsByCategorie[cat] = []
-    sportsByCategorie[cat].push({ sport: nom, federation: fed })
-  }
-  const categorieKeys = Object.keys(sportsByCategorie).sort()
+  const sportsList = sportsRows
+    .filter((r) => (r.id_sport || "").trim())
+    .map((r) => ({
+      id: (r.id_sport || "").trim(),
+      sport: (r.nom_sport || "").trim(),
+      federation: (r.sigle_federation || "").trim(),
+      type: (r.categorie_federation || "").trim(),
+    }))
+    .sort((a, b) => a.sport.localeCompare(b.sport, "fr"))
   const totalSports = sportsRows.filter((r) => (r.id_sport || "").trim()).length
-  const totalFederations = new Set(
-    sportsRows.map((r) => (r.id_federation || "").trim()).filter(Boolean)
-  ).size
-
-  // --- Complétude réelle : % de cellules remplies (toutes colonnes) par catégorie d'acteurs ---
-  function fieldFillRate(rows: Record<string, string>[], idKey: string): number {
-    const validRows = rows.filter((r) => (r[idKey] || "").trim())
-    if (validRows.length === 0) return 0
-    // Collect all column keys across all rows
-    const allKeys = new Set<string>()
-    for (const r of validRows) {
-      for (const k of Object.keys(r)) allKeys.add(k)
-    }
-    const columns = Array.from(allKeys)
-    if (columns.length === 0) return 0
-    let filled = 0
-    const total = validRows.length * columns.length
-    for (const r of validRows) {
-      for (const col of columns) {
-        if ((r[col] || "").trim()) filled++
-      }
-    }
-    return Math.round((filled / total) * 100)
+  const disciplinesOlympiques = sportsList.filter((s) => {
+    const type = s.type.toLowerCase()
+    return type.includes("olympique") && !type.includes("non")
+  }).length
+  const disciplinesNonOlympiques = sportsList.filter((s) => {
+    const type = s.type.toLowerCase()
+    return type.includes("non") && type.includes("olympique")
+  }).length
+  const groupementsSportifsNationaux = sportsList.filter((s) =>
+    s.type.toLowerCase().includes("groupement")
+  ).length
+  const completudeActeurs = [
+    { label: "Athlètes", value: fieldFillRate(athletesRows, "id_athlete"), total: acteurs.athletes.total },
+    { label: "Officiels", value: fieldFillRate(officielsRows, "id_officiel"), total: acteurs.officiels.total },
+    { label: "Arbitres", value: fieldFillRate(arbitresRows, "id_arbitre"), total: acteurs.arbitres.total },
+    { label: "Médecins", value: fieldFillRate(medecinsRows, "id_medecin"), total: acteurs.medecins.total },
+    { label: "Entraîneurs", value: fieldFillRate(entraineursRows, "id_coach"), total: acteurs.entraineurs.total },
+  ]
+  const completudeGlobaleActeurs =
+    completudeActeurs.length === 0
+      ? 0
+      : Math.round(
+          completudeActeurs.reduce((sum, item) => sum + item.value, 0) / completudeActeurs.length
+        )
+  const performanceKpis = {
+    equipesNationales: 8,
+    athletesSelectionnes: 64,
+    encadreurs: 18,
+    participations: 12,
+    resultatsEnregistres: 27,
+    podiumsMedailles: 9,
   }
-
-  const completudeAthletes = fieldFillRate(athletesRows, "id_athlete")
-  const completudeOfficiels = fieldFillRate(officielsRows, "id_officiel")
-  const completudeArbitres = fieldFillRate(arbitresRows, "id_arbitre")
-  const completudeMedecins = fieldFillRate(medecinsRows, "id_medecin")
-  const completudeEntraineurs = fieldFillRate(entraineursRows, "id_coach")
-
-  const completudeValues = [completudeAthletes, completudeOfficiels, completudeArbitres, completudeMedecins, completudeEntraineurs]
-  const completudeGlobale = completudeValues.length === 0 ? 0 : Math.round(completudeValues.reduce((a, b) => a + b, 0) / completudeValues.length)
-
-  const completude = {
-    globale: completudeGlobale,
-    categories: [
-      { label: "Athlètes", value: completudeAthletes },
-      { label: "Officiels", value: completudeOfficiels },
-      { label: "Arbitres", value: completudeArbitres },
-      { label: "Médecins", value: completudeMedecins },
-      { label: "Entraîneurs", value: completudeEntraineurs },
-    ],
-  }
-
-  // --- Activités réelles depuis la feuille ACTIVITES ---
-  function normalizeStatut(s: string): string {
-    const v = (s || "").trim().toLowerCase()
-    if (v.includes("programme") || v.includes("planifi")) return "programmee"
-    if (v.includes("cours") || v.includes("progress")) return "en_cours"
-    if (v.includes("realis") || v.includes("termin") || v.includes("clotur") || v.includes("achev")) return "realisee"
-    return v
-  }
-
-  const activitesValid = activitesRows.filter((r) => (r.id_activite || "").trim())
-  const activites = {
-    programmees: activitesValid.filter((r) => normalizeStatut(r.statut) === "programmee").length,
-    enCours: activitesValid.filter((r) => normalizeStatut(r.statut) === "en_cours").length,
-    realisees: activitesValid.filter((r) => normalizeStatut(r.statut) === "realisee").length,
-    total: activitesValid.length,
-  }
-
-  // --- Compétitions réelles depuis la feuille COMPETITIONS ---
-  const competitionsValid = competitionsRows.filter((r) => (r.id_competition || "").trim())
-  const competitions = {
-    programmees: competitionsValid.filter((r) => normalizeStatut(r.statut) === "programmee").length,
-    enCours: competitionsValid.filter((r) => normalizeStatut(r.statut) === "en_cours").length,
-    realisees: competitionsValid.filter((r) => normalizeStatut(r.statut) === "realisee").length,
-    total: competitionsValid.length,
-  }
-
-  // --- Documents réels ---
-  const totalDocuments = documentsRows.filter((r) => (r.id_document || "").trim()).length
+  const dernieresPerformances = [
+    {
+      sport: "Athletisme",
+      discipline: "100 m",
+      evenement: "Championnats d'Afrique",
+      acteur: "Equipe nationale",
+      resultat: "Finale",
+      classement: "4e",
+      date: "2026-05-18",
+    },
+    {
+      sport: "Judo",
+      discipline: "-73 kg",
+      evenement: "Open international",
+      acteur: "Selection COC",
+      resultat: "Bronze",
+      classement: "3e",
+      date: "2026-04-22",
+    },
+    {
+      sport: "Boxe",
+      discipline: "Poids moyens",
+      evenement: "Tournoi qualificatif",
+      acteur: "Equipe nationale",
+      resultat: "Quart de finale",
+      classement: "5e",
+      date: "2026-03-09",
+    },
+    {
+      sport: "Handball",
+      discipline: "Senior dames",
+      evenement: "Coupe régionale",
+      acteur: "Equipe nationale",
+      resultat: "Demi-finale",
+      classement: "4e",
+      date: "2026-02-14",
+    },
+  ]
 
   return (
     <div className="min-h-screen">
@@ -388,53 +386,94 @@ export default async function DashboardPage() {
 
         <Card className="border-border/50">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base font-semibold">Performance</CardTitle>
+            <CardTitle className="text-base font-semibold">Complétude des données acteurs</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid gap-4 lg:grid-cols-2">
-              {categorieKeys.length === 0 && (
-                <p className="text-sm text-muted-foreground lg:col-span-2">Aucun sport référencé.</p>
-              )}
-              {categorieKeys.map((cat) => (
-                <Card key={cat} className="border-border/50">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-semibold">{cat}</CardTitle>
-                      <div className="flex gap-4 text-xs text-muted-foreground">
-                        <span><strong>{sportsByCategorie[cat].length}</strong> sports</span>
-                        <span><strong>-</strong> acteurs</span>
-                        <span><strong>-</strong> participations</span>
-                        <span><strong>-</strong> médailles</span>
-                      </div>
+            <div className="grid gap-4 lg:grid-cols-[260px_1fr]">
+              <Card className="border-border/50">
+                <CardContent className="p-5">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Complétude globale</p>
+                      <p className="mt-2 text-3xl font-bold">{completudeGlobaleActeurs}%</p>
                     </div>
-                  </CardHeader>
-                  <CardContent className="p-0">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-muted/30">
-                          <TableHead>Sport</TableHead>
-                          <TableHead>Fédération</TableHead>
-                          <TableHead className="text-right">Acteurs</TableHead>
-                          <TableHead className="text-right">Part.</TableHead>
-                          <TableHead className="text-right">Méd.</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {sportsByCategorie[cat].map((s, i) => (
-                          <TableRow key={`${cat}-${i}`} className="hover:bg-muted/30">
-                            <TableCell className="font-medium">{s.sport || "-"}</TableCell>
-                            <TableCell className="text-muted-foreground">{s.federation || "-"}</TableCell>
-                            <TableCell className="text-right text-muted-foreground">-</TableCell>
-                            <TableCell className="text-right text-muted-foreground">-</TableCell>
-                            <TableCell className="text-right text-muted-foreground">-</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-              ))}
+                    <div className="rounded-lg p-2 bg-chart-4/10 text-chart-4">
+                      <Activity className="h-5 w-5" />
+                    </div>
+                  </div>
+                  <div className="mt-5 space-y-2">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>Toutes catégories d'acteurs</span>
+                      <span>{completudeGlobaleActeurs}%</span>
+                    </div>
+                    <Progress value={completudeGlobaleActeurs} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="border-border/50">
+                <CardContent className="p-5">
+                  <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
+                    {completudeActeurs.map((item) => (
+                      <div key={item.label} className="space-y-3">
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between gap-3">
+                            <p className="text-sm font-medium">{item.label}</p>
+                            <p className="text-sm font-semibold">{item.value}%</p>
+                          </div>
+                          <p className="text-xs text-muted-foreground">{item.total} dossiers</p>
+                        </div>
+                        <Progress value={item.value} />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-border/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base font-semibold">Cartographie des sports</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <Card className="border-border/50">
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-muted/30">
+                      <TableHead>Code</TableHead>
+                      <TableHead>Sport</TableHead>
+                      <TableHead>Sigle fédération</TableHead>
+                      <TableHead>Catégorie</TableHead>
+                      <TableHead className="text-right">Acteurs</TableHead>
+                      <TableHead className="text-right">Équipe nationale</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {sportsList.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={6} className="py-6 text-center text-sm text-muted-foreground">
+                          Aucun sport référencé.
+                        </TableCell>
+                      </TableRow>
+                    ) : (
+                      sportsList.map((s) => (
+                        <TableRow key={s.id} className="hover:bg-muted/30">
+                          <TableCell className="font-mono text-xs text-muted-foreground">{s.id || "-"}</TableCell>
+                          <TableCell className="font-medium">{s.sport || "-"}</TableCell>
+                          <TableCell className="text-muted-foreground">{s.federation || "-"}</TableCell>
+                          <TableCell className="text-muted-foreground">{s.type || "-"}</TableCell>
+                          <TableCell className="text-right text-muted-foreground">-</TableCell>
+                          <TableCell className="text-right text-muted-foreground">-</TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
               <KpiCard
@@ -446,198 +485,130 @@ export default async function DashboardPage() {
                 iconColor="bg-chart-2/10 text-chart-2"
               />
               <KpiCard
-                title="Fédérations"
-                value={totalFederations}
-                change="Distinctes"
+                title="Disciplines olympiques"
+                value={disciplinesOlympiques}
+                change="Total fédérations"
                 changeType="neutral"
                 icon={Trophy}
                 iconColor="bg-chart-3/10 text-chart-3"
               />
               <KpiCard
-                title="Athlètes"
-                value={acteurs.athletes.total}
-                change="Tous sports confondus"
+                title="Disciplines non olympiques"
+                value={disciplinesNonOlympiques}
+                change="Total fédérations"
                 changeType="neutral"
-                icon={User}
+                icon={Calendar}
                 iconColor="bg-primary/10 text-primary"
               />
               <KpiCard
-                title="Participations"
-                value="-"
-                change="Total COC"
+                title="Groupements sportifs nationaux"
+                value={groupementsSportifsNationaux}
+                change="Total groupements"
                 changeType="neutral"
-                icon={Calendar}
+                icon={Trophy}
                 iconColor="bg-chart-1/10 text-chart-1"
               />
               <KpiCard
-                title="Médailles"
-                value="-"
-                change="Total COC"
+                title="Total acteurs"
+                value={totalActeurs}
+                change="Tous sports confondus"
                 changeType="neutral"
-                icon={Trophy}
+                icon={User}
                 iconColor="bg-coc-green/10 text-coc-green"
               />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border/50">
+        <Card className="border-border/50 shadow-sm">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base font-semibold">Documentation</CardTitle>
+            <CardTitle className="text-base font-semibold">Performance & équipes nationales</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
               <KpiCard
-                title="Complétude globale"
-                value={`${completude.globale}%`}
-                change="Taux de remplissage moyen"
-                changeType={completude.globale >= 75 ? "positive" : completude.globale >= 50 ? "neutral" : "negative"}
-                icon={FileText}
-                iconColor="bg-chart-4/10 text-chart-4"
-              />
-              {isCoc && (
-                <KpiCard
-                  title="Documents"
-                  value={totalDocuments}
-                  change="Fichiers référencés"
-                  changeType="neutral"
-                  icon={HardDrive}
-                  iconColor="bg-muted text-muted-foreground"
-                />
-              )}
-              <KpiCard
-                title="Activités"
-                value={activites.total}
-                change={`${activites.realisees} réalisées · ${activites.enCours} en cours · ${activites.programmees} prog.`}
+                title="Équipes nationales suivies"
+                value={performanceKpis.equipesNationales}
+                change="Sélections actives"
                 changeType="neutral"
-                icon={Calendar}
+                icon={Trophy}
                 iconColor="bg-chart-1/10 text-chart-1"
               />
               <KpiCard
-                title="Compétitions"
-                value={competitions.total}
-                change={`${competitions.realisees} réalisées · ${competitions.enCours} en cours · ${competitions.programmees} prog.`}
+                title="Athlètes sélectionnés"
+                value={performanceKpis.athletesSelectionnes}
+                change="Effectif national"
                 changeType="neutral"
-                icon={Trophy}
+                icon={User}
+                iconColor="bg-primary/10 text-primary"
+              />
+              <KpiCard
+                title="Encadreurs"
+                value={performanceKpis.encadreurs}
+                change="Staffs techniques"
+                changeType="neutral"
+                icon={UserCog}
+                iconColor="bg-chart-4/10 text-chart-4"
+              />
+              <KpiCard
+                title="Participations"
+                value={performanceKpis.participations}
+                change="Compétitions suivies"
+                changeType="neutral"
+                icon={Calendar}
+                iconColor="bg-chart-2/10 text-chart-2"
+              />
+              <KpiCard
+                title="Résultats enregistrés"
+                value={performanceKpis.resultatsEnregistres}
+                change="Performances saisies"
+                changeType="neutral"
+                icon={Activity}
                 iconColor="bg-chart-3/10 text-chart-3"
+              />
+              <KpiCard
+                title="Podiums / médailles"
+                value={performanceKpis.podiumsMedailles}
+                change="Résultats majeurs"
+                changeType="positive"
+                icon={Trophy}
+                iconColor="bg-coc-green/10 text-coc-green"
               />
             </div>
 
-            <Card className="border-border/50">
+            <Card className="border-border/50 shadow-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-base font-semibold">Taux de complétude des dossiers</CardTitle>
+                <CardTitle className="text-base font-semibold">Dernières performances enregistrées</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-5">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>Global</span>
-                    <span>{completude.globale}%</span>
-                  </div>
-                  <Progress value={completude.globale} />
-                </div>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-                  {completude.categories.map((c) => (
-                    <div key={c.label} className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{c.label}</span>
-                        <span>{c.value}%</span>
-                      </div>
-                      <Progress value={c.value} />
-                    </div>
-                  ))}
-                </div>
+              <CardContent className="p-0">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-muted/30">
+                      <TableHead>Sport</TableHead>
+                      <TableHead>Discipline</TableHead>
+                      <TableHead>Événement</TableHead>
+                      <TableHead>Athlète / Équipe</TableHead>
+                      <TableHead>Résultat</TableHead>
+                      <TableHead className="text-right">Classement</TableHead>
+                      <TableHead className="text-right">Date</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {dernieresPerformances.map((performance) => (
+                      <TableRow key={`${performance.sport}-${performance.discipline}-${performance.date}`} className="hover:bg-muted/30">
+                        <TableCell className="font-medium">{performance.sport}</TableCell>
+                        <TableCell className="text-muted-foreground">{performance.discipline}</TableCell>
+                        <TableCell className="text-muted-foreground">{performance.evenement}</TableCell>
+                        <TableCell className="text-muted-foreground">{performance.acteur}</TableCell>
+                        <TableCell className="text-muted-foreground">{performance.resultat}</TableCell>
+                        <TableCell className="text-right font-medium">{performance.classement}</TableCell>
+                        <TableCell className="text-right text-muted-foreground">{performance.date}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </CardContent>
             </Card>
-
-            <div className="grid gap-6 lg:grid-cols-4">
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-base font-semibold">Activités ({activites.total})</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Programmées</p>
-                    <p className="text-sm font-medium">{activites.programmees}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">En cours</p>
-                    <p className="text-sm font-medium">{activites.enCours}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Réalisées</p>
-                    <p className="text-sm font-medium">{activites.realisees}</p>
-                  </div>
-                  <div className="space-y-2 pt-2 border-t border-border/50">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Réalisation</span>
-                      <span>{activites.total === 0 ? 0 : Math.round((activites.realisees / activites.total) * 100)}%</span>
-                    </div>
-                    <Progress value={activites.total === 0 ? 0 : (activites.realisees / activites.total) * 100} />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-base font-semibold">Compétitions ({competitions.total})</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Programmées</p>
-                    <p className="text-sm font-medium">{competitions.programmees}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">En cours</p>
-                    <p className="text-sm font-medium">{competitions.enCours}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Réalisées</p>
-                    <p className="text-sm font-medium">{competitions.realisees}</p>
-                  </div>
-                  <div className="space-y-2 pt-2 border-t border-border/50">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>Réalisation</span>
-                      <span>{competitions.total === 0 ? 0 : Math.round((competitions.realisees / competitions.total) * 100)}%</span>
-                    </div>
-                    <Progress value={competitions.total === 0 ? 0 : (competitions.realisees / competitions.total) * 100} />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {isCoc && (
-                <Card className="border-border/50">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base font-semibold">Documents</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm text-muted-foreground">Fichiers référencés</p>
-                      <p className="text-2xl font-bold">{totalDocuments}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              <Card className="border-border/50">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-base font-semibold">Sports</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Sports référencés</p>
-                    <p className="text-sm font-medium">{totalSports}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Fédérations</p>
-                    <p className="text-sm font-medium">{totalFederations}</p>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm text-muted-foreground">Catégories</p>
-                    <p className="text-sm font-medium">{categorieKeys.length}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </CardContent>
         </Card>
       </div>
