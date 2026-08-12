@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { ArrowLeft, Camera, ExternalLink, FileText, Upload } from "lucide-react"
+import { ArrowLeft, ExternalLink, FileText, Upload } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ReactNode, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 
 interface InfoField {
   label: string
@@ -30,9 +30,11 @@ interface ActorDetailLayoutProps {
   passportInfo?: { label: string; value: string }[]
   actorType?: string
   actorId?: string
+  showActorId?: boolean
+  profileActions?: ReactNode
   actorDateNaissance?: string
   actorSexe?: string
-  status: "actif" | "inactif"
+  status?: "actif" | "inactif"
   mainInfo: InfoField[]
   contactInfo?: InfoField[]
   additionalSections?: {
@@ -49,6 +51,22 @@ interface ActorDetailLayoutProps {
   children?: ReactNode
 }
 
+function ageFromBirthDate(value?: string) {
+  if (!value) return null
+  const normalized = value.trim()
+  const iso = normalized.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/)
+  const local = normalized.match(/^(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})$/)
+  const parts = iso ? [Number(iso[1]), Number(iso[2]), Number(iso[3])] : local ? [Number(local[3]), Number(local[2]), Number(local[1])] : null
+  if (!parts) return null
+  const [year, month, day] = parts
+  const birthDate = new Date(year, month - 1, day)
+  if (birthDate.getFullYear() !== year || birthDate.getMonth() !== month - 1 || birthDate.getDate() !== day) return null
+  const today = new Date()
+  let age = today.getFullYear() - year
+  if (today.getMonth() < month - 1 || (today.getMonth() === month - 1 && today.getDate() < day)) age--
+  return age >= 0 && age <= 130 ? age : null
+}
+
 export function ActorDetailLayout({
   backHref,
   backLabel,
@@ -61,6 +79,8 @@ export function ActorDetailLayout({
   passportInfo,
   actorType,
   actorId,
+  showActorId = true,
+  profileActions,
   actorDateNaissance,
   actorSexe,
   status,
@@ -71,15 +91,19 @@ export function ActorDetailLayout({
   children,
 }: ActorDetailLayoutProps) {
   const router = useRouter()
-  const [uploadedAvatarUrl, setUploadedAvatarUrl] = useState<string | null>(null)
   const [uploadedPasseportUrl, setUploadedPasseportUrl] = useState<string | null>(null)
   const [avatarError, setAvatarError] = useState(false)
 
-  const currentAvatarUrl = uploadedAvatarUrl || avatarUrl || null
+  const currentAvatarUrl = avatarUrl || null
   const currentPasseportUrl = uploadedPasseportUrl || urlPasseport || null
+  const actorAge = ageFromBirthDate(actorDateNaissance)
+
+  useEffect(() => {
+    setAvatarError(false)
+  }, [avatarUrl])
 
   const identityFields = [
-    ...(actorId ? [{ label: "ID", value: actorId }] : []),
+    ...(actorId && showActorId ? [{ label: "ID", value: actorId }] : []),
     { label: "Nom", value: title },
     { label: "Date de naissance", value: actorDateNaissance || "-" },
     ...(actorSexe
@@ -93,12 +117,15 @@ export function ActorDetailLayout({
 
       <div className="p-6 space-y-6">
         {/* Back button */}
-        <Link href={backHref}>
-          <Button variant="ghost" size="sm" className="gap-2 mb-2">
-            <ArrowLeft className="h-4 w-4" />
-            {backLabel}
-          </Button>
-        </Link>
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <Link href={backHref}>
+            <Button variant="ghost" size="sm" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              {backLabel}
+            </Button>
+          </Link>
+          {profileActions}
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Card - Profile */}
@@ -108,6 +135,7 @@ export function ActorDetailLayout({
                 <Avatar className="h-24 w-24 mb-4">
                   {currentAvatarUrl && !avatarError ? (
                     <img
+                      key={currentAvatarUrl}
                       src={currentAvatarUrl}
                       alt={title}
                       className="h-full w-full object-cover rounded-full"
@@ -122,20 +150,22 @@ export function ActorDetailLayout({
                 </Avatar>
                 <h2 className="text-xl font-semibold">{title}</h2>
                 {subtitle && <p className="text-muted-foreground">{subtitle}</p>}
-                <Badge
-                  variant="secondary"
-                  className={`mt-3 ${
-                    status === "actif"
-                      ? "bg-coc-green/10 text-coc-green"
-                      : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  {status === "actif" ? "Actif" : "Inactif"}
-                </Badge>
+                {status && (
+                  <Badge
+                    variant="secondary"
+                    className={`mt-3 ${
+                      status === "actif"
+                        ? "bg-coc-green/10 text-coc-green"
+                        : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {status === "actif" ? "Actif" : "Inactif"}
+                  </Badge>
+                )}
 
                 {/* ID, Nom, Date de naissance */}
                 <div className="mt-4 w-full space-y-1 text-sm">
-                  {actorId && (
+                  {actorId && showActorId && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">ID</span>
                       <span className="font-medium font-mono text-xs">{actorId}</span>
@@ -148,30 +178,9 @@ export function ActorDetailLayout({
                   {actorDateNaissance && (
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Date de naissance</span>
-                      <span className="font-medium">{actorDateNaissance}</span>
+                      <span className="font-medium">{actorDateNaissance}{actorAge !== null && <span className="ml-2 text-muted-foreground">({actorAge} ans)</span>}</span>
                     </div>
                   )}
-                </div>
-
-                <div className="flex gap-2 mt-6 w-full">
-                  <MediaUploadDialog
-                    mediaType="avatar"
-                    title="Photo de profil"
-                    actorType={actorType}
-                    actorId={actorId}
-                    identityFields={identityFields}
-                    trigger={
-                      <Button variant="outline" className="flex-1 gap-2">
-                        <Camera className="h-4 w-4" />
-                        {currentAvatarUrl ? "Changer la photo" : "Ajouter la photo"}
-                      </Button>
-                    }
-                    onSuccess={({ url }) => {
-                      setAvatarError(false)
-                      setUploadedAvatarUrl(url)
-                      router.refresh()
-                    }}
-                  />
                 </div>
 
                 {/* Passport info fields */}
@@ -209,14 +218,17 @@ export function ActorDetailLayout({
           <Card className="lg:col-span-2 border-border/50">
             <Tabs defaultValue="infos" className="w-full">
               <CardHeader className="pb-0">
-                <TabsList className="grid w-full grid-cols-3">
+                <TabsList
+                  className="grid w-full"
+                  style={{ gridTemplateColumns: `repeat(${2 + additionalSections.length}, minmax(0, 1fr))` }}
+                >
                   <TabsTrigger value="infos">Informations</TabsTrigger>
                   <TabsTrigger value="documents">Documents</TabsTrigger>
-                  {additionalSections.length > 0 && (
-                    <TabsTrigger value={additionalSections[0].id}>
-                      {additionalSections[0].label}
+                  {additionalSections.map((section) => (
+                    <TabsTrigger key={section.id} value={section.id}>
+                      {section.label}
                     </TabsTrigger>
-                  )}
+                  ))}
                 </TabsList>
               </CardHeader>
               <CardContent className="pt-6">

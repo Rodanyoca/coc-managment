@@ -9,7 +9,7 @@ import {
   Trophy,
   Mail,
   Calendar,
-  Building2,
+  Landmark,
   FileText,
   ChevronDown,
 } from "lucide-react"
@@ -21,6 +21,12 @@ const allNavigation = [
     href: "/dashboard",
     icon: LayoutDashboard,
     roles: ["coc", "technique"],
+  },
+  {
+    name: "Fédérations",
+    href: "/dashboard/federations",
+    icon: Landmark,
+    roles: ["coc"],
   },
   {
     name: "Acteurs",
@@ -61,12 +67,6 @@ const allNavigation = [
     children: [
       { name: "Liste des activités", href: "/dashboard/activites" },
     ],
-  },
-  {
-    name: "Patrimoine",
-    href: "/dashboard/patrimoine",
-    icon: Building2,
-    roles: ["coc"],
   },
   {
     name: "Documents",

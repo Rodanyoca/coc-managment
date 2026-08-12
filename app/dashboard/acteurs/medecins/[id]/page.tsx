@@ -1,111 +1,27 @@
+import { notFound } from "next/navigation"
+import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { getSheetRows } from "@/lib/google/sheets"
 import { MedecinDetailClient, type MedecinDetail } from "./medecin-detail-client"
+import type { EntityOption, SpecialtyOption } from "../medecins-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
-function splitNomComplet(nomComplet: string) {
-  const trimmed = (nomComplet || "").trim()
-  if (!trimmed) return { prenom: "", nom: "" }
-
-  const parts = trimmed.split(/\s+/)
-  if (parts.length === 1) return { prenom: parts[0], nom: "" }
-
-  return {
-    prenom: parts.slice(0, -1).join(" "),
-    nom: parts[parts.length - 1],
-  }
-}
-
-function normalizeGender(value: string): "M" | "F" {
-  const v = (value || "").trim().toLowerCase()
-  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
-  return "F"
-}
-
-function normalizeStatus(value: string): "actif" | "inactif" {
-  const v = (value || "").trim().toLowerCase()
-  if (v === "inactif" || v === "inactive" || v === "0" || v === "non") return "inactif"
-  return "actif"
-}
-
-export default async function MedecinDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export default async function MedecinDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const medecinId = (id || "").trim()
-
-  let rows: Record<string, string>[] = []
-  let loadError: string | null = null
-
-  try {
-    rows = await getSheetRows({ sheetName: "MEDECINS" })
-  } catch (e) {
-    loadError = e instanceof Error ? e.message : String(e)
-  }
-
-  if (loadError) {
-    return (
-      <div className="p-6">
-        <p className="text-sm text-destructive">{loadError}</p>
-      </div>
-    )
-  }
-
-  const found = rows.find((r: Record<string, string>) => (r["id_medecin"] || "").trim() === medecinId)
-  const r = found ?? null
-
-  if (!r) {
-    const sampleIds = rows
-      .map((row: Record<string, string>) => (row["id_medecin"] || "").trim())
-      .filter(Boolean)
-      .slice(0, 15)
-
-    return (
-      <div className="p-6 space-y-3">
-        <p className="text-sm text-destructive">
-          Médecin introuvable dans l'onglet MEDECINS pour id_medecin="{medecinId || id}".
-        </p>
-        {sampleIds.length > 0 && (
-          <div className="text-sm text-muted-foreground">
-            <p className="mb-2">Exemples de id_medecin trouvés :</p>
-            <pre className="whitespace-pre-wrap break-words rounded-md border border-border/50 bg-muted/30 p-3">
-              {sampleIds.join("\n")}
-            </pre>
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  const { prenom, nom } = splitNomComplet(r["nom_complet"])
-  const statut = normalizeStatus(r["statut"])
-
+  const [rows, entityRows, specialtyRows] = await Promise.all([
+    getSheetRows({ sheetName: "MEDECINS", spreadsheetId: getActeursSpreadsheetId() }),
+    getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }),
+    getSheetRows({ sheetName: "SPECIALITES_MEDECIN", spreadsheetId: getReferentialSpreadsheetId() }),
+  ])
+  const r = rows.find((row) => row.id_medecin_coc === id)
+  if (!r) notFound()
   const medecin: MedecinDetail = {
-    id: (r["id_medecin"] || "").trim(),
-    nomComplet: r["nom_complet"] || `${prenom} ${nom}`.trim() || (r["id_medecin"] || "").trim(),
-    prenom,
-    nom,
-    sexe: normalizeGender(r["genre"]),
-    dateNaissance: r["date_de_naissance"] || undefined,
-    specialite: r["specialite"] || undefined,
-    grade: r["grade"] || undefined,
-    telephone: r["telephone"] || undefined,
-    email: r["email"] || undefined,
-    adresse: r["adresse"] || undefined,
-    numeroOrdre: r["numero_ordre"] || undefined,
-    etablissement: r["etablissement"] || undefined,
-    dateAffiliation: r["date_affiliation"] || undefined,
-    urlPasseport: r["url_passeport"] || null,
-    numeroPasseport: r["numéro_passeport"] || "",
-    dateDelivrancePasseport: r["date_de_delivrance_passeport"] || "",
-    dateExpirationPasseport: r["date_expiration passeport"] || "",
-    statut,
-    avatarUrl: r["avatar_url"] || null,
+    id: r.id_medecin_coc, idFederation: r.id_entite || r.id_federation || "", idNational: r.id_national || "", idFederal: r.id_medecin_entite || r.id_medecin_federation || "", idInternational: r.id_international || "", nomComplet: r.nom_complet || "", sexe: r.nom_sexe || r.id_sexe || "", dateNaissance: r.date_de_naissance || "", lieuNaissance: r.lieu_de_naissance || "", nationalite: r.nationalite || "", federation: r.nom_entite || r.nom_federation || "", idSpecialite: r.id_specialite || "", specialite: r.nom_specialite || "", telephone: r.telephone || "", email: r.email || "", adresse: r.adresse || "", numeroPasseport: r.numero_passeport || "", dateDelivrancePasseport: r.date_de_delivrance_passeport || "", dateExpirationPasseport: r.date_expiration_passeport || "", statut: r.statut?.toLowerCase() === "inactif" ? "inactif" : "actif", avatarUrl: r.avatar_drive_url || null, urlPasseport: r.passeport_drive_url || null,
   }
-
-  return <MedecinDetailClient medecin={medecin} />
+  const organisations: EntityOption[] = entityRows.filter((row) => row.id_entite).map((row) => ({ id: row.id_entite, sigle: row.sigle_entite || "", nom: row.nom_entite || "" })).sort((a, b) => a.nom.localeCompare(b.nom, "fr"))
+  const specialites: SpecialtyOption[] = specialtyRows.filter((row) => row.id_specialite).map((row) => ({ id: row.id_specialite, nom: row.nom_specialite || row.id_specialite })).sort((a, b) => a.nom.localeCompare(b.nom, "fr"))
+  return <MedecinDetailClient medecin={medecin} organisations={organisations} specialites={specialites} />
 }

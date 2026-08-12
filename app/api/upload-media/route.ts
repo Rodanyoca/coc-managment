@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
-import { uploadFileToDrive } from "@/lib/google/drive"
-import { updateSheetCells } from "@/lib/google/sheets"
+import { revalidatePath } from "next/cache"
+import { deleteDriveFile, uploadFileToDrive, verifyDriveFolderAccess } from "@/lib/google/drive"
+import { getSheetRows, updateSheetCells } from "@/lib/google/sheets"
 
 const MAX_SIZE_BYTES = 5 * 1024 * 1024 // 5 MB
 const IMAGE_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp"]
@@ -26,11 +27,11 @@ const ACTOR_CONFIG: Record<
   string,
   { sheetName: string; idColumn: string; fileLabel: string }
 > = {
-  athletes: { sheetName: "ATHLETES", idColumn: "id_athlete", fileLabel: "ATHLETE" },
-  entraineurs: { sheetName: "COACHS", idColumn: "id_coach", fileLabel: "COACH" },
-  medecins: { sheetName: "MEDECINS", idColumn: "id_medecin", fileLabel: "MEDECIN" },
-  officiels: { sheetName: "OFFICIELS", idColumn: "id_officiel", fileLabel: "OFFICIEL" },
-  arbitres: { sheetName: "ARBITRES", idColumn: "id_arbitre", fileLabel: "ARBITRE" },
+  athletes: { sheetName: "ATHLETE", idColumn: "id_athlete_coc", fileLabel: "ATHLETE" },
+  entraineurs: { sheetName: "COACHS", idColumn: "id_coach_coc", fileLabel: "COACH" },
+  medecins: { sheetName: "MEDECINS", idColumn: "id_medecin_coc", fileLabel: "MEDECIN" },
+  officiels: { sheetName: "OFFICIELS", idColumn: "id_officiel_coc", fileLabel: "OFFICIEL" },
+  arbitres: { sheetName: "ARBITRES", idColumn: "id_arbitre_coc", fileLabel: "ARBITRE" },
 }
 
 const SHEET_COLUMNS: Record<MediaType, { urlColumn: string; driveIdColumn: string }> = {
@@ -59,6 +60,26 @@ function buildFileName(
   const id = actorId || "0"
   const prefix = mediaType === "avatar" ? "AVATAR" : "PASSEPORT"
   return `${prefix}_${label}_${id}.${ext}`
+}
+
+export async function GET() {
+  try {
+    const avatarFolder = process.env.GOOGLE_DRIVE_ACTEURS_AVATARS_FOLDER_ID
+    const passportFolder = process.env.GOOGLE_DRIVE_ACTEURS_PASSEPORTS_FOLDER_ID
+    if (!avatarFolder || !passportFolder) {
+      return NextResponse.json({ error: "Dossiers Drive des acteurs non configurés" }, { status: 500 })
+    }
+    await Promise.all([
+      verifyDriveFolderAccess(avatarFolder),
+      verifyDriveFolderAccess(passportFolder),
+    ])
+    return NextResponse.json({ ok: true })
+  } catch (error) {
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : String(error) },
+      { status: 503 }
+    )
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -118,6 +139,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "ID document requis" }, { status: 400 })
     }
 
+    const columns = SHEET_COLUMNS[mediaType]
+    const actorConfig = actorType ? ACTOR_CONFIG[actorType] : undefined
+    const actorSpreadsheetId = actorType === "athletes" || actorType === "officiels" || actorType === "entraineurs" || actorType === "medecins" || actorType === "arbitres"
+      ? process.env.GOOGLE_SHEETS_ACTEURS_SPREADSHEET_ID || process.env.GOOGLE_SHEETS_SPREADSHEET_ID
+      : undefined
+    let existingFileId = ""
+
+    if ((mediaType === "avatar" || mediaType === "passeport") && actorConfig) {
+      const rows = await getSheetRows({
+        sheetName: actorConfig.sheetName,
+        spreadsheetId: actorSpreadsheetId,
+        bypassCache: true,
+      })
+      const actor = rows.find((row) => row[actorConfig.idColumn] === actorId)
+      if (!actor) {
+        return NextResponse.json({ error: "Acteur introuvable" }, { status: 404 })
+      }
+      existingFileId = actor[columns.driveIdColumn] || ""
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer())
     const ext = file.name.split(".").pop() || (mediaType === "avatar" ? "jpg" : "pdf")
     const fileName = buildFileName(mediaType, actorType, actorId, courrierCode, ext)
@@ -129,19 +170,38 @@ export async function POST(request: NextRequest) {
       folderId,
     })
 
-    const columns = SHEET_COLUMNS[mediaType]
-
     if (mediaType === "avatar" || mediaType === "passeport") {
-      const config = ACTOR_CONFIG[actorType!]
-      await updateSheetCells({
-        sheetName: config.sheetName,
-        idColumn: config.idColumn,
-        idValue: actorId!,
-        updates: [
-          { column: columns.urlColumn, value: url },
-          { column: columns.driveIdColumn, value: fileId },
-        ],
-      })
+      try {
+        await updateSheetCells({
+          sheetName: actorConfig!.sheetName,
+          idColumn: actorConfig!.idColumn,
+          idValue: actorId!,
+          spreadsheetId: actorSpreadsheetId,
+          updates: [
+            {
+              column: mediaType === "avatar"
+                ? "avatar_drive_url"
+                : actorType === "entraineurs" || actorType === "medecins" || actorType === "arbitres"
+                  ? "passeport_drive_url"
+                  : "url_passeport",
+              value: url,
+            },
+            { column: columns.driveIdColumn, value: fileId },
+          ],
+        })
+      } catch (error) {
+        await deleteDriveFile(fileId).catch(() => undefined)
+        throw error
+      }
+      if (existingFileId && existingFileId !== fileId) {
+        await deleteDriveFile(existingFileId).catch((error) => {
+          console.error("Ancien média non supprimé :", error)
+        })
+      }
+      if (actorType && actorId) {
+        revalidatePath(`/dashboard/acteurs/${actorType}`)
+        revalidatePath(`/dashboard/acteurs/${actorType}/${actorId}`)
+      }
     } else if (mediaType === "courrier") {
       await updateSheetCells({
         sheetName: "COURRIERS",
@@ -164,7 +224,10 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    return NextResponse.json({ fileId, url })
+    return NextResponse.json(
+      { fileId, url },
+      { headers: { "Cache-Control": "no-store, max-age=0" } }
+    )
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err)
     console.error("Upload media error:", message)

@@ -1,66 +1,60 @@
 import { notFound } from "next/navigation"
 
+import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { getFederationOptions } from "@/lib/federations/options"
 import { getSheetRows } from "@/lib/google/sheets"
 import { AthleteDetailClient, type AthleteDetail } from "./athlete-detail-client"
+import type { FederationOption } from "../athletes-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
-
-function splitNomComplet(nomComplet: string) {
-  const trimmed = (nomComplet || "").trim()
-  if (!trimmed) return { prenom: "", nom: "" }
-
-  const parts = trimmed.split(/\s+/)
-  if (parts.length === 1) return { prenom: parts[0], nom: "" }
-
-  return {
-    prenom: parts.slice(0, -1).join(" "),
-    nom: parts[parts.length - 1],
-  }
-}
-
-function normalizeGender(value: string): "M" | "F" {
-  const v = (value || "").trim().toLowerCase()
-  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
-  return "F"
-}
+export const fetchCache = "force-no-store"
 
 export default async function AthleteDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  const [rows, federationRows] = await Promise.all([
+    getSheetRows({
+      sheetName: "ATHLETE",
+      spreadsheetId: getActeursSpreadsheetId(),
+    }),
+    getFederationOptions(),
+  ])
+  const row = rows.find((item) => item.id_athlete_coc === id)
 
-  const rows = await getSheetRows({ sheetName: "ATHLETES" })
-  const row = rows.find((r) => (r["id_athlete"] || "").trim() === id)
-
-  if (!row) {
-    notFound()
-  }
-
-  const { prenom, nom } = splitNomComplet(row["nom_complet"])
+  if (!row) notFound()
 
   const athlete: AthleteDetail = {
-    id: row["id_athlete"],
-    nomComplet: row["nom_complet"] || `${prenom} ${nom}`.trim(),
-    prenom,
-    nom,
-    sexe: normalizeGender(row["genre"]),
-    dateNaissance: row["date_de_naissance"] || "",
-    lieuNaissance: row["lieu_de_naissance"] || "",
-    sport: row["nom_sport"] || "",
-    discipline: row["discipline"] || "",
-    federation: row["sigle_federation"] || "",
-    taille: row["taille"] || "",
-    poids: row["poids"] || "",
-    telephone: row["telephone"] || "",
-    email: row["adresse_mail"] || "",
-    adresse: row["adresse_athlete"] || "",
-    statut: (row["statut"] || "actif").toLowerCase() === "inactif" ? "inactif" : "actif",
-    avatarUrl: row["avatar_url"] || null,
-    urlPasseport: row["url_passeport"] || null,
-    numeroPasseport: row["numéro_passeport"] || "",
-    dateDelivrancePasseport: row["date_de_delivrance_passeport"] || "",
+    id: row.id_athlete_coc,
+    idFederation: row.id_federation || "",
+    idNational: row.id_national || "",
+    idFederal: row.id_athlete_federation || "",
+    idInternational: row.id_federation_internationale || "",
+    nomComplet: row.nom_complet || "",
+    sexe: row.nom_sexe || row.id_sexe || "",
+    dateNaissance: row.date_de_naissance || "",
+    lieuNaissance: row.lieu_de_naissance || "",
+    federation: row.sigle_federation || "",
+    telephone: row.telephone || "",
+    email: row.email || "",
+    adresse: row.adresse || "",
+    statut: row.statut?.toLowerCase() === "inactif"
+      ? "inactif"
+      : row.statut
+        ? "actif"
+        : undefined,
+    avatarUrl: row.avatar_drive_url || null,
+    urlPasseport: row.url_passeport || null,
+    numeroPasseport: row.numero_passeport || "",
+    dateDelivrancePasseport: row.date_de_delivrance_passeport || "",
     dateExpirationPasseport: row["date_expiration passeport"] || "",
   }
 
-  return <AthleteDetailClient athlete={athlete} />
+  const federations: FederationOption[] = federationRows.map(({ id, sigle, nom }) => ({
+    id,
+    sigle,
+    nom,
+  }))
+
+  return <AthleteDetailClient athlete={athlete} federations={federations} />
 }

@@ -3,13 +3,15 @@
 import { useRouter } from "next/navigation"
 import { LogOut, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import type { ReactNode } from "react"
 
 interface HeaderProps {
   title: string
   subtitle?: string
+  actions?: ReactNode
 }
 
-export function Header({ title, subtitle }: HeaderProps) {
+export function Header({ title, subtitle, actions }: HeaderProps) {
   const router = useRouter()
 
   return (
@@ -27,6 +29,7 @@ export function Header({ title, subtitle }: HeaderProps) {
       </div>
 
       <div className="flex items-center gap-4">
+        {actions}
         <Button
           variant="outline"
           size="sm"

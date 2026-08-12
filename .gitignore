@@ -13,5 +13,6 @@ next.user-config.*
 # Common ignores
 node_modules
 .next/
+.cache/
 .DS_Store
 .vercel

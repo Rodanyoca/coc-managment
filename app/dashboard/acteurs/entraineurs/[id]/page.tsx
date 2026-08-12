@@ -1,110 +1,25 @@
+import { notFound } from "next/navigation"
+import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { getFederationOptions } from "@/lib/federations/options"
 import { getSheetRows } from "@/lib/google/sheets"
-import { EntraineurDetailClient, type CoachDetail } from "./entraineur-detail-client"
+import { EntraineurDetailClient, type CoachDetail, type FederationOption } from "./entraineur-detail-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
+export const fetchCache = "force-no-store"
 
-function splitNomComplet(nomComplet: string) {
-  const trimmed = (nomComplet || "").trim()
-  if (!trimmed) return { prenom: "", nom: "" }
+// Les données Coach proviennent exclusivement de la feuille COACHS de 02_ACTEURS.
 
-  const parts = trimmed.split(/\s+/)
-  if (parts.length === 1) return { prenom: parts[0], nom: "" }
-
-  return {
-    prenom: parts.slice(0, -1).join(" "),
-    nom: parts[parts.length - 1],
-  }
-}
-
-function normalizeGender(value: string): "M" | "F" {
-  const v = (value || "").trim().toLowerCase()
-  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
-  return "F"
-}
-
-function normalizeStatus(value: string): "actif" | "inactif" {
-  const v = (value || "").trim().toLowerCase()
-  if (v === "inactif" || v === "inactive" || v === "0" || v === "non") return "inactif"
-  return "actif"
-}
-
-export default async function EntraineurDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export default async function EntraineurDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const coachId = (id || "").trim()
-
-  let rows: Record<string, string>[] = []
-  let loadError: string | null = null
-
-  try {
-    rows = await getSheetRows({ sheetName: "COACHS" })
-  } catch (e) {
-    loadError = e instanceof Error ? e.message : String(e)
-  }
-
-  if (loadError) {
-    return (
-      <div className="p-6">
-        <p className="text-sm text-destructive">{loadError}</p>
-      </div>
-    )
-  }
-
-  const found = rows.find((r: Record<string, string>) => (r["id_coach"] || "").trim() === coachId)
-  const r = found ?? null
-
-  if (!r) {
-    const sampleIds = rows
-      .map((row: Record<string, string>) => (row["id_coach"] || "").trim())
-      .filter(Boolean)
-      .slice(0, 15)
-
-    return (
-      <div className="p-6 space-y-3">
-        <p className="text-sm text-destructive">
-          Entraîneur introuvable dans l'onglet COACHS pour id_coach="{coachId || id}".
-        </p>
-        {sampleIds.length > 0 && (
-          <div className="text-sm text-muted-foreground">
-            <p className="mb-2">Exemples de id_coach trouvés :</p>
-            <pre className="whitespace-pre-wrap break-words rounded-md border border-border/50 bg-muted/30 p-3">
-              {sampleIds.join("\n")}
-            </pre>
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  const { prenom, nom } = splitNomComplet(r["nom_complet"])
-
-  const coach: CoachDetail = {
-    id: r["id_coach"],
-    nomComplet: r["nom_complet"] || `${prenom} ${nom}`.trim() || r["id_coach"],
-    prenom,
-    nom,
-    sexe: normalizeGender(r["genre"]),
-    dateNaissance: r["date_de_naissance"] || undefined,
-    sport: r["nom_sport"] || undefined,
-    discipline: undefined,
-    niveau: r["niveau"] || undefined,
-    federation: r["sigle_federation"] || undefined,
-    dateAffiliation: r["date_affiliation"] || undefined,
-    telephone: r["telephone"] || undefined,
-    email: r["email"] || undefined,
-    adresse: r["adresse"] || undefined,
-    urlPasseport: r["url_passeport"] || null,
-    numeroPasseport: r["numéro_passeport"] || "",
-    dateDelivrancePasseport: r["date_de_delivrance_passeport"] || "",
-    dateExpirationPasseport: r["date_expiration passeport"] || "",
-    statut: normalizeStatus(r["statut"]),
-    avatarUrl: r["avatar_url"] || null,
-  }
-
-  return <EntraineurDetailClient coach={coach} />
+  const [rows, federationRows] = await Promise.all([
+    getSheetRows({ sheetName: "COACHS", spreadsheetId: getActeursSpreadsheetId() }),
+    getFederationOptions(),
+  ])
+  const r = rows.find((row) => row.id_coach_coc === id)
+  if (!r) notFound()
+  const coach: CoachDetail = { id: r.id_coach_coc, idFederation: r.id_federation || "", idNational: r.id_national || "", idFederal: r.id_coach_federation || "", idInternational: r.id_international || "", nomComplet: r.nom_complet || "", sexe: r.nom_sexe || r.id_sexe || "", dateNaissance: r.date_de_naissance || "", lieuNaissance: r.lieu_de_naissance || "", nationalite: r.nationalite || "", federation: r.nom_federation || "", telephone: r.telephone || "", email: r.email || "", adresse: r.adresse || "", statut: r.statut?.toLowerCase() === "inactif" ? "inactif" : "actif", avatarUrl: r.avatar_drive_url || null, urlPasseport: r.passeport_drive_url || null, numeroPasseport: r.numero_passeport || "", dateDelivrancePasseport: r.date_de_delivrance_passeport || "", dateExpirationPasseport: r.date_expiration_passeport || "" }
+  const federations: FederationOption[] = federationRows.map(({ id, sigle, nom }) => ({ id, sigle, nom }))
+  return <EntraineurDetailClient coach={coach} federations={federations} />
 }

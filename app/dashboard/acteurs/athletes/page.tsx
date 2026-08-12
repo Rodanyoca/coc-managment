@@ -1,50 +1,41 @@
 import { getSheetRows } from "@/lib/google/sheets"
-import { AthletesClient, type AthleteListItem } from "./athletes-client"
+import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { getFederationOptions } from "@/lib/federations/options"
+import { AthletesClient, type AthleteListItem, type FederationOption } from "./athletes-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
-
-function splitNomComplet(nomComplet: string) {
-  const trimmed = (nomComplet || "").trim()
-  if (!trimmed) return { prenom: "", nom: "" }
-
-  const parts = trimmed.split(/\s+/)
-  if (parts.length === 1) return { prenom: parts[0], nom: "" }
-
-  return {
-    prenom: parts.slice(0, -1).join(" "),
-    nom: parts[parts.length - 1],
-  }
-}
-
-function normalizeGender(value: string): "M" | "F" {
-  const v = (value || "").trim().toLowerCase()
-  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
-  return "F"
-}
+export const fetchCache = "force-no-store"
 
 export default async function AthletesPage() {
-  const rows = await getSheetRows({ sheetName: "ATHLETES" })
+  const [rows, federationRows] = await Promise.all([
+    getSheetRows({
+      sheetName: "ATHLETE",
+      spreadsheetId: getActeursSpreadsheetId(),
+    }),
+    getFederationOptions(),
+  ])
 
   const athletes: AthleteListItem[] = rows
-    .filter((r: Record<string, string>) => (r["id_athlete"] || "").trim() !== "")
-    .map((r: Record<string, string>) => {
-      const { prenom, nom } = splitNomComplet(r["nom_complet"])
+    .filter((row) => Boolean(row.id_athlete_coc || row.id_national || row.nom_complet))
+    .map((row) => ({
+      id: row.id_athlete_coc || row.id_national,
+      idNational: row.id_national || "",
+      idFederal: row.id_athlete_federation || "",
+      nomComplet: row.nom_complet || "",
+      sexe: row.nom_sexe || row.id_sexe || "",
+      dateNaissance: row.date_de_naissance || "",
+      federation: row.sigle_federation || "",
+      statut: row.statut || "",
+      avatar: row.avatar_drive_url || null,
+    }))
 
-      return {
-        id: r["id_athlete"],
-        nom,
-        prenom,
-        sexe: normalizeGender(r["genre"]),
-        discipline: r["nom_sport"] || r["discipline"] || "",
-        specialite: r["discipline"] || "",
-        dateNaissance: r["date_de_naissance"] || "",
-        federation: r["sigle_federation"] || "",
-        statut: (r["statut"] || "").toLowerCase() || "actif",
-        avatar: r["avatar_url"] || null,
-      }
-    })
+  const federations: FederationOption[] = federationRows.map(({ id, sigle, nom }) => ({
+    id,
+    sigle,
+    nom,
+  }))
 
-  return <AthletesClient athletes={athletes} />
+  return <AthletesClient athletes={athletes} federations={federations} />
 }

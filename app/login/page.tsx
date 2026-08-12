@@ -26,12 +26,13 @@ export default function LoginPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       })
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
       if (!res.ok) {
         setError(data.error || "Erreur de connexion")
         return
       }
       router.push("/dashboard")
+      router.refresh()
     } catch {
       setError("Erreur réseau")
     } finally {

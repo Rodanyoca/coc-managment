@@ -1,185 +1,73 @@
 "use client"
 
-import { Header } from "@/components/dashboard/header"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Search, Eye, Stethoscope } from "lucide-react"
-import { useMemo, useState } from "react"
 import Link from "next/link"
+import { Eye, FileText, ImageIcon, Plus, Search } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useMemo, useState } from "react"
+import { toast } from "sonner"
+import { Header } from "@/components/dashboard/header"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-export type MedecinListItem = {
-  id: string
-  nom: string
-  prenom: string
-  sexe: "M" | "F" | null
-  specialite: string
-  etablissement: string
-  grade: string
-  telephone: string
-  statut: "actif" | "inactif"
-}
+export type EntityOption = { id: string; sigle: string; nom: string }
+export type SpecialtyOption = { id: string; nom: string }
+export type MedecinListItem = { id: string; idNational: string; idFederal: string; nomComplet: string; sexe: string; dateNaissance: string; federation: string; specialite: string; statut: string; avatar: string | null }
+type Form = { id_medecin_entite: string; id_entite: string; id_national: string; id_international: string; nom_complet: string; id_sexe: string; date_de_naissance: string; lieu_de_naissance: string; nationalite: string; telephone: string; email: string; adresse: string; id_specialite: string; numero_passeport: string; date_de_delivrance_passeport: string; date_expiration_passeport: string; statut: string }
+const empty: Form = { id_medecin_entite: "", id_entite: "", id_national: "", id_international: "", nom_complet: "", id_sexe: "", date_de_naissance: "", lieu_de_naissance: "", nationalite: "", telephone: "", email: "", adresse: "", id_specialite: "", numero_passeport: "", date_de_delivrance_passeport: "", date_expiration_passeport: "", statut: "ACTIF" }
+const initials = (name: string) => name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase()
+const displaySex = (value: string) => ["f", "femme", "féminin", "feminin"].includes(value.toLowerCase()) ? "F" : ["m", "h", "homme", "masculin"].includes(value.toLowerCase()) ? "H" : value || "—"
 
-export default function MedecinsClient({ medecins }: { medecins: MedecinListItem[] }) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [specialiteFilter, setSpecialiteFilter] = useState("Toutes")
-
-  const specialites = useMemo(() => {
-    const uniq = Array.from(new Set(medecins.map((m) => m.specialite).filter(Boolean))).sort()
-    return ["Toutes", ...uniq]
-  }, [medecins])
-
-  const filteredMedecins = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase()
-    return medecins.filter((medecin) => {
-      const matchesSearch =
-        q.length === 0 ||
-        medecin.nom.toLowerCase().includes(q) ||
-        medecin.prenom.toLowerCase().includes(q) ||
-        `${medecin.prenom} ${medecin.nom}`.toLowerCase().includes(q)
-      const matchesSpecialite =
-        specialiteFilter === "Toutes" || medecin.specialite === specialiteFilter
-      return matchesSearch && matchesSpecialite
-    })
-  }, [medecins, searchQuery, specialiteFilter])
-
-  return (
-    <div className="min-h-screen">
-      <Header title="Médecins" subtitle="Personnel médical sportif" />
-
-      <div className="p-6 space-y-6">
-        <div className="flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="flex flex-1 gap-4 flex-wrap">
-            <div className="relative flex-1 min-w-[200px] max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Rechercher un médecin..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <Select value={specialiteFilter} onValueChange={setSpecialiteFilter}>
-              <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="Spécialité" />
-              </SelectTrigger>
-              <SelectContent>
-                {specialites.map((spec) => (
-                  <SelectItem key={spec} value={spec}>
-                    {spec}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <Card className="border-border/50">
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead className="w-[250px]">Médecin</TableHead>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Spécialité</TableHead>
-                  <TableHead>Établissement</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredMedecins.map((medecin) => (
-                  <TableRow key={medecin.id} className="hover:bg-muted/30">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarFallback className="bg-chart-4/10 text-chart-4 text-sm">
-                            <Stethoscope className="h-5 w-5" />
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium">
-                              {medecin.prenom} {medecin.nom}
-                            </p>
-                            {medecin.sexe && (
-                              <Badge variant="outline" className="h-5 px-1.5 text-[10px] leading-none">
-                                {medecin.sexe === "M" ? "H" : "F"}
-                              </Badge>
-                            )}
-                          </div>
-                          {medecin.grade && (
-                            <p className="text-xs text-muted-foreground">{medecin.grade}</p>
-                          )}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-muted-foreground">{medecin.id}</span>
-                    </TableCell>
-                    <TableCell>{medecin.specialite || "-"}</TableCell>
-                    <TableCell className="text-muted-foreground">{medecin.etablissement || "-"}</TableCell>
-                    <TableCell className="text-muted-foreground">{medecin.telephone || "-"}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={
-                          medecin.statut === "actif"
-                            ? "bg-primary/10 text-primary"
-                            : "bg-muted text-muted-foreground"
-                        }
-                      >
-                        {medecin.statut === "actif" ? "Actif" : "Inactif"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end">
-                        <Link href={`/dashboard/acteurs/medecins/${medecin.id}`}>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>
-            Affichage de {filteredMedecins.length} sur {medecins.length} médecins
-          </span>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>
-              Précédent
-            </Button>
-            <Button variant="outline" size="sm" disabled>
-              Suivant
-            </Button>
-          </div>
-        </div>
-      </div>
+export default function MedecinsClient({ medecins, organisations, specialites }: { medecins: MedecinListItem[]; organisations: EntityOption[]; specialites: SpecialtyOption[] }) {
+  const router = useRouter()
+  const [search, setSearch] = useState("")
+  const [open, setOpen] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [form, setForm] = useState<Form>(empty)
+  const [avatar, setAvatar] = useState<File | null>(null)
+  const [passport, setPassport] = useState<File | null>(null)
+  const filtered = useMemo(() => { const q = search.trim().toLowerCase(); return !q ? medecins : medecins.filter((m) => [m.idNational, m.idFederal, m.nomComplet, m.sexe, m.dateNaissance, m.federation, m.specialite, m.statut].some((v) => v.toLowerCase().includes(q))) }, [medecins, search])
+  function update<K extends keyof Form>(key: K, value: Form[K]) { setForm((current) => ({ ...current, [key]: value })) }
+  function close() { setOpen(false); setForm(empty); setAvatar(null); setPassport(null) }
+  function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const ok = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!ok || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); type === "avatar" ? setAvatar(file) : setPassport(file) }
+  async function upload(file: File, type: "avatar" | "passeport", id: string) { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "medecins"); data.append("actorId", id); const res = await fetch("/api/upload-media", { method: "POST", body: data }); const out = await res.json(); if (!res.ok) throw new Error(out.error || "Échec du média") }
+  async function save() {
+    if (!form.nom_complet || !form.id_entite || !form.id_sexe) return toast.error("Nom, organisation et sexe sont obligatoires.")
+    setSaving(true)
+    try {
+      const res = await fetch("/api/medecins", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ row: form }) })
+      const out = await res.json()
+      if (!res.ok) throw new Error(out.error || "Création impossible")
+      const id = String(out.row?.id_medecin_coc || "")
+      const uploads = [avatar ? upload(avatar, "avatar", id) : null, passport ? upload(passport, "passeport", id) : null].filter(Boolean) as Promise<void>[]
+      const settled = await Promise.allSettled(uploads)
+      settled.some((item) => item.status === "rejected") ? toast.warning("Médecin créé, mais un média n’a pas pu être envoyé.") : toast.success("Médecin ajouté.")
+      close(); router.refresh()
+    } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) }
+  }
+  return <div className="min-h-screen">
+    <Header title="Médecins" subtitle="Liste du personnel médical" />
+    <div className="space-y-6 p-6">
+      <div className="flex justify-between gap-4"><div className="relative w-full max-w-md"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input className="pl-9" placeholder="Rechercher un médecin..." value={search} onChange={(e) => setSearch(e.target.value)} /></div><Button onClick={() => setOpen(true)}><Plus className="mr-2 h-4 w-4" />Ajouter un médecin</Button></div>
+      <Card><CardContent className="p-0"><div className="overflow-x-auto"><Table><TableHeader><TableRow><TableHead>ID national</TableHead><TableHead>ID organisation</TableHead><TableHead>Avatar</TableHead><TableHead>Nom</TableHead><TableHead>Sexe</TableHead><TableHead>Date de naissance</TableHead><TableHead>Organisation</TableHead><TableHead>Spécialité</TableHead><TableHead>Statut</TableHead><TableHead className="text-right">Actions</TableHead></TableRow></TableHeader><TableBody>{filtered.map((m) => <TableRow key={m.id}><TableCell>{m.idNational || "—"}</TableCell><TableCell>{m.idFederal || "—"}</TableCell><TableCell><Avatar className="h-10 w-10"><AvatarImage src={m.avatar || undefined} referrerPolicy="no-referrer" /><AvatarFallback>{initials(m.nomComplet)}</AvatarFallback></Avatar></TableCell><TableCell className="font-medium">{m.nomComplet}</TableCell><TableCell>{displaySex(m.sexe)}</TableCell><TableCell>{m.dateNaissance || "—"}</TableCell><TableCell>{m.federation ? <Badge variant="outline">{m.federation}</Badge> : "—"}</TableCell><TableCell>{m.specialite || "—"}</TableCell><TableCell>{m.statut ? <Badge variant="secondary">{m.statut}</Badge> : "—"}</TableCell><TableCell className="text-right"><Link href={`/dashboard/acteurs/medecins/${m.id}`} prefetch={false}><Button variant="ghost" size="icon"><Eye className="h-4 w-4" /></Button></Link></TableCell></TableRow>)}{!filtered.length && <TableRow><TableCell colSpan={10} className="h-32 text-center">Aucun médecin trouvé.</TableCell></TableRow>}</TableBody></Table></div></CardContent></Card>
+      <p className="text-sm text-muted-foreground">Affichage de {filtered.length} sur {medecins.length} médecins</p>
     </div>
-  )
+    <Sheet open={open} onOpenChange={(value) => value ? setOpen(true) : close()}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Ajouter un médecin</SheetTitle><SheetDescription>Renseignez l’identité, l’organisation, la spécialité et les médias.</SheetDescription></SheetHeader><div className="grid gap-4 px-4 sm:grid-cols-2">
+      <div className="space-y-2 sm:col-span-2"><Label>Nom complet *</Label><Input value={form.nom_complet} onChange={(e) => update("nom_complet", e.target.value)} /></div><div className="space-y-2"><Label>Date de naissance</Label><Input type="date" value={form.date_de_naissance} onChange={(e) => update("date_de_naissance", e.target.value)} /></div><div className="space-y-2"><Label>Lieu de naissance</Label><Input value={form.lieu_de_naissance} onChange={(e) => update("lieu_de_naissance", e.target.value)} /></div>
+      <div className="space-y-2"><Label>Sexe *</Label><Select value={form.id_sexe} onValueChange={(v) => update("id_sexe", v)}><SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent><SelectItem value="M">Homme</SelectItem><SelectItem value="F">Femme</SelectItem></SelectContent></Select></div>
+      <div className="space-y-2"><Label>Organisation *</Label><Select value={form.id_entite} onValueChange={(v) => update("id_entite", v)}><SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent>{organisations.map((item) => <SelectItem key={item.id} value={item.id}>{item.sigle ? `${item.sigle} — ` : ""}{item.nom}</SelectItem>)}</SelectContent></Select></div>
+      <div className="space-y-2"><Label>Spécialité</Label><Select value={form.id_specialite} onValueChange={(v) => update("id_specialite", v)}><SelectTrigger><SelectValue placeholder="Sélectionner une spécialité" /></SelectTrigger><SelectContent>{specialites.map((item) => <SelectItem key={item.id} value={item.id}>{item.nom}</SelectItem>)}</SelectContent></Select></div>
+      <div className="space-y-2"><Label>Nationalité</Label><Input value={form.nationalite} onChange={(e) => update("nationalite", e.target.value)} /></div><div className="space-y-2"><Label>Statut</Label><Select value={form.statut} onValueChange={(v) => update("statut", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="ACTIF">Actif</SelectItem><SelectItem value="INACTIF">Inactif</SelectItem></SelectContent></Select></div>
+      <div className="space-y-2"><Label>ID national</Label><Input value={form.id_national} onChange={(e) => update("id_national", e.target.value)} /></div><div className="space-y-2"><Label>ID dans l’organisation</Label><Input value={form.id_medecin_entite} onChange={(e) => update("id_medecin_entite", e.target.value)} /></div><div className="space-y-2"><Label>ID international</Label><Input value={form.id_international} onChange={(e) => update("id_international", e.target.value)} /></div>
+      <div className="space-y-2"><Label>Téléphone</Label><Input value={form.telephone} onChange={(e) => update("telephone", e.target.value)} /></div><div className="space-y-2"><Label>E-mail</Label><Input value={form.email} onChange={(e) => update("email", e.target.value)} /></div><div className="space-y-2 sm:col-span-2"><Label>Adresse</Label><Input value={form.adresse} onChange={(e) => update("adresse", e.target.value)} /></div>
+      <div className="space-y-2"><Label>N° passeport</Label><Input value={form.numero_passeport} onChange={(e) => update("numero_passeport", e.target.value)} /></div><div className="space-y-2"><Label>Date de délivrance</Label><Input type="date" value={form.date_de_delivrance_passeport} onChange={(e) => update("date_de_delivrance_passeport", e.target.value)} /></div><div className="space-y-2"><Label>Expiration passeport</Label><Input type="date" value={form.date_expiration_passeport} onChange={(e) => update("date_expiration_passeport", e.target.value)} /></div>
+      <div className="space-y-2"><Label><ImageIcon className="mr-1 inline h-4 w-4" />Avatar</Label><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => pick(e.target.files?.[0], "avatar")} /></div><div className="space-y-2"><Label><FileText className="mr-1 inline h-4 w-4" />Passeport</Label><Input type="file" accept=".pdf,application/pdf" onChange={(e) => pick(e.target.files?.[0], "passeport")} /></div>
+    </div><SheetFooter><Button variant="outline" onClick={close}>Annuler</Button><Button disabled={saving} onClick={save}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet>
+  </div>
 }

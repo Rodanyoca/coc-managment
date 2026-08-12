@@ -28,25 +28,35 @@ async function getKey() {
   return crypto.subtle.importKey("raw", enc.encode(getSecret()), { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"])
 }
 
+function bytesToBase64Url(bytes: Uint8Array): string {
+  let binary = ""
+  for (const byte of bytes) binary += String.fromCharCode(byte)
+  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "")
+}
+
+function base64UrlToBytes(value: string): Uint8Array {
+  const base64 = value.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(value.length / 4) * 4, "=")
+  return Uint8Array.from(atob(base64), (character) => character.charCodeAt(0))
+}
+
 async function signPayload(payload: object): Promise<string> {
   const key = await getKey()
   const data = JSON.stringify(payload)
   const enc = new TextEncoder()
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(data))
-  const sigB64 = btoa(String.fromCharCode(...new Uint8Array(sig)))
-  const dataB64 = btoa(data)
-  return `${dataB64}.${sigB64}`
+  const dataBytes = enc.encode(data)
+  const sig = await crypto.subtle.sign("HMAC", key, dataBytes)
+  return `${bytesToBase64Url(dataBytes)}.${bytesToBase64Url(new Uint8Array(sig))}`
 }
 
 async function verifyToken(token: string): Promise<SessionPayload | null> {
   try {
     const [dataB64, sigB64] = token.split(".")
     if (!dataB64 || !sigB64) return null
-    const data = atob(dataB64)
-    const sig = Uint8Array.from(atob(sigB64), (c) => c.charCodeAt(0))
+    const dataBytes = base64UrlToBytes(dataB64)
+    const data = new TextDecoder().decode(dataBytes)
+    const sig = base64UrlToBytes(sigB64)
     const key = await getKey()
-    const enc = new TextEncoder()
-    const valid = await crypto.subtle.verify("HMAC", key, sig, enc.encode(data))
+    const valid = await crypto.subtle.verify("HMAC", key, sig, dataBytes)
     if (!valid) return null
     const payload = JSON.parse(data) as SessionPayload
     if (payload.exp < Date.now() / 1000) return null

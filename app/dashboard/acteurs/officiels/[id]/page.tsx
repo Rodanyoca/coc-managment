@@ -1,76 +1,79 @@
 import { notFound } from "next/navigation"
 
+import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { getSheetRows } from "@/lib/google/sheets"
-import { OfficielDetailClient, type OfficielDetail } from "./officiel-detail-client"
+import { getOfficialAffiliations } from "@/lib/acteurs/official-affiliations"
+import {
+  OfficielDetailClient,
+  type OfficielDetail,
+  type OfficialFunctionOption,
+  type OrganisationOption,
+} from "./officiel-detail-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
-
-function splitNomComplet(nomComplet: string) {
-  const trimmed = (nomComplet || "").trim()
-  if (!trimmed) return { prenom: "", nom: "" }
-
-  const parts = trimmed.split(/\s+/)
-  if (parts.length === 1) return { prenom: parts[0], nom: "" }
-
-  return {
-    prenom: parts.slice(0, -1).join(" "),
-    nom: parts[parts.length - 1],
-  }
-}
-
-function normalizeGender(value: string): "M" | "F" {
-  const v = (value || "").trim().toLowerCase()
-  if (v === "m" || v === "h" || v === "homme" || v === "masculin") return "M"
-  return "F"
-}
-
-function parseBoolean(value: string): boolean | undefined {
-  const v = (value || "").trim().toLowerCase()
-  if (!v) return undefined
-  if (v === "1" || v === "true" || v === "oui" || v === "yes") return true
-  if (v === "0" || v === "false" || v === "non" || v === "no") return false
-  return undefined
-}
+export const fetchCache = "force-no-store"
 
 export default async function OfficielDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  const [rows, entityRows, functionRows, affiliationsResult] = await Promise.all([
+    getSheetRows({
+      sheetName: "OFFICIELS",
+      spreadsheetId: getActeursSpreadsheetId(),
+    }),
+    getSheetRows({
+      sheetName: "ENTITES",
+      spreadsheetId: getReferentialSpreadsheetId(),
+    }),
+    getSheetRows({
+      sheetName: "FONCTIONS_OFFICIEL",
+      spreadsheetId: getReferentialSpreadsheetId(),
+    }),
+    getOfficialAffiliations(id).then((rows) => ({ rows, error: false as const })).catch(() => ({ rows: [], error: true as const })),
+  ])
+  const row = rows.find((item) => item.id_officiel_coc === id)
+  if (!row) notFound()
 
-  const rows = await getSheetRows({ sheetName: "OFFICIELS" })
-  const row = rows.find((r) => (r["id_officiel"] || "").trim() === id)
-
-  if (!row) {
-    notFound()
-  }
-
-  const { prenom, nom } = splitNomComplet(row["nom_complet"])
-  const statut = (row["statut"] || "actif").toLowerCase() === "inactif" ? "inactif" : "actif"
-
+  const today = new Date().toISOString().slice(0, 10)
+  const currentAffiliation = affiliationsResult.rows.find((item) => item.statut.toUpperCase() !== "INACTIF" && (!item.date_fin || item.date_fin >= today))
+  const linkedEntity = entityRows.find((item) => item.id_entite === currentAffiliation?.id_entite)
   const officiel: OfficielDetail = {
-    id: row["id_officiel"],
-    nomComplet: row["nom_complet"] || `${prenom} ${nom}`.trim(),
-    prenom,
-    nom,
-    sexe: normalizeGender(row["genre"]),
-    dateNaissance: row["date_de_naissance"] || "",
-    fonction: row["fonction"] || "",
-    entite: row["entite"] || "",
-    sport: row["nom_sport"] || "",
-    federation: row["sigle_federation"] || "",
-    telephone: row["telephone"] || "",
-    email: row["email"] || "",
-    bureau: row["adresse_bureau"] || "",
-    dateNomination: row["date_de_nomination"] || "",
-    membreCoc: parseBoolean(row["membre_coc"]),
-    mandatFin: row["date_de_fin_de_mandat"] || "",
-    urlPasseport: row["url_passeport"] || null,
-    numeroPasseport: row["numéro_passeport"] || "",
-    dateDelivrancePasseport: row["date_de_delivrance_passeport"] || "",
+    id: row.id_officiel_coc,
+    idNational: row.id_national || "",
+    idFederal: row.id_officiel_entite || "",
+    idInternational: row.id_international || "",
+    nomComplet: row.nom_complet || "",
+    sexe: row.nom_sexe || row.id_sexe || "",
+    dateNaissance: row.date_de_naissance || "",
+    lieuNaissance: row.lieu_de_naissance || "",
+    nationalite: row.nationalite || "",
+    organisation: linkedEntity?.nom_entite || "",
+    telephone: row.telephone || "",
+    email: row.email || "",
+    adresse: row.adresse || "",
+    statut: row.statut?.toLowerCase() === "inactif" ? "inactif" : "actif",
+    avatarUrl: row.avatar_drive_url || null,
+    urlPasseport: row.url_passeport || null,
+    numeroPasseport: row.numero_passeport || "",
+    dateDelivrancePasseport: row.date_de_delivrance_passeport || "",
     dateExpirationPasseport: row["date_expiration passeport"] || "",
-    statut,
-    avatarUrl: row["avatar_url"] || null,
   }
 
-  return <OfficielDetailClient officiel={officiel} />
+  const organisations: OrganisationOption[] = entityRows
+    .filter((item) => item.id_entite)
+    .map((item) => ({
+      id: item.id_entite,
+      sigle: item.sigle_entite || "",
+      nom: item.nom_entite || "",
+    }))
+    .sort((a, b) => a.nom.localeCompare(b.nom, "fr"))
+
+  const functions: OfficialFunctionOption[] = functionRows
+    .filter((item) => item.id_fonction && item.nom_fonction)
+    .map((item) => ({ id: item.id_fonction, nom: item.nom_fonction }))
+    .sort((a, b) => a.nom.localeCompare(b.nom, "fr"))
+
+  return <OfficielDetailClient officiel={officiel} organisations={organisations} functions={functions} affiliations={affiliationsResult.rows} affiliationsLoadError={affiliationsResult.error} />
 }

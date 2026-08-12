@@ -1,228 +1,267 @@
 "use client"
 
-import { Header } from "@/components/dashboard/header"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Search, Eye } from "lucide-react"
-import { useMemo, useState } from "react"
 import Link from "next/link"
+import { Eye, FileText, ImageIcon, Plus, Search } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useMemo, useState } from "react"
+import { toast } from "sonner"
+
+import { Header } from "@/components/dashboard/header"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 export type OfficielListItem = {
   id: string
-  nom: string
-  prenom: string
+  idNational: string
+  idFederal: string
   nomComplet: string
-  sexe: "M" | "F"
-  dateNaissance?: string
-  fonction: string
+  sexe: string
+  dateNaissance: string
   organisation: string
-  type: "coc" | "federation"
-  telephone?: string
-  email?: string
-  statut: "actif" | "inactif"
-  avatar?: string | null
+  statut: string
+  avatar: string | null
 }
 
-function getAgeFromDateString(dateString?: string) {
-  if (!dateString) return null
-  const [dd, mm, yyyy] = dateString.split("/").map((part) => Number(part))
-  if (!dd || !mm || !yyyy) return null
+type OfficielForm = {
+  id_officiel_federation: string
+  id_national: string
+  id_federation_international: string
+  nom_complet: string
+  id_sexe: string
+  date_de_naissance: string
+  lieu_de_naissance: string
+  nationalite: string
+  telephone: string
+  email: string
+  adresse: string
+  numéro_passeport: string
+  date_de_delivrance_passeport: string
+  "date_expiration passeport": string
+  statut: string
+}
 
-  const birthDate = new Date(yyyy, mm - 1, dd)
-  if (Number.isNaN(birthDate.getTime())) return null
+const emptyForm: OfficielForm = {
+  id_officiel_federation: "",
+  id_national: "",
+  id_federation_international: "",
+  nom_complet: "",
+  id_sexe: "",
+  date_de_naissance: "",
+  lieu_de_naissance: "",
+  nationalite: "",
+  telephone: "",
+  email: "",
+  adresse: "",
+  numéro_passeport: "",
+  date_de_delivrance_passeport: "",
+  "date_expiration passeport": "",
+  statut: "ACTIF",
+}
 
-  const today = new Date()
-  let age = today.getFullYear() - birthDate.getFullYear()
-  const monthDiff = today.getMonth() - birthDate.getMonth()
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-    age -= 1
-  }
+function initials(name: string) {
+  return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase()
+}
 
-  return age
+function displaySexe(value: string) {
+  const normalized = value.trim().toLowerCase()
+  if (["m", "h", "homme", "masculin"].includes(normalized)) return "H"
+  if (["f", "femme", "féminin", "feminin"].includes(normalized)) return "F"
+  return value || "—"
 }
 
 export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }) {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
-  const [typeFilter, setTypeFilter] = useState("tous")
-  const [organisationFilter, setOrganisationFilter] = useState("Toutes")
+  const [editorOpen, setEditorOpen] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [form, setForm] = useState<OfficielForm>(emptyForm)
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [passportFile, setPassportFile] = useState<File | null>(null)
 
-  const organisations = useMemo(() => {
-    const unique = Array.from(new Set(officiels.map((o) => o.organisation).filter(Boolean))).sort((a, b) =>
-      a.localeCompare(b)
+  const filteredOfficiels = useMemo(() => {
+    const query = searchQuery.trim().toLocaleLowerCase("fr")
+    if (!query) return officiels
+    return officiels.filter((officiel) =>
+      [officiel.idNational, officiel.idFederal, officiel.nomComplet, officiel.sexe,
+        officiel.dateNaissance, officiel.organisation, officiel.statut]
+        .some((value) => value.toLocaleLowerCase("fr").includes(query))
     )
-    return ["Toutes", ...unique]
-  }, [officiels])
+  }, [officiels, searchQuery])
 
-  const filteredOfficiels = officiels.filter((officiel) => {
-    const matchesSearch =
-      officiel.nom.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      officiel.prenom.toLowerCase().includes(searchQuery.toLowerCase())
-    const matchesType = typeFilter === "tous" || officiel.type === typeFilter
-    const matchesOrg = organisationFilter === "Toutes" || officiel.organisation === organisationFilter
-    return matchesSearch && matchesType && matchesOrg
-  })
+  function update<K extends keyof OfficielForm>(key: K, value: OfficielForm[K]) {
+    setForm((current) => ({ ...current, [key]: value }))
+  }
+
+  function closeEditor() {
+    setEditorOpen(false)
+    setForm(emptyForm)
+    setAvatarFile(null)
+    setPassportFile(null)
+  }
+
+  function selectFile(file: File | undefined, mediaType: "avatar" | "passeport") {
+    if (!file) return
+    const accepted = mediaType === "avatar"
+      ? ["image/png", "image/jpeg", "image/jpg", "image/webp"]
+      : ["application/pdf"]
+    if (!accepted.includes(file.type) || file.size > 5 * 1024 * 1024) {
+      toast.error(mediaType === "avatar" ? "Avatar invalide ou supérieur à 5 Mo." : "Passeport PDF invalide ou supérieur à 5 Mo.")
+      return
+    }
+    if (mediaType === "avatar") setAvatarFile(file)
+    else setPassportFile(file)
+  }
+
+  async function uploadMedia(file: File, mediaType: "avatar" | "passeport", officielId: string) {
+    const data = new FormData()
+    data.append("file", file)
+    data.append("mediaType", mediaType)
+    data.append("actorType", "officiels")
+    data.append("actorId", officielId)
+    const response = await fetch("/api/upload-media", { method: "POST", body: data })
+    const result = await response.json()
+    if (!response.ok) throw new Error(result.error || `Échec de l’envoi du fichier ${mediaType}`)
+  }
+
+  async function save() {
+    const required: Array<[keyof OfficielForm, string]> = [
+      ["nom_complet", "Nom complet"],
+      ["id_sexe", "Sexe"],
+    ]
+    const missing = required.find(([key]) => !form[key].trim())
+    if (missing) {
+      toast.error(`Le champ « ${missing[1]} » est obligatoire.`)
+      return
+    }
+
+    setSaving(true)
+    try {
+      if (avatarFile || passportFile) {
+        const healthResponse = await fetch("/api/upload-media", { cache: "no-store" })
+        const health = await healthResponse.json()
+        if (!healthResponse.ok) throw new Error(health.error || "Google Drive indisponible")
+      }
+
+      const response = await fetch("/api/officiels", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ row: form }),
+      })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || "Création impossible")
+
+      const officielId = String(result.row?.id_officiel_coc || "")
+      const uploads = [
+        avatarFile ? uploadMedia(avatarFile, "avatar", officielId) : null,
+        passportFile ? uploadMedia(passportFile, "passeport", officielId) : null,
+      ].filter(Boolean) as Promise<void>[]
+      const uploadResults = await Promise.allSettled(uploads)
+      const failedUploads = uploadResults.filter((item) => item.status === "rejected")
+
+      if (failedUploads.length) toast.warning(`Officiel créé, mais ${failedUploads.length} fichier(s) n’ont pas pu être envoyés.`)
+      else toast.success("Officiel ajouté avec succès.")
+      closeEditor()
+      router.refresh()
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : String(error))
+    } finally {
+      setSaving(false)
+    }
+  }
 
   return (
     <div className="min-h-screen">
-      <Header title="Officiels" subtitle="Officiels COC et du mouvement sportif" />
-
-      <div className="p-6 space-y-6">
-        <div className="flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="flex flex-1 gap-4 flex-wrap">
-            <div className="relative flex-1 min-w-[200px] max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Rechercher un officiel..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="tous">Tous les types</SelectItem>
-                <SelectItem value="coc">COC</SelectItem>
-                <SelectItem value="federation">Fédérations</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={organisationFilter} onValueChange={setOrganisationFilter}>
-              <SelectTrigger className="w-[160px]">
-                <SelectValue placeholder="Organisation" />
-              </SelectTrigger>
-              <SelectContent>
-                {organisations.map((org) => (
-                  <SelectItem key={org} value={org}>
-                    {org}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      <Header title="Officiels" subtitle="Liste des officiels enregistrés" />
+      <div className="space-y-6 p-6">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row">
+          <div className="relative w-full max-w-md">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input placeholder="Rechercher un officiel..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9" />
           </div>
+          <Button onClick={() => setEditorOpen(true)}><Plus className="mr-2 h-4 w-4" />Ajouter un officiel</Button>
         </div>
 
-        <Card className="border-border/50">
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="bg-muted/30">
-                  <TableHead className="w-[250px]">Officiel</TableHead>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Fonction</TableHead>
-                  <TableHead>Organisation</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Statut</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredOfficiels.map((officiel, index) => (
-                  <TableRow key={`${officiel.id}-${index}`} className="hover:bg-muted/30">
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage src={officiel.avatar || undefined} />
-                          <AvatarFallback className="bg-chart-2/10 text-chart-2 text-sm">
-                            {officiel.prenom?.[0]}
-                            {officiel.nom?.[0]}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium">{officiel.prenom} {officiel.nom}</p>
-                            <Badge variant="outline" className="h-5 px-1.5 text-[10px] leading-none">
-                              {officiel.sexe === "M" ? "H" : "F"}
-                            </Badge>
-                          </div>
-                          {(() => {
-                            const age = getAgeFromDateString(officiel.dateNaissance)
-                            return (
-                              <p className="text-xs text-muted-foreground">
-                                {age === null ? "" : `${age} ans`}
-                              </p>
-                            )
-                          })()}
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <span className="text-muted-foreground">{officiel.id}</span>
-                    </TableCell>
-                    <TableCell className="font-medium">{officiel.fonction}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="outline"
-                        className={officiel.type === "coc" ? "border-primary text-primary" : ""}
-                      >
-                        {officiel.organisation}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        <p>{officiel.telephone || "-"}</p>
-                        <p className="text-muted-foreground">{officiel.email || "-"}</p>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={
-                          officiel.statut === "actif" ? "bg-coc-green/10 text-coc-green" : "bg-muted text-muted-foreground"
-                        }
-                      >
-                        {officiel.statut === "actif" ? "Actif" : "Inactif"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end">
-                        <Link href={`/dashboard/acteurs/officiels/${officiel.id}`}>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>
-            Affichage de {filteredOfficiels.length} sur {officiels.length} officiels
-          </span>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" disabled>
-              Précédent
-            </Button>
-            <Button variant="outline" size="sm" disabled>
-              Suivant
-            </Button>
-          </div>
-        </div>
+        <Card className="border-border/50"><CardContent className="p-0"><div className="overflow-x-auto">
+          <Table>
+            <TableHeader><TableRow className="bg-muted/30">
+              <TableHead>ID national</TableHead><TableHead>ID fédéral</TableHead><TableHead>Avatar</TableHead>
+              <TableHead>Nom</TableHead><TableHead>Sexe</TableHead><TableHead>Date de naissance</TableHead>
+              <TableHead>Organisation</TableHead><TableHead>Statut</TableHead><TableHead className="text-right">Actions</TableHead>
+            </TableRow></TableHeader>
+            <TableBody>
+              {filteredOfficiels.map((officiel) => <TableRow key={officiel.id} className="hover:bg-muted/30">
+                <TableCell>{officiel.idNational || "—"}</TableCell><TableCell>{officiel.idFederal || "—"}</TableCell>
+                <TableCell>
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage
+                      key={officiel.avatar || officiel.id}
+                      src={officiel.avatar || undefined}
+                      alt={officiel.nomComplet}
+                      referrerPolicy="no-referrer"
+                    />
+                    <AvatarFallback className="bg-primary/10 text-sm text-primary">
+                      {initials(officiel.nomComplet)}
+                    </AvatarFallback>
+                  </Avatar>
+                </TableCell>
+                <TableCell className="font-medium">{officiel.nomComplet || "—"}</TableCell><TableCell>{displaySexe(officiel.sexe)}</TableCell>
+                <TableCell>{officiel.dateNaissance || "—"}</TableCell><TableCell>{officiel.organisation ? <Badge variant="outline">{officiel.organisation}</Badge> : "—"}</TableCell>
+                <TableCell>{officiel.statut ? <Badge variant="secondary">{officiel.statut}</Badge> : "—"}</TableCell>
+                <TableCell className="text-right"><Link href={`/dashboard/acteurs/officiels/${officiel.id}`} prefetch={false}><Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Voir l’officiel"><Eye className="h-4 w-4" /></Button></Link></TableCell>
+              </TableRow>)}
+              {filteredOfficiels.length === 0 && <TableRow><TableCell colSpan={9} className="h-32 text-center text-muted-foreground">Aucun officiel trouvé.</TableCell></TableRow>}
+            </TableBody>
+          </Table>
+        </div></CardContent></Card>
+        <p className="text-sm text-muted-foreground">Affichage de {filteredOfficiels.length} sur {officiels.length} officiels</p>
       </div>
+
+      <Sheet open={editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>
+        <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
+          <SheetHeader><SheetTitle>Ajouter un officiel</SheetTitle><SheetDescription>Renseignez l’identité et les informations personnelles. L’organisation sera ajoutée ensuite dans le parcours.</SheetDescription></SheetHeader>
+          <div className="space-y-6 px-4">
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Identité</h3><div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2 sm:col-span-2"><Label>Nom complet *</Label><Input value={form.nom_complet} onChange={(e) => update("nom_complet", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Date de naissance</Label><Input type="date" value={form.date_de_naissance} onChange={(e) => update("date_de_naissance", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Lieu de naissance</Label><Input value={form.lieu_de_naissance} onChange={(e) => update("lieu_de_naissance", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Sexe *</Label><Select value={form.id_sexe} onValueChange={(v) => update("id_sexe", v)}><SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent><SelectItem value="M">Homme</SelectItem><SelectItem value="F">Femme</SelectItem></SelectContent></Select></div>
+              <div className="space-y-2"><Label>Nationalité</Label><Input value={form.nationalite} onChange={(e) => update("nationalite", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Statut</Label><Select value={form.statut} onValueChange={(v) => update("statut", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="ACTIF">Actif</SelectItem><SelectItem value="INACTIF">Inactif</SelectItem></SelectContent></Select></div>
+            </div></section>
+
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Identifiants</h3><div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-2"><Label>ID national</Label><Input value={form.id_national} onChange={(e) => update("id_national", e.target.value)} /></div>
+              <div className="space-y-2"><Label>ID fédéral</Label><Input value={form.id_officiel_federation} onChange={(e) => update("id_officiel_federation", e.target.value)} /></div>
+              <div className="space-y-2"><Label>ID international</Label><Input value={form.id_federation_international} onChange={(e) => update("id_federation_international", e.target.value)} /></div>
+            </div></section>
+
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Coordonnées</h3><div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2"><Label>Téléphone</Label><Input type="tel" value={form.telephone} onChange={(e) => update("telephone", e.target.value)} /></div>
+              <div className="space-y-2"><Label>E-mail</Label><Input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} /></div>
+              <div className="space-y-2 sm:col-span-2"><Label>Adresse</Label><Input value={form.adresse} onChange={(e) => update("adresse", e.target.value)} /></div>
+            </div></section>
+
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Passeport</h3><div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-2"><Label>Numéro</Label><Input value={form.numéro_passeport} onChange={(e) => update("numéro_passeport", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Délivré le</Label><Input type="date" value={form.date_de_delivrance_passeport} onChange={(e) => update("date_de_delivrance_passeport", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Expire le</Label><Input type="date" value={form["date_expiration passeport"]} onChange={(e) => update("date_expiration passeport", e.target.value)} /></div>
+            </div></section>
+
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Fichiers</h3><div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2 rounded-lg border p-4"><div className="flex items-center gap-2"><ImageIcon className="h-4 w-4 text-primary" /><Label>Avatar</Label></div><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /><p className="text-xs text-muted-foreground">{avatarFile?.name || "PNG, JPG ou WebP — 5 Mo maximum"}</p></div>
+              <div className="space-y-2 rounded-lg border p-4"><div className="flex items-center gap-2"><FileText className="h-4 w-4 text-primary" /><Label>Passeport</Label></div><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /><p className="text-xs text-muted-foreground">{passportFile?.name || "PDF — 5 Mo maximum"}</p></div>
+            </div></section>
+          </div>
+          <SheetFooter><Button variant="outline" onClick={closeEditor}>Annuler</Button><Button onClick={save} disabled={saving}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }
