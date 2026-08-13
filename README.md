@@ -10,7 +10,7 @@ This repository is linked to a [v0](https://v0.app) project. You can continue de
 
 ## Getting Started
 
-Copy `.env.example` to `.env.local`, then configure each dedicated workbook. The application no longer supports the historical generic `GOOGLE_SHEETS_SPREADSHEET_ID` variable. Authentication uses `GOOGLE_SHEETS_USERS_SPREADSHEET_ID` when provided and otherwise keeps the existing `USERS` sheet from `DATABASE COC` during migration.
+Copy `.env.example` to `.env.local`, then configure each dedicated workbook. The application no longer supports the historical generic `GOOGLE_SHEETS_SPREADSHEET_ID` variable. Authentication requires `GOOGLE_SHEETS_USERS_SPREADSHEET_ID`; its workbook must contain a `USERS` sheet with the expected headers.
 
 First, run the development server:
 
