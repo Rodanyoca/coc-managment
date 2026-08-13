@@ -10,6 +10,8 @@ This repository is linked to a [v0](https://v0.app) project. You can continue de
 
 ## Getting Started
 
+Copy `.env.example` to `.env.local`, then configure each dedicated workbook. The application no longer supports the historical generic `GOOGLE_SHEETS_SPREADSHEET_ID` variable. Authentication uses `GOOGLE_SHEETS_USERS_SPREADSHEET_ID` and expects a `USERS` sheet in that workbook.
+
 First, run the development server:
 
 ```bash

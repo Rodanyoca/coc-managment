@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { getSheetRows } from "@/lib/google/sheets"
 import { createSession, type UserRole } from "@/lib/auth"
+import { getUsersSpreadsheetId } from "@/lib/users/config"
 
 export const runtime = "nodejs"
 
@@ -12,7 +13,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email et mot de passe requis" }, { status: 400 })
     }
 
-    const rows = await getSheetRows({ sheetName: "USERS" })
+    const rows = await getSheetRows({ sheetName: "USERS", spreadsheetId: getUsersSpreadsheetId(), bypassCache: true })
 
     const user = rows.find((r) => {
       const e = (r.email || "").trim().toLowerCase()
@@ -38,8 +39,8 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json({ ok: true, nom: (user.nom_complet || "").trim(), role })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err)
-    return NextResponse.json({ error: message }, { status: 500 })
+  } catch (error) {
+    console.error("Échec de connexion", error)
+    return NextResponse.json({ error: "Le service de connexion est momentanément indisponible." }, { status: 500 })
   }
 }

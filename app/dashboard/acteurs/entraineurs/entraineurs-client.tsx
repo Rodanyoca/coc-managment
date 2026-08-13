@@ -34,14 +34,14 @@ export default function EntraineursClient({ coachs, federations }: { coachs: Coa
   const filtered = useMemo(() => { const q = search.trim().toLowerCase(); return !q ? coachs : coachs.filter((c) => [c.idNational, c.idFederal, c.nomComplet, c.sexe, c.dateNaissance, c.federation, c.statut].some((v) => v.toLowerCase().includes(q))) }, [coachs, search])
   function update<K extends keyof CoachForm>(key: K, value: CoachForm[K]) { setForm((f) => ({ ...f, [key]: value })) }
   function close() { setOpen(false); setForm(emptyForm); setAvatar(null); setPassport(null) }
-  function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const ok = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!ok || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); type === "avatar" ? setAvatar(file) : setPassport(file) }
+  function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const ok = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!ok || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }
   async function upload(file: File, type: "avatar" | "passeport", id: string) { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "entraineurs"); data.append("actorId", id); const res = await fetch("/api/upload-media", { method: "POST", body: data }); const result = await res.json(); if (!res.ok) throw new Error(result.error || "Échec du média") }
   async function save() {
     if (!form.nom_complet || !form.id_federation || !form.id_sexe) return toast.error("Nom, fédération et sexe sont obligatoires.")
     setSaving(true)
     try {
       const res = await fetch("/api/coachs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ row: form }) }); const result = await res.json(); if (!res.ok) throw new Error(result.error || "Création impossible")
-      const id = String(result.row?.id_coach_coc || ""); const uploads = [avatar ? upload(avatar, "avatar", id) : null, passport ? upload(passport, "passeport", id) : null].filter(Boolean) as Promise<void>[]; const settled = await Promise.allSettled(uploads); settled.some((x) => x.status === "rejected") ? toast.warning("Coach créé, mais un média n’a pas pu être envoyé.") : toast.success("Coach ajouté."); close(); router.refresh()
+      const id = String(result.row?.id_coach_coc || ""); const uploads = [avatar ? upload(avatar, "avatar", id) : null, passport ? upload(passport, "passeport", id) : null].filter(Boolean) as Promise<void>[]; const settled = await Promise.allSettled(uploads); if (settled.some((x) => x.status === "rejected")) toast.warning("Coach créé, mais un média n’a pas pu être envoyé."); else toast.success("Coach ajouté."); close(); router.refresh()
     } catch (e) { toast.error(e instanceof Error ? e.message : String(e)) } finally { setSaving(false) }
   }
   return <div className="min-h-screen"><Header title="Entraîneurs" subtitle="Liste des coachs enregistrés" /><div className="space-y-6 p-6">

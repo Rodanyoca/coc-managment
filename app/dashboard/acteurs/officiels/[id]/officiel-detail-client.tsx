@@ -1,8 +1,8 @@
 "use client"
 
-import { Activity, Mail, MapPin, Medal, Pencil, Phone } from "lucide-react"
+import { Mail, MapPin, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
@@ -14,6 +14,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import type { OfficialAffiliation } from "@/lib/acteurs/official-affiliations"
 import { OfficialAffiliations } from "./official-affiliations"
+import { ActorActivities } from "@/components/dashboard/actor-activities"
+import { ActorNationalTeams } from "@/components/dashboard/actor-national-teams"
 
 export type OrganisationOption = { id: string; sigle: string; nom: string }
 export type OfficialFunctionOption = { id: string; nom: string }
@@ -102,8 +104,6 @@ export function OfficielDetailClient({
     "date_expiration passeport": initialOfficiel.dateExpirationPasseport,
     statut: initialOfficiel.statut === "inactif" ? "INACTIF" : "ACTIF",
   })
-
-  useEffect(() => setOfficiel(initialOfficiel), [initialOfficiel])
 
   function update<K extends keyof EditForm>(key: K, value: EditForm[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -228,7 +228,7 @@ export function OfficielDetailClient({
       status={officiel.statut}
       mainInfo={mainInfo}
       contactInfo={contactInfo}
-      additionalSections={[{ id: "parcours", label: "Parcours", content: <OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} /> }, ...comingSoonSections]}
+      additionalSections={[{ id: "parcours", label: "Parcours", content: <OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} /> }, ...activitySections(officiel.id)]}
       profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>}
     />
 
@@ -261,7 +261,7 @@ export function OfficielDetailClient({
   </>
 }
 
-const comingSoonSections = [
-  { id: "selections", label: "Sélections", content: <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed bg-muted/20 px-6 text-center"><Medal className="mb-4 h-10 w-10 text-muted-foreground" /><h3 className="font-semibold">Sélections</h3><p className="mt-1 text-sm text-muted-foreground">Bientôt disponible</p></div> },
-  { id: "activites", label: "Activités", content: <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed bg-muted/20 px-6 text-center"><Activity className="mb-4 h-10 w-10 text-muted-foreground" /><h3 className="font-semibold">Activités</h3><p className="mt-1 text-sm text-muted-foreground">Bientôt disponible</p></div> },
+const activitySections = (actorId: string) => [
+  { id: "equipes-nationales", label: "Équipes nationales", content: <ActorNationalTeams actorId={actorId} /> },
+  { id: "activites", label: "Activités", content: <ActorActivities actorId={actorId} /> },
 ]

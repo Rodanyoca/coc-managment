@@ -1,7 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useMemo, useState } from "react"
 import Link from "next/link"
 import { AlertCircle, Building2, CheckCircle2, Network, Search, Settings, ShieldAlert, TriangleAlert, UsersRound } from "lucide-react"
 import { Header } from "@/components/dashboard/header"
@@ -34,7 +33,6 @@ function EmptyRow({ columns }: { columns: number }) {
 }
 
 export default function FederationsClient({ initialData, loadError, canConfigure = false }: { initialData: FederationData; loadError?: string; canConfigure?: boolean }) {
-  const router = useRouter()
   const [federationId, setFederationId] = useState(initialData.federations[0]?.id_federation ?? "")
   const [searchLigues, setSearchLigues] = useState("")
   const [searchEntentes, setSearchEntentes] = useState("")
@@ -67,25 +65,16 @@ export default function FederationsClient({ initialData, loadError, canConfigure
     setClubCity("toutes")
   }
 
-  useEffect(() => {
-    const refreshWhenVisible = () => document.visibilityState === "visible" && router.refresh()
-    document.addEventListener("visibilitychange", refreshWhenVisible)
-    return () => document.removeEventListener("visibilitychange", refreshWhenVisible)
-  }, [router])
-
-  useEffect(() => {
-    if (!initialData.federations.some((item) => item.id_federation === federationId)) {
-      setFederationId(initialData.federations[0]?.id_federation ?? "")
-    }
-  }, [federationId, initialData.federations])
-
-  const federation = initialData.federations.find((item) => item.id_federation === federationId)
+  const effectiveFederationId = initialData.federations.some((item) => item.id_federation === federationId)
+    ? federationId
+    : (initialData.federations[0]?.id_federation ?? "")
+  const federation = initialData.federations.find((item) => item.id_federation === effectiveFederationId)
   const filtered = useMemo(() => ({
-    ligues: initialData.ligues.filter((item) => item.id_federation === federationId),
-    ententes: initialData.ententes.filter((item) => item.id_federation === federationId),
-    clubs: initialData.clubs.filter((item) => item.id_federation === federationId),
-    hierarchie: initialData.hierarchie.filter((item) => item.id_federation === federationId),
-  }), [federationId, initialData])
+    ligues: initialData.ligues.filter((item) => item.id_federation === effectiveFederationId),
+    ententes: initialData.ententes.filter((item) => item.id_federation === effectiveFederationId),
+    clubs: initialData.clubs.filter((item) => item.id_federation === effectiveFederationId),
+    hierarchie: initialData.hierarchie.filter((item) => item.id_federation === effectiveFederationId),
+  }), [effectiveFederationId, initialData])
 
   const hierarchyChain = useMemo(() => buildHierarchyChain(filtered.hierarchie), [filtered.hierarchie])
   const orderedHierarchy = useMemo(() => [...filtered.hierarchie].sort((a, b) => Number(a.niveau || 999) - Number(b.niveau || 999)), [filtered.hierarchie])
@@ -93,7 +82,7 @@ export default function FederationsClient({ initialData, loadError, canConfigure
   const usesEntentes = clubIndex > 0 && normalize(orderedHierarchy[clubIndex - 1]?.nom_structure ?? "").includes("entente")
   const provinceCount = new Set(filtered.ligues.map((item) => item.id_province).filter(Boolean)).size
   const cityCount = new Set([...filtered.ententes.map((item) => item.id_ville), ...filtered.clubs.map((item) => item.id_ville)].filter(Boolean)).size
-  const anomalies = useMemo(() => buildTerritorialAnomalies(initialData, federationId), [initialData, federationId])
+  const anomalies = useMemo(() => buildTerritorialAnomalies(initialData, effectiveFederationId), [initialData, effectiveFederationId])
 
   const criticalCount = anomalies.filter((item) => item.severity === "rouge").length
   const correctlyAttached = filtered.ententes.filter((item) => item.id_ligue_coc && filtered.ligues.some((league) => league.id_ligue_coc === item.id_ligue_coc)).length
@@ -112,7 +101,7 @@ export default function FederationsClient({ initialData, loadError, canConfigure
     <main className="space-y-6 p-4 md:p-6">
       <Card><CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3"><div className="rounded-xl bg-primary/10 p-3"><Building2 className="h-6 w-6 text-primary" /></div><div><div className="flex flex-wrap items-center gap-2"><p className="font-semibold">{federation?.nom_federation || "Sélectionnez une fédération"}</p>{federation?.sigle_federation && <Badge variant="secondary">{federation.sigle_federation}</Badge>}{federation?.statut && <StatusBadge value={federation.statut} />}</div><p className="text-sm text-muted-foreground">{federation?.nom_sport || "Sport non renseigné"}{federation?.date_affiliation_coc ? ` · Affiliée le ${federation.date_affiliation_coc}` : ""}</p></div></div>
-        <div className="flex w-full items-center gap-2 sm:w-auto"><Select value={federationId} onValueChange={changeFederation}><SelectTrigger className="min-w-0 flex-1 sm:w-56"><SelectValue placeholder="Choisir un sigle" /></SelectTrigger><SelectContent>{initialData.federations.map((item) => <SelectItem key={item.id_federation} value={item.id_federation}>{item.sigle_federation || item.nom_federation}</SelectItem>)}</SelectContent></Select>{canConfigure && federationId && <Tooltip><TooltipTrigger asChild><Button asChild variant="outline" size="icon" className="shrink-0" aria-label="Paramétrer la fédération"><Link href={`/dashboard/federations/${encodeURIComponent(federationId)}/parametres`}><Settings className="h-4 w-4" /></Link></Button></TooltipTrigger><TooltipContent>Paramétrer la fédération</TooltipContent></Tooltip>}</div>
+        <div className="flex w-full items-center gap-2 sm:w-auto"><Select value={effectiveFederationId} onValueChange={changeFederation}><SelectTrigger className="min-w-0 flex-1 sm:w-56"><SelectValue placeholder="Choisir un sigle" /></SelectTrigger><SelectContent>{initialData.federations.map((item) => <SelectItem key={item.id_federation} value={item.id_federation}>{item.sigle_federation || item.nom_federation}</SelectItem>)}</SelectContent></Select>{canConfigure && effectiveFederationId && <Tooltip><TooltipTrigger asChild><Button asChild variant="outline" size="icon" className="shrink-0" aria-label="Paramétrer la fédération"><Link href={`/dashboard/federations/${encodeURIComponent(effectiveFederationId)}/parametres`}><Settings className="h-4 w-4" /></Link></Button></TooltipTrigger><TooltipContent>Paramétrer la fédération</TooltipContent></Tooltip>}</div>
       </CardContent></Card>
 
       {!federation ? <Alert><ShieldAlert className="h-4 w-4" /><AlertTitle>Aucune fédération disponible</AlertTitle><AlertDescription>Vérifiez les colonnes du référentiel FEDERATIONS.</AlertDescription></Alert> : <>

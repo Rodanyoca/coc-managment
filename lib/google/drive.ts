@@ -35,6 +35,31 @@ export type DriveUploadResult = {
   url: string
 }
 
+export async function uploadPrivateFileToDrive(params: { fileName: string; mimeType: string; buffer: Buffer; folderId: string }): Promise<DriveUploadResult> {
+  try {
+    const drive = google.drive({ version: "v3", auth: getDriveAuth() })
+    const response = await drive.files.create({ requestBody: { name: params.fileName, parents: [params.folderId] }, media: { mimeType: params.mimeType, body: Readable.from(params.buffer) }, fields: "id" })
+    const fileId = response.data.id
+    if (!fileId) throw new Error("Upload Drive échoué : aucun ID retourné")
+    return { fileId, url: `https://drive.google.com/file/d/${fileId}/view` }
+  } catch (error) {
+    throw driveError(error)
+  }
+}
+
+export async function downloadDriveFile(fileId: string): Promise<{ buffer: Buffer; mimeType: string; name: string }> {
+  try {
+    const drive = google.drive({ version: "v3", auth: getDriveAuth() })
+    const [metadata, content] = await Promise.all([
+      drive.files.get({ fileId, fields: "name,mimeType" }),
+      drive.files.get({ fileId, alt: "media" }, { responseType: "arraybuffer" }),
+    ])
+    return { buffer: Buffer.from(content.data as ArrayBuffer), mimeType: metadata.data.mimeType || "application/pdf", name: metadata.data.name || "document.pdf" }
+  } catch (error) {
+    throw driveError(error)
+  }
+}
+
 export async function verifyDriveFolderAccess(folderId: string): Promise<void> {
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })

@@ -10,12 +10,13 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Check, FileText, Loader2, Upload, X } from "lucide-react"
+import Image from "next/image"
 import { Fragment, ReactNode, useCallback, useRef, useState } from "react"
 
 const MAX_SIZE_MB = 5
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
 
-type MediaTypeKey = "avatar" | "passeport" | "courrier" | "document"
+type MediaTypeKey = "avatar" | "passeport"
 
 const MEDIA_CONFIGS: Record<
   MediaTypeKey,
@@ -31,16 +32,6 @@ const MEDIA_CONFIGS: Record<
     acceptedExtensions: ".pdf",
     formatLabel: "PDF",
   },
-  courrier: {
-    acceptedMime: ["application/pdf"],
-    acceptedExtensions: ".pdf",
-    formatLabel: "PDF",
-  },
-  document: {
-    acceptedMime: ["application/pdf"],
-    acceptedExtensions: ".pdf",
-    formatLabel: "PDF",
-  },
 }
 
 interface MediaUploadDialogProps {
@@ -49,8 +40,6 @@ interface MediaUploadDialogProps {
   description?: string
   actorType?: string
   actorId?: string
-  courrierCode?: string
-  documentId?: string
   identityFields?: { label: string; value: string }[]
   trigger: ReactNode
   onSuccess?: (result: { fileId: string; url: string }) => void
@@ -62,8 +51,6 @@ export function MediaUploadDialog({
   description,
   actorType,
   actorId,
-  courrierCode,
-  documentId,
   identityFields,
   trigger,
   onSuccess,
@@ -122,8 +109,6 @@ export function MediaUploadDialog({
       formData.append("mediaType", mediaType)
       if (actorType) formData.append("actorType", actorType)
       if (actorId) formData.append("actorId", actorId)
-      if (courrierCode) formData.append("courrierCode", courrierCode)
-      if (documentId) formData.append("documentId", documentId)
 
       const res = await fetch("/api/upload-media", { method: "POST", body: formData })
       const data = await res.json()
@@ -145,7 +130,7 @@ export function MediaUploadDialog({
     } finally {
       setUploading(false)
     }
-  }, [file, mediaType, actorType, actorId, courrierCode, documentId, onSuccess, reset])
+  }, [file, mediaType, actorType, actorId, onSuccess, reset])
 
   return (
     <Dialog
@@ -207,9 +192,12 @@ export function MediaUploadDialog({
               <div className="space-y-2">
                 {isImage && preview ? (
                   <div className="relative">
-                    <img
+                    <Image
                       src={preview}
                       alt="Aperçu"
+                      width={640}
+                      height={256}
+                      unoptimized
                       className="w-full max-h-64 object-contain rounded-lg border border-border"
                     />
                     <Button

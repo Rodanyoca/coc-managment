@@ -1,179 +1,46 @@
 "use client"
 
-import { Header } from "@/components/dashboard/header"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { MediaUploadDialog } from "@/components/dashboard/media-upload-dialog"
-import { ArrowLeft, FileText, Image, Download, ExternalLink, Upload } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { ArrowLeft, Download, Pencil, Upload } from "lucide-react"
+import { toast } from "sonner"
+import { DocumentForm } from "@/components/dashboard/document-form"
+import { Header } from "@/components/dashboard/header"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import type { DocumentRecord, DocumentReferences } from "@/lib/documents/types"
 
-export type DocumentDetail = {
-  id: string
-  nom: string
-  type: string
-  module: string
-  entite: string
-  taille: string
-  note: string
-  driveUrl: string | null
-}
+const formatSize = (value: string) => { const bytes = Number(value); if (!Number.isFinite(bytes) || bytes <= 0) return "—"; return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} Mo` : `${Math.ceil(bytes / 1024)} Ko` }
 
-export default function DocumentDetailClient({ doc }: { doc: DocumentDetail }) {
-  const [driveUrl, setDriveUrl] = useState(doc.driveUrl)
-
-  const isPdf = (doc.type || "").toLowerCase().includes("pdf")
-  const isImage = (doc.type || "").toLowerCase().match(/image|jpg|jpeg|png|webp/)
-
-  return (
-    <div className="min-h-screen">
-      <Header title={doc.nom} subtitle="Détails du fichier" />
-
-      <div className="p-6 space-y-6">
-        <Link href="/dashboard/documents">
-          <Button variant="ghost" className="gap-2 mb-4">
-            <ArrowLeft className="h-4 w-4" />
-            Retour à la liste
-          </Button>
-        </Link>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="border-border/50">
-              <CardHeader>
-                <CardTitle className="text-base">Aperçu</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    {isPdf ? (
-                      <FileText className="h-5 w-5 text-destructive" />
-                    ) : (
-                      <Image className="h-5 w-5 text-chart-4" />
-                    )}
-                    <p className="text-muted-foreground">
-                      {isPdf ? "Document PDF" : isImage ? "Image" : doc.type || "Fichier"}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-2">
-                    {driveUrl ? (
-                      <>
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={driveUrl} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="h-4 w-4 mr-2" />
-                            Ouvrir
-                          </a>
-                        </Button>
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={driveUrl} download>
-                            <Download className="h-4 w-4 mr-2" />
-                            Télécharger
-                          </a>
-                        </Button>
-                      </>
-                    ) : null}
-                    <MediaUploadDialog
-                      mediaType="document"
-                      title="Lier un PDF au document"
-                      documentId={doc.id}
-                      identityFields={[
-                        { label: "Document", value: doc.nom },
-                        { label: "Module", value: doc.module || "-" },
-                      ]}
-                      trigger={
-                        <Button variant={driveUrl ? "outline" : "default"} size="sm" className="gap-2">
-                          <Upload className="h-4 w-4" />
-                          {driveUrl ? "Remplacer le PDF" : "Ajouter un PDF"}
-                        </Button>
-                      }
-                      onSuccess={({ url }) => setDriveUrl(url)}
-                    />
-                  </div>
-                </div>
-
-                {isPdf && driveUrl ? (
-                  <div className="mt-4 overflow-hidden rounded-lg border border-border/50 bg-muted/20">
-                    <iframe
-                      title={`Aperçu PDF - ${doc.nom}`}
-                      src={`https://drive.google.com/file/d/${driveUrl.match(/[-\w]{25,}/)?.[0] || ""}/preview`}
-                      className="h-[80vh] min-h-[560px] w-full"
-                    />
-                  </div>
-                ) : (
-                  <div className="mt-4 overflow-hidden rounded-lg border border-border/50 bg-muted/20 h-[40vh] flex items-center justify-center">
-                    <p className="text-sm text-muted-foreground">Aucun aperçu disponible</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-6">
-            <Card className="border-border/50">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Résumé</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">ID</p>
-                  <p className="font-mono text-sm">{doc.id}</p>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Nom</p>
-                  <p className="text-sm font-medium break-all">{doc.nom}</p>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Module source</p>
-                  <Badge variant="outline" className="text-xs">
-                    {doc.module || "-"}
-                  </Badge>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Entité liée</p>
-                  <p className="text-sm font-medium">{doc.entite || "-"}</p>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Type</p>
-                  <p className="text-sm font-medium">{doc.type || "-"}</p>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Taille</p>
-                  <p className="text-sm">{doc.taille || "-"}</p>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1">Notes</p>
-                  <div className="rounded-lg border border-border/50 bg-muted/20 p-3">
-                    <p className="text-sm text-muted-foreground">
-                      {doc.note || "Aucune note"}
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
+export default function DocumentDetailClient({ document, references, typeLabel, linkedLabel }: { document: DocumentRecord; references: DocumentReferences; typeLabel: string; linkedLabel: string }) {
+  const router = useRouter()
+  const [editOpen, setEditOpen] = useState(false)
+  const [file, setFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
+  async function replaceFile() {
+    if (!file) return
+    setUploading(true)
+    try {
+      const body = new FormData(); body.append("file", file)
+      const response = await fetch(`/api/documents/${encodeURIComponent(document.id_document)}/file`, { method: "PUT", body })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || "Le fichier n’a pas pu être remplacé.")
+      toast.success(document.drive_document_id ? "Fichier remplacé." : "Fichier ajouté."); setFile(null); router.refresh()
+    } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) }
+    finally { setUploading(false) }
+  }
+  const fields = [
+    ["ID document", document.id_document], ["Nom", document.nom_document], ["Type", typeLabel || "—"],
+    ["Rattachement", document.type_entite_liee ? `${document.type_entite_liee} · ${linkedLabel || document.id_entite_liee}` : "Aucun"],
+    ["Taille", formatSize(document.taille)], ["Fichier", document.drive_document_id ? "Disponible" : "Non disponible"],
+  ]
+  return <div className="min-h-screen"><Header title={document.nom_document} subtitle="Fiche documentaire" /><main className="space-y-6 p-4 sm:p-6">
+    <div className="flex flex-wrap items-center justify-between gap-3"><Button asChild variant="ghost"><Link href="/dashboard/documents"><ArrowLeft className="h-4 w-4" />Retour</Link></Button><Button onClick={() => setEditOpen(true)}><Pencil className="h-4 w-4" />Modifier</Button></div>
+    <div className="grid gap-6 lg:grid-cols-3"><Card className="lg:col-span-2"><CardHeader><CardTitle>Aperçu</CardTitle></CardHeader><CardContent>{document.drive_document_id ? <iframe title={`Aperçu PDF — ${document.nom_document}`} src={`/api/documents/${encodeURIComponent(document.id_document)}/preview`} className="h-[70vh] min-h-[520px] w-full rounded-lg border" /> : <div className="flex h-64 items-center justify-center rounded-lg border bg-muted/20 text-sm text-muted-foreground">Fichier non disponible</div>}<div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center"><Input type="file" accept="application/pdf,.pdf" onChange={(event) => setFile(event.target.files?.[0] || null)} /><Button disabled={!file || uploading} onClick={replaceFile}><Upload className="h-4 w-4" />{uploading ? "Envoi…" : document.drive_document_id ? "Remplacer le fichier" : "Ajouter le fichier"}</Button>{document.drive_document_id && <Button asChild variant="outline"><a href={`/api/documents/${encodeURIComponent(document.id_document)}/download`}><Download className="h-4 w-4" />Télécharger</a></Button>}</div></CardContent></Card>
+      <div className="space-y-6"><Card><CardHeader><CardTitle>Informations</CardTitle></CardHeader><CardContent className="space-y-4">{fields.map(([label, value]) => <div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="mt-1 text-sm font-medium">{value}</p></div>)}</CardContent></Card><Card><CardHeader><CardTitle>Note et observations</CardTitle></CardHeader><CardContent className="space-y-4"><div><p className="text-xs text-muted-foreground">Note</p><p className="mt-1 whitespace-pre-wrap text-sm">{document.note || "—"}</p></div><div><p className="text-xs text-muted-foreground">Observations</p><p className="mt-1 whitespace-pre-wrap text-sm">{document.observations || "—"}</p></div></CardContent></Card></div>
     </div>
-  )
+  </main><Sheet open={editOpen} onOpenChange={setEditOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-xl"><SheetHeader><SheetTitle>Modifier le document</SheetTitle><SheetDescription>L’identifiant et le fichier restent inchangés.</SheetDescription></SheetHeader><div className="px-4"><DocumentForm references={references} documentId={document.id_document} initial={{ nom_document: document.nom_document, id_type_document: document.id_type_document, type_entite_liee: document.type_entite_liee, id_entite_liee: document.id_entite_liee, note: document.note, observations: document.observations }} onSaved={() => setEditOpen(false)} /></div></SheetContent></Sheet></div>
 }

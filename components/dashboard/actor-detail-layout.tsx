@@ -9,8 +9,9 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ArrowLeft, ExternalLink, FileText, Upload } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { ReactNode, useEffect, useState } from "react"
+import { ReactNode, useState } from "react"
 
 interface InfoField {
   label: string
@@ -49,6 +50,10 @@ interface ActorDetailLayoutProps {
     url?: string | null
   }[]
   children?: ReactNode
+}
+
+function ProfileAvatarImage({ src, alt, onError }: { src: string; alt: string; onError: () => void }) {
+  return <Image src={src} alt={alt} fill sizes="96px" className="object-cover" referrerPolicy="no-referrer" unoptimized onError={onError} />
 }
 
 function ageFromBirthDate(value?: string) {
@@ -98,10 +103,6 @@ export function ActorDetailLayout({
   const currentPasseportUrl = uploadedPasseportUrl || urlPasseport || null
   const actorAge = ageFromBirthDate(actorDateNaissance)
 
-  useEffect(() => {
-    setAvatarError(false)
-  }, [avatarUrl])
-
   const identityFields = [
     ...(actorId && showActorId ? [{ label: "ID", value: actorId }] : []),
     { label: "Nom", value: title },
@@ -134,12 +135,10 @@ export function ActorDetailLayout({
               <div className="flex flex-col items-center text-center">
                 <Avatar className="h-24 w-24 mb-4">
                   {currentAvatarUrl && !avatarError ? (
-                    <img
+                    <ProfileAvatarImage
                       key={currentAvatarUrl}
                       src={currentAvatarUrl}
                       alt={title}
-                      className="h-full w-full object-cover rounded-full"
-                      referrerPolicy="no-referrer"
                       onError={() => setAvatarError(true)}
                     />
                   ) : (

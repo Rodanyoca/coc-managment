@@ -1,6 +1,5 @@
 import { Header } from "@/components/dashboard/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Users, Medal, Stethoscope, Scale, UserCog } from "lucide-react"
 import Link from "next/link"
 

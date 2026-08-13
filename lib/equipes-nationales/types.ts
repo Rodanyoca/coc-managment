@@ -1,0 +1,9 @@
+export const NATIONAL_TEAM_HEADERS = ["id_equipe_nationale", "id_federation", "id_sport", "id_discipline", "nom_equipe_nationale", "id_categorie_age", "id_sexe", "statut", "date_debut", "date_fin", "observations"] as const
+export const NATIONAL_TEAM_MEMBER_HEADERS = ["id_membre_equipe_nationale", "id_equipe_nationale", "id_acteur_coc", "id_type_acteur", "role_selection", "date_debut", "date_fin", "statut", "observations"] as const
+export type NationalTeam = Record<(typeof NATIONAL_TEAM_HEADERS)[number], string>
+export type NationalTeamMember = Record<(typeof NATIONAL_TEAM_MEMBER_HEADERS)[number], string>
+export type ReferenceOption = { id: string; label: string; secondary?: string; parentId?: string }
+export type NationalTeamReferences = { federations: ReferenceOption[]; sports: ReferenceOption[]; disciplines: ReferenceOption[]; ageCategories: ReferenceOption[]; sexes: ReferenceOption[]; roles: ReferenceOption[]; ageCategoriesAvailable: boolean; rolesReferentialAvailable: boolean }
+export const ACTOR_TYPES = ["ATHLETE", "COACH", "MEDECIN", "OFFICIEL", "ARBITRE"] as const
+export type ActorType = (typeof ACTOR_TYPES)[number]
+export const NATIONAL_TEAM_ROLES = ["ATHLETE", "COACH_PRINCIPAL", "ASSISTANT_COACH", "MEDECIN", "PREPARATEUR", "SPARRING_PARTNER", "OFFICIEL", "AUTRE"] as const

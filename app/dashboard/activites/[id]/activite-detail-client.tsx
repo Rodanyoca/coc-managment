@@ -1,142 +1,56 @@
 "use client"
 
-import { Header } from "@/components/dashboard/header"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { ArrowLeft, Calendar, CheckCircle2, Clock, AlertCircle, User, Flag, MapPin } from "lucide-react"
 import Link from "next/link"
-import { cn } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { ArrowLeft, Pencil, Plus } from "lucide-react"
+import { toast } from "sonner"
+import { Header } from "@/components/dashboard/header"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { ActorSearchSelect } from "@/components/dashboard/actor-search-select"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { formatPeriod } from "@/lib/activites/format"
+import { ACTOR_TYPES, type Activity, type ActivityEntity, type ActivityParticipant, type ActivityReferences } from "@/lib/activites/types"
+import type { DocumentRecord } from "@/lib/documents/types"
+import { ActivityForm, activityStatusLabels, emptyActivityForm } from "../activites-client"
 
-export type ActiviteDetail = {
-  id: string
-  titre: string
-  description: string
-  lieu: string
-  dateDebut: string
-  dateFin: string
-  statut: "planifie" | "en_cours" | "termine" | "annule"
-  priorite: "haute" | "moyenne" | "normale"
-  responsable: string
-}
+const actorLabels: Record<string, string> = { ATHLETE: "Athlète", COACH: "Coach", OFFICIEL: "Officiel", MEDECIN: "Médecin", ARBITRE: "Arbitre" }
+const participantEmpty = { id_type_acteur: "", id_acteur_coc: "", role_activite: "", statut_participation: "PREVU" }
 
-const statutConfig = {
-  planifie: { label: "Planifié", icon: Calendar, className: "bg-chart-1/10 text-chart-1" },
-  en_cours: { label: "En cours", icon: Clock, className: "bg-chart-2/10 text-chart-2" },
-  termine: { label: "Terminé", icon: CheckCircle2, className: "bg-coc-green/10 text-coc-green" },
-  annule: { label: "Annulé", icon: AlertCircle, className: "bg-destructive/10 text-destructive" },
-}
+export default function Detail({ activity, references, initialParticipants, participantsError, initialEntities, entitiesError, actorNames, activityDocuments }: { activity: Activity; references: ActivityReferences; initialParticipants: ActivityParticipant[]; participantsError: boolean; initialEntities: ActivityEntity[]; entitiesError: boolean; actorNames: Record<string, string>; activityDocuments?: DocumentRecord[] }) {
+  const router = useRouter()
+  const [editOpen, setEditOpen] = useState(false)
+  const [participantOpen, setParticipantOpen] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [editId, setEditId] = useState("")
+  const [form, setForm] = useState({ ...emptyActivityForm, ...Object.fromEntries(Object.keys(emptyActivityForm).map((key) => [key, activity[key as keyof Activity] || ""])) })
+  const [selectedEntities, setSelectedEntities] = useState(initialEntities.map((item) => item.id_entite))
+  const [pform, setPform] = useState(participantEmpty)
+  const [actors, setActors] = useState<{ id: string; label: string }[]>([])
+  const [actorSearchOpen, setActorSearchOpen] = useState(false)
+  const [actorsLoading, setActorsLoading] = useState(false)
+  const name = (items: ActivityReferences["types"], id: string) => items.find((item) => item.id === id)?.label || "—"
 
-const prioriteConfig = {
-  haute: { label: "Haute", className: "bg-destructive/10 text-destructive" },
-  moyenne: { label: "Moyenne", className: "bg-chart-2/10 text-chart-2" },
-  normale: { label: "Normale", className: "bg-muted text-muted-foreground" },
-}
+  async function saveActivity() { setSaving(true); try { const response = await fetch("/api/activites", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: activity.id_activite, row: form, entityIds: selectedEntities }) }); const result = await response.json(); if (!response.ok) throw new Error(result.error); if (result.partialError) toast.warning(result.partialError); else toast.success("Activité modifiée."); setEditOpen(false); router.refresh() } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) } }
+  async function loadActors(type: string) { setPform((current) => ({ ...current, id_type_acteur: type, id_acteur_coc: "" })); setActors([]); setActorsLoading(true); try { const response = await fetch(`/api/activites/${activity.id_activite}/participants?type=${encodeURIComponent(type)}`, { cache: "no-store" }); const result = await response.json(); if (!response.ok) throw new Error(result.error || "Impossible de charger les acteurs."); const loadedActors = Array.isArray(result.actors) ? result.actors : []; setActors(loadedActors); if (!loadedActors.length) toast.info("Aucun acteur enregistré pour ce type.") } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setActorsLoading(false) } }
+  function addParticipant() { setEditId(""); setPform(participantEmpty); setActors([]); setActorSearchOpen(false); setParticipantOpen(true) }
+  function editParticipant(row: ActivityParticipant) { setEditId(row.id_participation); setPform({ id_type_acteur: row.id_type_acteur, id_acteur_coc: row.id_acteur_coc, role_activite: row.role_activite, statut_participation: row.statut_participation }); setActors([{ id: row.id_acteur_coc, label: actorNames[row.id_acteur_coc] || row.id_acteur_coc }]); setParticipantOpen(true) }
+  async function saveParticipant() { setSaving(true); try { const response = await fetch(`/api/activites/${activity.id_activite}/participants`, { method: editId ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editId, row: pform }) }); const result = await response.json(); if (!response.ok) throw new Error(result.error); toast.success(editId ? "Participation modifiée." : "Participant ajouté."); setParticipantOpen(false); router.refresh() } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) } }
 
-export default function ActiviteDetailClient({
-  activite,
-}: {
-  activite: ActiviteDetail
-}) {
-  const StatutIcon = statutConfig[activite.statut].icon
-
-  return (
-    <div className="min-h-screen">
-      <Header title={activite.titre} subtitle="Détails de l'activité" />
-
-      <div className="p-6 space-y-6">
-        <Link href="/dashboard/activites">
-          <Button variant="ghost" className="gap-2 mb-4">
-            <ArrowLeft className="h-4 w-4" />
-            Retour à la liste
-          </Button>
-        </Link>
-
-        <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-6">
-            <Card className="border-border/50">
-              <CardHeader>
-                <CardTitle className="text-base">Description</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{activite.description || "-"}</p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border/50">
-              <CardHeader>
-                <CardTitle className="text-base">Période</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <Calendar className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Dates</p>
-                    <p className="font-medium">
-                      {activite.dateDebut === activite.dateFin
-                        ? activite.dateDebut
-                        : `${activite.dateDebut} - ${activite.dateFin}`}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <MapPin className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Lieu</p>
-                    <p className="font-medium">{activite.lieu || "-"}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <div className="space-y-6">
-            <Card className="border-border/50">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Informations</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  <div>
-                    <p className="text-xs text-muted-foreground">Responsable</p>
-                    <p className="font-medium text-sm">{activite.responsable || "-"}</p>
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <Flag className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">Priorité</p>
-                  </div>
-                  <Badge
-                    variant="secondary"
-                    className={cn("text-xs", prioriteConfig[activite.priorite].className)}
-                  >
-                    {prioriteConfig[activite.priorite].label}
-                  </Badge>
-                </div>
-
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <StatutIcon className="h-4 w-4 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">Statut</p>
-                  </div>
-                  <Badge
-                    variant="secondary"
-                    className={cn("text-xs", statutConfig[activite.statut].className)}
-                  >
-                    {statutConfig[activite.statut].label}
-                  </Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  return <div><Header title={activity.nom_activite} subtitle="Fiche activité" /><main className="space-y-6 p-4 sm:p-6">
+    <div className="flex justify-between"><Link href="/dashboard/activites"><Button variant="ghost"><ArrowLeft className="mr-2 h-4 w-4" />Retour</Button></Link><Button onClick={() => setEditOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button></div>
+    <div className="grid gap-5 lg:grid-cols-3"><Card className="lg:col-span-2"><CardHeader><CardTitle>Informations générales</CardTitle></CardHeader><CardContent className="grid gap-4 sm:grid-cols-2">{[["ID", activity.id_activite], ["Nom", activity.nom_activite], ["Titre public", activity.titre_public], ["Type", name(references.types, activity.id_type_activite)], ["Entité organisatrice", name(references.entites, activity.id_entite_organisatrice)], ["Période", formatPeriod(activity.date_debut, activity.date_fin)], ["Localisation", [activity.pays, activity.ville, activity.lieu].filter(Boolean).join(" — ") || "—"]].map(([label, value]) => <div key={label}><p className="text-xs text-muted-foreground">{label}</p><p className="font-medium">{value || "—"}</p></div>)}<div><p className="text-xs text-muted-foreground">Statut</p><Badge>{activityStatusLabels[activity.statut_normalise]}</Badge></div></CardContent></Card><Card><CardHeader><CardTitle>Résumé</CardTitle></CardHeader><CardContent className="whitespace-pre-wrap text-sm text-muted-foreground">{activity.resume || "Aucun résumé."}</CardContent></Card></div>
+    <Card><CardHeader><CardTitle>Entités</CardTitle></CardHeader><CardContent className="overflow-x-auto p-0">{entitiesError ? <p className="p-5 text-destructive">Impossible de charger les entités participantes.</p> : <Table><TableHeader><TableRow><TableHead>Entité</TableHead><TableHead>Rôle</TableHead><TableHead>Statut</TableHead></TableRow></TableHeader><TableBody>{initialEntities.map((row) => <TableRow key={row.id_activite_entite}><TableCell>{name(references.entites, row.id_entite)}</TableCell><TableCell>{row.role_entite}</TableCell><TableCell><Badge variant="secondary">{row.statut_participation}</Badge></TableCell></TableRow>)}{!initialEntities.length && <TableRow><TableCell colSpan={3} className="h-20 text-center">Aucune entité participante.</TableCell></TableRow>}</TableBody></Table>}</CardContent></Card>
+    <Card><CardHeader className="flex-row items-center justify-between"><CardTitle>Participants</CardTitle><Button size="sm" onClick={addParticipant}><Plus className="mr-2 h-4 w-4" />Ajouter un participant</Button></CardHeader><CardContent className="overflow-x-auto p-0">{participantsError ? <p className="p-5 text-destructive">Impossible de charger les participants.</p> : <Table><TableHeader><TableRow><TableHead>Acteur</TableHead><TableHead>Type</TableHead><TableHead>Rôle</TableHead><TableHead>Statut</TableHead><TableHead /></TableRow></TableHeader><TableBody>{initialParticipants.map((row) => <TableRow key={row.id_participation}><TableCell>{actorNames[row.id_acteur_coc] || row.id_acteur_coc}</TableCell><TableCell>{actorLabels[row.id_type_acteur] || row.id_type_acteur}</TableCell><TableCell>{row.role_activite}</TableCell><TableCell><Badge variant="secondary">{row.statut_participation}</Badge></TableCell><TableCell><Button variant="ghost" size="sm" onClick={() => editParticipant(row)}>Modifier</Button></TableCell></TableRow>)}{!initialParticipants.length && <TableRow><TableCell colSpan={5} className="h-24 text-center">Aucun participant.</TableCell></TableRow>}</TableBody></Table>}</CardContent></Card>
+    {activityDocuments && <Card><CardHeader><CardTitle>Documents</CardTitle></CardHeader><CardContent className="overflow-x-auto p-0"><Table><TableHeader><TableRow><TableHead>Document</TableHead><TableHead>Type</TableHead><TableHead>Taille</TableHead><TableHead /></TableRow></TableHeader><TableBody>{activityDocuments.map((document) => <TableRow key={document.id_document}><TableCell className="font-medium">{document.nom_document}</TableCell><TableCell>{document.id_type_document}</TableCell><TableCell>{document.taille ? `${Math.ceil(Number(document.taille) / 1024)} Ko` : "—"}</TableCell><TableCell><Button asChild variant="ghost" size="sm"><Link href={`/dashboard/documents/${document.id_document}`}>Voir</Link></Button></TableCell></TableRow>)}{!activityDocuments.length && <TableRow><TableCell colSpan={4} className="h-20 text-center text-muted-foreground">Aucun document lié.</TableCell></TableRow>}</TableBody></Table></CardContent></Card>}
+  </main>
+  <Sheet open={editOpen} onOpenChange={setEditOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier l’activité</SheetTitle><SheetDescription>L’identifiant reste immuable.</SheetDescription></SheetHeader><ActivityForm form={form} setForm={setForm} refs={references} selectedEntities={selectedEntities} setSelectedEntities={setSelectedEntities} /><SheetFooter><Button variant="outline" onClick={() => setEditOpen(false)}>Annuler</Button><Button disabled={saving} onClick={saveActivity}>{saving ? "Enregistrement…" : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet>
+  <Sheet open={participantOpen} onOpenChange={setParticipantOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-lg"><SheetHeader><SheetTitle>{editId ? "Modifier la participation" : "Ajouter un participant"}</SheetTitle><SheetDescription>L’identité de l’acteur ne peut plus être changée après création.</SheetDescription></SheetHeader><div className="grid gap-4 px-4"><div className="space-y-2"><Label>Type d’acteur *</Label><Select disabled={!!editId} value={pform.id_type_acteur} onValueChange={loadActors}><SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent>{ACTOR_TYPES.map((type) => <SelectItem key={type} value={type}>{actorLabels[type]}</SelectItem>)}</SelectContent></Select></div><div className="space-y-2"><Label>Acteur *</Label><ActorSearchSelect open={actorSearchOpen} onOpenChange={setActorSearchOpen} actors={actors} value={pform.id_acteur_coc} onChange={(value) => setPform((current) => ({ ...current, id_acteur_coc: value }))} disabled={!!editId || !pform.id_type_acteur} loading={actorsLoading} /></div><div className="space-y-2"><Label>Rôle *</Label><Input value={pform.role_activite} onChange={(event) => setPform((current) => ({ ...current, role_activite: event.target.value }))} /></div><div className="space-y-2"><Label>Statut *</Label><Select value={pform.statut_participation} onValueChange={(value) => setPform((current) => ({ ...current, statut_participation: value }))}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{["PREVU", "CONFIRME", "PRESENT", "ABSENT", "ANNULE"].map((status) => <SelectItem key={status} value={status}>{status}</SelectItem>)}</SelectContent></Select></div></div><SheetFooter><Button variant="outline" onClick={() => setParticipantOpen(false)}>Annuler</Button><Button disabled={saving} onClick={saveParticipant}>{saving ? "Enregistrement…" : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet>
+  </div>
 }

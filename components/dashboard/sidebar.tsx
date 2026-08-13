@@ -1,13 +1,14 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import {
   LayoutDashboard,
   Users,
   Trophy,
-  Mail,
+  Shield,
   Calendar,
   Landmark,
   FileText,
@@ -51,13 +52,10 @@ const allNavigation = [
     ],
   },
   {
-    name: "Courriers",
-    href: "/dashboard/courriers",
-    icon: Mail,
-    roles: ["coc"],
-    children: [
-      { name: "Consultation", href: "/dashboard/courriers" },
-    ],
+    name: "Équipes nationales",
+    href: "/dashboard/equipes-nationales",
+    icon: Shield,
+    roles: ["coc", "technique"],
   },
   {
     name: "Activités",
@@ -81,7 +79,7 @@ const allNavigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Compétitions", "Courriers", "Activités", "Documents"])
+  const [expandedItems, setExpandedItems] = useState<string[]>(["Acteurs", "Compétitions", "Activités", "Documents"])
   const [role, setRole] = useState<string>("coc")
 
   useEffect(() => {
@@ -108,7 +106,7 @@ export function Sidebar() {
       <div className="flex flex-col h-full">
         <div className="flex h-20 shrink-0 items-center justify-center border-b border-sidebar-border px-4">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <img
+            <Image
               src="/images/logo-coc.png"
               alt="COC Logo"
               width={50}

@@ -1,235 +1,43 @@
 "use client"
 
-import { Header } from "@/components/dashboard/header"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Search, FileText, Folder, HardDrive, Eye, ExternalLink } from "lucide-react"
-import { useMemo, useState } from "react"
 import Link from "next/link"
+import { useMemo, useState } from "react"
+import { Eye, Plus, Search } from "lucide-react"
+import { Header } from "@/components/dashboard/header"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import type { DocumentRecord, DocumentReferences } from "@/lib/documents/types"
 
-export type DocumentItem = {
-  id: string
-  nom: string
-  moduleSource: string
-  entiteLie: string
-  taille: string
-  type: string
-  note: string
-  urlDriveDocument: string
-  idDriveDocument: string
-}
+type Item = DocumentRecord & { typeLabel: string; linkedLabel: string }
+const PAGE_SIZE = 10
+const formatSize = (value: string) => { const bytes = Number(value); if (!Number.isFinite(bytes) || bytes <= 0) return "—"; return bytes >= 1024 * 1024 ? `${(bytes / 1024 / 1024).toFixed(1)} Mo` : `${Math.ceil(bytes / 1024)} Ko` }
 
-function parseSizeToMB(size: string): number {
-  const value = Number(size.replace(/[^0-9.]/g, ""))
-  if (Number.isNaN(value)) return 0
-  const lower = size.toLowerCase()
-  if (lower.includes("kb") || lower.includes("ko")) return value / 1024
-  if (lower.includes("gb") || lower.includes("go")) return value * 1024
-  return value
-}
+export default function DocumentsClient({ items, references }: { items: Item[]; references: DocumentReferences }) {
+  const [query, setQuery] = useState("")
+  const [typeFilter, setTypeFilter] = useState("TOUS")
+  const [entityTypeFilter, setEntityTypeFilter] = useState("TOUS")
+  const [page, setPage] = useState(1)
+  const filtered = useMemo(() => {
+    const search = query.trim().toLocaleLowerCase("fr")
+    return items.filter((item) => (!search || [item.id_document, item.nom_document, item.typeLabel, item.note, item.type_entite_liee, item.linkedLabel].join(" ").toLocaleLowerCase("fr").includes(search)) && (typeFilter === "TOUS" || item.id_type_document === typeFilter) && (entityTypeFilter === "TOUS" || item.type_entite_liee === entityTypeFilter))
+  }, [items, query, typeFilter, entityTypeFilter])
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const currentPage = Math.min(page, pageCount)
+  const visible = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
+  const storage = items.reduce((sum, item) => sum + (Number(item.taille) || 0), 0)
+  const linked = items.filter((item) => item.type_entite_liee && item.id_entite_liee).length
+  const documentTypes = references.hasDocumentTypeReferential ? references.documentTypes : [...new Map(items.filter((item) => item.id_type_document).map((item) => [item.id_type_document, { id: item.id_type_document, label: item.typeLabel }])).values()]
+  function filter(setter: (value: string) => void, value: string) { setter(value); setPage(1) }
 
-export default function DocumentsClient(props: { items: DocumentItem[] }) {
-  const items = props.items ?? []
-
-  const [searchQuery, setSearchQuery] = useState("")
-  const [moduleFilter, setModuleFilter] = useState("Tous")
-  const [typeFilter, setTypeFilter] = useState("Tous")
-
-  const modules = useMemo(() => {
-    const set = new Set(items.map((d) => d.moduleSource).filter(Boolean))
-    return ["Tous", ...Array.from(set).sort()]
-  }, [items])
-
-  const types = useMemo(() => {
-    const set = new Set(items.map((d) => d.type).filter(Boolean))
-    return ["Tous", ...Array.from(set).sort()]
-  }, [items])
-
-  const filteredItems = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase()
-    return items.filter((doc) => {
-      const matchesSearch =
-        q.length === 0 ||
-        doc.nom.toLowerCase().includes(q) ||
-        doc.entiteLie.toLowerCase().includes(q)
-      const matchesModule = moduleFilter === "Tous" || doc.moduleSource === moduleFilter
-      const matchesType = typeFilter === "Tous" || doc.type === typeFilter
-      return matchesSearch && matchesModule && matchesType
-    })
-  }, [items, searchQuery, moduleFilter, typeFilter])
-
-  const stats = useMemo(() => {
-    const totalFichiers = items.length
-    const modulesCount = new Set(items.map((d) => d.moduleSource).filter(Boolean)).size
-    const totalStorageMB = items.reduce((sum, d) => sum + parseSizeToMB(d.taille), 0)
-    return { totalFichiers, modulesCount, totalStorageMB }
-  }, [items])
-
-  return (
-    <div className="min-h-screen">
-      <Header title="Documents & Médias" subtitle="Vue transverse de tous les fichiers" />
-
-      <div className="p-6 space-y-6">
-        {/* Stats */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          <Card className="border-border/50">
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="rounded-lg p-3 bg-primary/10 text-primary">
-                <FileText className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{stats.totalFichiers}</p>
-                <p className="text-sm text-muted-foreground">Total fichiers</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-border/50">
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="rounded-lg p-3 bg-chart-2/10 text-chart-2">
-                <Folder className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{stats.modulesCount}</p>
-                <p className="text-sm text-muted-foreground">Modules</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="border-border/50">
-            <CardContent className="p-4 flex items-center gap-4">
-              <div className="rounded-lg p-3 bg-chart-4/10 text-chart-4">
-                <HardDrive className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{stats.totalStorageMB.toFixed(1)} MB</p>
-                <p className="text-sm text-muted-foreground">Stockage</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-between">
-          <div className="flex flex-1 gap-3 flex-wrap">
-            <div className="relative flex-1 min-w-[200px] max-w-md">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                placeholder="Rechercher un fichier..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <Select value={moduleFilter} onValueChange={setModuleFilter}>
-              <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Module" />
-              </SelectTrigger>
-              <SelectContent>
-                {modules.map((mod) => (
-                  <SelectItem key={mod} value={mod}>{mod}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={typeFilter} onValueChange={setTypeFilter}>
-              <SelectTrigger className="w-[150px]">
-                <SelectValue placeholder="Type" />
-              </SelectTrigger>
-              <SelectContent>
-                {types.map((t) => (
-                  <SelectItem key={t} value={t}>{t}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Documents Table */}
-        <Card className="border-border/50">
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow className="hover:bg-transparent">
-                  <TableHead>Nom du fichier</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Module</TableHead>
-                  <TableHead>Entité liée</TableHead>
-                  <TableHead>Taille</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredItems.map((doc) => (
-                  <TableRow key={doc.id}>
-                    <TableCell>
-                      <span className="font-medium">{doc.nom || "-"}</span>
-                    </TableCell>
-                    <TableCell>
-                      {doc.type ? (
-                        <Badge variant="outline" className="text-xs">{doc.type}</Badge>
-                      ) : "-"}
-                    </TableCell>
-                    <TableCell>
-                      {doc.moduleSource ? (
-                        <Badge variant="secondary" className="text-xs">{doc.moduleSource}</Badge>
-                      ) : "-"}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {doc.entiteLie || "-"}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {doc.taille || "-"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-1">
-                        <Link href={`/dashboard/documents/${doc.id}`}>
-                          <Button variant="ghost" size="icon" className="h-8 w-8" title="Voir plus" aria-label="Voir plus">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                        {doc.urlDriveDocument && (
-                          <a href={doc.urlDriveDocument} target="_blank" rel="noopener noreferrer">
-                            <Button variant="ghost" size="icon" className="h-8 w-8" title="Ouvrir dans Drive" aria-label="Ouvrir dans Drive">
-                              <ExternalLink className="h-4 w-4" />
-                            </Button>
-                          </a>
-                        )}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {filteredItems.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                      Aucun document trouvé
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* Pagination Info */}
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>Affichage de {filteredItems.length} sur {items.length} fichiers</span>
-        </div>
-      </div>
-    </div>
-  )
+  return <div className="min-h-screen"><Header title="Documents" subtitle="Référentiel documentaire" /><main className="space-y-6 p-4 sm:p-6">
+    <div className="flex justify-end"><Button asChild><Link href="/dashboard/documents/nouveau"><Plus className="h-4 w-4" />Nouveau document</Link></Button></div>
+    <div className="grid gap-3 sm:grid-cols-4">{[["Total documents", items.length], ["Documents liés", linked], ["Documents non liés", items.length - linked], ["Stockage", formatSize(String(storage))]].map(([label, value]) => <Card key={label}><CardContent className="p-4"><p className="text-2xl font-semibold tabular-nums">{value}</p><p className="text-sm text-muted-foreground">{label}</p></CardContent></Card>)}</div>
+    <div className="flex flex-col gap-3 sm:flex-row"><div className="relative flex-1 sm:max-w-md"><Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><Input className="pl-9" placeholder="Rechercher un document…" value={query} onChange={(event) => filter(setQuery, event.target.value)} /></div><Select value={typeFilter} onValueChange={(value) => filter(setTypeFilter, value)}><SelectTrigger className="sm:w-52"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les types</SelectItem>{documentTypes.map((type) => <SelectItem key={type.id} value={type.id}>{type.label}</SelectItem>)}</SelectContent></Select><Select value={entityTypeFilter} onValueChange={(value) => filter(setEntityTypeFilter, value)}><SelectTrigger className="sm:w-52"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les rattachements</SelectItem>{references.entityTypes.map((type) => <SelectItem key={type.id} value={type.id}>{type.label}</SelectItem>)}</SelectContent></Select></div>
+    <Card><CardContent className="overflow-x-auto p-0"><Table><TableHeader><TableRow><TableHead>ID</TableHead><TableHead>Document</TableHead><TableHead>Type</TableHead><TableHead>Rattachement</TableHead><TableHead>Taille</TableHead><TableHead>Fichier</TableHead><TableHead /></TableRow></TableHeader><TableBody>{visible.map((item) => <TableRow key={item.id_document}><TableCell className="font-mono text-xs">{item.id_document}</TableCell><TableCell className="font-medium">{item.nom_document}</TableCell><TableCell>{item.typeLabel || "—"}</TableCell><TableCell>{item.type_entite_liee ? `${item.type_entite_liee} · ${item.linkedLabel || item.id_entite_liee}` : "—"}</TableCell><TableCell>{formatSize(item.taille)}</TableCell><TableCell><Badge variant={item.drive_document_id ? "secondary" : "outline"}>{item.drive_document_id ? "Disponible" : "Non disponible"}</Badge></TableCell><TableCell><Button asChild variant="ghost" size="icon"><Link href={`/dashboard/documents/${item.id_document}`} aria-label="Voir le document"><Eye className="h-4 w-4" /></Link></Button></TableCell></TableRow>)}{!visible.length && <TableRow><TableCell colSpan={7} className="h-24 text-center text-muted-foreground">Aucun document trouvé.</TableCell></TableRow>}</TableBody></Table></CardContent></Card>
+    {pageCount > 1 && <div className="flex items-center justify-between text-sm text-muted-foreground"><span>Page {currentPage} sur {pageCount} · {filtered.length} document(s)</span><div className="flex gap-2"><Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>Précédent</Button><Button variant="outline" size="sm" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}>Suivant</Button></div></div>}
+  </main></div>
 }

@@ -57,9 +57,8 @@ async function withTimeout<T>(
   }
 }
 
-function getSheetCredentials(spreadsheetIdOverride?: string) {
-  const spreadsheetId = spreadsheetIdOverride || process.env.GOOGLE_SHEETS_SPREADSHEET_ID
-  if (!spreadsheetId) throw new Error("Missing GOOGLE_SHEETS_SPREADSHEET_ID")
+function getSheetCredentials(spreadsheetId: string) {
+  if (!spreadsheetId?.trim()) throw new Error("Identifiant du classeur Google Sheets manquant.")
   return { spreadsheetId }
 }
 
@@ -96,7 +95,7 @@ function valuesToRecords(values: unknown[][]): Record<string, string>[] {
 export async function getSheetRows(params: {
   sheetName: string
   range?: string
-  spreadsheetId?: string
+  spreadsheetId: string
   bypassCache?: boolean
 }): Promise<Record<string, string>[]> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
@@ -118,11 +117,10 @@ export async function getSheetRows(params: {
   const timeoutMs = Number.parseInt(process.env.GOOGLE_SHEETS_TIMEOUT_MS ?? "20000", 10)
 
   const res = await withTimeout(
-    (sheets.spreadsheets.values.get({
+    sheets.spreadsheets.values.get({
       spreadsheetId,
       range,
-      signal: controller.signal,
-    } as any) as unknown as Promise<any>),
+    }, { signal: controller.signal }),
     timeoutMs,
     () => controller.abort()
   ).catch((err) => {
@@ -141,7 +139,7 @@ export async function getSheetRows(params: {
   return result
 }
 
-export async function getSheetHeaders(params: { sheetName: string; spreadsheetId?: string; bypassCache?: boolean }): Promise<string[]> {
+export async function getSheetHeaders(params: { sheetName: string; spreadsheetId: string }): Promise<string[]> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const safeSheetName = String(params.sheetName).replace(/'/g, "''")
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
@@ -152,7 +150,7 @@ export async function getSheetHeaders(params: { sheetName: string; spreadsheetId
 
 export async function getSheetsRows(params: {
   sheetNames: string[]
-  spreadsheetId?: string
+  spreadsheetId: string
 }): Promise<Record<string, Record<string, string>[]>> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
@@ -173,7 +171,7 @@ export async function updateSheetCell(params: {
   idValue: string
   targetColumn: string
   value: string
-  spreadsheetId?: string
+  spreadsheetId: string
 }): Promise<void> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
 
@@ -183,7 +181,7 @@ export async function updateSheetCell(params: {
   const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
   const range = `'${safeSheetName}'!A:Z`
 
-  const res = await sheets.spreadsheets.values.get({ spreadsheetId, range } as any) as any
+  const res = await sheets.spreadsheets.values.get({ spreadsheetId, range })
   const values: unknown[][] = (res?.data?.values ?? []) as unknown[][]
   if (values.length === 0) throw new Error("Sheet is empty")
 
@@ -213,7 +211,7 @@ export async function updateSheetCell(params: {
     range: cellRange,
     valueInputOption: "RAW",
     requestBody: { values: [[params.value]] },
-  } as any)
+  })
 }
 
 function columnToLetter(colIdx: number): string {
@@ -229,7 +227,7 @@ export async function updateSheetCells(params: {
   idColumn: string
   idValue: string
   updates: { column: string; value: string }[]
-  spreadsheetId?: string
+  spreadsheetId: string
 }): Promise<void> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
 
@@ -239,7 +237,7 @@ export async function updateSheetCells(params: {
   const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
   const range = `'${safeSheetName}'!A:Z`
 
-  const res = await sheets.spreadsheets.values.get({ spreadsheetId, range } as any) as any
+  const res = await sheets.spreadsheets.values.get({ spreadsheetId, range })
   const values: unknown[][] = (res?.data?.values ?? []) as unknown[][]
   if (values.length === 0) throw new Error("La feuille est vide")
 
@@ -270,7 +268,7 @@ export async function updateSheetCells(params: {
     values: [[value]],
   }))
 
-  await (sheets.spreadsheets.values.batchUpdate as any)({
+  await sheets.spreadsheets.values.batchUpdate({
     spreadsheetId,
     requestBody: {
       valueInputOption: "RAW",
@@ -283,7 +281,7 @@ export async function updateSheetCells(params: {
 export async function appendSheetRow(params: {
   sheetName: string
   row: Record<string, string>
-  spreadsheetId?: string
+  spreadsheetId: string
 }): Promise<void> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets"])
@@ -306,7 +304,7 @@ export async function deleteSheetRow(params: {
   sheetName: string
   idColumn: string
   idValue: string
-  spreadsheetId?: string
+  spreadsheetId: string
 }): Promise<void> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets"])

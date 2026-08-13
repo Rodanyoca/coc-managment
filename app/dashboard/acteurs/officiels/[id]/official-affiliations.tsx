@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import type { OfficialAffiliation } from "@/lib/acteurs/official-affiliations"
@@ -24,7 +24,6 @@ export function OfficialAffiliations({ officialId, initialRows, organisations, f
   const [form, setForm] = useState<Form>(empty)
   const entityNames = new Map(organisations.map((item) => [item.id, item.sigle || item.nom]))
   const functionNames = new Map(functions.map((item) => [item.id, item.nom]))
-  useEffect(() => setRows(initialRows), [initialRows])
   function update<K extends keyof Form>(key: K, value: Form[K]) { setForm((current) => ({ ...current, [key]: value })) }
   function add() { setEditingId(""); setForm(empty); setOpen(true) }
   function edit(row: OfficialAffiliation) { setEditingId(row.id_affiliation); setForm({ id_entite: row.id_entite, id_fonction: row.id_fonction, date_debut: row.date_debut, date_fin: row.date_fin, statut: row.statut || "ACTIF", observations: row.observations }); setOpen(true) }

@@ -1,52 +1,19 @@
 import { notFound } from "next/navigation"
-import { getSheetRows } from "@/lib/google/sheets"
+import { Header } from "@/components/dashboard/header"
+import { getDocument, getDocumentReferences } from "@/lib/documents/data"
 import DocumentDetailClient from "./document-detail-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
-export default async function DocumentDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
+export default async function DocumentDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const docId = (id || "").trim()
-
-  let rows: Record<string, string>[] = []
-  try {
-    rows = await getSheetRows({ sheetName: "DOCUMENT" })
-  } catch (err) {
-    const message = err instanceof Error ? err.message : String(err)
-    return (
-      <div className="p-6">
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-          <div className="font-semibold">Erreur Google Sheets</div>
-          <div className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">{message}</div>
-        </div>
-      </div>
-    )
-  }
-
-  const row = rows.find((r) => (r["id_document"] || "").trim() === docId)
-
-  if (!row) {
-    notFound()
-  }
-
-  const driveUrl = (row["url_drive_document"] || "").trim()
-
-  const doc = {
-    id: docId,
-    nom: (row["nom"] || "").trim(),
-    type: (row["type"] || row["type "] || "").trim(),
-    module: (row["module_source"] || "").trim(),
-    entite: (row["entite_lie"] || "").trim(),
-    taille: (row["taille"] || "").trim(),
-    note: (row["note"] || "").trim(),
-    driveUrl: driveUrl.length > 0 ? driveUrl : null,
-  }
-
-  return <DocumentDetailClient doc={doc} />
+  const result = await Promise.all([getDocument(id), getDocumentReferences()]).then(([document, references]) => ({ document, references, error: false as const })).catch((error) => { console.error("Document detail page error", error); return { document: null, references: null, error: true as const } })
+  if (result.error) return <div className="min-h-screen"><Header title="Document" subtitle="Fiche documentaire" /><main className="p-6"><p className="rounded-lg border border-destructive/30 p-4 text-destructive">Impossible de charger le document.</p></main></div>
+  const document = result.document
+  if (!document) notFound()
+  const linked = document.type_entite_liee ? result.references.entities[document.type_entite_liee as keyof typeof result.references.entities]?.find((option) => option.id === document.id_entite_liee) : undefined
+  const typeLabel = result.references.documentTypes.find((type) => type.id === document.id_type_document)?.label || document.id_type_document
+  return <DocumentDetailClient document={document} references={result.references} typeLabel={typeLabel} linkedLabel={linked?.label || document.id_entite_liee} />
 }

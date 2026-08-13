@@ -34,7 +34,7 @@ export default function ArbitresClient({ arbitres, federations, grades }: { arbi
   const filtered = useMemo(() => { const q = search.trim().toLowerCase(); return !q ? arbitres : arbitres.filter((item) => [item.nomComplet, item.federation, item.grade, item.statut].some((v) => v.toLowerCase().includes(q))) }, [arbitres, search])
   function update<K extends keyof ArbitreForm>(key: K, value: ArbitreForm[K]) { setForm((current) => ({ ...current, [key]: value })) }
   function close() { setOpen(false); setForm(emptyArbitreForm); setAvatar(null); setPassport(null) }
-  function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const valid = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!valid || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); type === "avatar" ? setAvatar(file) : setPassport(file) }
+  function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const valid = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!valid || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }
   async function upload(file: File, type: "avatar" | "passeport", id: string) { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "arbitres"); data.append("actorId", id); const res = await fetch("/api/upload-media", { method: "POST", body: data }); const out = await res.json(); if (!res.ok) throw new Error(out.error || "Échec du média") }
   async function save() {
     if (!form.nom_complet || !form.id_federation || !form.id_sexe) return toast.error("Nom, fédération et sexe sont obligatoires.")
@@ -45,7 +45,7 @@ export default function ArbitresClient({ arbitres, federations, grades }: { arbi
       const id = String(out.row?.id_arbitre_coc || "")
       const uploads = [avatar ? upload(avatar, "avatar", id) : null, passport ? upload(passport, "passeport", id) : null].filter(Boolean) as Promise<void>[]
       const settled = await Promise.allSettled(uploads)
-      settled.some((item) => item.status === "rejected") ? toast.warning("Arbitre créé, mais un média n’a pas pu être envoyé.") : toast.success("Arbitre ajouté.")
+      if (settled.some((item) => item.status === "rejected")) toast.warning("Arbitre créé, mais un média n’a pas pu être envoyé."); else toast.success("Arbitre ajouté.")
       close(); router.refresh()
     } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) }
   }

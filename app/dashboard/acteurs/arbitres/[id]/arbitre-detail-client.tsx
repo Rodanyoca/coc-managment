@@ -1,11 +1,13 @@
 "use client"
 
-import { Activity, Mail, MapPin, Medal, Pencil, Phone } from "lucide-react"
+import { Mail, MapPin, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 import type { FederationOption } from "@/lib/federations/options"
 import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
+import { ActorActivities } from "@/components/dashboard/actor-activities"
+import { ActorNationalTeams } from "@/components/dashboard/actor-national-teams"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
@@ -23,9 +25,8 @@ export function ArbitreDetailClient({ arbitre: initial, federations, grades }: {
   const [avatar, setAvatar] = useState<File | null>(null)
   const [passport, setPassport] = useState<File | null>(null)
   const [form, setForm] = useState<ArbitreForm>({ ...emptyArbitreForm, id_arbitre_federation: initial.idFederal, id_federation: initial.idFederation, id_national: initial.idNational, id_international: initial.idInternational, nom_complet: initial.nomComplet, id_sexe: sexId(initial.sexe), date_de_naissance: initial.dateNaissance, lieu_de_naissance: initial.lieuNaissance, nationalite: initial.nationalite, telephone: initial.telephone, email: initial.email, adresse: initial.adresse, id_grade: initial.idGrade, date_affiliation: initial.dateAffiliation, numero_passeport: initial.numeroPasseport, date_de_delivrance_passeport: initial.dateDelivrancePasseport, date_expiration_passeport: initial.dateExpirationPasseport, statut: initial.statut === "inactif" ? "INACTIF" : "ACTIF" })
-  useEffect(() => setArbitre(initial), [initial])
   function update<K extends keyof ArbitreForm>(key: K, value: ArbitreForm[K]) { setForm((current) => ({ ...current, [key]: value })) }
-  function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const valid = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!valid || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); type === "avatar" ? setAvatar(file) : setPassport(file) }
+  function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const valid = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!valid || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }
   async function upload(file: File, type: "avatar" | "passeport") { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "arbitres"); data.append("actorId", arbitre.id); const res = await fetch("/api/upload-media", { method: "POST", body: data }); const out = await res.json(); if (!res.ok) throw new Error(out.error || "Échec du média"); return out as { url: string } }
   async function save() {
     if (!form.nom_complet || !form.id_federation || !form.id_sexe) return toast.error("Nom, fédération et sexe sont obligatoires.")
@@ -41,11 +42,11 @@ export function ArbitreDetailClient({ arbitre: initial, federations, grades }: {
   }
   const info = [{ label: "ID national", value: arbitre.idNational || "—" }, { label: "ID fédéral", value: arbitre.idFederal || "—" }, { label: "ID international", value: arbitre.idInternational || "—" }, { label: "Nom complet", value: arbitre.nomComplet }, { label: "Sexe", value: arbitre.sexe === "F" ? "Femme" : "Homme" }, { label: "Date de naissance", value: arbitre.dateNaissance || "—" }, { label: "Lieu de naissance", value: arbitre.lieuNaissance || "—" }, { label: "Nationalité", value: arbitre.nationalite || "—" }, { label: "Fédération", value: arbitre.federation ? <Badge variant="outline">{arbitre.federation}</Badge> : "—" }, { label: "Grade", value: arbitre.grade || "—" }, { label: "Date d’affiliation", value: arbitre.dateAffiliation || "—" }]
   const contacts = [arbitre.telephone ? { label: "Téléphone", value: arbitre.telephone, icon: <Phone className="h-4 w-4" /> } : null, arbitre.email ? { label: "E-mail", value: arbitre.email, icon: <Mail className="h-4 w-4" /> } : null, arbitre.adresse ? { label: "Adresse", value: arbitre.adresse, icon: <MapPin className="h-4 w-4" /> } : null].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
-  return <><ActorDetailLayout backHref="/dashboard/acteurs/arbitres" backLabel="Retour aux arbitres" title={arbitre.nomComplet} subtitle={arbitre.grade || arbitre.federation || undefined} avatarInitials={initials(arbitre.nomComplet)} avatarColorClass="bg-chart-5/10 text-chart-5" avatarUrl={arbitre.avatarUrl} urlPasseport={arbitre.urlPasseport} passportInfo={[{ label: "N° Passeport", value: arbitre.numeroPasseport || "—" }, { label: "Délivré le", value: arbitre.dateDelivrancePasseport || "—" }, { label: "Expire le", value: arbitre.dateExpirationPasseport || "—" }]} actorType="arbitres" actorId={arbitre.id} showActorId={false} actorDateNaissance={arbitre.dateNaissance} actorSexe={arbitre.sexe} status={arbitre.statut} mainInfo={info} contactInfo={contacts} additionalSections={comingSoonSections} profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>} />
+  return <><ActorDetailLayout backHref="/dashboard/acteurs/arbitres" backLabel="Retour aux arbitres" title={arbitre.nomComplet} subtitle={arbitre.grade || arbitre.federation || undefined} avatarInitials={initials(arbitre.nomComplet)} avatarColorClass="bg-chart-5/10 text-chart-5" avatarUrl={arbitre.avatarUrl} urlPasseport={arbitre.urlPasseport} passportInfo={[{ label: "N° Passeport", value: arbitre.numeroPasseport || "—" }, { label: "Délivré le", value: arbitre.dateDelivrancePasseport || "—" }, { label: "Expire le", value: arbitre.dateExpirationPasseport || "—" }]} actorType="arbitres" actorId={arbitre.id} showActorId={false} actorDateNaissance={arbitre.dateNaissance} actorSexe={arbitre.sexe} status={arbitre.statut} mainInfo={info} contactInfo={contacts} additionalSections={activitySections(arbitre.id)} profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>} />
   <Sheet open={open} onOpenChange={setOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier l’arbitre</SheetTitle><SheetDescription>Le grade est alimenté par le référentiel GRADES_ARBITRE.</SheetDescription></SheetHeader><ArbitreFields form={form} update={update} federations={federations} grades={grades} pick={pick} /><SheetFooter><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button disabled={saving} onClick={save}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet></>
 }
 
-const comingSoonSections = [
-  { id: "selections", label: "Sélections", content: <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed bg-muted/20 px-6 text-center"><Medal className="mb-4 h-10 w-10 text-muted-foreground" /><h3 className="font-semibold">Sélections</h3><p className="mt-1 text-sm text-muted-foreground">Bientôt disponible</p></div> },
-  { id: "activites", label: "Activités", content: <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed bg-muted/20 px-6 text-center"><Activity className="mb-4 h-10 w-10 text-muted-foreground" /><h3 className="font-semibold">Activités</h3><p className="mt-1 text-sm text-muted-foreground">Bientôt disponible</p></div> },
+const activitySections = (actorId: string) => [
+  { id: "equipes-nationales", label: "Équipes nationales", content: <ActorNationalTeams actorId={actorId} /> },
+  { id: "activites", label: "Activités", content: <ActorActivities actorId={actorId} /> },
 ]

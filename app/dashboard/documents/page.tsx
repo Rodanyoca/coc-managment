@@ -1,48 +1,19 @@
-import { getSheetRows } from "@/lib/google/sheets"
-
-import DocumentsClient, { type DocumentItem } from "./documents-client"
+import { Header } from "@/components/dashboard/header"
+import { getDocumentReferences, getDocuments } from "@/lib/documents/data"
+import DocumentsClient from "./documents-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
 
 export default async function DocumentsPage() {
-  let rows: Record<string, string>[] = []
-  let loadError: string | null = null
-
-  try {
-    rows = await getSheetRows({ sheetName: "DOCUMENT" })
-  } catch (err) {
-    loadError = err instanceof Error ? err.message : String(err)
-  }
-
-  if (loadError) {
-    return (
-      <div className="p-6">
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-          <div className="font-semibold">Erreur Google Sheets</div>
-          <div className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">{loadError}</div>
-        </div>
-      </div>
-    )
-  }
-
-  const items: DocumentItem[] = (rows ?? [])
-    .map((r) => {
-      const id = String(r.id_document ?? "").trim()
-      return {
-        id,
-        nom: String(r.nom ?? "").trim(),
-        moduleSource: String(r.module_source ?? "").trim(),
-        entiteLie: String(r.entite_lie ?? "").trim(),
-        taille: String(r.taille ?? "").trim(),
-        type: String(r.type ?? "").trim(),
-        note: String(r.note ?? "").trim(),
-        urlDriveDocument: String(r.url_drive_document ?? "").trim(),
-        idDriveDocument: String(r.id_drive_document ?? "").trim(),
-      }
+  const result = await Promise.all([getDocuments(), getDocumentReferences()]).then(([documents, references]) => ({ documents, references, error: false as const })).catch((error) => { console.error("Documents page error", error); return { documents: [], references: null, error: true as const } })
+  if (result.error) return <div className="min-h-screen"><Header title="Documents" subtitle="Référentiel documentaire" /><main className="p-6"><p className="rounded-lg border border-destructive/30 p-4 text-destructive">Impossible de charger les documents.</p></main></div>
+  const items = result.documents.map((document) => {
+      const options = document.type_entite_liee ? result.references.entities[document.type_entite_liee as keyof typeof result.references.entities] || [] : []
+      const linked = options.find((option) => option.id === document.id_entite_liee)
+      const type = result.references.documentTypes.find((option) => option.id === document.id_type_document)
+      return { ...document, typeLabel: type?.label || document.id_type_document, linkedLabel: linked?.label || document.id_entite_liee }
     })
-    .filter((item) => item.id.length > 0)
-
-  return <DocumentsClient items={items} />
+  return <DocumentsClient items={items} references={result.references} />
 }

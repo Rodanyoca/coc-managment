@@ -97,7 +97,7 @@ export async function getSession(): Promise<SessionPayload | null> {
 }
 
 // ── Role access map ────────────────────────────────────────────────────
-const TECHNIQUE_ALLOWED = ["/dashboard", "/dashboard/acteurs", "/dashboard/competitions", "/dashboard/activites"]
+const TECHNIQUE_ALLOWED = ["/dashboard", "/dashboard/acteurs", "/dashboard/competitions", "/dashboard/equipes-nationales", "/dashboard/activites"]
 
 export function isRouteAllowed(role: UserRole, pathname: string): boolean {
   if (role === "coc") return true

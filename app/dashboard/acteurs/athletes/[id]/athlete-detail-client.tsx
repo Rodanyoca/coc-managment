@@ -1,11 +1,13 @@
 "use client"
 
-import { Activity, Mail, MapPin, Medal, Pencil, Phone } from "lucide-react"
+import { Mail, MapPin, Medal, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
+import { ActorActivities } from "@/components/dashboard/actor-activities"
+import { ActorNationalTeams } from "@/components/dashboard/actor-national-teams"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -125,12 +127,6 @@ export function AthleteDetailClient({
     "date_expiration passeport": athlete.dateExpirationPasseport,
     statut: athlete.statut === "inactif" ? "INACTIF" : "ACTIF",
   })
-
-  // Un router.refresh() met à jour les props du composant sans le remonter.
-  // Synchroniser l'état local empêche une ancienne image de rester affichée.
-  useEffect(() => {
-    setAthlete(initialAthlete)
-  }, [initialAthlete])
 
   const age = getAgeFromDateString(athlete.dateNaissance)
   const mainInfo = [
@@ -261,6 +257,7 @@ export function AthleteDetailClient({
         mainInfo={mainInfo}
         contactInfo={contactInfo}
         additionalSections={[
+          { id: "equipes-nationales", label: "Équipes nationales", content: <ActorNationalTeams actorId={athlete.id} /> },
           {
             id: "selections",
             label: "Sélections",
@@ -275,13 +272,7 @@ export function AthleteDetailClient({
           {
             id: "activites",
             label: "Activités",
-            content: (
-              <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed bg-muted/20 px-6 text-center">
-                <Activity className="mb-4 h-10 w-10 text-muted-foreground" />
-                <h3 className="font-semibold">Activités</h3>
-                <p className="mt-1 text-sm text-muted-foreground">Bientôt disponible</p>
-              </div>
-            ),
+            content: <ActorActivities actorId={athlete.id} />,
           },
         ]}
         profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>}

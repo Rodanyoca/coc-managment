@@ -1,74 +1,17 @@
-﻿import { getSheetRows } from "@/lib/google/sheets"
-
-import ActivitesClient, { type ActiviteListItem } from "./activites-client"
-
-export const runtime = "nodejs"
-export const dynamic = "force-dynamic"
-export const revalidate = 0
-
-function normalizeStatut(value: string): ActiviteListItem["statut"] {
-  const v = (value ?? "").trim().toUpperCase()
-  if (v === "PLANIFIE" || v === "PLANIFIEE") return "planifie"
-  if (v === "EN COURS" || v === "EN_COURS") return "en_cours"
-  if (v === "TERMINE" || v === "TERMINEE") return "termine"
-  if (v === "ANNULE" || v === "ANNULEE") return "annule"
-  return "planifie"
-}
-
-function normalizePriorite(value: string): ActiviteListItem["priorite"] {
-  const v = (value ?? "").trim().toUpperCase()
-  if (v === "HAUTE") return "haute"
-  if (v === "MOYENNE") return "moyenne"
-  if (v === "NORMALE") return "normale"
-  return "normale"
-}
-
-function fallbackYearFromDate(value: string): string {
-  const v = String(value ?? "").trim()
-  if (!v) return ""
-
-  const m = v.match(/(\d{4})/)
-  return m?.[1] ?? ""
-}
-
+import { getActivities, getActivityReferences } from "@/lib/activites/data"
+import ActivitesClient from "./activites-client"
+export const runtime = "nodejs"; export const dynamic = "force-dynamic"; export const revalidate = 0; export const fetchCache = "force-no-store"
 export default async function ActivitesPage() {
-  let rows: Record<string, string>[] = []
-  let loadError: string | null = null
-
+  let props: React.ComponentProps<typeof ActivitesClient>
   try {
-    rows = await getSheetRows({ sheetName: "ACTIVITES" })
-  } catch (err) {
-    loadError = err instanceof Error ? err.message : String(err)
+    const [activities, references] = await Promise.all([getActivities(), getActivityReferences()])
+    props = { initialRows: activities, references }
+  } catch (error) {
+    props = {
+      initialRows: [],
+      references: { entites: [], types: [] },
+      loadError: error instanceof Error ? error.message : String(error),
+    }
   }
-
-  if (loadError) {
-    return (
-      <div className="p-6">
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-4">
-          <div className="font-semibold">Erreur Google Sheets</div>
-          <div className="mt-2 text-sm text-muted-foreground whitespace-pre-wrap">{loadError}</div>
-        </div>
-      </div>
-    )
-  }
-
-  const activites: ActiviteListItem[] = (rows ?? [])
-    .map((r) => {
-      const id = String(r.id_activite ?? "").trim()
-      const annee = String((r as any).annee ?? "").trim() || fallbackYearFromDate(String(r.date_debut ?? ""))
-      return {
-        id,
-        titre: String(r.nom_activite ?? "").trim(),
-        dateDebut: String(r.date_debut ?? "").trim(),
-        dateFin: String(r.date_fin ?? "").trim(),
-        annee,
-        responsable: String(r.responsable ?? "").trim(),
-        priorite: normalizePriorite(String(r.priorite ?? "")),
-        lieu: String(r.lieu ?? "").trim(),
-        statut: normalizeStatut(String(r.statut ?? "")),
-      }
-    })
-    .filter((a) => a.id.length > 0)
-
-  return <ActivitesClient activites={activites} />
+  return <ActivitesClient {...props} />
 }
