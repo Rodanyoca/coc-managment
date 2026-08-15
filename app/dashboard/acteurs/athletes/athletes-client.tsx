@@ -218,7 +218,9 @@ export function AthletesClient({
       const failedUploads = uploadResults.filter((item) => item.status === "rejected")
 
       if (failedUploads.length) {
-        toast.warning(`Athlète créé, mais ${failedUploads.length} fichier(s) n'ont pas pu être envoyé(s).`)
+        const reason = failedUploads[0].reason
+        const detail = reason instanceof Error ? reason.message : String(reason || "Erreur inconnue")
+        toast.warning(`Athlète créé, mais ${failedUploads.length} fichier(s) n'ont pas pu être envoyé(s) : ${detail}`)
       } else {
         toast.success("Athlète ajouté avec succès.")
       }

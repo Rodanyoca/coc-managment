@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath } from "next/cache"
-import { deleteDriveFile, uploadFileToDrive, verifyDriveFolderAccess } from "@/lib/google/drive"
+import { deleteDriveFile, uploadFileToDrive, uploadPrivateFileToDrive, verifyDriveFolderAccess } from "@/lib/google/drive"
 import { getSheetRows, updateSheetCells } from "@/lib/google/sheets"
 import { getSession } from "@/lib/auth"
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
@@ -56,7 +56,8 @@ export async function POST(request: NextRequest) {
     const existingFileId = actor[driveIdColumn] || ""
     const ext = file.name.split(".").pop() || (mediaType === "avatar" ? "jpg" : "pdf")
     const fileName = `${mediaType === "avatar" ? "AVATAR" : "PASSEPORT"}_${actorConfig.fileLabel}_${actorId}.${ext}`
-    const uploaded = await uploadFileToDrive({ fileName, mimeType: file.type, buffer: Buffer.from(await file.arrayBuffer()), folderId })
+    const upload = mediaType === "passeport" ? uploadPrivateFileToDrive : uploadFileToDrive
+    const uploaded = await upload({ fileName, mimeType: file.type, buffer: Buffer.from(await file.arrayBuffer()), folderId })
 
     try {
       await updateSheetCells({ sheetName: actorConfig.sheetName, idColumn: actorConfig.idColumn, idValue: actorId, spreadsheetId, updates: [
