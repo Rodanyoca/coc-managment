@@ -13,7 +13,7 @@ import { Check, FileText, Loader2, Upload, X } from "lucide-react"
 import Image from "next/image"
 import { Fragment, ReactNode, useCallback, useRef, useState } from "react"
 
-const MAX_SIZE_MB = 5
+const MAX_SIZE_MB = 4
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024
 
 type MediaTypeKey = "avatar" | "passeport"
@@ -111,12 +111,14 @@ export function MediaUploadDialog({
       if (actorId) formData.append("actorId", actorId)
 
       const res = await fetch("/api/upload-media", { method: "POST", body: formData })
-      const data = await res.json()
+      const data = await res.json().catch(() => null)
 
       if (!res.ok) {
-        setError(data.error || "Erreur lors de l'upload")
+        setError(data?.error || (res.status === 413 ? `Le fichier dépasse ${MAX_SIZE_MB} Mo.` : `Erreur d’envoi (${res.status}).`))
         return
       }
+
+      if (!data) throw new Error("Réponse d’envoi invalide")
 
       setSuccess(true)
       onSuccess?.({ fileId: data.fileId, url: data.url })

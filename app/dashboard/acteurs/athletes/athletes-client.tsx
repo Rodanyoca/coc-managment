@@ -160,8 +160,8 @@ export function AthletesClient({
       toast.error(mediaType === "avatar" ? "Utilisez une image PNG, JPG ou WebP." : "Le passeport doit être un PDF.")
       return
     }
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("Le fichier ne doit pas dépasser 5 Mo.")
+    if (file.size > 4 * 1024 * 1024) {
+      toast.error("Le fichier ne doit pas dépasser 4 Mo.")
       return
     }
     if (mediaType === "avatar") setAvatarFile(file)
@@ -175,8 +175,8 @@ export function AthletesClient({
     data.append("actorType", "athletes")
     data.append("actorId", athleteId)
     const response = await fetch("/api/upload-media", { method: "POST", body: data })
-    const result = await response.json()
-    if (!response.ok) throw new Error(result.error || `Échec de l'envoi du fichier ${mediaType}`)
+    const result = await response.json().catch(() => null)
+    if (!response.ok) throw new Error(result?.error || (response.status === 413 ? "Le fichier dépasse 4 Mo." : `Échec de l'envoi du fichier ${mediaType} (${response.status})`))
   }
 
   async function save() {
@@ -453,7 +453,7 @@ export function AthletesClient({
                     onChange={(event) => selectFile(event.target.files?.[0], "avatar")}
                   />
                   <p className="text-xs text-muted-foreground">
-                    {avatarFile ? avatarFile.name : "PNG, JPG ou WebP — 5 Mo maximum"}
+                    {avatarFile ? avatarFile.name : "PNG, JPG ou WebP — 4 Mo maximum"}
                   </p>
                 </div>
                 <div className="space-y-2 rounded-lg border border-border p-4">
@@ -468,7 +468,7 @@ export function AthletesClient({
                     onChange={(event) => selectFile(event.target.files?.[0], "passeport")}
                   />
                   <p className="text-xs text-muted-foreground">
-                    {passportFile ? passportFile.name : "PDF — 5 Mo maximum"}
+                    {passportFile ? passportFile.name : "PDF — 4 Mo maximum"}
                   </p>
                 </div>
               </div>

@@ -154,8 +154,8 @@ export function AthleteDetailClient({
     const accepted = type === "avatar"
       ? ["image/png", "image/jpeg", "image/jpg", "image/webp"]
       : ["application/pdf"]
-    if (!accepted.includes(file.type) || file.size > 5 * 1024 * 1024) {
-      toast.error(type === "avatar" ? "Avatar invalide ou supérieur à 5 Mo." : "Passeport PDF invalide ou supérieur à 5 Mo.")
+    if (!accepted.includes(file.type) || file.size > 4 * 1024 * 1024) {
+      toast.error(type === "avatar" ? "Avatar invalide ou supérieur à 4 Mo." : "Passeport PDF invalide ou supérieur à 4 Mo.")
       return
     }
     if (type === "avatar") setAvatarFile(file)
@@ -169,8 +169,9 @@ export function AthleteDetailClient({
     data.append("actorType", "athletes")
     data.append("actorId", athlete.id)
     const response = await fetch("/api/upload-media", { method: "POST", body: data })
-    const result = await response.json()
-    if (!response.ok) throw new Error(result.error || "Échec du média")
+    const result = await response.json().catch(() => null)
+    if (!response.ok) throw new Error(result?.error || (response.status === 413 ? "Le fichier dépasse 4 Mo." : `Échec du média (${response.status})`))
+    if (!result) throw new Error("Réponse d’envoi invalide")
     return result as { fileId: string; url: string }
   }
 

@@ -5,7 +5,9 @@ import { getSheetRows, updateSheetCells } from "@/lib/google/sheets"
 import { getSession } from "@/lib/auth"
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
 
-const MAX_SIZE_BYTES = 5 * 1024 * 1024
+// Keep enough headroom for multipart metadata under Vercel's 4.5 MB
+// function request-body limit.
+const MAX_SIZE_BYTES = 4 * 1024 * 1024
 const IMAGE_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp"]
 type MediaType = "avatar" | "passeport"
 
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (!FOLDER_ENV[mediaType]) return NextResponse.json({ error: "Type de média invalide" }, { status: 400 })
     if (!actorType || !actorId || !ACTOR_CONFIG[actorType]) return NextResponse.json({ error: "Type d’acteur ou identifiant invalide" }, { status: 400 })
     if (!ACCEPTED_TYPES[mediaType].includes(file.type)) return NextResponse.json({ error: `Format non supporté. Utilisez ${mediaType === "avatar" ? "PNG, JPG ou WebP" : "PDF"}.` }, { status: 400 })
-    if (file.size > MAX_SIZE_BYTES) return NextResponse.json({ error: "Le fichier dépasse la taille maximale de 5 Mo." }, { status: 400 })
+    if (file.size > MAX_SIZE_BYTES) return NextResponse.json({ error: "Le fichier dépasse la taille maximale de 4 Mo." }, { status: 400 })
     const folderId = process.env[FOLDER_ENV[mediaType]]
     if (!folderId) return NextResponse.json({ error: `Variable ${FOLDER_ENV[mediaType]} manquante` }, { status: 500 })
 
