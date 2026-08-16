@@ -37,7 +37,7 @@ function nextId(values: string[], prefix: string) {
 
 export async function getCompetitions() {
   await assertHeaders(COMPETITIONS_SHEET, COMPETITION_HEADERS)
-  return (await getSheetRows({ sheetName: COMPETITIONS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), bypassCache: true })).map(mapCompetition).filter((row) => row.id_competition)
+  return (await getSheetRows({ sheetName: COMPETITIONS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId() })).map(mapCompetition).filter((row) => row.id_competition)
 }
 
 export async function getCompetition(id: string) {
@@ -46,11 +46,11 @@ export async function getCompetition(id: string) {
 
 export async function getTeamParticipations(competitionId?: string) {
   await assertHeaders(TEAMS_SHEET, TEAM_PARTICIPATION_HEADERS)
-  return (await getSheetRows({ sheetName: TEAMS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), bypassCache: true })).map(mapParticipation).filter((row) => row.id_participation_equipe && (!competitionId || row.id_competition === competitionId))
+  return (await getSheetRows({ sheetName: TEAMS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId() })).map(mapParticipation).filter((row) => row.id_participation_equipe && (!competitionId || row.id_competition === competitionId))
 }
 
 async function getCompetitionTypes() {
-  const rows = await getSheetRows({ sheetName: "TYPES_COMPETITION", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true })
+  const rows = await getSheetRows({ sheetName: "TYPES_COMPETITION", spreadsheetId: getReferentialSpreadsheetId() })
   return rows.filter((row) => row.id_type_competition).map((row) => ({ id: clean(row.id_type_competition), label: clean(row.nom_type_competition) || clean(row.id_type_competition) }))
 }
 

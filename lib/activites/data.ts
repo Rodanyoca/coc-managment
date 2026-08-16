@@ -11,10 +11,10 @@ const activity=(row:Record<string,string>)=>({...map(row,ACTIVITY_HEADERS),statu
 const entity=(row:Record<string,string>)=>map(row,ACTIVITY_ENTITY_HEADERS) as ActivityEntity
 const participant=(row:Record<string,string>)=>map(row,PARTICIPANT_HEADERS) as ActivityParticipant
 async function assertHeaders(sheetName:string,expected:readonly string[]){const headers=await getSheetHeaders({sheetName,spreadsheetId:getActivitesSpreadsheetId()});const missing=expected.filter(key=>!headers.includes(key));if(missing.length)throw new Error(`En-têtes manquants dans ${sheetName} : ${missing.join(", ")}`)}
-export async function getActivities(){await assertHeaders("ACTIVITES",ACTIVITY_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES",spreadsheetId:getActivitesSpreadsheetId(),bypassCache:true})).map(activity)}
+export async function getActivities(){await assertHeaders("ACTIVITES",ACTIVITY_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES",spreadsheetId:getActivitesSpreadsheetId()})).map(activity)}
 export async function getActivity(id:string){return(await getActivities()).find(x=>x.id_activite===id)}
-export async function getActivityEntities(activityId?:string){await assertHeaders("ACTIVITES_ENTITES",ACTIVITY_ENTITY_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_ENTITES",spreadsheetId:getActivitesSpreadsheetId(),bypassCache:true})).map(entity).filter(x=>!activityId||x.id_activite===activityId)}
-export async function getParticipants(activityId?:string,actorId?:string){await assertHeaders("ACTIVITES_PARTICIPANTS",PARTICIPANT_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_PARTICIPANTS",spreadsheetId:getActivitesSpreadsheetId(),bypassCache:true})).map(participant).filter(x=>(!activityId||x.id_activite===activityId)&&(!actorId||x.id_acteur_coc===actorId))}
+export async function getActivityEntities(activityId?:string){await assertHeaders("ACTIVITES_ENTITES",ACTIVITY_ENTITY_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_ENTITES",spreadsheetId:getActivitesSpreadsheetId()})).map(entity).filter(x=>!activityId||x.id_activite===activityId)}
+export async function getParticipants(activityId?:string,actorId?:string){await assertHeaders("ACTIVITES_PARTICIPANTS",PARTICIPANT_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_PARTICIPANTS",spreadsheetId:getActivitesSpreadsheetId()})).map(participant).filter(x=>(!activityId||x.id_activite===activityId)&&(!actorId||x.id_acteur_coc===actorId))}
 export async function getActivityReferences():Promise<ActivityReferences>{const id=getReferentialSpreadsheetId();const[entites,types]=await Promise.all(["ENTITES","TYPES_ACTIVITE"].map(sheetName=>getSheetRows({sheetName,spreadsheetId:id})));return{entites:entites.filter(r=>r.id_entite).map(r=>({id:r.id_entite,label:r.nom_entite,secondary:r.sigle_entite})),types:types.filter(r=>r.id_type_activite).map(r=>({id:r.id_type_activite,label:r.nom_type_activite}))}}
 const nextId=(rows:Record<string,string>[],column:string,prefix:string)=>`${prefix}${String(rows.reduce((max,row)=>{const match=clean(row[column]).match(new RegExp(`^${prefix}(\\d+)$`,"i"));return match?Math.max(max,Number(match[1])):max},0)+1).padStart(4,"0")}`
 async function validateActivity(row:Record<string,string>){if(!row.nom_activite||!row.id_type_activite||!row.id_entite_organisatrice||!row.date_debut||!row.statut)throw new Error("Nom, type, entité organisatrice, date de début et statut sont obligatoires.");if(row.date_fin&&row.date_fin<row.date_debut)throw new Error("La date de fin doit être postérieure ou égale à la date de début.");const refs=await getActivityReferences();if(!refs.types.some(x=>x.id===row.id_type_activite))throw new Error("Type d’activité inconnu.");if(!refs.entites.some(x=>x.id===row.id_entite_organisatrice))throw new Error("Entité organisatrice inconnue.")}
@@ -42,7 +42,7 @@ function normalizeActorType(value: string): ActorType {
 export async function getActors(value: string) {
   const type = normalizeActorType(value)
   const { sheetName, idKey } = actorSheets[type]
-  const rows = await getSheetRows({ sheetName, spreadsheetId: getActeursSpreadsheetId(), bypassCache: true })
+  const rows = await getSheetRows({ sheetName, spreadsheetId: getActeursSpreadsheetId() })
   const actors = rows.map((row) => ({ id: clean(row[idKey]), label: clean(row.nom_complet) || clean(row[idKey]) })).filter((actor) => actor.id)
   if (!actors.length && rows.length) {
     const headers = await getSheetHeaders({ sheetName, spreadsheetId: getActeursSpreadsheetId() })

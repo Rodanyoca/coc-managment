@@ -3,23 +3,23 @@ import "server-only"
 import { google } from "googleapis"
 
 // --- In-memory cache to avoid Google Sheets API quota limits ---
-const CACHE_TTL_MS = 60_000 // 60 seconds
+const CACHE_TTL_MS = Number.parseInt(process.env.GOOGLE_SHEETS_CACHE_TTL_MS ?? "300000", 10)
 type SheetCache = Map<string, { data: Record<string, string>[]; ts: number }>
+type HeaderCache = Map<string, { data: string[]; ts: number }>
 
 // Next.js peut charger ce module dans plusieurs bundles serveur distincts.
 // Un cache global garantit qu'une écriture invalide aussi les lectures des pages.
 const sheetsGlobal = globalThis as typeof globalThis & {
   __cocGoogleSheetsCache?: SheetCache
+  __cocGoogleSheetsHeaderCache?: HeaderCache
 }
 const cache = sheetsGlobal.__cocGoogleSheetsCache ??= new Map()
+const headerCache = sheetsGlobal.__cocGoogleSheetsHeaderCache ??= new Map()
 
 function getCached(key: string): Record<string, string>[] | null {
   const entry = cache.get(key)
   if (!entry) return null
-  if (Date.now() - entry.ts > CACHE_TTL_MS) {
-    cache.delete(key)
-    return null
-  }
+  if (Date.now() - entry.ts > CACHE_TTL_MS) return null
   return entry.data
 }
 
@@ -29,6 +29,7 @@ function setCache(key: string, data: Record<string, string>[]) {
 
 export function clearSheetCache() {
   cache.clear()
+  headerCache.clear()
 }
 
 function getPrivateKey() {
@@ -116,19 +117,26 @@ export async function getSheetRows(params: {
   const controller = new AbortController()
   const timeoutMs = Number.parseInt(process.env.GOOGLE_SHEETS_TIMEOUT_MS ?? "20000", 10)
 
-  const res = await withTimeout(
-    sheets.spreadsheets.values.get({
-      spreadsheetId,
-      range,
-    }, { signal: controller.signal }),
-    timeoutMs,
-    () => controller.abort()
-  ).catch((err) => {
+  let res
+  try {
+    res = await withTimeout(
+      sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range,
+      }, { signal: controller.signal }),
+      timeoutMs,
+      () => controller.abort()
+    )
+  } catch (err) {
+    // En cas de quota temporairement dépassé, une ancienne valeur vaut mieux
+    // qu'une page entièrement indisponible.
+    const stale = !params.bypassCache ? cache.get(cacheKey)?.data : undefined
+    if (stale) return stale
     const message = err instanceof Error ? err.message : String(err)
     throw new Error(
       `Failed to read Google Sheet (spreadsheetId=${spreadsheetId}, range=${range}): ${message}`
     )
-  })
+  }
 
   const values: unknown[][] = (res?.data?.values ?? []) as unknown[][]
   const result = valuesToRecords(values)
@@ -142,10 +150,20 @@ export async function getSheetRows(params: {
 export async function getSheetHeaders(params: { sheetName: string; spreadsheetId: string }): Promise<string[]> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const safeSheetName = String(params.sheetName).replace(/'/g, "''")
+  const cacheKey = `${spreadsheetId}:'${safeSheetName}'!1:1`
+  const cached = headerCache.get(cacheKey)
+  if (cached && Date.now() - cached.ts <= CACHE_TTL_MS) return cached.data
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
-  const result = await sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })
-  return (result.data.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim()).filter(Boolean)
+  try {
+    const result = await sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })
+    const headers = (result.data.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim()).filter(Boolean)
+    headerCache.set(cacheKey, { data: headers, ts: Date.now() })
+    return headers
+  } catch (error) {
+    if (cached) return cached.data
+    throw error
+  }
 }
 
 export async function getSheetsRows(params: {

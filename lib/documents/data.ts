@@ -22,7 +22,7 @@ async function assertDocumentHeaders() {
 
 export async function getDocuments() {
   await assertDocumentHeaders()
-  return (await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), bypassCache: true })).map(mapDocument).filter((document) => document.id_document)
+  return (await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId() })).map(mapDocument).filter((document) => document.id_document)
 }
 
 export async function getDocument(id: string) {
@@ -36,7 +36,7 @@ export async function getDocumentsForEntity(type: string, id: string) {
 
 async function getDocumentTypes(): Promise<{ options: DocumentOption[]; available: boolean }> {
   try {
-    const rows = await getSheetRows({ sheetName: "TYPES_DOCUMENT", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true })
+    const rows = await getSheetRows({ sheetName: "TYPES_DOCUMENT", spreadsheetId: getReferentialSpreadsheetId() })
     return { options: rows.filter((row) => row.id_type_document).map((row) => ({ id: clean(row.id_type_document), label: clean(row.nom_type_document) || clean(row.id_type_document) })), available: true }
   } catch {
     return { options: [], available: false }
