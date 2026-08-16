@@ -111,8 +111,8 @@ export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }
     const accepted = mediaType === "avatar"
       ? ["image/png", "image/jpeg", "image/jpg", "image/webp"]
       : ["application/pdf"]
-    if (!accepted.includes(file.type) || file.size > 5 * 1024 * 1024) {
-      toast.error(mediaType === "avatar" ? "Avatar invalide ou supérieur à 5 Mo." : "Passeport PDF invalide ou supérieur à 5 Mo.")
+    if (!accepted.includes(file.type) || file.size > 4 * 1024 * 1024) {
+      toast.error(mediaType === "avatar" ? "Avatar invalide ou supérieur à 4 Mo." : "Passeport PDF invalide ou supérieur à 4 Mo.")
       return
     }
     if (mediaType === "avatar") setAvatarFile(file)
@@ -143,12 +143,6 @@ export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }
 
     setSaving(true)
     try {
-      if (avatarFile || passportFile) {
-        const healthResponse = await fetch("/api/upload-media", { cache: "no-store" })
-        const health = await healthResponse.json()
-        if (!healthResponse.ok) throw new Error(health.error || "Google Drive indisponible")
-      }
-
       const response = await fetch("/api/officiels", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -255,8 +249,8 @@ export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }
             </div></section>
 
             <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Fichiers</h3><div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2 rounded-lg border p-4"><div className="flex items-center gap-2"><ImageIcon className="h-4 w-4 text-primary" /><Label>Avatar</Label></div><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /><p className="text-xs text-muted-foreground">{avatarFile?.name || "PNG, JPG ou WebP — 5 Mo maximum"}</p></div>
-              <div className="space-y-2 rounded-lg border p-4"><div className="flex items-center gap-2"><FileText className="h-4 w-4 text-primary" /><Label>Passeport</Label></div><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /><p className="text-xs text-muted-foreground">{passportFile?.name || "PDF — 5 Mo maximum"}</p></div>
+              <div className="space-y-2 rounded-lg border p-4"><div className="flex items-center gap-2"><ImageIcon className="h-4 w-4 text-primary" /><Label>Avatar</Label></div><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /><p className="text-xs text-muted-foreground">{avatarFile?.name || "PNG, JPG ou WebP — 4 Mo maximum"}</p></div>
+              <div className="space-y-2 rounded-lg border p-4"><div className="flex items-center gap-2"><FileText className="h-4 w-4 text-primary" /><Label>Passeport</Label></div><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /><p className="text-xs text-muted-foreground">{passportFile?.name || "PDF — 4 Mo maximum"}</p></div>
             </div></section>
           </div>
           <SheetFooter><Button variant="outline" onClick={closeEditor}>Annuler</Button><Button onClick={save} disabled={saving}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter>

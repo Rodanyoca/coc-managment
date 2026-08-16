@@ -182,11 +182,6 @@ export function AthleteDetailClient({
     }
     setSaving(true)
     try {
-      if (avatarFile || passportFile) {
-        const healthResponse = await fetch("/api/upload-media", { cache: "no-store" })
-        const health = await healthResponse.json()
-        if (!healthResponse.ok) throw new Error(health.error || "Google Drive indisponible")
-      }
       const response = await fetch("/api/athletes", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

@@ -114,8 +114,8 @@ export function OfficielDetailClient({
     const accepted = type === "avatar"
       ? ["image/png", "image/jpeg", "image/jpg", "image/webp"]
       : ["application/pdf"]
-    if (!accepted.includes(file.type) || file.size > 5 * 1024 * 1024) {
-      toast.error(type === "avatar" ? "Avatar invalide ou supérieur à 5 Mo." : "Passeport PDF invalide ou supérieur à 5 Mo.")
+    if (!accepted.includes(file.type) || file.size > 4 * 1024 * 1024) {
+      toast.error(type === "avatar" ? "Avatar invalide ou supérieur à 4 Mo." : "Passeport PDF invalide ou supérieur à 4 Mo.")
       return
     }
     if (type === "avatar") setAvatarFile(file)
@@ -141,11 +141,6 @@ export function OfficielDetailClient({
     }
     setSaving(true)
     try {
-      if (avatarFile || passportFile) {
-        const healthResponse = await fetch("/api/upload-media", { cache: "no-store" })
-        const health = await healthResponse.json()
-        if (!healthResponse.ok) throw new Error(health.error || "Google Drive indisponible")
-      }
       const response = await fetch("/api/officiels", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },

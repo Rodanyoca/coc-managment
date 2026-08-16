@@ -193,14 +193,6 @@ export function AthletesClient({
 
     setSaving(true)
     try {
-      if (avatarFile || passportFile) {
-        const healthResponse = await fetch("/api/upload-media", { cache: "no-store" })
-        const health = await healthResponse.json()
-        if (!healthResponse.ok) {
-          throw new Error(health.error || "Google Drive n'est pas disponible")
-        }
-      }
-
       const response = await fetch("/api/athletes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
