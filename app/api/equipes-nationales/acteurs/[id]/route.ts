@@ -1,1 +1,16 @@
-import{NextResponse}from"next/server";import{getNationalTeamMembers,getNationalTeams}from"@/lib/equipes-nationales/data";export const runtime="nodejs";export async function GET(_:Request,{params}:{params:Promise<{id:string}>}){try{const{id}=await params,[members,teams]=await Promise.all([getNationalTeamMembers(undefined,id),getNationalTeams()]);return NextResponse.json({rows:members.map(member=>({member,team:teams.find(team=>team.id_equipe_nationale===member.id_equipe_nationale)})).filter(x=>x.team)})}catch(error){console.error(error);return NextResponse.json({error:"Impossible de charger les équipes nationales de l’acteur."},{status:500})}}
+import { NextResponse } from "next/server"
+import { getNationalTeamMembers, getNationalTeams } from "@/lib/equipes-nationales/data"
+
+export const runtime = "nodejs"
+
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params
+    const actorType = new URL(request.url).searchParams.get("type") || undefined
+    const [members, teams] = await Promise.all([getNationalTeamMembers(undefined, id, actorType), getNationalTeams()])
+    return NextResponse.json({ rows: members.map((member) => ({ member, team: teams.find((team) => team.id_equipe_nationale === member.id_equipe_nationale) })).filter((row) => row.team) })
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ error: "Impossible de charger les équipes nationales de l’acteur." }, { status: 500 })
+  }
+}

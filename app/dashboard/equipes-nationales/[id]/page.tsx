@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { getSession } from "@/lib/auth"
-import { getNationalTeam, getNationalTeamMembers, getNationalTeamReferences } from "@/lib/equipes-nationales/data"
+import { getMemberActorLabels, getNationalTeam, getNationalTeamMembers, getNationalTeamReferences } from "@/lib/equipes-nationales/data"
 import { getDocumentsForEntity } from "@/lib/documents/data"
 import { getCompetitions, getTeamParticipations } from "@/lib/competitions/data"
 import Client from "./team-detail-client"
@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic"
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   let team
-  try { team = await getNationalTeam(id) } catch (error) {
+  try { team = await getNationalTeam(id, { fresh: true }) } catch (error) {
     console.error(error)
     return <p className="p-6 text-destructive">Impossible de charger l’équipe nationale.</p>
   }
@@ -20,5 +20,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     getNationalTeamReferences(), getNationalTeamMembers(id), Promise.all([getCompetitions(), getTeamParticipations()]),
     session?.role === "coc" ? getDocumentsForEntity("EQUIPE_NATIONALE", id) : Promise.resolve(undefined),
   ])
-  return <Client team={team} references={refs.status === "fulfilled" ? refs.value : { federations: [], sports: [], disciplines: [], ageCategories: [], sexes: [], roles: [], ageCategoriesAvailable: false, rolesReferentialAvailable: false }} members={members.status === "fulfilled" ? members.value : []} membersError={members.status === "rejected"} competitions={competitions.status === "fulfilled" ? competitions.value : undefined} documents={documents.status === "fulfilled" ? documents.value : undefined} canEdit={session?.role === "coc"} />
+  const memberRows = members.status === "fulfilled" ? members.value : []
+  const actorLabels = await getMemberActorLabels(memberRows).catch(() => ({}))
+  return <Client team={team} references={refs.status === "fulfilled" ? refs.value : { federations: [], sports: [], disciplines: [], ageCategories: [], sexes: [], roles: [], ageCategoriesAvailable: false, rolesReferentialAvailable: false }} members={memberRows} actorLabels={actorLabels} membersError={members.status === "rejected"} competitions={competitions.status === "fulfilled" ? competitions.value : undefined} documents={documents.status === "fulfilled" ? documents.value : undefined} canEdit={session?.role === "coc"} />
 }
