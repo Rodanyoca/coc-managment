@@ -20,13 +20,15 @@ async function assertDocumentHeaders() {
   if (missing.length) throw new Error(`Colonnes Documents manquantes : ${missing.join(", ")}`)
 }
 
-export async function getDocuments() {
+export async function getDocuments(options: { fresh?: boolean } = {}) {
   await assertDocumentHeaders()
-  return (await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId() })).map(mapDocument).filter((document) => document.id_document)
+  return (await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), bypassCache: options.fresh })).map(mapDocument).filter((document) => document.id_document)
 }
 
 export async function getDocument(id: string) {
-  return (await getDocuments()).find((document) => document.id_document === clean(id))
+  // Une fiche est souvent ouverte immédiatement après sa création. Cette
+  // lecture doit éviter un cache d'une autre instance serveur encore ancien.
+  return (await getDocuments({ fresh: true })).find((document) => document.id_document === clean(id))
 }
 
 export async function getDocumentsForEntity(type: string, id: string) {
@@ -92,7 +94,8 @@ function nextDocumentId(rows: DocumentRecord[]) {
 export async function createDocument(input: Record<string, unknown>, pdf?: Buffer) {
   const row = validateDocumentInput(input)
   await validateReferences(row)
-  const existing = await getDocuments()
+  // La génération du prochain ID doit toujours partir de la feuille à jour.
+  const existing = await getDocuments({ fresh: true })
   const id = nextDocumentId(existing)
   if (existing.some((document) => document.id_document === id)) throw new Error("Impossible de générer un identifiant document unique.")
   let uploaded: { fileId: string; url: string } | undefined
