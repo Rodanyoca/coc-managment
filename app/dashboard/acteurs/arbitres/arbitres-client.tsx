@@ -31,7 +31,7 @@ export default function ArbitresClient({ arbitres, federations, grades }: { arbi
   const [form, setForm] = useState<ArbitreForm>(emptyArbitreForm)
   const [avatar, setAvatar] = useState<File | null>(null)
   const [passport, setPassport] = useState<File | null>(null)
-  const filtered = useMemo(() => { const q = search.trim().toLowerCase(); return !q ? arbitres : arbitres.filter((item) => [item.nomComplet, item.federation, item.grade, item.statut].some((v) => v.toLowerCase().includes(q))) }, [arbitres, search])
+  const filtered = useMemo(() => { const q = search.trim().toLocaleLowerCase("fr"); const matching = !q ? arbitres : arbitres.filter((item) => [item.nomComplet, item.federation, item.grade, item.statut].some((v) => v.toLocaleLowerCase("fr").includes(q))); return [...matching].sort((a, b) => a.nomComplet.localeCompare(b.nomComplet, "fr", { sensitivity: "base" })) }, [arbitres, search])
   function update<K extends keyof ArbitreForm>(key: K, value: ArbitreForm[K]) { setForm((current) => ({ ...current, [key]: value })) }
   function close() { setOpen(false); setForm(emptyArbitreForm); setAvatar(null); setPassport(null) }
   function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const valid = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!valid || file.size > 4 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 4 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }

@@ -87,11 +87,16 @@ export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }
 
   const filteredOfficiels = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase("fr")
-    if (!query) return officiels
-    return officiels.filter((officiel) =>
-      [officiel.idNational, officiel.idFederal, officiel.nomComplet, officiel.sexe,
-        officiel.dateNaissance, officiel.organisation, officiel.statut]
-        .some((value) => value.toLocaleLowerCase("fr").includes(query))
+    const matchingOfficiels = query
+      ? officiels.filter((officiel) =>
+          [officiel.idNational, officiel.idFederal, officiel.nomComplet, officiel.sexe,
+            officiel.dateNaissance, officiel.organisation, officiel.statut]
+            .some((value) => value.toLocaleLowerCase("fr").includes(query))
+        )
+      : officiels
+
+    return [...matchingOfficiels].sort((first, second) =>
+      first.nomComplet.localeCompare(second.nomComplet, "fr", { sensitivity: "base" })
     )
   }, [officiels, searchQuery])
 

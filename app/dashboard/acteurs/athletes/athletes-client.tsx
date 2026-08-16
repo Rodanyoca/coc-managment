@@ -125,18 +125,24 @@ export function AthletesClient({
 
   const filteredAthletes = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase("fr")
-    if (!query) return athletes
+    const matchingAthletes = query
+      ? athletes.filter((athlete) =>
+          [
+            athlete.idNational,
+            athlete.idFederal,
+            athlete.nomComplet,
+            athlete.sexe,
+            athlete.dateNaissance,
+            athlete.federation,
+            athlete.statut,
+          ].some((value) => value.toLocaleLowerCase("fr").includes(query))
+        )
+      : athletes
 
-    return athletes.filter((athlete) =>
-      [
-        athlete.idNational,
-        athlete.idFederal,
-        athlete.nomComplet,
-        athlete.sexe,
-        athlete.dateNaissance,
-        athlete.federation,
-        athlete.statut,
-      ].some((value) => value.toLocaleLowerCase("fr").includes(query))
+    return [...matchingAthletes].sort((first, second) =>
+      first.nomComplet.localeCompare(second.nomComplet, "fr", {
+        sensitivity: "base",
+      })
     )
   }, [athletes, searchQuery])
 

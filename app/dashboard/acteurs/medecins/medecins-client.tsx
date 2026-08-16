@@ -32,7 +32,7 @@ export default function MedecinsClient({ medecins, organisations, specialites }:
   const [form, setForm] = useState<Form>(empty)
   const [avatar, setAvatar] = useState<File | null>(null)
   const [passport, setPassport] = useState<File | null>(null)
-  const filtered = useMemo(() => { const q = search.trim().toLowerCase(); return !q ? medecins : medecins.filter((m) => [m.idNational, m.idFederal, m.nomComplet, m.sexe, m.dateNaissance, m.federation, m.specialite, m.statut].some((v) => v.toLowerCase().includes(q))) }, [medecins, search])
+  const filtered = useMemo(() => { const q = search.trim().toLocaleLowerCase("fr"); const matching = !q ? medecins : medecins.filter((m) => [m.idNational, m.idFederal, m.nomComplet, m.sexe, m.dateNaissance, m.federation, m.specialite, m.statut].some((v) => v.toLocaleLowerCase("fr").includes(q))); return [...matching].sort((a, b) => a.nomComplet.localeCompare(b.nomComplet, "fr", { sensitivity: "base" })) }, [medecins, search])
   function update<K extends keyof Form>(key: K, value: Form[K]) { setForm((current) => ({ ...current, [key]: value })) }
   function close() { setOpen(false); setForm(empty); setAvatar(null); setPassport(null) }
   function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const ok = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!ok || file.size > 4 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 4 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }

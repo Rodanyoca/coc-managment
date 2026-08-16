@@ -31,7 +31,7 @@ export default function EntraineursClient({ coachs, federations }: { coachs: Coa
   const [form, setForm] = useState<CoachForm>(emptyForm)
   const [avatar, setAvatar] = useState<File | null>(null)
   const [passport, setPassport] = useState<File | null>(null)
-  const filtered = useMemo(() => { const q = search.trim().toLowerCase(); return !q ? coachs : coachs.filter((c) => [c.idNational, c.idFederal, c.nomComplet, c.sexe, c.dateNaissance, c.federation, c.statut].some((v) => v.toLowerCase().includes(q))) }, [coachs, search])
+  const filtered = useMemo(() => { const q = search.trim().toLocaleLowerCase("fr"); const matching = !q ? coachs : coachs.filter((c) => [c.idNational, c.idFederal, c.nomComplet, c.sexe, c.dateNaissance, c.federation, c.statut].some((v) => v.toLocaleLowerCase("fr").includes(q))); return [...matching].sort((a, b) => a.nomComplet.localeCompare(b.nomComplet, "fr", { sensitivity: "base" })) }, [coachs, search])
   function update<K extends keyof CoachForm>(key: K, value: CoachForm[K]) { setForm((f) => ({ ...f, [key]: value })) }
   function close() { setOpen(false); setForm(emptyForm); setAvatar(null); setPassport(null) }
   function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const ok = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!ok || file.size > 4 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 4 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }
