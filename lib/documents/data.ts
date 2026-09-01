@@ -11,12 +11,13 @@ import { DOCUMENT_ENTITY_TYPES, DOCUMENT_HEADERS, type DocumentEntityType, type 
 import { assertPdfSignature, safeDriveFileName, validateDocumentInput } from "./validation"
 
 const SHEET_NAME = "DOCUMENTS"
+const DOCUMENT_SHEET_HEADERS = ["id_document", "nom_document", "id_type_document", "date_document", "id_entite_origine", "type_objet_lie", "id_objet_lie", "version", "drive_document_id", "observation"] as const
 const clean = (value: unknown) => String(value ?? "").trim()
-const mapDocument = (row: Record<string, string>) => Object.fromEntries(DOCUMENT_HEADERS.map((header) => [header, clean(row[header])])) as DocumentRecord
+const mapDocument = (row: Record<string, string>) => ({ ...Object.fromEntries(DOCUMENT_HEADERS.map((header) => [header, clean(row[header])])), type_entite_liee: clean(row.type_objet_lie), id_entite_liee: clean(row.id_objet_lie), note: clean(row.observation), observations: clean(row.observation), drive_document_url: row.drive_document_id ? `https://drive.google.com/file/d/${row.drive_document_id}/view` : "" }) as DocumentRecord
 
 async function assertDocumentHeaders() {
   const headers = await getSheetHeaders({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId() })
-  const missing = DOCUMENT_HEADERS.filter((header) => !headers.includes(header))
+  const missing = DOCUMENT_SHEET_HEADERS.filter((header) => !headers.includes(header))
   if (missing.length) throw new Error(`Colonnes Documents manquantes : ${missing.join(", ")}`)
 }
 
@@ -61,7 +62,7 @@ export async function getDocumentReferences(): Promise<DocumentReferences> {
     EQUIPE_NATIONALE: nationalTeams.map((item) => ({ id: item.id_equipe_nationale, label: item.nom_equipe_nationale })),
     OFFICIEL: officials,
     FEDERATION: federations.map((item) => ({ id: item.id, label: item.nom, secondary: item.sigle })),
-    ENTITE: entities.filter((item) => item.id_entite).map((item) => ({ id: clean(item.id_entite), label: clean(item.nom_entite) || clean(item.id_entite), secondary: clean(item.sigle_entite) })),
+    ENTITE: entities.filter((item) => item.id_entite).map((item) => ({ id: clean(item.id_entite), label: clean(item.nom_officiel) || clean(item.id_entite), secondary: clean(item.sigle) })),
   }
   return {
     documentTypes: documentTypes.options,
@@ -104,8 +105,9 @@ export async function createDocument(input: Record<string, unknown>, pdf?: Buffe
     uploaded = await uploadPrivateFileToDrive({ fileName: safeDriveFileName(id, row.id_type_document, row.nom_document), mimeType: "application/pdf", buffer: pdf, folderId: getDocumentsDriveFolderId() })
   }
   const created: DocumentRecord = { id_document: id, ...row, taille: pdf ? String(pdf.byteLength) : "", drive_document_id: uploaded?.fileId || "", drive_document_url: uploaded?.url || "" }
+  const sheetRow = { id_document: id, nom_document: row.nom_document, id_type_document: row.id_type_document, date_document: new Date().toISOString().slice(0, 10), id_entite_origine: "", type_objet_lie: row.type_entite_liee, id_objet_lie: row.id_entite_liee, version: "1", drive_document_id: uploaded?.fileId || "", observation: row.observations || row.note }
   try {
-    await appendSheetRow({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), row: created })
+    await appendSheetRow({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), row: sheetRow })
   } catch (error) {
     if (uploaded) await deleteDriveFile(uploaded.fileId).catch(() => undefined)
     throw error
@@ -118,7 +120,9 @@ export async function updateDocument(id: string, input: Record<string, unknown>)
   if (!current) throw new Error("Document introuvable.")
   const row = validateDocumentInput(input)
   await validateReferences(row)
-  await updateSheetCells({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), idColumn: "id_document", idValue: current.id_document, updates: Object.entries(row).map(([column, value]) => ({ column, value })) })
+  await updateSheetCells({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), idColumn: "id_document", idValue: current.id_document, updates: [
+    { column: "nom_document", value: row.nom_document }, { column: "id_type_document", value: row.id_type_document }, { column: "type_objet_lie", value: row.type_entite_liee }, { column: "id_objet_lie", value: row.id_entite_liee }, { column: "observation", value: row.observations || row.note },
+  ] })
   return { ...current, ...row }
 }
 
@@ -129,7 +133,7 @@ export async function replaceDocumentFile(id: string, pdf: Buffer) {
   const uploaded = await uploadPrivateFileToDrive({ fileName: safeDriveFileName(current.id_document, current.id_type_document, current.nom_document), mimeType: "application/pdf", buffer: pdf, folderId: getDocumentsDriveFolderId() })
   try {
     await updateSheetCells({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), idColumn: "id_document", idValue: current.id_document, updates: [
-      { column: "taille", value: String(pdf.byteLength) }, { column: "drive_document_id", value: uploaded.fileId }, { column: "drive_document_url", value: uploaded.url },
+      { column: "drive_document_id", value: uploaded.fileId },
     ] })
   } catch (error) {
     await deleteDriveFile(uploaded.fileId).catch(() => undefined)

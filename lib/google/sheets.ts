@@ -16,10 +16,10 @@ const sheetsGlobal = globalThis as typeof globalThis & {
 const cache = sheetsGlobal.__cocGoogleSheetsCache ??= new Map()
 const headerCache = sheetsGlobal.__cocGoogleSheetsHeaderCache ??= new Map()
 
-function getCached(key: string): Record<string, string>[] | null {
+function getCached(key: string, ttlMs = CACHE_TTL_MS): Record<string, string>[] | null {
   const entry = cache.get(key)
   if (!entry) return null
-  if (Date.now() - entry.ts > CACHE_TTL_MS) return null
+  if (Date.now() - entry.ts > ttlMs) return null
   return entry.data
 }
 
@@ -147,18 +147,22 @@ export async function getSheetRows(params: {
   return result
 }
 
-export async function getSheetHeaders(params: { sheetName: string; spreadsheetId: string }): Promise<string[]> {
+export async function getSheetHeaders(params: {
+  sheetName: string
+  spreadsheetId: string
+  bypassCache?: boolean
+}): Promise<string[]> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const safeSheetName = String(params.sheetName).replace(/'/g, "''")
   const cacheKey = `${spreadsheetId}:'${safeSheetName}'!1:1`
-  const cached = headerCache.get(cacheKey)
+  const cached = params.bypassCache ? undefined : headerCache.get(cacheKey)
   if (cached && Date.now() - cached.ts <= CACHE_TTL_MS) return cached.data
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   try {
     const result = await sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })
     const headers = (result.data.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim()).filter(Boolean)
-    headerCache.set(cacheKey, { data: headers, ts: Date.now() })
+    if (!params.bypassCache) headerCache.set(cacheKey, { data: headers, ts: Date.now() })
     return headers
   } catch (error) {
     if (cached) return cached.data
@@ -169,8 +173,16 @@ export async function getSheetHeaders(params: { sheetName: string; spreadsheetId
 export async function getSheetsRows(params: {
   sheetNames: string[]
   spreadsheetId: string
+  cacheTtlMs?: number
 }): Promise<Record<string, Record<string, string>[]>> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
+  const cachedResult: Record<string, Record<string, string>[]> = {}
+  const allCached = params.sheetNames.every((sheetName) => {
+    const rows = getCached(`${spreadsheetId}:'${sheetName.replace(/'/g, "''")}'!A:Z`, params.cacheTtlMs)
+    if (rows) cachedResult[sheetName] = rows
+    return Boolean(rows)
+  })
+  if (allCached) return cachedResult
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
@@ -179,8 +191,22 @@ export async function getSheetsRows(params: {
   params.sheetNames.forEach((sheetName, index) => {
     const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
     result[sheetName] = valuesToRecords(values)
+    setCache(`${spreadsheetId}:${ranges[index]}`, result[sheetName])
   })
   return result
+}
+
+export async function getSheetsTables(params: { sheetNames: string[]; spreadsheetId: string }) {
+  const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
+  const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
+  const sheets = google.sheets({ version: "v4", auth })
+  const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
+  const response = await sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })
+  return Object.fromEntries(params.sheetNames.map((sheetName, index) => {
+    const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
+    const headers = (values[0] ?? []).map((header) => String(header ?? "").trim())
+    return [sheetName, { headers, rows: valuesToRecords(values) }]
+  })) as Record<string, { headers: string[]; rows: Record<string, string>[] }>
 }
 
 export async function updateSheetCell(params: {

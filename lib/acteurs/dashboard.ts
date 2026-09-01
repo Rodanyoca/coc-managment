@@ -1,6 +1,6 @@
-import { unstable_cache } from "next/cache"
 import { getActeursSpreadsheetId } from "./config"
 import { getSheetsRows } from "@/lib/google/sheets"
+import { ACTOR_SHEETS } from "./sheets"
 
 export const ACTORS_DASHBOARD_CACHE_TAG = "actors-dashboard"
 
@@ -8,11 +8,11 @@ export type ActorTypeStats = { key: string; label: string; total: number; hommes
 export type ActorsDashboardStats = { totalActors: number; types: ActorTypeStats[] }
 
 const definitions = [
-  { sheet: "ATHLETE", key: "athletes", label: "Athlètes", id: "id_athlete_coc", affiliation: ["id_federation"] },
-  { sheet: "COACHS", key: "coachs", label: "Coachs", id: "id_coach_coc", affiliation: ["id_federation"] },
-  { sheet: "OFFICIELS", key: "officiels", label: "Officiels", id: "id_officiel_coc", affiliation: [] },
-  { sheet: "MEDECINS", key: "medecins", label: "Médecins", id: "id_medecin_coc", affiliation: ["id_entite", "id_federation"] },
-  { sheet: "ARBITRES", key: "arbitres", label: "Arbitres", id: "id_arbitre_coc", affiliation: ["id_federation"] },
+  { sheet: ACTOR_SHEETS.ATHLETE, key: "athletes", label: "Athlètes", id: "id_athlete_coc", affiliation: ["id_federation"] },
+  { sheet: ACTOR_SHEETS.COACH, key: "coachs", label: "Coachs", id: "id_coach_coc", affiliation: ["id_federation"] },
+  { sheet: ACTOR_SHEETS.OFFICIEL, key: "officiels", label: "Officiels", id: "id_officiel_coc", affiliation: [] },
+  { sheet: ACTOR_SHEETS.MEDECIN, key: "medecins", label: "Médecins", id: "id_medecin_coc", affiliation: ["id_entite", "id_federation"] },
+  { sheet: ACTOR_SHEETS.ARBITRE, key: "arbitres", label: "Arbitres", id: "id_arbitre_coc", affiliation: ["id_federation"] },
 ] as const
 
 const value = (row: Record<string, string>, keys: readonly string[]) => keys.some((key) => String(row[key] || "").trim())
@@ -41,4 +41,4 @@ async function aggregateActorsDashboardStats(): Promise<ActorsDashboardStats> {
   return { totalActors: types.reduce((sum, item) => sum + item.total, 0), types }
 }
 
-export const loadActorsDashboardStats = unstable_cache(aggregateActorsDashboardStats, ["actors-dashboard-stats"], { tags: [ACTORS_DASHBOARD_CACHE_TAG] })
+export const loadActorsDashboardStats = aggregateActorsDashboardStats

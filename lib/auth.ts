@@ -1,109 +1,87 @@
 import "server-only"
 
 import { cookies } from "next/headers"
+import { getAuthorizationsForUser, getUserById } from "@/lib/users/data"
+import { authorize, type AuthorizationAction } from "@/lib/auth/authorization"
+import type { AuthorizationBlock } from "@/lib/users/types"
+import { SESSION_COOKIE_NAME, sessionCookieOptions } from "@/lib/auth/session-cookie"
+import { resolveSession } from "@/lib/auth/session-resolution"
+import { createSessionToken } from "@/lib/auth/session-token"
 
-// ── Types ──────────────────────────────────────────────────────────────
-export type UserRole = "coc" | "technique"
+type NewSessionInput = { idUser: string; sessionVersion: number }
 
-export interface SessionPayload {
-  id: string
-  nom: string
-  email: string
-  role: UserRole
-  exp: number
-}
-
-const COOKIE_NAME = "coc_session"
-const SESSION_TTL = 60 * 60 * 8 // 8 hours in seconds
-
-// ── Helpers crypto (Web Crypto API, zero deps) ─────────────────────────
 function getSecret(): string {
-  const s = process.env.AUTH_SECRET
-  if (!s) throw new Error("AUTH_SECRET is not defined in environment variables")
-  return s
+  const secret = process.env.AUTH_SECRET
+  if (!secret) throw new Error("AUTH_SECRET is not defined in environment variables")
+  return secret
 }
 
-async function getKey() {
-  const enc = new TextEncoder()
-  return crypto.subtle.importKey("raw", enc.encode(getSecret()), { name: "HMAC", hash: "SHA-256" }, false, ["sign", "verify"])
-}
-
-function bytesToBase64Url(bytes: Uint8Array): string {
-  let binary = ""
-  for (const byte of bytes) binary += String.fromCharCode(byte)
-  return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "")
-}
-
-function base64UrlToBytes(value: string): Uint8Array {
-  const base64 = value.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(value.length / 4) * 4, "=")
-  return Uint8Array.from(atob(base64), (character) => character.charCodeAt(0))
-}
-
-async function signPayload(payload: object): Promise<string> {
-  const key = await getKey()
-  const data = JSON.stringify(payload)
-  const enc = new TextEncoder()
-  const dataBytes = enc.encode(data)
-  const sig = await crypto.subtle.sign("HMAC", key, dataBytes)
-  return `${bytesToBase64Url(dataBytes)}.${bytesToBase64Url(new Uint8Array(sig))}`
-}
-
-async function verifyToken(token: string): Promise<SessionPayload | null> {
-  try {
-    const [dataB64, sigB64] = token.split(".")
-    if (!dataB64 || !sigB64) return null
-    const dataBytes = base64UrlToBytes(dataB64)
-    const data = new TextDecoder().decode(dataBytes)
-    const sig = base64UrlToBytes(sigB64)
-    const key = await getKey()
-    const valid = await crypto.subtle.verify("HMAC", key, sig, dataBytes)
-    if (!valid) return null
-    const payload = JSON.parse(data) as SessionPayload
-    if (payload.exp < Date.now() / 1000) return null
-    return payload
-  } catch {
-    return null
-  }
-}
-
-// ── Public API ─────────────────────────────────────────────────────────
-
-export async function createSession(user: { id: string; nom: string; email: string; role: UserRole }) {
-  const payload: SessionPayload = {
-    ...user,
-    exp: Math.floor(Date.now() / 1000) + SESSION_TTL,
-  }
-  const token = await signPayload(payload)
+export async function createSession(input: NewSessionInput) {
+  const token = await createSessionToken({ ...input, secret: getSecret() })
   const jar = await cookies()
-  jar.set(COOKIE_NAME, token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: SESSION_TTL,
-  })
+  jar.set(SESSION_COOKIE_NAME, token, sessionCookieOptions(process.env.NODE_ENV === "production"))
 }
 
 export async function destroySession() {
   const jar = await cookies()
-  jar.delete(COOKIE_NAME)
+  jar.delete(SESSION_COOKIE_NAME)
 }
 
-export async function getSession(): Promise<SessionPayload | null> {
+export async function getSession() {
   const jar = await cookies()
-  const token = jar.get(COOKIE_NAME)?.value
+  const token = jar.get(SESSION_COOKIE_NAME)?.value
   if (!token) return null
-  return verifyToken(token)
+  const resolution = await resolveSession({ token, secret: getSecret(), loadUser: getUserById })
+  if (!resolution.ok) return null
+  const { user, payload } = resolution
+  return {
+    id: user.idUser,
+    nom: user.nomComplet,
+    email: user.email,
+    idUser: user.idUser,
+    typeUser: user.typeUser,
+    estSuperAdmin: user.estSuperAdmin,
+    statut: user.statut,
+    sessionVersion: payload.session_version,
+    iat: payload.iat,
+    exp: payload.exp,
+    doitChangerMotDePasse: user.doitChangerMotDePasse,
+  }
 }
 
-// ── Role access map ────────────────────────────────────────────────────
-const TECHNIQUE_ALLOWED = ["/dashboard", "/dashboard/acteurs", "/dashboard/competitions", "/dashboard/equipes-nationales", "/dashboard/activites"]
+type ResolvedSession = NonNullable<Awaited<ReturnType<typeof getSession>>>
 
-export function isRouteAllowed(role: UserRole, pathname: string): boolean {
-  if (role === "coc") return true
-  // technique: check whitelist
-  for (const prefix of TECHNIQUE_ALLOWED) {
-    if (pathname === prefix || pathname.startsWith(prefix + "/")) return true
+export async function canAccess(block: AuthorizationBlock, action: AuthorizationAction): Promise<boolean> {
+  const jar = await cookies()
+  const token = jar.get(SESSION_COOKIE_NAME)?.value
+  if (!token) return false
+  const resolution = await resolveSession({ token, secret: getSecret(), loadUser: getUserById })
+  if (!resolution.ok || resolution.requiresActivation) return false
+  try {
+    const authorizations = await getAuthorizationsForUser(resolution.user.idUser)
+    return authorize({ user: resolution.user, authorizations, requirement: { scope: "BUSINESS", blocks: [block] }, action }).allowed
+  } catch {
+    return false
   }
-  return false
+}
+
+export async function getNavigationAccess(currentSession?: ResolvedSession) {
+  const session = currentSession ?? await getSession()
+  const blocks = ["AUT-ADM", "AUT-SPT", "AUT-COM"] as const
+  const actions = ["READ", "WRITE"] as const
+  if (session?.estSuperAdmin) {
+    return Object.fromEntries((blocks.flatMap((block) =>
+      actions.map((action) => [`${block}:${action}`, true] as const)
+    ))) as Record<`${AuthorizationBlock}:${AuthorizationAction}`, boolean>
+  }
+  if (!session) return Object.fromEntries(blocks.flatMap((block) => actions.map((action) => [`${block}:${action}`, false]))) as Record<`${AuthorizationBlock}:${AuthorizationAction}`, boolean>
+  try {
+    const authorizations = await getAuthorizationsForUser(session.idUser)
+    return Object.fromEntries(blocks.flatMap((block) => actions.map((action) => [
+      `${block}:${action}`,
+      authorize({ user: { idUser: session.idUser, typeUser: session.typeUser, estSuperAdmin: session.estSuperAdmin }, authorizations, requirement: { scope: "BUSINESS", blocks: [block] }, action }).allowed,
+    ]))) as Record<`${AuthorizationBlock}:${AuthorizationAction}`, boolean>
+  } catch {
+    return Object.fromEntries(blocks.flatMap((block) => actions.map((action) => [`${block}:${action}`, false]))) as Record<`${AuthorizationBlock}:${AuthorizationAction}`, boolean>
+  }
 }

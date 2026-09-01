@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { ACTOR_SHEETS } from "@/lib/acteurs/sheets"
 import { getFederationOptions } from "@/lib/federations/options"
 import { getSheetRows } from "@/lib/google/sheets"
 import { AthleteDetailClient, type AthleteDetail } from "./athlete-detail-client"
@@ -15,7 +16,7 @@ export default async function AthleteDetailPage({ params }: { params: Promise<{ 
   const { id } = await params
   const [rows, federationRows] = await Promise.all([
     getSheetRows({
-      sheetName: "ATHLETE",
+      sheetName: ACTOR_SHEETS.ATHLETE,
       spreadsheetId: getActeursSpreadsheetId(),
     }),
     getFederationOptions(),

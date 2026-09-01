@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache"
 import { getNationalTeamMembers, getNationalTeamReferences, getNationalTeams } from "./data"
 import { isActiveNationalTeamMember } from "./types"
 
@@ -16,4 +15,4 @@ async function aggregate(): Promise<NationalTeamsDashboardStats> {
   return { totalTeams: teams.length, activeTeams: teams.filter((team) => team.statut === "ACTIF").length, inactiveTeams: teams.filter((team) => team.statut !== "ACTIF").length, totalMembers: new Set(activeMembers.map((member) => member.id_acteur_coc)).size, sports }
 }
 
-export const loadNationalTeamsDashboardStats = unstable_cache(aggregate, ["national-teams-dashboard-stats"], { tags: [NATIONAL_TEAMS_DASHBOARD_CACHE_TAG] })
+export const loadNationalTeamsDashboardStats = aggregate

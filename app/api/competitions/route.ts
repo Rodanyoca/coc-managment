@@ -1,6 +1,5 @@
 import { revalidatePath, revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
-import { getSession } from "@/lib/auth"
 import { createCompetition, getCompetitionReferences, getCompetitions, updateCompetition } from "@/lib/competitions/data"
 
 export const runtime = "nodejs"
@@ -11,7 +10,6 @@ export async function GET() {
 }
 
 async function write(request: Request, update: boolean) {
-  if ((await getSession())?.role !== "coc") return NextResponse.json({ error: "Accès non autorisé." }, { status: 403 })
   try {
     const body = await request.json()
     const row = update ? await updateCompetition(String(body.id || ""), body.row || {}) : await createCompetition(body.row || {})

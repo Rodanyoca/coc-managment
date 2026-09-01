@@ -33,6 +33,7 @@ interface ActorDetailLayoutProps {
   actorId?: string
   showActorId?: boolean
   profileActions?: ReactNode
+  canManageMedia?: boolean
   actorDateNaissance?: string
   actorSexe?: string
   status?: "actif" | "inactif"
@@ -86,6 +87,7 @@ export function ActorDetailLayout({
   actorId,
   showActorId = true,
   profileActions,
+  canManageMedia = true,
   actorDateNaissance,
   actorSexe,
   status,
@@ -268,7 +270,7 @@ export function ActorDetailLayout({
                               </a>
                             </Button>
                           )}
-                          <MediaUploadDialog
+                          {canManageMedia && <MediaUploadDialog
                             mediaType="passeport"
                             title="Passeport / Pièce d'identité"
                             actorType={actorType}
@@ -284,7 +286,7 @@ export function ActorDetailLayout({
                               setUploadedPasseportUrl(url)
                               router.refresh()
                             }}
-                          />
+                          />}
                         </div>
                       </div>
                     </div>

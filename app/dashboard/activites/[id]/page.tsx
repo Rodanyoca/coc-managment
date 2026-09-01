@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import { getActivity, getActivityEntities, getActivityReferences, getActors, getParticipants } from "@/lib/activites/data"
 import { ACTOR_TYPES } from "@/lib/activites/types"
 import { getDocumentsForEntity } from "@/lib/documents/data"
-import { getSession } from "@/lib/auth"
+import { canAccess } from "@/lib/auth"
 import Detail from "./activite-detail-client"
 
 export const runtime = "nodejs"
@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     getParticipants(id).then((rows) => ({ rows, error: false })).catch(() => ({ rows: [], error: true })),
     getActivityEntities(id).then((rows) => ({ rows, error: false })).catch(() => ({ rows: [], error: true })),
     Promise.all(ACTOR_TYPES.map((type) => getActors(type).catch(() => []))),
-    getSession().then((session) => session?.role === "coc" ? getDocumentsForEntity("ACTIVITE", id).catch(() => []) : undefined),
+    canAccess("AUT-ADM", "READ").then((allowed) => allowed ? getDocumentsForEntity("ACTIVITE", id).catch(() => []) : undefined),
   ])
   if (!activity) notFound()
   return <Detail activity={activity} references={references} initialParticipants={participants.rows} participantsError={participants.error} initialEntities={entities.rows} entitiesError={entities.error} actorNames={Object.fromEntries(actorGroups.flat().map((item) => [item.id, item.label]))} activityDocuments={documents} />

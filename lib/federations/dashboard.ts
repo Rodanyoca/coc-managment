@@ -1,5 +1,8 @@
-import { unstable_cache } from "next/cache"
 import { loadFederationData } from "./data"
+import { aggregateFederationsDashboardStats, type FederationsDashboardStats } from "./dashboard-stats"
+import type { FederationData } from "./types"
+
+export type { FederationsDashboardStats } from "./dashboard-stats"
 
 export const TERRITORIAL_DASHBOARD_CACHE_TAG = "territorial-dashboard"
 
@@ -34,8 +37,7 @@ function aggregateLevel(
   return { key, label, total: validRows.length, actif, inactif, nonRenseigne: validRows.length - actif - inactif }
 }
 
-async function aggregateTerritorialDashboardStats(): Promise<TerritorialDashboardStats> {
-  const data = await loadFederationData()
+function aggregateTerritorialDashboardStats(data: FederationData): TerritorialDashboardStats {
   const rawLevels = [
     aggregateLevel("ligues", "Ligues", data.ligues.map((item) => ({ id: item.id_ligue_coc, statut: item.statut }))),
     aggregateLevel("ententes", "Ententes", data.ententes.map((item) => ({ id: item.id_entente_coc, statut: item.statut }))),
@@ -52,8 +54,19 @@ async function aggregateTerritorialDashboardStats(): Promise<TerritorialDashboar
   }
 }
 
-export const loadTerritorialDashboardStats = unstable_cache(
-  aggregateTerritorialDashboardStats,
-  ["territorial-dashboard-stats"],
-  { tags: [TERRITORIAL_DASHBOARD_CACHE_TAG] }
-)
+export type FederationDashboardBundle = {
+  federations: FederationsDashboardStats
+  territorial: TerritorialDashboardStats
+}
+
+export async function loadFederationDashboardBundle(): Promise<FederationDashboardBundle> {
+  const data = await loadFederationData()
+  return {
+    federations: aggregateFederationsDashboardStats(data),
+    territorial: aggregateTerritorialDashboardStats(data),
+  }
+}
+
+export async function loadTerritorialDashboardStats() {
+  return aggregateTerritorialDashboardStats(await loadFederationData())
+}

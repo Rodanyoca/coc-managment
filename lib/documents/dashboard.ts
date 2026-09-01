@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache"
 import { getDocuments } from "./data"
 
 export const DOCUMENTS_DASHBOARD_CACHE_TAG = "documents-dashboard"
@@ -60,8 +59,4 @@ async function aggregateDocumentsDashboardStats(): Promise<DocumentsDashboardSta
   }
 }
 
-export const loadDocumentsDashboardStats = unstable_cache(
-  aggregateDocumentsDashboardStats,
-  ["documents-dashboard-stats"],
-  { tags: [DOCUMENTS_DASHBOARD_CACHE_TAG] },
-)
+export const loadDocumentsDashboardStats = aggregateDocumentsDashboardStats

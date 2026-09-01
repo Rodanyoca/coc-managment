@@ -1,56 +1,50 @@
 import { NextResponse, type NextRequest } from "next/server"
-
-const COOKIE_NAME = "coc_session"
-const TECHNIQUE_ALLOWED = ["/dashboard", "/dashboard/acteurs", "/dashboard/competitions", "/dashboard/activites"]
+import { SESSION_COOKIE_NAME } from "@/lib/auth/session-cookie"
+import { isPendingPasswordRouteAllowed } from "@/lib/auth/session-policy"
+import { resolveSession } from "@/lib/auth/session-resolution"
+import { authorizeWithSource } from "@/lib/auth/authorization"
+import { routePolicy } from "@/lib/auth/route-policy"
+import { getAuthorizationsForUser, getUserById } from "@/lib/users/data"
 
 function isPublicRoute(pathname: string) {
-  return pathname === "/login" || pathname.startsWith("/api/auth/")
+  return pathname === "/login" || pathname === "/api/auth/login"
 }
 
-async function getKey(secret: string) {
-  return crypto.subtle.importKey("raw", new TextEncoder().encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["verify"])
+function isMinimalSessionRoute(pathname: string) {
+  return pathname === "/activation" || pathname === "/api/auth/activate" || pathname === "/api/auth/session" || pathname === "/api/auth/logout"
 }
 
-function base64UrlToBytes(value: string): Uint8Array {
-  const base64 = value.replace(/-/g, "+").replace(/_/g, "/").padEnd(Math.ceil(value.length / 4) * 4, "=")
-  return Uint8Array.from(atob(base64), (character) => character.charCodeAt(0))
-}
+function isAccountRoute(pathname: string) { return pathname === "/mon-compte" || pathname === "/api/auth/change-password" }
 
-async function verifyToken(token: string, secret: string): Promise<{ role: string; exp: number } | null> {
-  try {
-    const [dataB64, sigB64] = token.split(".")
-    if (!dataB64 || !sigB64) return null
-    const dataBytes = base64UrlToBytes(dataB64)
-    const valid = await crypto.subtle.verify("HMAC", await getKey(secret), base64UrlToBytes(sigB64), dataBytes)
-    if (!valid) return null
-    const payload = JSON.parse(new TextDecoder().decode(dataBytes)) as { role: string; exp: number }
-    return payload.exp >= Date.now() / 1000 ? payload : null
-  } catch {
-    return null
+function deny(request: NextRequest, status = 401) {
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    const error = status === 503 ? "Service d’authentification indisponible." : "Session invalide."
+    return NextResponse.json({ error }, { status })
   }
+  return NextResponse.redirect(new URL("/login", request.url))
 }
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   if (isPublicRoute(pathname)) return NextResponse.next()
-
   const secret = process.env.AUTH_SECRET
-  if (!secret) return new NextResponse("AUTH_SECRET not configured", { status: 500 })
+  const token = request.cookies.get(SESSION_COOKIE_NAME)?.value
+  if (!secret || !token) return deny(request)
 
-  const token = request.cookies.get(COOKIE_NAME)?.value
-  const session = token ? await verifyToken(token, secret) : null
-  if (!session) {
-    if (pathname.startsWith("/api/")) return NextResponse.json({ error: token ? "Session expirée" : "Non authentifié" }, { status: 401 })
-    return NextResponse.redirect(new URL("/login", request.url))
+  const resolution = await resolveSession({ token, secret, loadUser: getUserById })
+  if (!resolution.ok) return deny(request, resolution.reason === "SOURCE_UNAVAILABLE" ? 503 : 401)
+  if (resolution.requiresActivation && !isPendingPasswordRouteAllowed(pathname)) {
+    if (pathname.startsWith("/api/")) return NextResponse.json({ error: "Activation du compte requise." }, { status: 403 })
+    return NextResponse.redirect(new URL("/activation", request.url))
   }
+  if (isMinimalSessionRoute(pathname)) return NextResponse.next()
+  if (isAccountRoute(pathname)) return NextResponse.next()
 
-  if (pathname.startsWith("/dashboard") && session.role === "technique") {
-    const allowed = TECHNIQUE_ALLOWED.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))
-    if (!allowed) return NextResponse.redirect(new URL("/dashboard", request.url))
-  }
+  const policy = routePolicy(pathname, request.method)
+  if (!policy) return deny(request, 403)
+  const decision = await authorizeWithSource({ user: resolution.user, requirement: policy, action: policy.action, loadAuthorizations: () => getAuthorizationsForUser(resolution.user.idUser) })
+  if (!decision.allowed) return deny(request, decision.reason === "SOURCE_UNAVAILABLE" ? 503 : 403)
   return NextResponse.next()
 }
 
-export const config = {
-  matcher: ["/dashboard/:path*", "/api/:path*", "/login"],
-}
+export const config = { matcher: ["/dashboard/:path*", "/api/:path*", "/login", "/activation", "/mon-compte"] }

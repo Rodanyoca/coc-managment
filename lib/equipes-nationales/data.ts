@@ -5,11 +5,16 @@ import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { getFederationOptions } from "@/lib/federations/options"
 import { getActors } from "@/lib/activites/data"
 import { getNationalTeamsSpreadsheetId } from "./config"
-import { NATIONAL_TEAM_HEADERS, NATIONAL_TEAM_MEMBER_HEADERS, NATIONAL_TEAM_ROLES, type ActorType, type NationalTeam, type NationalTeamMember, type NationalTeamReferences } from "./types"
+import { NATIONAL_TEAM_HEADERS, NATIONAL_TEAM_ROLES, type ActorType, type NationalTeam, type NationalTeamMember, type NationalTeamReferences } from "./types"
 import { validateMemberInput, validateTeamInput } from "./validation"
 
 const TEAM_SHEET = "EQUIPES_NATIONALES"
+const CAMPAIGN_SHEET = "CAMPAGNES_EQUIPES_NATIONALES"
+const ATHLETE_SELECTION_SHEET = "SELECTIONS_ATHLETES"
+const STAFF_ASSIGNMENT_SHEET = "AFFECTATIONS_STAFF"
+// CompatibilitÃ© temporaire des mutations; les lectures utilisent le modÃ¨le campagne/sÃ©lections.
 const MEMBER_SHEET = "EQUIPES_NATIONALES_MEMBRES"
+const TEAM_SHEET_HEADERS = ["id_equipe_nationale", "id_federation", "id_sport", "id_discipline", "nom_equipe_nationale", "id_categorie_age", "id_sexe", "date_debut", "date_fin", "statut", "observation"] as const
 const clean = (value: unknown) => String(value ?? "").trim()
 const normalized = (value: string) => clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("fr")
 const nextId = (values: string[], prefix: string, padding = 3) => `${prefix}${String(values.reduce((max, value) => { const match = value.match(new RegExp(`^${prefix}(\\d+)$`, "i")); return match ? Math.max(max, Number(match[1])) : max }, 0) + 1).padStart(padding, "0")}`
@@ -20,11 +25,10 @@ async function assertHeaders(sheetName: string, expected: readonly string[]) {
   if (missing.length) throw new Error(`Mapping ${sheetName} incomplet : ${missing.join(", ")}`)
 }
 
-const mapTeam = (row: Record<string, string>) => Object.fromEntries(NATIONAL_TEAM_HEADERS.map((key) => [key, clean(row[key])])) as NationalTeam
-const mapMember = (row: Record<string, string>) => ({ ...Object.fromEntries(NATIONAL_TEAM_MEMBER_HEADERS.map((key) => [key, clean(row[key])])), role_equipe: clean(row.role_equipe || row.role_selection) }) as NationalTeamMember
+const mapTeam = (row: Record<string, string>) => ({ ...Object.fromEntries(NATIONAL_TEAM_HEADERS.map((key) => [key, clean(row[key])])), observations: clean(row.observation) }) as NationalTeam
 
 export async function getNationalTeams(options: { fresh?: boolean } = {}) {
-  await assertHeaders(TEAM_SHEET, NATIONAL_TEAM_HEADERS)
+  await assertHeaders(TEAM_SHEET, TEAM_SHEET_HEADERS)
   return (await getSheetRows({ sheetName: TEAM_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), bypassCache: options.fresh })).map(mapTeam).filter((team) => team.id_equipe_nationale)
 }
 
@@ -33,8 +37,15 @@ export async function getNationalTeam(id: string, options: { fresh?: boolean } =
 }
 
 export async function getNationalTeamMembers(teamId?: string, actorId?: string, actorType?: string, options: { fresh?: boolean } = {}) {
-  await assertHeaders(MEMBER_SHEET, NATIONAL_TEAM_MEMBER_HEADERS)
-  return (await getSheetRows({ sheetName: MEMBER_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), bypassCache: options.fresh })).map(mapMember).filter((member) => member.id_membre_equipe_nationale && (!teamId || member.id_equipe_nationale === teamId) && (!actorId || member.id_acteur_coc === actorId) && (!actorType || member.id_type_acteur === actorType))
+  const spreadsheetId = getNationalTeamsSpreadsheetId()
+  const sheetNames = [CAMPAIGN_SHEET, ATHLETE_SELECTION_SHEET, STAFF_ASSIGNMENT_SHEET]
+  const rows: Record<string, Record<string, string>[]> = options.fresh
+    ? Object.fromEntries(await Promise.all(sheetNames.map(async (sheetName) => [sheetName, await getSheetRows({ sheetName, spreadsheetId, bypassCache: true })])))
+    : await getSheetsRows({ sheetNames, spreadsheetId })
+  const campaigns = new Map(rows[CAMPAIGN_SHEET].map((row) => [row.id_campagne, row]))
+  const athletes = rows[ATHLETE_SELECTION_SHEET].map((row) => { const campaign=campaigns.get(row.id_campagne); return { id_membre_equipe_nationale:`ATH:${row.id_selection}`, id_equipe_nationale:clean(campaign?.id_equipe_nationale), id_acteur_coc:clean(row.id_athlete), id_type_acteur:"ATHLETE", role_equipe:"ATHLETE", date_debut:clean(row.date_selection || campaign?.date_debut), date_fin:clean(campaign?.date_fin), statut:clean(row.statut_selection || campaign?.statut), observations:clean(row.observation) } as NationalTeamMember })
+  const staff = rows[STAFF_ASSIGNMENT_SHEET].map((row) => { const campaign=campaigns.get(row.id_campagne); return { id_membre_equipe_nationale:`STAFF:${row.id_affectation_staff}`, id_equipe_nationale:clean(campaign?.id_equipe_nationale), id_acteur_coc:clean(row.id_acteur_coc), id_type_acteur:clean(row.id_type_acteur), role_equipe:clean(row.id_role_staff), date_debut:clean(row.date_debut), date_fin:clean(row.date_fin), statut:row.date_fin && row.date_fin < new Date().toISOString().slice(0,10) ? "INACTIF" : "ACTIF", observations:clean(row.observation) } as NationalTeamMember })
+  return [...athletes,...staff].filter((member) => member.id_equipe_nationale && (!teamId || member.id_equipe_nationale === teamId) && (!actorId || member.id_acteur_coc === actorId) && (!actorType || member.id_type_acteur === actorType))
 }
 
 export async function getNationalTeamReferences(): Promise<NationalTeamReferences> {
@@ -76,7 +87,7 @@ export async function createNationalTeam(input: Record<string, unknown>) {
   const id = nextId(existing.map((team) => team.id_equipe_nationale), "EQN")
   if ((await getNationalTeams({ fresh: true })).some((team) => team.id_equipe_nationale === id)) throw new Error("Collision d’identifiant détectée. Réessayez.")
   const created = { id_equipe_nationale: id, ...row } as NationalTeam
-  await appendSheetRow({ sheetName: TEAM_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), row: created })
+  await appendSheetRow({ sheetName: TEAM_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), row: { ...created, observation: created.observations } })
   return created
 }
 
@@ -85,7 +96,7 @@ export async function updateNationalTeam(id: string, input: Record<string, unkno
   const row = validateTeamInput({ ...input, id_federation: current.id_federation, id_sport: current.id_sport })
   const refs = await getNationalTeamReferences(); assertTeamReferences(row, refs)
   const existing = await getNationalTeams({ fresh: true }); if (existing.some((team) => team.id_equipe_nationale !== id && sameTeamIdentity(team, row))) throw new Error("Une équipe nationale identique existe déjà.")
-  await updateSheetCells({ sheetName: TEAM_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), idColumn: "id_equipe_nationale", idValue: id, updates: Object.entries(row).map(([column, value]) => ({ column, value })) })
+  await updateSheetCells({ sheetName: TEAM_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), idColumn: "id_equipe_nationale", idValue: id, updates: Object.entries(row).filter(([column])=>column!=="observations").map(([column, value]) => ({ column, value })).concat([{column:"observation",value:row.observations}]) })
   return { ...current, ...row }
 }
 
@@ -97,11 +108,16 @@ export async function getMemberActorLabels(members: NationalTeamMember[]) {
   return Object.fromEntries(groups.flatMap(([type, actors]) => actors.map((actor) => [`${type}:${actor.id}`, actor.label])))
 }
 
+async function currentCampaign(teamId:string){const rows=await getSheetRows({sheetName:CAMPAIGN_SHEET,spreadsheetId:getNationalTeamsSpreadsheetId(),bypassCache:true});const matches=rows.filter(row=>row.id_equipe_nationale===teamId).sort((a,b)=>b.date_debut.localeCompare(a.date_debut));return matches.find(row=>row.statut==="ACTIF")||matches[0]}
+async function createCampaignMember(teamId:string,row:ReturnType<typeof validateMemberInput>):Promise<NationalTeamMember>{const campaign=await currentCampaign(teamId);if(!campaign)throw new Error("CrÃ©ez d'abord une campagne pour cette Ã©quipe nationale.");const spreadsheetId=getNationalTeamsSpreadsheetId(),athlete=row.id_type_acteur==="ATHLETE",sheetName=athlete?ATHLETE_SELECTION_SHEET:STAFF_ASSIGNMENT_SHEET,idColumn=athlete?"id_selection":"id_affectation_staff",prefix=athlete?"SEL":"AFF",raw=await getSheetRows({sheetName,spreadsheetId,bypassCache:true}),rawId=nextId(raw.map(item=>item[idColumn]),prefix),id=`${athlete?"ATH":"STAFF"}:${rawId}`;const physical:Record<string,string>=athlete?{id_selection:rawId,id_campagne:campaign.id_campagne,id_athlete:row.id_acteur_coc,date_selection:row.date_debut,statut_selection:row.statut,observation:row.observations}:{id_affectation_staff:rawId,id_campagne:campaign.id_campagne,id_acteur_coc:row.id_acteur_coc,id_type_acteur:row.id_type_acteur,id_role_staff:row.role_equipe,date_debut:row.date_debut,date_fin:row.date_fin,observation:row.observations};await appendSheetRow({sheetName,spreadsheetId,row:physical});return{id_membre_equipe_nationale:id,id_equipe_nationale:teamId,...row}}
+async function updateCampaignMember(id:string,row:ReturnType<typeof validateMemberInput>){const athlete=id.startsWith("ATH:"),rawId=id.slice(id.indexOf(":")+1);await updateSheetCells({sheetName:athlete?ATHLETE_SELECTION_SHEET:STAFF_ASSIGNMENT_SHEET,spreadsheetId:getNationalTeamsSpreadsheetId(),idColumn:athlete?"id_selection":"id_affectation_staff",idValue:rawId,updates:athlete?[{column:"date_selection",value:row.date_debut},{column:"statut_selection",value:row.statut},{column:"observation",value:row.observations}]:[{column:"id_role_staff",value:row.role_equipe},{column:"date_debut",value:row.date_debut},{column:"date_fin",value:row.date_fin},{column:"observation",value:row.observations}]})}
+
 export async function createNationalTeamMember(teamId: string, input: Record<string, unknown>) {
   if (!(await getNationalTeam(teamId, { fresh: true }))) throw new Error("Équipe nationale introuvable.")
   const row = validateMemberInput(input)
   const refs = await getNationalTeamReferences(); if (!refs.roles.some((role) => role.id === row.role_equipe)) throw new Error("Rôle d’équipe nationale invalide.")
   if (!(await getActorOptions(row.id_type_acteur as ActorType)).some((actor) => actor.id === row.id_acteur_coc)) throw new Error("Acteur introuvable ou type incohérent.")
+  return createCampaignMember(teamId,row)
   const existing = await getNationalTeamMembers(undefined, undefined, undefined, { fresh: true })
   if (existing.some((member) => member.id_equipe_nationale === teamId && member.id_acteur_coc === row.id_acteur_coc && member.role_equipe === row.role_equipe && member.date_debut === row.date_debut)) throw new Error("Cette appartenance existe déjà pour la même période.")
   const id = nextId(existing.map((member) => member.id_membre_equipe_nationale), "MEN")
@@ -115,6 +131,6 @@ export async function updateNationalTeamMember(teamId: string, id: string, input
   const current = (await getNationalTeamMembers(teamId, undefined, undefined, { fresh: true })).find((member) => member.id_membre_equipe_nationale === id); if (!current) throw new Error("Membre introuvable.")
   const row = validateMemberInput({ ...input, id_acteur_coc: current.id_acteur_coc, id_type_acteur: current.id_type_acteur })
   const refs = await getNationalTeamReferences(); if (!refs.roles.some((role) => role.id === row.role_equipe)) throw new Error("Rôle d’équipe nationale invalide.")
-  await updateSheetCells({ sheetName: MEMBER_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), idColumn: "id_membre_equipe_nationale", idValue: id, updates: ["role_equipe", "date_debut", "date_fin", "statut", "observations"].map((column) => ({ column, value: row[column as keyof typeof row] })) })
+  await updateCampaignMember(id,row)
   return { ...current, ...row, id_acteur_coc: current.id_acteur_coc, id_type_acteur: current.id_type_acteur }
 }

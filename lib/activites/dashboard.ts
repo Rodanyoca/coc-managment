@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache"
 import { getActivities, getActivityReferences } from "./data"
 import type { ActivityStatus } from "./types"
 
@@ -54,8 +53,4 @@ async function aggregateActivitiesDashboardStats(): Promise<ActivitiesDashboardS
   return { totalActivities: activities.length, types }
 }
 
-export const loadActivitiesDashboardStats = unstable_cache(
-  aggregateActivitiesDashboardStats,
-  ["activities-dashboard-stats"],
-  { tags: [ACTIVITIES_DASHBOARD_CACHE_TAG] },
-)
+export const loadActivitiesDashboardStats = aggregateActivitiesDashboardStats

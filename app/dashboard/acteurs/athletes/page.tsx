@@ -1,5 +1,6 @@
 import { getSheetRows } from "@/lib/google/sheets"
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { ACTOR_SHEETS } from "@/lib/acteurs/sheets"
 import { getFederationOptions } from "@/lib/federations/options"
 import { AthletesClient, type AthleteListItem, type FederationOption } from "./athletes-client"
 
@@ -11,7 +12,7 @@ export const fetchCache = "force-no-store"
 export default async function AthletesPage() {
   const [rows, federationRows] = await Promise.all([
     getSheetRows({
-      sheetName: "ATHLETE",
+      sheetName: ACTOR_SHEETS.ATHLETE,
       spreadsheetId: getActeursSpreadsheetId(),
     }),
     getFederationOptions(),

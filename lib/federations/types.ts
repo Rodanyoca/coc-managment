@@ -5,11 +5,28 @@ export interface Federation {
   nom_federation: string
   sigle_federation: string
   nom_sport: string
+  logo_drive_id: string
+  logo_drive_url: string
   statut: string
+  statut_reconnaissance_ministere: string
+  date_reconnaissance_nationale: string
+  statut_affiliation_coc: string
   date_affiliation_coc: string
+  id_entite_continentale: string
+  nom_entite_continentale: string
+  date_affiliation_continentale: string
+  id_entite_internationale: string
+  nom_entite_internationale: string
+  date_affiliation_internationale: string
+  categorie_entite: string
+  adresse_siege: string
+  telephone: string
+  email: string
+  site_web: string
+  observations: string
 }
 
-export interface Entite { id_entite: string; nom_entite: string; sigle_entite: string }
+export interface Entite { id_entite: string; id_categorie_entite: string; nom_entite: string; sigle_entite: string; adresse_siege: string; telephone: string; email: string; site_web: string; observations: string }
 export interface Sport { id_sport: string; nom_sport: string }
 
 export interface TypeStructure {
@@ -24,6 +41,7 @@ export interface CategorieClub { id_categorie: string; id_sport: string; nom_cat
 export interface Ligue {
   id_ligue_coc: string; id_ligue_federation: string; id_federation: string
   nom_ligue: string; email_ligue: string; pseudo_ligue: string
+  telephone_ligue: string
   id_province: string; nom_province: string
   statut: string
 }
@@ -33,14 +51,28 @@ export interface Entente {
   nom_entente: string; pseudo_entente: string
   id_ligue_coc: string; nom_ligue: string
   id_ville: string; nom_ville: string; email_entente: string; statut: string
+  telephone_entente: string
 }
 
 export interface Club {
   id_club_coc: string; id_club_federation: string; nom_club: string
   id_categorie: string; nom_categorie: string
   id_entente_coc: string; nom_entente: string; pseudo_entente: string
+  id_cercle_coc: string
   id_ligue_coc: string; nom_ligue: string; pseudo_ligue: string
   id_federation: string; id_province: string; id_ville: string; nom_ville: string; statut: string
+  sigle_club: string; telephone_club: string; email_club: string
+}
+
+export interface Cercle {
+  id_cercle_coc: string; id_cercle_federation: string; id_federation: string
+  nom_cercle: string; sigle_cercle: string; id_structure_parent_coc: string; id_ville: string; statut: string
+  telephone_cercle: string; email_cercle: string
+}
+
+export interface Equipe {
+  id_equipe_coc: string; id_equipe_federation: string; id_federation: string
+  id_club_coc: string; nom_equipe: string; statut: string
 }
 
 export interface RelationHierarchique {
@@ -52,5 +84,5 @@ export interface RelationHierarchique {
 export interface FederationData {
   federations: Federation[]; typesStructure: TypeStructure[]
   provinces: Province[]; villes: Ville[]; ligues: Ligue[]
-  categoriesClub: CategorieClub[]; ententes: Entente[]; clubs: Club[]; hierarchie: RelationHierarchique[]
+  categoriesClub: CategorieClub[]; ententes: Entente[]; cercles: Cercle[]; clubs: Club[]; equipes: Equipe[]; hierarchie: RelationHierarchique[]
 }

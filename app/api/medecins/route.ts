@@ -1,7 +1,6 @@
 import { revalidatePath } from "next/cache"
 import { NextResponse } from "next/server"
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
-import { getSession } from "@/lib/auth"
 import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { appendSheetRow, getSheetRows, updateSheetCells } from "@/lib/google/sheets"
 
@@ -62,8 +61,6 @@ function enrich(row: ReturnType<typeof normalize>, context: { entite: Record<str
 }
 
 export async function POST(request: Request) {
-  const session = await getSession()
-  if (session?.role !== "coc") return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 })
   try {
     const body = await request.json() as { row?: Record<string, unknown> }
     const row = normalize(clean(body.row ?? {}))
@@ -80,8 +77,6 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const session = await getSession()
-  if (session?.role !== "coc") return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 })
   try {
     const body = await request.json() as { id?: unknown; row?: Record<string, unknown> }
     const id = String(body.id ?? "").trim()

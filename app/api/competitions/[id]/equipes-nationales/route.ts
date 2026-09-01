@@ -1,13 +1,11 @@
 import { revalidatePath, revalidateTag } from "next/cache"
 import { NextResponse } from "next/server"
-import { getSession } from "@/lib/auth"
 import { createTeamParticipation, getTeamParticipations, updateTeamParticipation } from "@/lib/competitions/data"
 
 export const runtime = "nodejs"
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) { const { id } = await params; try { return NextResponse.json({ rows: await getTeamParticipations(id) }) } catch (error) { console.error("Chargement équipes compétition", error); return NextResponse.json({ error: "Impossible de charger les équipes nationales." }, { status: 500 }) } }
 
 async function write(request: Request, context: { params: Promise<{ id: string }> }, update: boolean) {
-  if ((await getSession())?.role !== "coc") return NextResponse.json({ error: "Accès non autorisé." }, { status: 403 })
   try {
     const [{ id: competitionId }, body] = await Promise.all([context.params, request.json()])
     const row = update ? await updateTeamParticipation(competitionId, String(body.id || ""), body.row || {}) : await createTeamParticipation(competitionId, body.row || {})

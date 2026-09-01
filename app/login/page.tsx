@@ -1,126 +1,127 @@
 "use client"
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { Card, CardContent } from "@/components/ui/card"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"
+
+import { PartnersStrip, type Partner } from "@/components/login/partners-strip"
+import { normalizeLoginRedirect } from "@/lib/auth/login-redirect"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Mail, Lock, LogIn } from "lucide-react"
+import styles from "./login.module.css"
+
+const partners: Partner[] = [
+  { name: "Association des Comités Nationaux Olympiques d’Afrique", shortName: "ACNOA", logo: "/images/partners/acnoa.jpeg", logoVariant: "standard" },
+  { name: "Association des Comités Nationaux Olympiques", shortName: "ANOC", logo: "/images/partners/anoc.jpg", logoVariant: "wide-canvas" },
+  { name: "Comité International Olympique", shortName: "CIO", logo: "/images/partners/cio.png", logoVariant: "compact" },
+]
+
+type LoginError = "credentials" | "service" | "validation" | null
+
+const errorMessages: Record<Exclude<LoginError, null>, string> = {
+  credentials: "Les informations saisies ne permettent pas d’accéder au système. Vérifiez votre adresse e-mail et votre mot de passe.",
+  service: "Le service de connexion est momentanément indisponible. Veuillez réessayer dans quelques instants.",
+  validation: "Vérifiez les informations saisies puis réessayez.",
+}
 
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
+  const [error, setError] = useState<LoginError>(null)
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setError("")
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (loading) return
+    setError(null)
     setLoading(true)
+
     try {
-      const res = await fetch("/api/auth/login", {
+      const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        setError(data.error || "Erreur de connexion")
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) setError("credentials")
+        else if (response.status === 400) setError("validation")
+        else setError("service")
         return
       }
-      router.push("/dashboard")
-      router.refresh()
+
+      const result = await response.json()
+      router.push(normalizeLoginRedirect(result.redirectTo))
     } catch {
-      setError("Erreur réseau")
+      setError("service")
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-background via-muted/30 to-background px-4">
-      {/* Logo + Branding */}
-      <div className="mb-8 flex flex-col items-center text-center">
-        <div className="relative h-24 w-24 mb-4">
-          <Image
-            src="/images/logo-coc.png"
-            alt="Logo COC"
-            fill
-            className="object-contain"
-            priority
-          />
+    <main className={styles.page}>
+      <section className={styles.hero} aria-labelledby="institution-title">
+        <Image src="/images/login/delegation-rdc.jpeg" alt="Délégation sportive de la République démocratique du Congo réunie dans un stade" fill priority sizes="(min-width: 1440px) calc(100vw - 520px), calc(100vw - 440px)" className={styles.heroImage} />
+        <div className={styles.heroShade} />
+        <div className={styles.heroContent}>
+          <p className={styles.eyebrow}>Portail institutionnel du mouvement sportif congolais</p>
+          <h1 id="institution-title">Ensemble, portons plus haut les couleurs de la RDC.</h1>
+          <p className={styles.introduction}>Une plateforme unifiée pour structurer, administrer et valoriser les données du Comité Olympique Congolais.</p>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Comit&eacute; Olympique Congolais
-        </h1>
-        <p className="text-sm text-muted-foreground mt-1 max-w-xs">
-          Syst&egrave;me de gestion centralis&eacute; du Comit&eacute; Olympique Congolais
-        </p>
-      </div>
+        <div className={styles.nationalLine} aria-hidden="true" />
+      </section>
 
-      {/* Login Card */}
-      <Card className="w-full max-w-md border-border/50 shadow-lg">
-        <CardContent className="pt-6 pb-8 px-6">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
+      <aside className={styles.loginPanel} aria-labelledby="login-title">
+        <div className={styles.panelContent}>
+          <div className={styles.logoWrap}>
+            <Image src="/images/logo-coc.png" alt="Comité Olympique Congolais" width={400} height={570} priority className={styles.cocLogo} />
+          </div>
+          <div className={styles.welcome}>
+            <p className={styles.panelEyebrow}>Espace sécurisé</p>
+            <h2 id="login-title">Bienvenue</h2>
+            <p>Accédez à votre espace de gestion du Comité Olympique Congolais.</p>
+          </div>
+
+          <form onSubmit={handleSubmit} className={styles.form} aria-busy={loading}>
+            <div className={styles.field}>
               <Label htmlFor="email">Adresse e-mail</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="exemple@coc.cg"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10"
-                  required
-                />
+              <div className={styles.inputWrap}>
+                <Mail aria-hidden="true" />
+                <Input id="email" name="email" type="email" autoComplete="username" autoCapitalize="none" spellCheck={false} value={email} onChange={(event) => setEmail(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} required />
               </div>
             </div>
 
-            <div className="space-y-2">
+            <div className={styles.field}>
               <Label htmlFor="password">Mot de passe</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Votre mot de passe"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10"
-                  required
-                />
+              <div className={styles.inputWrap}>
+                <LockKeyhole aria-hidden="true" />
+                <Input id="password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} aria-describedby={error ? "login-error" : undefined} required />
+                <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}>
+                  {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                </button>
               </div>
             </div>
 
-            {error && (
-              <p className="text-sm text-destructive text-center">{error}</p>
-            )}
-
-            <Button
-              type="submit"
-              className="w-full gap-2 bg-coc-green hover:bg-coc-green/90"
-              disabled={loading}
-            >
-              {loading ? (
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-              ) : (
-                <LogIn className="h-4 w-4" />
-              )}
-              {loading ? "Connexion..." : "Se connecter"}
+            <div className={styles.messageSlot}>
+              {error && <p id="login-error" className={styles.error} role="alert">{errorMessages[error]}</p>}
+            </div>
+            <Button type="submit" className={styles.submit} disabled={loading}>
+              {loading && <LoaderCircle className={styles.spinner} aria-hidden="true" />}
+              {loading ? "Connexion en cours…" : "Se connecter"}
             </Button>
           </form>
-        </CardContent>
-      </Card>
 
-      {/* Signature */}
-      <p className="mt-8 text-xs text-muted-foreground">
-        Design by <span className="font-semibold">DS Concept</span>
-      </p>
-    </div>
+          <p className={styles.help}>Un problème d’accès ? Contactez l’administrateur du système.</p>
+          <p className={styles.signature} aria-label="Design par DS Concept"><span>Design by</span><strong>DS Concept</strong></p>
+        </div>
+      </aside>
+
+      <PartnersStrip partners={partners} />
+    </main>
   )
 }

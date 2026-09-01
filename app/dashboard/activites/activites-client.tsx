@@ -2,7 +2,7 @@
 import Link from "next/link"
 import { Eye, Plus, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { toast } from "sonner"
 import { Header } from "@/components/dashboard/header"
 import { Badge } from "@/components/ui/badge"
@@ -35,7 +35,6 @@ function ActivityForm({ form, setForm, refs, selectedEntities = [], setSelectedE
 
 export default function Client({ initialRows, references, loadError }: { initialRows: Activity[]; references: ActivityReferences; loadError?: string }) {
   const router = useRouter(), [activities, setActivities] = useState(initialRows), [open, setOpen] = useState(false), [saving, setSaving] = useState(false), [form, setForm] = useState(empty), [selected, setSelected] = useState<string[]>([]), [query, setQuery] = useState("")
-  useEffect(() => setActivities(initialRows), [initialRows])
   const rows = useMemo(() => activities.filter((item) => [item.nom_activite, item.titre_public, item.lieu, item.ville].join(" ").toLowerCase().includes(query.toLowerCase())).sort((a, b) => b.date_debut.localeCompare(a.date_debut)), [activities, query])
   const name = (items: ActivityReferences["types"], id: string) => items.find((item) => item.id === id)?.secondary || items.find((item) => item.id === id)?.label || "—"
   async function save() { setSaving(true); try { const response = await fetch("/api/activites", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ row: form, entityIds: selected }) }); const result = await response.json(); if (!response.ok) throw new Error(result.error); const created = { ...result.row, statut_normalise: normalizeStatus(result.row?.statut) } as Activity; setActivities((current) => [created, ...current.filter((item) => item.id_activite !== created.id_activite)]); if (result.partialError) toast.warning(result.partialError); else toast.success("Activité créée."); setOpen(false); setForm(empty); setSelected([]); router.refresh() } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) } }

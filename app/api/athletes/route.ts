@@ -2,13 +2,13 @@ import { NextResponse } from "next/server"
 import { revalidatePath } from "next/cache"
 
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
-import { getSession } from "@/lib/auth"
+import { ACTOR_SHEETS } from "@/lib/acteurs/sheets"
 import { getFederationOptions } from "@/lib/federations/options"
 import { appendSheetRow, getSheetRows, updateSheetCells } from "@/lib/google/sheets"
 
 export const runtime = "nodejs"
 
-const SHEET_NAME = "ATHLETE"
+const SHEET_NAME = ACTOR_SHEETS.ATHLETE
 
 function cleanRow(row: Record<string, unknown>) {
   return Object.fromEntries(
@@ -31,10 +31,6 @@ function generateAthleteCocId(athletes: Record<string, string>[]) {
 }
 
 export async function POST(request: Request) {
-  const session = await getSession()
-  if (session?.role !== "coc") {
-    return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 })
-  }
 
   try {
     const body = await request.json() as { row?: Record<string, unknown> }
@@ -89,10 +85,6 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const session = await getSession()
-  if (session?.role !== "coc") {
-    return NextResponse.json({ error: "Accès non autorisé" }, { status: 403 })
-  }
 
   try {
     const body = await request.json() as { id?: unknown; row?: Record<string, unknown> }

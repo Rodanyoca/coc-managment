@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { revalidatePath } from "next/cache"
 import { deleteDriveFile, uploadFileToDrive, uploadPrivateFileToDrive, verifyDriveFolderAccess } from "@/lib/google/drive"
 import { getSheetRows, updateSheetCells } from "@/lib/google/sheets"
-import { getSession } from "@/lib/auth"
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
+import { ACTOR_SHEETS } from "@/lib/acteurs/sheets"
+import { canAccess } from "@/lib/auth"
 
 // Keep enough headroom for multipart metadata under Vercel's 4.5 MB
 // function request-body limit.
@@ -14,11 +15,12 @@ type MediaType = "avatar" | "passeport"
 const FOLDER_ENV: Record<MediaType, string> = { avatar: "GOOGLE_DRIVE_ACTEURS_AVATARS_FOLDER_ID", passeport: "GOOGLE_DRIVE_ACTEURS_PASSEPORTS_FOLDER_ID" }
 const ACCEPTED_TYPES: Record<MediaType, string[]> = { avatar: IMAGE_TYPES, passeport: ["application/pdf"] }
 const ACTOR_CONFIG: Record<string, { sheetName: string; idColumn: string; fileLabel: string }> = {
-  athletes: { sheetName: "ATHLETE", idColumn: "id_athlete_coc", fileLabel: "ATHLETE" },
-  entraineurs: { sheetName: "COACHS", idColumn: "id_coach_coc", fileLabel: "COACH" },
-  medecins: { sheetName: "MEDECINS", idColumn: "id_medecin_coc", fileLabel: "MEDECIN" },
-  officiels: { sheetName: "OFFICIELS", idColumn: "id_officiel_coc", fileLabel: "OFFICIEL" },
-  arbitres: { sheetName: "ARBITRES", idColumn: "id_arbitre_coc", fileLabel: "ARBITRE" },
+  athletes: { sheetName: ACTOR_SHEETS.ATHLETE, idColumn: "id_athlete_coc", fileLabel: "ATHLETE" },
+  entraineurs: { sheetName: ACTOR_SHEETS.COACH, idColumn: "id_coach_coc", fileLabel: "COACH" },
+  medecins: { sheetName: ACTOR_SHEETS.MEDECIN, idColumn: "id_medecin_coc", fileLabel: "MEDECIN" },
+  officiels: { sheetName: ACTOR_SHEETS.OFFICIEL, idColumn: "id_officiel_coc", fileLabel: "OFFICIEL" },
+  arbitres: { sheetName: ACTOR_SHEETS.ARBITRE, idColumn: "id_arbitre_coc", fileLabel: "ARBITRE" },
+  autres: { sheetName: ACTOR_SHEETS.AUTRE, idColumn: "id_autre_acteur_coc", fileLabel: "AUTRE" },
 }
 
 export async function GET() {
@@ -32,7 +34,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  if ((await getSession())?.role !== "coc") return NextResponse.json({ error: "Accès non autorisé." }, { status: 403 })
+  if (!(await canAccess("AUT-SPT", "WRITE"))) return NextResponse.json({ error: "Accès refusé" }, { status: 403 })
   try {
     const formData = await request.formData()
     const file = formData.get("file")
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest) {
 
     try {
       await updateSheetCells({ sheetName: actorConfig.sheetName, idColumn: actorConfig.idColumn, idValue: actorId, spreadsheetId, updates: [
-        { column: mediaType === "avatar" ? "avatar_drive_url" : ["entraineurs", "medecins", "arbitres"].includes(actorType) ? "passeport_drive_url" : "url_passeport", value: uploaded.url },
+        { column: mediaType === "avatar" ? "avatar_drive_url" : ["entraineurs", "medecins", "arbitres", "autres"].includes(actorType) ? "passeport_drive_url" : "url_passeport", value: uploaded.url },
         { column: driveIdColumn, value: uploaded.fileId },
       ] })
     } catch (error) { await deleteDriveFile(uploaded.fileId).catch(() => undefined); throw error }

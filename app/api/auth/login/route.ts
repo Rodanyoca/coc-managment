@@ -1,52 +1,67 @@
-import { NextResponse } from "next/server"
-import { createSession, type UserRole } from "@/lib/auth"
-import { getUsers } from "@/lib/users/data"
+import { randomUUID } from "node:crypto"
+import { after, NextResponse } from "next/server"
+import { createSession } from "@/lib/auth"
+import { attemptState, recordAttempt, progressiveDelay, waitForDelay } from "@/lib/auth/attempts"
+import { hashPassword, verifyPassword } from "@/lib/auth/password"
+import { postLoginRoute } from "@/lib/auth/post-login-route"
+import { getTelemetryKey, pseudonymizeTelemetry } from "@/lib/auth/telemetry-hash"
+import { AUDIT_ACTIONS } from "@/lib/audit/actions"
+import { writeAudit } from "@/lib/audit/logger"
+import { UserCommands } from "@/lib/users/commands"
+import { createGoogleUsersSheetsAdapter } from "@/lib/users/google-adapter"
+import { getAuthenticationSnapshot } from "@/lib/users/data"
 
-export const runtime = "nodejs"
+const denied = () => NextResponse.json({ error: "Les informations saisies ne permettent pas d’accéder au système." }, { status: 401 })
+const dummyHash = hashPassword(randomUUID())
 
-export async function POST(req: Request) {
-  let credentials: { email?: unknown; password?: unknown }
+function clientAddress(request: Request) {
+  return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || request.headers.get("x-real-ip")?.trim() || "adresse-indisponible"
+}
+
+export async function POST(request: Request) {
+  let body: { email?: unknown; password?: unknown }
+  try { body = await request.json() } catch { return NextResponse.json({ error: "Requête invalide." }, { status: 400 }) }
+  const email = typeof body.email === "string" ? body.email.trim() : "", password = typeof body.password === "string" ? body.password : ""
+  if (!email || !password) return NextResponse.json({ error: "Requête invalide." }, { status: 400 })
+
+  const now = new Date(), requestId = request.headers.get("x-request-id")?.trim() || randomUUID()
   try {
-    credentials = await req.json()
+    const adapter = createGoogleUsersSheetsAdapter(), telemetryKey = getTelemetryKey()
+    const identifiantHash = pseudonymizeTelemetry(email, telemetryKey), ipHash = pseudonymizeTelemetry(clientAddress(request), telemetryKey)
+    const { attempts, user, authorizations } = await getAuthenticationSnapshot(email)
+    const state = attemptState(attempts, identifiantHash, ipHash, now)
+    if (state.blocked) {
+      await Promise.all([
+        recordAttempt({ adapter, identifiantHash, ipHash, result: "REFUS_BLOCAGE_TEMPORAIRE", requestId, now }),
+        writeAudit({ adapter, action: AUDIT_ACTIONS.LOGIN, typeObjet: "SESSION", result: "ECHEC", requestId, details: { motif: "REFUS_GENERIQUE" }, now }).catch(() => undefined),
+      ])
+      await waitForDelay(state.delayMs)
+      return denied()
+    }
+
+    const passwordMatches = await verifyPassword(password, user?.passwordHash ?? await dummyHash)
+    const temporaryAccessValid = !user?.doitChangerMotDePasse || Boolean(user.dateExpirationAccesTemporaire && Date.parse(user.dateExpirationAccesTemporaire) > now.getTime())
+    const accepted = Boolean(user && user.statut === "ACTIF" && temporaryAccessValid && passwordMatches)
+    if (!accepted) {
+      await Promise.all([
+        recordAttempt({ adapter, identifiantHash, ipHash, result: "ECHEC", requestId, now }),
+        writeAudit({ adapter, actorId: user?.idUser, action: AUDIT_ACTIONS.LOGIN, typeObjet: "SESSION", objectId: user?.idUser, result: "ECHEC", requestId, details: { motif: "REFUS_GENERIQUE" }, now }).catch(() => undefined),
+      ])
+      await waitForDelay(progressiveDelay(state.failures + 1))
+      return denied()
+    }
+    if (!user) throw new Error("État de connexion incohérent.")
+
+    await createSession({ idUser: user.idUser, sessionVersion: user.sessionVersion })
+    after(async () => {
+      await Promise.allSettled([
+        recordAttempt({ adapter, identifiantHash, ipHash, result: "SUCCES", requestId, now }),
+        writeAudit({ adapter, actorId: user.idUser, action: AUDIT_ACTIONS.LOGIN, typeObjet: "SESSION", objectId: user.idUser, result: "SUCCES", requestId, now }),
+        new UserCommands(adapter).replaceUser({ ...user, derniereConnexion: now.toISOString() }),
+      ])
+    })
+    return NextResponse.json({ ok: true, redirectTo: postLoginRoute(user, authorizations) })
   } catch {
-    return NextResponse.json({ error: "Requête de connexion invalide." }, { status: 400 })
-  }
-
-  const email = typeof credentials.email === "string" ? credentials.email.trim().toLowerCase() : ""
-  const password = typeof credentials.password === "string" ? credentials.password : ""
-  if (!email || !password) {
-    return NextResponse.json({ error: "Email et mot de passe requis." }, { status: 400 })
-  }
-
-  try {
-    const rows = await getUsers()
-
-    const user = rows.find((r) => {
-      const e = (r.email || "").trim().toLowerCase()
-      const p = (r.password || "").trim()
-      const s = (r.statut || "").trim().toUpperCase()
-      return e === email && p === password && s === "ACTIF"
-    })
-
-    if (!user) {
-      return NextResponse.json({ error: "Identifiants incorrects ou compte inactif." }, { status: 401 })
-    }
-
-    const role = (user.role || "").trim().toLowerCase() as UserRole
-    if (role !== "coc" && role !== "technique") {
-      return NextResponse.json({ error: "Rôle non reconnu." }, { status: 403 })
-    }
-
-    await createSession({
-      id: (user.id_user || "").trim(),
-      nom: (user.nom_complet || "").trim(),
-      email: (user.email || "").trim(),
-      role,
-    })
-
-    return NextResponse.json({ ok: true, nom: (user.nom_complet || "").trim(), role })
-  } catch (error) {
-    console.error("Échec du service d’authentification", error)
-    return NextResponse.json({ error: "Le service de connexion est momentanément indisponible." }, { status: 500 })
+    return NextResponse.json({ error: "Le service de connexion est momentanément indisponible." }, { status: 503 })
   }
 }

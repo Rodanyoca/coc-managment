@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache"
 import { getCompetitionReferences, getCompetitions, getTeamParticipations } from "./data"
 import type { CompetitionStatus } from "./types"
 
@@ -22,4 +21,4 @@ async function aggregate(): Promise<CompetitionsDashboardStats> {
   return { totalCompetitions: competitions.length, aVenir: totals.aVenir, enCours: totals.enCours, terminees: totals.terminees, types }
 }
 
-export const loadCompetitionsDashboardStats = unstable_cache(aggregate, ["competitions-dashboard-stats"], { tags: [COMPETITIONS_DASHBOARD_CACHE_TAG] })
+export const loadCompetitionsDashboardStats = aggregate

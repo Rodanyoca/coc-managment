@@ -1,10 +1,10 @@
 import "server-only"
-import { getSession } from "@/lib/auth"
+import { canAccess } from "@/lib/auth"
 
 export async function canReadDocuments() {
-  return (await getSession())?.role === "coc"
+  return canAccess("AUT-ADM", "READ")
 }
 
 export async function canWriteDocuments() {
-  return (await getSession())?.role === "coc"
+  return canAccess("AUT-ADM", "WRITE")
 }
