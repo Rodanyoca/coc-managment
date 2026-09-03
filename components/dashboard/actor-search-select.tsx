@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 
 type ActorOption = { id: string; label: string }
 
-export function ActorSearchSelect({ open: controlledOpen, onOpenChange, actors, options, value, onChange, onValueChange, disabled, loading }: {
+export function ActorSearchSelect({ open: controlledOpen, onOpenChange, actors, options, value, onChange, onValueChange, placeholder = "Rechercher un acteur…", disabled, loading }: {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   actors?: ActorOption[]
@@ -41,11 +41,11 @@ export function ActorSearchSelect({ open: controlledOpen, onOpenChange, actors, 
   return <Popover open={open} onOpenChange={setOpen}>
     <PopoverTrigger asChild>
       <Button type="button" variant="outline" role="combobox" aria-expanded={open} disabled={disabled || loading} className="w-full justify-between font-normal">
-        {loading ? <span className="flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" />Chargement…</span> : selected?.label || value || "Rechercher un acteur…"}
+        {loading ? <span className="flex items-center gap-2"><Loader2 className="h-4 w-4 animate-spin" />Chargement…</span> : selected?.label || value || placeholder}
         <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
       </Button>
     </PopoverTrigger>
-    <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-2" align="start">
+    <PopoverContent className="z-[60] w-[var(--radix-popover-trigger-width)] p-2" align="start">
       <Input autoFocus value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Nom ou identifiant…" className="mb-2" />
       <div className="max-h-72 overflow-y-auto">
         {!filteredActors.length ? <p className="px-2 py-6 text-center text-sm text-muted-foreground">Aucun acteur trouvé.</p> : filteredActors.map((actor) =>

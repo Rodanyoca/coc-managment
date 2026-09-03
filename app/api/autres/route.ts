@@ -35,7 +35,6 @@ async function validate(row: ReturnType<typeof clean>, currentId = "") {
   const [rows, entities] = await Promise.all([getSheetRows({ sheetName: ACTOR_SHEETS.AUTRE, spreadsheetId: getActeursSpreadsheetId(), bypassCache: true }), getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() })])
   if (row.id_entite && !entities.some((entity) => entity.id_entite === row.id_entite)) throw new Error("L’entité sélectionnée est inconnue.")
   const others = rows.filter((item) => item[ID_COLUMN] !== currentId)
-  if (row.id_national && others.some((item) => normalized(item.id_national) === normalized(row.id_national))) throw new Error("Cet identifiant national existe déjà.")
   if (row.email && others.some((item) => normalized(item.email) === normalized(row.email))) throw new Error("Cette adresse électronique existe déjà.")
   if (others.some((item) => normalized(item.nom_complet) === normalized(row.nom_complet) && item.id_entite === row.id_entite && normalized(item.type_autre_acteur) === normalized(row.type_autre_acteur))) throw new Error("Une personne portant ce nom, cette fonction et ce rattachement existe déjà.")
   return rows
@@ -64,7 +63,7 @@ export async function PUT(request: Request) {
     const row = clean(body.row ?? {})
     const rows = await validate(row, id)
     if (!rows.some((item) => item[ID_COLUMN] === id)) return NextResponse.json({ error: "Acteur introuvable." }, { status: 404 })
-    await updateSheetCells({ sheetName: ACTOR_SHEETS.AUTRE, spreadsheetId: getActeursSpreadsheetId(), idColumn: ID_COLUMN, idValue: id, updates: OTHER_ACTOR_COLUMNS.filter((column) => column !== ID_COLUMN && !column.endsWith("_drive_id") && !column.endsWith("_drive_url")).map((column) => ({ column, value: row[column] })) })
+    await updateSheetCells({ sheetName: ACTOR_SHEETS.AUTRE, spreadsheetId: getActeursSpreadsheetId(), idColumn: ID_COLUMN, idValue: id, updates: OTHER_ACTOR_COLUMNS.filter((column) => column !== ID_COLUMN && column !== "id_national" && !column.endsWith("_drive_id") && !column.endsWith("_drive_url")).map((column) => ({ column, value: row[column] })) })
     revalidatePath("/dashboard/acteurs/autres"); revalidatePath(`/dashboard/acteurs/autres/${id}`)
     return NextResponse.json({ ok: true })
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : String(error) }, { status: 400 }) }

@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import type { DocumentEntityType, DocumentRecord, DocumentReferences } from "@/lib/documents/types"
+import { DOCUMENT_PDF_MAX_SIZE_BYTES, DOCUMENT_PDF_MAX_SIZE_MB } from "@/lib/documents/limits"
 
 type FormValue = Pick<DocumentRecord, "nom_document" | "id_type_document" | "type_entite_liee" | "id_entite_liee" | "note" | "observations">
 const empty: FormValue = { nom_document: "", id_type_document: "", type_entite_liee: "", id_entite_liee: "", note: "", observations: "" }
@@ -24,6 +25,15 @@ export function DocumentForm({ references, initial, documentId, onSaved }: { ref
     ? entityOptions.find((option) => option.id.toLocaleLowerCase("fr") === form.id_entite_liee.trim().toLocaleLowerCase("fr"))
     : undefined
   const set = (key: keyof FormValue, value: string) => setForm((current) => ({ ...current, [key]: value }))
+
+  function selectFile(next: File | null) {
+    if (next && next.size > DOCUMENT_PDF_MAX_SIZE_BYTES) {
+      setFile(null)
+      toast.error(`Le fichier dépasse la taille maximale de ${DOCUMENT_PDF_MAX_SIZE_MB} Mo.`)
+      return
+    }
+    setFile(next)
+  }
 
   async function save() {
     setSaving(true)
@@ -52,7 +62,7 @@ export function DocumentForm({ references, initial, documentId, onSaved }: { ref
     </div>
     <div className="space-y-2"><Label>Note</Label><Textarea value={form.note} onChange={(event) => set("note", event.target.value)} /></div>
     <div className="space-y-2"><Label>Observations</Label><Textarea value={form.observations} onChange={(event) => set("observations", event.target.value)} /></div>
-    {!documentId && <div className="space-y-2"><Label>Fichier PDF (facultatif, 5 Mo maximum)</Label><Input type="file" accept="application/pdf,.pdf" onChange={(event) => setFile(event.target.files?.[0] || null)} /></div>}
+    {!documentId && <div className="space-y-2"><Label>Fichier PDF (facultatif, {DOCUMENT_PDF_MAX_SIZE_MB} Mo maximum)</Label><Input type="file" accept="application/pdf,.pdf" onChange={(event) => selectFile(event.target.files?.[0] || null)} /></div>}
     <div className="flex justify-end"><Button disabled={saving} onClick={save}>{saving ? "Enregistrement…" : "Enregistrer"}</Button></div>
   </div>
 }

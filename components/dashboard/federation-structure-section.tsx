@@ -1,13 +1,20 @@
-import { ChevronRight } from "lucide-react"
+"use client"
+
+import { useMemo, useState } from "react"
+import { ChevronRight, Search } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import type { FederationStructure } from "@/lib/federations/structure-model"
+import type { FederationStructure, FederationStructureSection } from "@/lib/federations/structure-model"
 
 const number = new Intl.NumberFormat("fr-FR")
 const labels = ["Ligues", "Ententes", "Cercles", "Clubs", "Équipes"]
 const emptySections = () => labels.map((label, index) => ({ key: ["ligues", "ententes", "cercles", "clubs", "equipes"][index], label, configured: false, items: [] })) as FederationStructure["sections"]
 const shown = (value: string) => value || "—"
+const secondaryLabel = (key: FederationStructureSection["key"]) => key === "ententes" ? "Ligue" : key === "clubs" ? "Entente" : "Localisation / parent"
 
 export function FederationHierarchySummary({ structure, loadError }: { structure?: FederationStructure; loadError?: boolean }) {
   return <section className="min-w-0 rounded-lg border border-border/60 bg-muted/20 p-4" aria-labelledby="hierarchy-title">
@@ -19,14 +26,35 @@ export function FederationHierarchySummary({ structure, loadError }: { structure
   </section>
 }
 
+function StructureTable({ section }: { section: FederationStructureSection }) {
+  const showSecondary = section.key !== "ligues"
+  const relationLabel = secondaryLabel(section.key)
+  const [query, setQuery] = useState("")
+  const [pageSize, setPageSize] = useState(10)
+  const [page, setPage] = useState(1)
+  const filtered = useMemo(() => {
+    const needle = query.trim().toLocaleLowerCase("fr")
+    return needle ? section.items.filter((item) => [item.id, item.federalId, item.name, item.alias, item.secondary, item.phone, item.email, item.status].some((value) => value.toLocaleLowerCase("fr").includes(needle))) : section.items
+  }, [query, section.items])
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize))
+  const currentPage = Math.min(page, pageCount)
+  const visible = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const emptyMessage = query ? "Aucun élément ne correspond à la recherche." : "Aucun élément enregistré."
+
+  return <div className="space-y-4"><div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><div className="relative min-w-0 flex-1 sm:max-w-md"><Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input value={query} onChange={(event) => { setQuery(event.target.value); setPage(1) }} className="pl-9" placeholder={`Rechercher dans ${section.label.toLocaleLowerCase("fr")}…`} aria-label={`Rechercher dans ${section.label}`} /></div><div className="flex items-center gap-2 text-sm"><span className="whitespace-nowrap text-muted-foreground">Afficher</span><Select value={String(pageSize)} onValueChange={(value) => { setPageSize(Number(value)); setPage(1) }}><SelectTrigger className="w-20" aria-label={`Nombre de ${section.label.toLocaleLowerCase("fr")} par page`}><SelectValue /></SelectTrigger><SelectContent>{[10, 20, 50].map((size) => <SelectItem key={size} value={String(size)}>{size}</SelectItem>)}</SelectContent></Select></div></div>
+    <div className="hidden md:block"><Table><TableHeader><TableRow><TableHead>ID COC</TableHead><TableHead>ID fédéral</TableHead><TableHead>Nom</TableHead><TableHead>Sigle / pseudo</TableHead>{showSecondary && <TableHead>{relationLabel}</TableHead>}<TableHead>Téléphone</TableHead><TableHead>E-mail</TableHead><TableHead>Statut</TableHead></TableRow></TableHeader><TableBody>{visible.map((item) => <TableRow key={item.id || item.name}><TableCell>{shown(item.id)}</TableCell><TableCell>{shown(item.federalId)}</TableCell><TableCell className="max-w-56 whitespace-normal font-medium">{shown(item.name)}</TableCell><TableCell>{shown(item.alias)}</TableCell>{showSecondary && <TableCell className="max-w-48 whitespace-normal">{shown(item.secondary)}</TableCell>}<TableCell>{item.phone ? <a href={`tel:${item.phone}`} className="hover:underline">{item.phone}</a> : "—"}</TableCell><TableCell>{item.email ? <a href={`mailto:${item.email}`} className="break-all hover:underline">{item.email}</a> : "—"}</TableCell><TableCell><Badge variant="outline">{shown(item.status).replaceAll("_", " ")}</Badge></TableCell></TableRow>)}{visible.length === 0 && <TableRow><TableCell colSpan={showSecondary ? 8 : 7} className="h-24 text-center text-muted-foreground">{emptyMessage}</TableCell></TableRow>}</TableBody></Table></div>
+    <div className="grid gap-3 md:hidden">{visible.map((item) => <article key={`mobile-${item.id || item.name}`} className="min-w-0 rounded-lg border border-border/60 p-4"><div className="mb-3 flex items-start justify-between gap-3"><div className="min-w-0"><p className="break-words font-semibold">{shown(item.name)}</p>{item.alias && <p className="text-sm text-muted-foreground">{item.alias}</p>}</div><Badge variant="outline" className="shrink-0">{shown(item.status).replaceAll("_", " ")}</Badge></div><dl className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2"><div><dt className="text-muted-foreground">ID COC</dt><dd className="break-all">{shown(item.id)}</dd></div><div><dt className="text-muted-foreground">ID fédéral</dt><dd className="break-all">{shown(item.federalId)}</dd></div>{showSecondary && item.secondary && <div><dt className="text-muted-foreground">{relationLabel}</dt><dd className="break-words">{item.secondary}</dd></div>}{item.phone && <div><dt className="text-muted-foreground">Téléphone</dt><dd className="break-all">{item.phone}</dd></div>}{item.email && <div><dt className="text-muted-foreground">E-mail</dt><dd className="break-all">{item.email}</dd></div>}</dl></article>)}{visible.length === 0 && <p className="py-8 text-center text-sm text-muted-foreground">{emptyMessage}</p>}</div>
+    <div className="flex flex-wrap items-center justify-between gap-3 text-sm text-muted-foreground"><p>{number.format(filtered.length)} élément{filtered.length > 1 ? "s" : ""}</p><div className="flex items-center gap-2"><Button variant="outline" size="sm" disabled={currentPage === 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>Précédent</Button><span className="whitespace-nowrap">Page {currentPage} sur {pageCount}</span><Button variant="outline" size="sm" disabled={currentPage === pageCount} onClick={() => setPage((value) => Math.min(pageCount, value + 1))}>Suivant</Button></div></div>
+  </div>
+}
+
 export function FederationStructureTables({ structure, loadError }: { structure?: FederationStructure; loadError?: boolean }) {
   const sections = structure?.sections ?? emptySections()
   return <div className="space-y-6">{sections.map((section) => <Card key={section.key} className="min-w-0 border-border/50"><CardHeader className="flex flex-row items-center justify-between gap-3 pb-3"><CardTitle className="text-base">{section.label}</CardTitle><Badge variant="secondary">{number.format(section.items.length)}</Badge></CardHeader><CardContent>
     {loadError ? <p className="text-sm text-destructive">Impossible de déterminer la configuration de ce niveau.</p>
       : !section.configured ? <p className="text-sm text-muted-foreground">Ce niveau territorial n’est pas paramétré pour cette fédération.</p>
       : section.items.length === 0 ? <p className="text-sm text-muted-foreground">Ce niveau est paramétré, mais aucun élément n’est encore enregistré.</p>
-      : <><div className="hidden md:block"><Table><TableHeader><TableRow><TableHead>ID COC</TableHead><TableHead>ID fédéral</TableHead><TableHead>Nom</TableHead><TableHead>Sigle / pseudo</TableHead><TableHead>Localisation / parent</TableHead><TableHead>Téléphone</TableHead><TableHead>E-mail</TableHead><TableHead>Statut</TableHead></TableRow></TableHeader><TableBody>{section.items.map((item) => <TableRow key={item.id || item.name}><TableCell className="font-mono text-xs">{shown(item.id)}</TableCell><TableCell className="font-mono text-xs">{shown(item.federalId)}</TableCell><TableCell className="max-w-56 whitespace-normal font-medium">{shown(item.name)}</TableCell><TableCell>{shown(item.alias)}</TableCell><TableCell className="max-w-48 whitespace-normal">{shown(item.secondary)}</TableCell><TableCell>{item.phone ? <a href={`tel:${item.phone}`} className="hover:underline">{item.phone}</a> : "—"}</TableCell><TableCell>{item.email ? <a href={`mailto:${item.email}`} className="break-all hover:underline">{item.email}</a> : "—"}</TableCell><TableCell><Badge variant="outline">{shown(item.status).replaceAll("_", " ")}</Badge></TableCell></TableRow>)}</TableBody></Table></div>
-        <div className="grid gap-3 md:hidden">{section.items.map((item) => <article key={`mobile-${item.id || item.name}`} className="min-w-0 rounded-lg border border-border/60 p-4"><div className="mb-3 flex items-start justify-between gap-3"><div className="min-w-0"><p className="break-words font-semibold">{shown(item.name)}</p>{item.alias && <p className="text-sm text-muted-foreground">{item.alias}</p>}</div><Badge variant="outline" className="shrink-0">{shown(item.status).replaceAll("_", " ")}</Badge></div><dl className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2"><div><dt className="text-muted-foreground">ID COC</dt><dd className="break-all font-mono text-xs">{shown(item.id)}</dd></div><div><dt className="text-muted-foreground">ID fédéral</dt><dd className="break-all font-mono text-xs">{shown(item.federalId)}</dd></div>{item.secondary && <div><dt className="text-muted-foreground">Localisation / parent</dt><dd className="break-words">{item.secondary}</dd></div>}{item.phone && <div><dt className="text-muted-foreground">Téléphone</dt><dd className="break-all">{item.phone}</dd></div>}{item.email && <div><dt className="text-muted-foreground">E-mail</dt><dd className="break-all">{item.email}</dd></div>}</dl></article>)}</div></>}
+      : <StructureTable section={section} />}
   </CardContent></Card>)}</div>
 }
 

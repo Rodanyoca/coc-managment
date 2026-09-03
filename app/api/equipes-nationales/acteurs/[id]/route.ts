@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server"
+import { canAccess } from "@/lib/auth"
 import { getNationalTeamMembers, getNationalTeams } from "@/lib/equipes-nationales/data"
 
 export const runtime = "nodejs"
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  if (!(await canAccess("AUT-SPT", "READ"))) return NextResponse.json({ error: "Accès refusé." }, { status: 403 })
   try {
     const { id } = await params
     const actorType = new URL(request.url).searchParams.get("type") || undefined

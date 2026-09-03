@@ -1,5 +1,9 @@
 # Règles des vues listes et détails
 
+## Compétitions
+
+La liste Compétitions privilégie l’identifiant, le nom, l’édition, la période et le statut, puis passe en cartes sous le format desktop. La fiche utilise quatre onglets latéraux : Général, Participants, Équipes engagées et Résultats. Les équipes affichées proviennent exclusivement des engagements campagne-programme. Une sélection et une participation effective restent deux informations distinctes ; les segments et performances complètent un résultat officiel sans le recalculer.
+
 - Une vue liste ne doit produire aucun défilement horizontal aux résolutions prises en charge. Les contenus reviennent à la ligne et la structure passe en cartes ou en grille compacte sur petit écran.
 - Les colonnes sont hiérarchisées : identité et nom restent prioritaires; les informations secondaires peuvent être abrégées ou réorganisées selon la largeur disponible.
 - Une information essentielle n’est jamais tronquée sans moyen d’accéder à sa valeur complète, notamment une infobulle.

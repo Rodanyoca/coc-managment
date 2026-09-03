@@ -1,0 +1,11 @@
+import assert from "node:assert/strict"
+import test from "node:test"
+import {readFileSync} from "node:fs"
+import {assertSegmentMaximum,isSegmentTypeCompatible,validateResultSegmentInput} from "../../lib/competitions/validation.ts"
+
+test("accepte les segments Basket, Volleyball et combat de manière générique",()=>{for(const id of ["SEG_QUART_TEMPS","SEG_SET","SEG_ROUND","SEG_MANCHE"])assert.equal(validateResultSegmentInput({id_resultat:"RES1",id_type_segment:id,numero_segment:"1",valeur_rdc:"10",valeur_adversaire:"8"}).id_type_segment,id)})
+test("un segment reste facultatif mais un segment créé doit être renseigné ou justifié",()=>{assert.throws(()=>validateResultSegmentInput({id_resultat:"RES1",id_type_segment:"SEG_SET",numero_segment:"1"}),/justifié/i);assert.equal(validateResultSegmentInput({id_resultat:"RES1",id_type_segment:"SEG_SET",numero_segment:"1",observation:"Non disputé"}).observation,"Non disputé")})
+test("refuse un numéro nul ou supérieur au maximum officiel",()=>{assert.throws(()=>validateResultSegmentInput({id_resultat:"RES1",id_type_segment:"SEG_SET",numero_segment:"0",observation:"x"}),/numéro/i);assert.throws(()=>assertSegmentMaximum("6",5),/maximum officiel/i);assert.doesNotThrow(()=>assertSegmentMaximum("5",5))})
+test("filtre par fédération, sport et discipline sans imposer les dimensions vides",()=>{const context={federationId:"FED1",sportId:"SP_VB",disciplineId:"DISC_SALLE"};assert.equal(isSegmentTypeCompatible({sportId:"SP_VB"},context),true);assert.equal(isSegmentTypeCompatible({sportId:"SP_BASKET"},context),false);assert.equal(isSegmentTypeCompatible({},context),true)})
+test("la couche refuse les doublons et ne recalcule aucun total",()=>{const data=readFileSync("lib/competitions/data.ts","utf8"),ui=readFileSync("components/dashboard/result-segments.tsx","utf8");assert.match(data,/Ce segment existe déjà/);assert.match(ui,/totaux ne sont jamais recalculés/);assert.doesNotMatch(ui,/reduce\(|totalRdc|score.*=/i);assert.doesNotMatch(ui,/overflow-x-auto/)})
+test("l’API segments impose les droits AUT-SPT",()=>{const source=readFileSync("app/api/competitions/[id]/segments/route.ts","utf8");assert.match(source,/canAccess\("AUT-SPT","READ"\)/);assert.match(source,/runSportMutation|canAccess\("AUT-SPT","WRITE"\)/)})

@@ -21,6 +21,7 @@ export default async function AthleteDetailPage({ params }: { params: Promise<{ 
     }),
     getFederationOptions(),
   ])
+  const federationById = new Map(federationRows.map((item) => [item.id, item.sigle || item.nom || item.id]))
   const row = rows.find((item) => item.id_athlete_coc === id)
 
   if (!row) notFound()
@@ -35,7 +36,7 @@ export default async function AthleteDetailPage({ params }: { params: Promise<{ 
     sexe: row.nom_sexe || row.id_sexe || "",
     dateNaissance: row.date_de_naissance || "",
     lieuNaissance: row.lieu_de_naissance || "",
-    federation: row.sigle_federation || "",
+    federation: federationById.get(row.id_federation) || row.sigle_federation || "",
     telephone: row.telephone || "",
     email: row.email || "",
     adresse: row.adresse || "",

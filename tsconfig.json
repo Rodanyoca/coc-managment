@@ -34,9 +34,16 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next-t14/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    ".next-dev/types/**/*.ts",
+    ".next-dev/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next/dev",
+    ".next-dev",
+    ".next-build",
+    ".next-t14/dev"
   ]
 }

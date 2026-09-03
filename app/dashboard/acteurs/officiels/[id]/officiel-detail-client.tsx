@@ -192,7 +192,7 @@ export function OfficielDetailClient({
     { label: "Date de naissance", value: officiel.dateNaissance || "—" },
     { label: "Lieu de naissance", value: officiel.lieuNaissance || "—" },
     { label: "Nationalité", value: officiel.nationalite || "—" },
-    { label: "Organisation", value: officiel.organisation ? <Badge variant="outline">{officiel.organisation}</Badge> : "—" },
+    { label: "Organisation", value: initialOfficiel.organisation ? <Badge variant="outline">{initialOfficiel.organisation}</Badge> : "—" },
   ]
   const contactInfo = [
     officiel.telephone ? { label: "Téléphone", value: officiel.telephone, icon: <Phone className="h-4 w-4" /> } : null,
@@ -205,7 +205,7 @@ export function OfficielDetailClient({
       backHref="/dashboard/acteurs/officiels"
       backLabel="Retour aux officiels"
       title={officiel.nomComplet}
-      subtitle={officiel.organisation || undefined}
+      subtitle={initialOfficiel.organisation || undefined}
       avatarInitials={initials(officiel.nomComplet)}
       avatarColorClass="bg-primary/10 text-primary"
       avatarUrl={officiel.avatarUrl}

@@ -4,6 +4,7 @@ import test from "node:test"
 
 const listPath = new URL("../../app/dashboard/federations/federations-client.tsx", import.meta.url)
 const detailPath = new URL("../../app/dashboard/federations/[id]/page.tsx", import.meta.url)
+const structurePath = new URL("../../components/dashboard/federation-structure-section.tsx", import.meta.url)
 
 test("la liste fédérations utilise une grille responsive sans conteneur horizontal", async () => {
   const source = await readFile(listPath, "utf8")
@@ -30,4 +31,13 @@ test("la fiche reprend la grille Acteurs avec les deux onglets demandés", async
   assert.match(source, /value="identification">Identification/)
   assert.match(source, /value="structure">Structure/)
   assert.doesNotMatch(source, /id_entite_continentale.*<Field/)
+})
+
+test("chaque tableau de structure propose recherche et pagination 10, 20 ou 50", async () => {
+  const source = await readFile(structurePath, "utf8")
+  assert.match(source, /function StructureTable/)
+  assert.match(source, /const \[query, setQuery\]/)
+  assert.match(source, /\[10, 20, 50\]/)
+  assert.match(source, />Précédent</)
+  assert.match(source, />Suivant</)
 })

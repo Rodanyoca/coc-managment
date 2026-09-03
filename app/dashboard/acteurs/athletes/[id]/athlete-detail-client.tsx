@@ -1,6 +1,6 @@
 "use client"
 
-import { Mail, MapPin, Medal, Pencil, Phone } from "lucide-react"
+import { FileText, ImageIcon, Mail, MapPin, Medal, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
@@ -129,6 +129,8 @@ export function AthleteDetailClient({
   })
 
   const age = getAgeFromDateString(athlete.dateNaissance)
+  const federationReference = federations.find((item) => item.id === athlete.idFederation)
+  const federationLabel = federationReference?.sigle || federationReference?.nom || athlete.federation || athlete.idFederation
   const mainInfo = [
     { label: "ID national", value: athlete.idNational || "—" },
     { label: "ID fédéral", value: athlete.idFederal || "—" },
@@ -137,7 +139,7 @@ export function AthleteDetailClient({
     { label: "Sexe", value: sexId(athlete.sexe) === "F" ? "Femme" : "Homme" },
     { label: "Date de naissance", value: athlete.dateNaissance ? `${athlete.dateNaissance}${age === null ? "" : ` (${age} ans)`}` : "—" },
     { label: "Lieu de naissance", value: athlete.lieuNaissance || "—" },
-    { label: "Fédération", value: athlete.federation ? <Badge variant="outline">{athlete.federation}</Badge> : "—" },
+    { label: "Fédération", value: federationLabel ? <Badge variant="outline">{federationLabel}</Badge> : "—" },
   ]
   const contactInfo = [
     athlete.telephone ? { label: "Téléphone", value: athlete.telephone, icon: <Phone className="h-4 w-4" /> } : null,
@@ -204,7 +206,7 @@ export function AthleteDetailClient({
         sexe: form.id_sexe === "F" ? "Femme" : "Homme",
         dateNaissance: form.date_de_naissance,
         lieuNaissance: form.lieu_de_naissance,
-        federation: selectedFederation?.sigle || "",
+        federation: selectedFederation?.sigle || selectedFederation?.nom || form.id_federation,
         telephone: form.telephone,
         email: form.email,
         adresse: form.adresse,
@@ -234,7 +236,7 @@ export function AthleteDetailClient({
         backHref="/dashboard/acteurs/athletes"
         backLabel="Retour aux athlètes"
         title={athlete.nomComplet}
-        subtitle={athlete.federation || undefined}
+        subtitle={federationLabel || undefined}
         avatarInitials={initials(athlete.nomComplet)}
         avatarColorClass="bg-primary/10 text-primary"
         avatarUrl={athlete.avatarUrl}
@@ -280,24 +282,34 @@ export function AthleteDetailClient({
             <SheetTitle>Modifier l’athlète</SheetTitle>
             <SheetDescription>Les nouveaux médias remplaceront les fichiers Drive existants.</SheetDescription>
           </SheetHeader>
-          <div className="grid gap-4 px-4 sm:grid-cols-2">
-            <div className="space-y-2 sm:col-span-2"><Label>Nom complet *</Label><Input value={form.nom_complet} onChange={(e) => update("nom_complet", e.target.value)} /></div>
-            <div className="space-y-2"><Label>Date de naissance</Label><Input type="date" value={form.date_de_naissance} onChange={(e) => update("date_de_naissance", e.target.value)} /></div>
-            <div className="space-y-2"><Label>Lieu de naissance</Label><Input value={form.lieu_de_naissance} onChange={(e) => update("lieu_de_naissance", e.target.value)} /></div>
-            <div className="space-y-2"><Label>Sexe *</Label><Select value={form.id_sexe} onValueChange={(v) => update("id_sexe", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="M">Homme</SelectItem><SelectItem value="F">Femme</SelectItem></SelectContent></Select></div>
-            <div className="space-y-2"><Label>Fédération *</Label><Select value={form.id_federation} onValueChange={(v) => update("id_federation", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{federations.map((f) => <SelectItem key={f.id} value={f.id}>{f.sigle ? `${f.sigle} — ` : ""}{f.nom}</SelectItem>)}</SelectContent></Select></div>
-            <div className="space-y-2"><Label>Statut</Label><Select value={form.statut} onValueChange={(v) => update("statut", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="ACTIF">Actif</SelectItem><SelectItem value="INACTIF">Inactif</SelectItem></SelectContent></Select></div>
-            <div className="space-y-2"><Label>ID national</Label><Input value={form.id_national} onChange={(e) => update("id_national", e.target.value)} /></div>
-            <div className="space-y-2"><Label>ID fédéral</Label><Input value={form.id_athlete_federation} onChange={(e) => update("id_athlete_federation", e.target.value)} /></div>
-            <div className="space-y-2"><Label>ID international</Label><Input value={form.id_federation_internationale} onChange={(e) => update("id_federation_internationale", e.target.value)} /></div>
-            <div className="space-y-2"><Label>Téléphone</Label><Input value={form.telephone} onChange={(e) => update("telephone", e.target.value)} /></div>
-            <div className="space-y-2"><Label>E-mail</Label><Input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} /></div>
-            <div className="space-y-2 sm:col-span-2"><Label>Adresse</Label><Input value={form.adresse} onChange={(e) => update("adresse", e.target.value)} /></div>
-            <div className="space-y-2"><Label>N° passeport</Label><Input value={form.numéro_passeport} onChange={(e) => update("numéro_passeport", e.target.value)} /></div>
-            <div className="space-y-2"><Label>Délivré le</Label><Input type="date" value={form.date_de_delivrance_passeport} onChange={(e) => update("date_de_delivrance_passeport", e.target.value)} /></div>
-            <div className="space-y-2"><Label>Expire le</Label><Input type="date" value={form["date_expiration passeport"]} onChange={(e) => update("date_expiration passeport", e.target.value)} /></div>
-            <div className="space-y-2"><Label>Remplacer l’avatar</Label><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /></div>
-            <div className="space-y-2"><Label>Remplacer le passeport</Label><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /></div>
+          <div className="space-y-6 px-4">
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Identité</h3><div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2 sm:col-span-2"><Label>Nom complet *</Label><Input value={form.nom_complet} onChange={(e) => update("nom_complet", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Date de naissance</Label><Input type="date" value={form.date_de_naissance} onChange={(e) => update("date_de_naissance", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Lieu de naissance</Label><Input value={form.lieu_de_naissance} onChange={(e) => update("lieu_de_naissance", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Sexe *</Label><Select value={form.id_sexe} onValueChange={(v) => update("id_sexe", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="M">Homme</SelectItem><SelectItem value="F">Femme</SelectItem></SelectContent></Select></div>
+              <div className="space-y-2"><Label>Fédération *</Label><Select value={form.id_federation} onValueChange={(v) => update("id_federation", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{federations.map((f) => <SelectItem key={f.id} value={f.id}>{f.sigle ? `${f.sigle} — ` : ""}{f.nom}</SelectItem>)}</SelectContent></Select></div>
+              <div className="space-y-2"><Label>Statut</Label><Select value={form.statut} onValueChange={(v) => update("statut", v)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="ACTIF">Actif</SelectItem><SelectItem value="INACTIF">Inactif</SelectItem></SelectContent></Select></div>
+            </div></section>
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Identifiants</h3><div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-2"><Label>ID national</Label><Input value={form.id_national} onChange={(e) => update("id_national", e.target.value)} /></div>
+              <div className="space-y-2"><Label>ID fédéral</Label><Input value={form.id_athlete_federation} onChange={(e) => update("id_athlete_federation", e.target.value)} /></div>
+              <div className="space-y-2"><Label>ID international</Label><Input value={form.id_federation_internationale} onChange={(e) => update("id_federation_internationale", e.target.value)} /></div>
+            </div></section>
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Coordonnées</h3><div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2"><Label>Téléphone</Label><Input type="tel" value={form.telephone} onChange={(e) => update("telephone", e.target.value)} /></div>
+              <div className="space-y-2"><Label>E-mail</Label><Input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} /></div>
+              <div className="space-y-2 sm:col-span-2"><Label>Adresse</Label><Input value={form.adresse} onChange={(e) => update("adresse", e.target.value)} /></div>
+            </div></section>
+            <section className="space-y-4"><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Passeport</h3><div className="grid gap-4 sm:grid-cols-3">
+              <div className="space-y-2"><Label>Numéro</Label><Input value={form.numéro_passeport} onChange={(e) => update("numéro_passeport", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Délivré le</Label><Input type="date" value={form.date_de_delivrance_passeport} onChange={(e) => update("date_de_delivrance_passeport", e.target.value)} /></div>
+              <div className="space-y-2"><Label>Expire le</Label><Input type="date" value={form["date_expiration passeport"]} onChange={(e) => update("date_expiration passeport", e.target.value)} /></div>
+            </div></section>
+            <section className="space-y-4"><div><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Fichiers</h3><p className="mt-1 text-xs text-muted-foreground">Sélectionnez uniquement les fichiers à remplacer.</p></div><div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2 rounded-lg border border-border p-4"><div className="flex items-center gap-2"><ImageIcon className="h-4 w-4 text-primary" /><Label>Remplacer l’avatar</Label></div><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /><p className="text-xs text-muted-foreground">{avatarFile?.name || "PNG, JPG ou WebP — 4 Mo maximum"}</p></div>
+              <div className="space-y-2 rounded-lg border border-border p-4"><div className="flex items-center gap-2"><FileText className="h-4 w-4 text-primary" /><Label>Remplacer le passeport</Label></div><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /><p className="text-xs text-muted-foreground">{passportFile?.name || "PDF — 4 Mo maximum"}</p></div>
+            </div></section>
           </div>
           <SheetFooter>
             <Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button>

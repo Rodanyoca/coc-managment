@@ -6,12 +6,12 @@ export default defineConfig({
   workers: 1,
   reporter: "list",
   use: {
-    baseURL: "http://127.0.0.1:3100",
+    baseURL: "http://127.0.0.1:3199",
     trace: "retain-on-failure",
   },
   webServer: {
-    command: "next start --hostname 127.0.0.1 --port 3100",
-    url: "http://127.0.0.1:3100/login",
+    command: "cmd /c \"set NEXT_DIST_DIR=.next-t14&& next start --hostname 127.0.0.1 --port 3199\"",
+    url: "http://127.0.0.1:3199/login",
     reuseExistingServer: true,
     timeout: 120_000,
   },

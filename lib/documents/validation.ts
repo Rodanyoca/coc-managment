@@ -1,4 +1,5 @@
-import { DOCUMENT_ENTITY_TYPES, type DocumentEntityType } from "./types"
+import { DOCUMENT_ENTITY_TYPES, type DocumentEntityType } from "./types.ts"
+import { DOCUMENT_PDF_MAX_SIZE_BYTES, DOCUMENT_PDF_MAX_SIZE_MB } from "./limits.ts"
 
 const clean = (value: unknown) => String(value ?? "").trim()
 
@@ -19,7 +20,9 @@ export function validateDocumentInput(input: Record<string, unknown>) {
 }
 
 export function validatePdf(file: File) {
-  if (file.size > 5 * 1024 * 1024) throw new Error("Le fichier dépasse la taille maximale de 5 Mo.")
+  if (file.size > DOCUMENT_PDF_MAX_SIZE_BYTES) {
+    throw new Error(`Le fichier dépasse la taille maximale de ${DOCUMENT_PDF_MAX_SIZE_MB} Mo.`)
+  }
   if (file.size < 5) throw new Error("Le fichier PDF est vide ou invalide.")
 }
 

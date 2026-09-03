@@ -17,6 +17,7 @@ export default async function AthletesPage() {
     }),
     getFederationOptions(),
   ])
+  const federationById = new Map(federationRows.map((item) => [item.id, item.sigle || item.nom || item.id]))
 
   const athletes: AthleteListItem[] = rows
     .filter((row) => Boolean(row.id_athlete_coc || row.id_national || row.nom_complet))
@@ -27,7 +28,7 @@ export default async function AthletesPage() {
       nomComplet: row.nom_complet || "",
       sexe: row.nom_sexe || row.id_sexe || "",
       dateNaissance: row.date_de_naissance || "",
-      federation: row.sigle_federation || "",
+      federation: federationById.get(row.id_federation) || row.sigle_federation || "",
       statut: row.statut || "",
       avatar: row.avatar_drive_url || null,
     }))

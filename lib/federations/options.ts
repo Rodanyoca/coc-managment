@@ -15,6 +15,7 @@ export async function getFederationOptions(): Promise<FederationOption[]> {
   const rows = await getSheetsRows({
     sheetNames: ["FEDERATIONS", "ENTITES"],
     spreadsheetId: getReferentialSpreadsheetId(),
+    cacheTtlMs: 5000,
   })
   const entities = new Map(rows.ENTITES.map((row) => [row.id_entite, row]))
   return rows.FEDERATIONS
@@ -24,8 +25,8 @@ export async function getFederationOptions(): Promise<FederationOption[]> {
       return {
         id: row.id_federation,
         idEntite: row.id_entite || "",
-        sigle: entity?.sigle_entite || "",
-        nom: entity?.nom_entite || "",
+        sigle: entity?.sigle || entity?.sigle_entite || "",
+        nom: entity?.nom_officiel || entity?.nom_entite || row.id_federation,
         idSport: row.id_sport || "",
       }
     })

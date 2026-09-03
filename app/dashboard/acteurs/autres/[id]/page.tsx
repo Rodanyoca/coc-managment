@@ -1,11 +1,11 @@
-import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 import { Building2, Mail, MapPin, Phone } from "lucide-react"
 import { canAccess } from "@/lib/auth"
 import { loadOtherActor } from "@/lib/acteurs/autres-data"
 import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import type { OtherActorFormValue } from "@/components/dashboard/other-actor-form"
+import { OtherActorEditor } from "../other-actor-editor"
 
 export const dynamic = "force-dynamic"
 
@@ -24,12 +24,20 @@ export default async function OtherActorDetailPage({ params }: { params: Promise
   const sex = references.sexes.find((item) => item.id === actor.id_sexe)?.label || actor.id_sexe
   const linkedInternationalEntity = Boolean(entity?.category && /(CONTINENTALE|INTERNATIONALE)/i.test(entity.category))
   const canWrite = await canAccess("AUT-SPT", "WRITE")
+  const editValue: OtherActorFormValue = {
+    id_entite: actor.id_entite, id_autre_acteur_entite: actor.id_autre_acteur_entite, id_international: actor.id_international,
+    nom_complet: actor.nom_complet, id_sexe: actor.id_sexe, date_de_naissance: actor.date_de_naissance,
+    lieu_de_naissance: actor.lieu_de_naissance, nationalite: actor.nationalite, type_autre_acteur: actor.type_autre_acteur,
+    telephone: actor.telephone, email: actor.email, adresse: actor.adresse, numero_passeport: actor.numero_passeport,
+    date_de_delivrance_passeport: actor.date_de_delivrance_passeport, date_expiration_passeport: actor.date_expiration_passeport,
+    statut: actor.statut, observations: actor.observations,
+  }
 
   return <ActorDetailLayout
     backHref="/dashboard/acteurs/autres"
     backLabel="Retour aux autres acteurs"
     title={neutral(actor.nom_complet)}
-    subtitle={neutral(actor.type_autre_acteur)}
+    subtitle={[actor.type_autre_acteur, entity?.acronym || entity?.name].filter(Boolean).join(" · ") || "Autre acteur"}
     avatarInitials={initials(actor.nom_complet)}
     avatarColorClass="bg-primary/10 text-primary"
     avatarUrl={actor.avatar_drive_url || null}
@@ -39,20 +47,23 @@ export default async function OtherActorDetailPage({ params }: { params: Promise
     canManageMedia={false}
     actorDateNaissance={actor.date_de_naissance}
     actorSexe={sex}
+    generalTabLabel="Général"
     status={actor.statut ? (actor.statut.toUpperCase() === "ACTIF" ? "actif" : "inactif") : undefined}
-    profileActions={canWrite ? <Button asChild><Link href={`/dashboard/acteurs/autres/${encodeURIComponent(actor.id_autre_acteur_coc)}/modifier`}>Modifier</Link></Button> : null}
+    profileActions={canWrite ? <OtherActorEditor presentation="sheet" actorId={actor.id_autre_acteur_coc} initialValue={editValue} references={references} /> : null}
     contactInfo={[
       { label: "Téléphone", value: neutral(actor.telephone), icon: <Phone className="h-4 w-4" /> },
       { label: "Adresse électronique", value: neutral(actor.email), icon: <Mail className="h-4 w-4" /> },
       { label: "Adresse", value: neutral(actor.adresse), icon: <MapPin className="h-4 w-4" /> },
     ]}
     mainInfo={[
+      { label: "Identifiant technique", value: neutral(actor.id_autre_acteur_coc) },
+      { label: "Nom complet", value: neutral(actor.nom_complet) },
+      { label: "Sexe", value: neutral(sex) },
       { label: "Fonction ou qualité", value: neutral(actor.type_autre_acteur) },
       { label: "Entité de rattachement", value: neutral(entity?.acronym || entity?.name) },
       { label: "Fédération concernée", value: neutral(federation?.acronym || federation?.name) },
       { label: "Catégorie d’entité", value: neutral(entity?.category) },
       { label: "Identifiant dans l’entité", value: neutral(actor.id_autre_acteur_entite) },
-      { label: "Identifiant national", value: neutral(actor.id_national) },
       { label: "Identifiant international", value: neutral(actor.id_international) },
       { label: "Nationalité", value: neutral(actor.nationalite) },
       { label: "Lieu de naissance", value: neutral(actor.lieu_de_naissance) },

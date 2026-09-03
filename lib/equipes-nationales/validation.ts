@@ -1,4 +1,4 @@
-import { ACTOR_TYPES, type ActorType } from "./types"
+import { ACTOR_TYPES, type ActorType } from "./types.ts"
 const clean = (value: unknown) => String(value ?? "").trim()
 export const NATIONAL_TEAM_STATUSES = ["ACTIF", "INACTIF"] as const
 export function validateTeamInput(input: Record<string, unknown>) {
@@ -14,4 +14,26 @@ export function validateMemberInput(input: Record<string, unknown>) {
   if (!NATIONAL_TEAM_STATUSES.includes(row.statut as (typeof NATIONAL_TEAM_STATUSES)[number])) throw new Error("Statut de membre invalide.")
   if (row.date_fin && row.date_fin < row.date_debut) throw new Error("La date de fin doit être postérieure ou égale à la date de début.")
   return row
+}
+export function validateCampaignInput(input: Record<string, unknown>) {
+  const row = { nom_campagne: clean(input.nom_campagne), date_debut: clean(input.date_debut), date_fin: clean(input.date_fin), objectif: clean(input.objectif), statut: clean(input.statut).toUpperCase(), observation: clean(input.observation) }
+  if (!row.nom_campagne || !row.date_debut || !row.statut) throw new Error("Le nom, la date de début et le statut de la campagne sont obligatoires.")
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date_debut) || (row.date_fin && !/^\d{4}-\d{2}-\d{2}$/.test(row.date_fin))) throw new Error("Les dates de campagne sont invalides.")
+  if (row.date_fin && row.date_fin < row.date_debut) throw new Error("La période de campagne est invalide.")
+  if (!["PLANIFIEE", "ACTIF", "CLOTUREE", "ANNULEE"].includes(row.statut)) throw new Error("Statut de campagne invalide.")
+  return row
+}
+export function validateSelectionInput(input: Record<string, unknown>) {
+  const row = { id_campagne:clean(input.id_campagne), id_athlete:clean(input.id_athlete), id_poste:clean(input.id_poste), id_categorie_poids:clean(input.id_categorie_poids), id_grade_sportif:clean(input.id_grade_sportif), numero_maillot:clean(input.numero_maillot), date_selection:clean(input.date_selection), id_statut_selection:clean(input.id_statut_selection).toUpperCase(), observation:clean(input.observation) }
+  if (!row.id_campagne || !row.id_athlete || !row.date_selection || !row.id_statut_selection) throw new Error("La campagne, l’athlète, la date et le statut de sélection sont obligatoires.")
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date_selection)) throw new Error("Date de sélection invalide.")
+  if (!["PRESELECTIONNE","SELECTIONNE","REMPLACANT","NON_RETENU","RETIRE"].includes(row.id_statut_selection)) throw new Error("Statut de sélection invalide.")
+  return row
+}
+
+export function selectionCampaignDateError(date: string, start: string, end: string) {
+  if (!date || !start || (date >= start && (!end || date <= end))) return ""
+  return end
+    ? `La sélection doit être datée entre le ${start} et le ${end}.`
+    : `La sélection doit être datée à partir du ${start}.`
 }

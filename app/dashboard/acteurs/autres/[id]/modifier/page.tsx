@@ -12,7 +12,7 @@ export default async function EditOtherActorPage({ params }: { params: Promise<{
   const { actor, references } = await loadOtherActor(decodeURIComponent(id))
   if (!actor) notFound()
   const initialValue: OtherActorFormValue = {
-    id_entite: actor.id_entite, id_autre_acteur_entite: actor.id_autre_acteur_entite, id_national: actor.id_national,
+    id_entite: actor.id_entite, id_autre_acteur_entite: actor.id_autre_acteur_entite,
     id_international: actor.id_international, nom_complet: actor.nom_complet, id_sexe: actor.id_sexe,
     date_de_naissance: actor.date_de_naissance, lieu_de_naissance: actor.lieu_de_naissance, nationalite: actor.nationalite,
     type_autre_acteur: actor.type_autre_acteur, telephone: actor.telephone, email: actor.email, adresse: actor.adresse,

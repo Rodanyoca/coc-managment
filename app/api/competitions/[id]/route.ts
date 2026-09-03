@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server"
+import { canAccess } from "@/lib/auth"
 import { getCompetition, getTeamParticipations } from "@/lib/competitions/data"
 
 export const runtime = "nodejs"
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
+  if (!(await canAccess("AUT-SPT", "READ"))) return NextResponse.json({ error: "Accès refusé." }, { status: 403 })
   try {
     const { id } = await params
     const row = await getCompetition(id)

@@ -60,3 +60,41 @@ Compteur du compte dont la modification rend invalides toutes les sessions émis
 **Opération auditée**:
 Action importante dont l'auteur, la cible, la date et le résultat sont conservés sans secret d'authentification.
 _Éviter_: Log technique
+
+## Compétitions et équipes nationales
+
+**Compétition**:
+Édition concrète, datée et localisée d’un événement sportif suivie par le COC. En V1, une ligne représente directement cette édition, y compris lorsqu’elle est multisport.
+_Éviter_: Modèle récurrent, compétition par sport
+
+**Programme de compétition**:
+Déclinaison d’une compétition par épreuve, et éventuellement par catégorie d’âge et sexe. Il porte le contexte sportif dans lequel une campagne s’engage et un résultat est obtenu.
+_Éviter_: Nouvelle compétition, discipline recopiée
+
+**Équipe nationale**:
+Unité relativement stable rattachée à une fédération, un sport et, le cas échéant, une discipline, une catégorie d’âge et un sexe.
+_Éviter_: Sélection, campagne, délégation ponctuelle
+
+**Campagne d’équipe nationale**:
+Mobilisation datée d’une équipe nationale pour un objectif déterminé. Elle contient les sélections d’athlètes et les affectations de staff.
+_Éviter_: Équipe nationale, compétition
+
+**Engagement de campagne**:
+Relation temporelle et sourcée par laquelle une campagne d’équipe nationale est engagée dans un programme de compétition.
+_Éviter_: Participation de l’équipe permanente, rattachement compétition-équipe
+
+**Sélection d’athlète**:
+Décision datée de retenir ou d’écarter un athlète dans une campagne. Elle ne prouve jamais sa présence effective dans une compétition.
+_Éviter_: Participation, engagement
+
+**Participation effective**:
+État explicite d’un athlète sélectionné par rapport à un engagement de campagne, notamment participant, absent, forfait ou remplacé.
+_Éviter_: Sélection, présence déduite
+
+**Résultat sportif**:
+Version sourcée et validable d’un résultat appartenant à un programme et à l’engagement concerné. Ses segments et performances individuelles en sont des détails, jamais des copies dans l’équipe nationale.
+_Éviter_: Classement calculé, résultat d’équipe dupliqué
+
+**Classement officiel**:
+Classement fourni par une organisation compétente et conservé comme donnée officielle. Aucun classement n’est produit sans règle officielle explicite.
+_Éviter_: Classement déduit, ranking automatique

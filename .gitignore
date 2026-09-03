@@ -13,9 +13,12 @@ next.user-config.*
 # Common ignores
 node_modules
 .next/
+.next-t14/
+.next-dev/
 .cache/
 .DS_Store
 .vercel
 playwright-report/
 test-results/
 debug.log
+backups/

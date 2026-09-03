@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T00:51:18.077Z",
+  "generatedAt": "2026-09-01T20:10:03.056Z",
   "workbooks": [
     {
       "name": "REFERENTIEL",
@@ -64,7 +64,9 @@
             "id_entite_internationale",
             "date_affiliation_internationale",
             "statut",
-            "observations"
+            "observations",
+            "logo_drive_id",
+            "logo_drive_url"
           ]
         },
         {
@@ -379,7 +381,7 @@
           ]
         },
         {
-          "name": "STATUTS_PARTICIPATION_COMPETITION",
+          "name": "STATUTS_PARTICIPATION_ATHLETE",
           "headers": [
             "id_statut_participation",
             "nom_statut_participation",
@@ -391,6 +393,43 @@
           "headers": [
             "id_bloc_autorisation",
             "nom_bloc",
+            "observations"
+          ]
+        },
+        {
+          "name": "STATUTS_SELECTION",
+          "headers": [
+            "id_statut_selection",
+            "nom_statut_selection",
+            "observation"
+          ]
+        },
+        {
+          "name": "STATUTS_ENGAGEMENT_PROGRAMME",
+          "headers": [
+            "id_statut_engagement",
+            "nom_statut_engagement",
+            "observation"
+          ]
+        },
+        {
+          "name": "STATUTS_VALIDATION_RESULTAT",
+          "headers": [
+            "id_statut_validation_resultat",
+            "nom_statut_validation_resultat",
+            "observation"
+          ]
+        },
+        {
+          "name": "DISTINCTIONS_SPORTIVES",
+          "headers": [
+            "id_distinction",
+            "id_federation",
+            "id_sport",
+            "id_discipline",
+            "nom_distinction",
+            "description",
+            "statut",
             "observations"
           ]
         }
@@ -668,8 +707,6 @@
             "id_autre_acteur_coc",
             "id_entite",
             "id_autre_acteur_entite",
-            "id_national",
-            "id_international",
             "nom_complet",
             "id_sexe",
             "date_de_naissance",
@@ -833,23 +870,30 @@
           ]
         },
         {
-          "name": "COMPETITIONS_EQUIPES_NATIONALES",
+          "name": "ENGAGEMENTS_CAMPAGNES_PROGRAMMES",
           "headers": [
-            "id_participation_equipe",
-            "id_competition",
-            "id_equipe_nationale",
-            "statut_participation",
+            "id_engagement_campagne",
+            "id_programme_competition",
+            "id_campagne",
+            "id_statut_engagement",
             "date_engagement",
-            "observations"
+            "date_debut",
+            "date_fin",
+            "id_federation_source",
+            "date_transmission",
+            "reference_source",
+            "observation"
           ]
         },
         {
           "name": "PARTICIPATIONS_ATHLETES_COMPETITION",
           "headers": [
             "id_participation_athlete",
-            "id_participation_equipe",
+            "id_engagement_campagne",
             "id_selection",
-            "date_participation",
+            "id_statut_participation",
+            "date_statut",
+            "id_selection_remplacement",
             "observation"
           ]
         },
@@ -857,7 +901,11 @@
           "name": "RESULTATS",
           "headers": [
             "id_resultat",
-            "id_participation_equipe",
+            "id_resultat_logique",
+            "numero_version",
+            "id_resultat_precedent",
+            "est_version_courante",
+            "id_engagement_campagne",
             "id_programme_competition",
             "date_resultat",
             "phase",
@@ -868,6 +916,13 @@
             "valeur_adversaire",
             "id_unite_mesure",
             "id_decision_resultat",
+            "id_federation_source",
+            "date_transmission",
+            "reference_source",
+            "id_statut_validation_resultat",
+            "date_validation",
+            "id_validateur_coc",
+            "motif_correction",
             "observation"
           ]
         },
@@ -895,6 +950,7 @@
             "rang",
             "est_record",
             "est_meilleure_performance",
+            "id_distinction",
             "observation"
           ]
         }
@@ -946,7 +1002,7 @@
             "id_grade_sportif",
             "numero_maillot",
             "date_selection",
-            "statut_selection",
+            "id_statut_selection",
             "observation"
           ]
         },

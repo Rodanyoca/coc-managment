@@ -11,6 +11,6 @@ export default async function AutresPage() {
   const canWrite = await canAccess("AUT-SPT", "WRITE")
   let props: React.ComponentProps<typeof AutresClient>
   try { const data = await loadOtherActors(); props = { ...data, canWrite } }
-  catch { props = { actors: [], references: { entities: [], federations: [], functions: [], sexes: [], statuses: ["ACTIF", "INACTIF"] }, canWrite, loadError: true } }
+  catch (error) { console.error("Chargement de la feuille AUTRES impossible.", error); props = { actors: [], references: { entities: [], federations: [], functions: [], sexes: [], statuses: ["ACTIF", "INACTIF"] }, canWrite, loadError: true } }
   return <AutresClient {...props} />
 }

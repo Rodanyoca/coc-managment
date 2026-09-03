@@ -1,6 +1,6 @@
 # Cartographie des classeurs Google Sheets
 
-GÃ©nÃ©rÃ© le 2026-09-01T00:51:18.077Z. Ce document ne contient ni identifiant de classeur ni donnÃ©e mÃ©tier : uniquement les onglets et leurs en-tÃªtes.
+GÃ©nÃ©rÃ© le 2026-09-01T20:10:03.056Z. Ce document ne contient ni identifiant de classeur ni donnÃ©e mÃ©tier : uniquement les onglets et leurs en-tÃªtes.
 
 ## Blocs d'autorisation
 
@@ -52,8 +52,12 @@ Classeur : **00_REFERENTIELS**. Variable : `GOOGLE_SHEETS_REFERENTIEL_SPREADSHEE
 - **DECISIONS_RESULTATS** : `id_decision_resultat`, `id_federation`, `id_sport`, `id_discipline`, `nom_decision`, `description`, `statut`, `observations`
 - **NIVEAUX_COMPETITION** : `id_niveau_competition`, `nom_niveau_competition`, `observation`
 - **STATUTS_COMPETITION** : `id_statut_competition`, `nom_statut_competition`, `observation`
-- **STATUTS_PARTICIPATION_COMPETITION** : `id_statut_participation`, `nom_statut_participation`, `observation`
+- **STATUTS_PARTICIPATION_ATHLETE** : `id_statut_participation`, `nom_statut_participation`, `observation`
 - **BLOCS_AUTORISATION** : `id_bloc_autorisation`, `nom_bloc`, `observations`
+- **STATUTS_SELECTION** : `id_statut_selection`, `nom_statut_selection`, `observation`
+- **STATUTS_ENGAGEMENT_PROGRAMME** : `id_statut_engagement`, `nom_statut_engagement`, `observation`
+- **STATUTS_VALIDATION_RESULTAT** : `id_statut_validation_resultat`, `nom_statut_validation_resultat`, `observation`
+- **DISTINCTIONS_SPORTIVES** : `id_distinction`, `id_federation`, `id_sport`, `id_discipline`, `nom_distinction`, `description`, `statut`, `observations`
 
 ## STRUCTURE_TERRITORIALE â€” AUT-SPT
 
@@ -76,7 +80,7 @@ Classeur : **02_ACTEURS**. Variable : `GOOGLE_SHEETS_ACTEURS_SPREADSHEET_ID`.
 - **OFFICIELS** : `id_officiel_coc`, `id_entite`, `id_officiel_entite`, `id_national`, `id_international`, `nom_complet`, `id_sexe`, `date_de_naissance`, `lieu_de_naissance`, `nationalite`, `telephone`, `email`, `adresse`, `numero_passeport`, `date_de_delivrance_passeport`, `date_expiration_passeport`, `statut`, `avatar_drive_id`, `avatar_drive_url`, `passeport_drive_id`, `passeport_drive_url`, `observations`
 - **MEDECINS** : `id_medecin_coc`, `id_entite`, `id_medecin_entite`, `id_national`, `id_international`, `nom_complet`, `id_sexe`, `date_de_naissance`, `lieu_de_naissance`, `nationalite`, `id_specialite_sante`, `telephone`, `email`, `adresse`, `numero_passeport`, `date_de_delivrance_passeport`, `date_expiration_passeport`, `statut`, `avatar_drive_id`, `avatar_drive_url`, `passeport_drive_id`, `passeport_drive_url`, `observations`
 - **ARBITRES** : `id_arbitre_coc`, `id_federation`, `id_arbitre_federation`, `id_national`, `id_international`, `nom_complet`, `id_sexe`, `date_de_naissance`, `lieu_de_naissance`, `nationalite`, `telephone`, `email`, `adresse`, `numero_passeport`, `date_de_delivrance_passeport`, `date_expiration_passeport`, `statut`, `avatar_drive_id`, `avatar_drive_url`, `passeport_drive_id`, `passeport_drive_url`, `observations`
-- **AUTRES** : `id_autre_acteur_coc`, `id_entite`, `id_autre_acteur_entite`, `id_national`, `id_international`, `nom_complet`, `id_sexe`, `date_de_naissance`, `lieu_de_naissance`, `nationalite`, `type_autre_acteur`, `telephone`, `email`, `adresse`, `numero_passeport`, `date_de_delivrance_passeport`, `date_expiration_passeport`, `statut`, `avatar_drive_id`, `avatar_drive_url`, `passeport_drive_id`, `passeport_drive_url`, `observations`
+- **AUTRES** : `id_autre_acteur_coc`, `id_entite`, `id_autre_acteur_entite`, `nom_complet`, `id_sexe`, `date_de_naissance`, `lieu_de_naissance`, `nationalite`, `type_autre_acteur`, `telephone`, `email`, `adresse`, `numero_passeport`, `date_de_delivrance_passeport`, `date_expiration_passeport`, `statut`, `avatar_drive_id`, `avatar_drive_url`, `passeport_drive_id`, `passeport_drive_url`, `observations`
 
 ## ACTEURS_AFFILIATIONS â€” AUT-SPT
 
@@ -105,11 +109,11 @@ Classeur : **07_COMPETITIONS**. Variable : `GOOGLE_SHEETS_COMPETITIONS_SPREADSHE
 
 - **COMPETITIONS** : `id_competition`, `nom_competition`, `id_type_competition`, `id_niveau_competition`, `edition`, `est_multisport`, `date_debut`, `date_fin`, `pays`, `ville`, `lieu`, `id_statut_competition`, `observation`
 - **PROGRAMMES_COMPETITION** : `id_programme_competition`, `id_competition`, `id_epreuve`, `id_categorie_age`, `id_sexe`, `date_debut`, `date_fin`, `observation`
-- **COMPETITIONS_EQUIPES_NATIONALES** : `id_participation_equipe`, `id_competition`, `id_equipe_nationale`, `statut_participation`, `date_engagement`, `observations`
-- **PARTICIPATIONS_ATHLETES_COMPETITION** : `id_participation_athlete`, `id_participation_equipe`, `id_selection`, `date_participation`, `observation`
-- **RESULTATS** : `id_resultat`, `id_participation_equipe`, `id_programme_competition`, `date_resultat`, `phase`, `adversaire`, `pays_adversaire`, `id_resultat_synthetique`, `valeur_rdc`, `valeur_adversaire`, `id_unite_mesure`, `id_decision_resultat`, `observation`
+- **ENGAGEMENTS_CAMPAGNES_PROGRAMMES** : `id_engagement_campagne`, `id_programme_competition`, `id_campagne`, `id_statut_engagement`, `date_engagement`, `date_debut`, `date_fin`, `id_federation_source`, `date_transmission`, `reference_source`, `observation`
+- **PARTICIPATIONS_ATHLETES_COMPETITION** : `id_participation_athlete`, `id_engagement_campagne`, `id_selection`, `id_statut_participation`, `date_statut`, `id_selection_remplacement`, `observation`
+- **RESULTATS** : `id_resultat`, `id_resultat_logique`, `numero_version`, `id_resultat_precedent`, `est_version_courante`, `id_engagement_campagne`, `id_programme_competition`, `date_resultat`, `phase`, `adversaire`, `pays_adversaire`, `id_resultat_synthetique`, `valeur_rdc`, `valeur_adversaire`, `id_unite_mesure`, `id_decision_resultat`, `id_federation_source`, `date_transmission`, `reference_source`, `id_statut_validation_resultat`, `date_validation`, `id_validateur_coc`, `motif_correction`, `observation`
 - **RESULTATS_SEGMENTS** : `id_segment_resultat`, `id_resultat`, `id_type_segment`, `numero_segment`, `valeur_rdc`, `valeur_adversaire`, `observation`
-- **PERFORMANCES_INDIVIDUELLES** : `id_performance`, `id_resultat`, `id_participation_athlete`, `id_type_resultat`, `valeur`, `id_unite_mesure`, `rang`, `est_record`, `est_meilleure_performance`, `observation`
+- **PERFORMANCES_INDIVIDUELLES** : `id_performance`, `id_resultat`, `id_participation_athlete`, `id_type_resultat`, `valeur`, `id_unite_mesure`, `rang`, `est_record`, `est_meilleure_performance`, `id_distinction`, `observation`
 
 ## EQUIPES_NATIONALES â€” AUT-SPT
 
@@ -117,7 +121,7 @@ Classeur : **08_EQUIPES_NATIONALES**. Variable : `GOOGLE_SHEETS_EQUIPES_NATIONAL
 
 - **EQUIPES_NATIONALES** : `id_equipe_nationale`, `id_federation`, `id_sport`, `id_discipline`, `nom_equipe_nationale`, `id_categorie_age`, `id_sexe`, `date_debut`, `date_fin`, `statut`, `observation`
 - **CAMPAGNES_EQUIPES_NATIONALES** : `id_campagne`, `id_equipe_nationale`, `nom_campagne`, `date_debut`, `date_fin`, `objectif`, `statut`, `observation`
-- **SELECTIONS_ATHLETES** : `id_selection`, `id_campagne`, `id_athlete`, `id_poste`, `id_categorie_poids`, `id_grade_sportif`, `numero_maillot`, `date_selection`, `statut_selection`, `observation`
+- **SELECTIONS_ATHLETES** : `id_selection`, `id_campagne`, `id_athlete`, `id_poste`, `id_categorie_poids`, `id_grade_sportif`, `numero_maillot`, `date_selection`, `id_statut_selection`, `observation`
 - **AFFECTATIONS_STAFF** : `id_affectation_staff`, `id_campagne`, `id_acteur_coc`, `id_type_acteur`, `id_role_staff`, `date_debut`, `date_fin`, `observation`
 
 ## UTILISATEURS â€” SUPER_ADMIN
@@ -134,3 +138,4 @@ Classeur : **09_USERS**. Variable : `GOOGLE_SHEETS_USERS_SPREADSHEET_ID`.
 - `TYPES_STRUCTURE` contient deux colonnes portant le mÃªme nom `observations`; elles doivent Ãªtre fusionnÃ©es dans le classeur source.
 - Les membres d'Ã©quipes nationales sont modÃ©lisÃ©s par campagnes (`SELECTIONS_ATHLETES` et `AFFECTATIONS_STAFF`), et non par un onglet gÃ©nÃ©rique.
 - Les colonnes physiques au singulier (`observation`) sont adaptÃ©es vers `observations` dans le modÃ¨le d'interface.
+

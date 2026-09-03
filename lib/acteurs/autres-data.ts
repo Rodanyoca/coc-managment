@@ -5,10 +5,27 @@ import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { getSheetRows, getSheetsRows } from "@/lib/google/sheets"
 import { mapOtherActorRow, type OtherActorReferences, type OtherActorView } from "./autres-model"
 
+const REFERENCE_SHEETS = ["ENTITES", "FEDERATIONS", "CATEGORIES_ENTITES", "SEXES"] as const
+
+async function loadOtherActorReferences() {
+  const spreadsheetId = getReferentialSpreadsheetId()
+  try {
+    return await getSheetsRows({ sheetNames: [...REFERENCE_SHEETS], spreadsheetId, cacheTtlMs: 5000 })
+  } catch (batchError) {
+    console.error("Chargement groupé des référentiels AUTRES impossible, nouvelle tentative feuille par feuille.", batchError)
+    const results = await Promise.allSettled(REFERENCE_SHEETS.map((sheetName) => getSheetRows({ sheetName, spreadsheetId, bypassCache: true })))
+    return Object.fromEntries(REFERENCE_SHEETS.map((sheetName, index) => {
+      const result = results[index]
+      if (result.status === "rejected") console.error(`Référentiel ${sheetName} indisponible pour AUTRES.`, result.reason)
+      return [sheetName, result.status === "fulfilled" ? result.value : []]
+    })) as Record<(typeof REFERENCE_SHEETS)[number], Record<string, string>[]>
+  }
+}
+
 export async function loadOtherActors(): Promise<{ actors: OtherActorView[]; references: OtherActorReferences }> {
   const [rows, refs] = await Promise.all([
-    getSheetRows({ sheetName: ACTOR_SHEETS.AUTRE, spreadsheetId: getActeursSpreadsheetId() }),
-    getSheetsRows({ sheetNames: ["ENTITES", "FEDERATIONS", "CATEGORIES_ENTITES", "SEXES"], spreadsheetId: getReferentialSpreadsheetId() }),
+    getSheetRows({ sheetName: ACTOR_SHEETS.AUTRE, spreadsheetId: getActeursSpreadsheetId(), bypassCache: true }),
+    loadOtherActorReferences(),
   ])
   const categories = new Map(refs.CATEGORIES_ENTITES.map((row) => [row.id_categorie_entite, row.nom_categorie_entite]))
   const entities = refs.ENTITES.filter((row) => row.id_entite).map((row) => ({ id: row.id_entite, name: row.nom_entite || row.nom_officiel || "", acronym: row.sigle_entite || row.sigle || "", category: categories.get(row.id_categorie_entite) || "", address: row.adresse_siege || "", phone: row.telephone || "", email: row.email || "", website: row.site_web || "" }))

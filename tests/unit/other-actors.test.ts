@@ -33,4 +33,34 @@ test("les actions d’écriture sont conditionnées et les relations restent des
   assert.match(detail, /canWrite \?/)
   assert.match(form, /value\.id_entite/)
   assert.doesNotMatch(form, /nom_entite:/)
+  assert.doesNotMatch(form, /id_national/)
+})
+
+test("id_national reste absent des interfaces et des validations de AUTRES", async () => {
+  const [list, detail, form, api] = await Promise.all([
+    readFile(new URL("../../app/dashboard/acteurs/autres/autres-client.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../../app/dashboard/acteurs/autres/[id]/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../../components/dashboard/other-actor-form.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../../app/api/autres/route.ts", import.meta.url), "utf8"),
+  ])
+  assert.doesNotMatch(`${list}\n${detail}\n${form}`, /id_national|Identifiant national|ID national/)
+  assert.doesNotMatch(api, /row\.id_national/)
+  assert.match(api, /column !== "id_national"/)
+})
+
+test("la fiche Autres se limite aux onglets Général et Documents", async () => {
+  const detail = await readFile(new URL("../../app/dashboard/acteurs/autres/[id]/page.tsx", import.meta.url), "utf8")
+  assert.match(detail, /generalTabLabel="Général"/)
+  assert.doesNotMatch(detail, /additionalSections|Parcours/)
+})
+
+test("l’ajout et la modification de AUTRES utilisent le même volet latéral", async () => {
+  const [list, detail, editor] = await Promise.all([
+    readFile(new URL("../../app/dashboard/acteurs/autres/autres-client.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../../app/dashboard/acteurs/autres/[id]/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../../app/dashboard/acteurs/autres/other-actor-editor.tsx", import.meta.url), "utf8"),
+  ])
+  assert.match(list, /OtherActorEditor presentation="sheet"/)
+  assert.match(detail, /OtherActorEditor presentation="sheet"/)
+  assert.match(editor, /<SheetContent/)
 })

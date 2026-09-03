@@ -5,9 +5,10 @@ import { resolveSession } from "@/lib/auth/session-resolution"
 import { authorizeWithSource } from "@/lib/auth/authorization"
 import { routePolicy } from "@/lib/auth/route-policy"
 import { getAuthorizationsForUser, getUserById } from "@/lib/users/data"
+import { authenticationFailurePath } from "@/lib/auth/failure-navigation"
 
 function isPublicRoute(pathname: string) {
-  return pathname === "/login" || pathname === "/api/auth/login"
+  return pathname === "/login" || pathname === "/service-indisponible" || pathname === "/api/auth/login"
 }
 
 function isMinimalSessionRoute(pathname: string) {
@@ -21,7 +22,7 @@ function deny(request: NextRequest, status = 401) {
     const error = status === 503 ? "Service d’authentification indisponible." : "Session invalide."
     return NextResponse.json({ error }, { status })
   }
-  return NextResponse.redirect(new URL("/login", request.url))
+  return NextResponse.redirect(new URL(authenticationFailurePath(status), request.url))
 }
 
 export async function proxy(request: NextRequest) {

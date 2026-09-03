@@ -44,10 +44,10 @@ function normalizeActorType(value: string): ActorType {
   if (!type || !ACTOR_TYPES.includes(type)) throw new Error("Type d’acteur inconnu.")
   return type
 }
-export async function getActors(value: string) {
+export async function getActors(value: string, options: { fresh?: boolean } = {}) {
   const type = normalizeActorType(value)
   const { sheetName, idKey } = actorSheets[type]
-  const rows = await getSheetRows({ sheetName, spreadsheetId: getActeursSpreadsheetId() })
+  const rows = await getSheetRows({ sheetName, spreadsheetId: getActeursSpreadsheetId(), bypassCache: options.fresh })
   const actors = rows.map((row) => ({ id: clean(row[idKey]), label: clean(row.nom_complet) || clean(row[idKey]) })).filter((actor) => actor.id)
   if (!actors.length && rows.length) {
     const headers = await getSheetHeaders({ sheetName, spreadsheetId: getActeursSpreadsheetId() })

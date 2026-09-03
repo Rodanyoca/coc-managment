@@ -1,6 +1,9 @@
 import { getActeursSpreadsheetId } from "./config"
 import { getSheetsRows } from "@/lib/google/sheets"
 import { ACTOR_SHEETS } from "./sheets"
+import { getAllOfficialAffiliations } from "./official-affiliations"
+import { getPrimaryOfficialEntities } from "./official-affiliation-model"
+import { actorCompletenessChecks } from "./dashboard-completeness"
 
 export const ACTORS_DASHBOARD_CACHE_TAG = "actors-dashboard"
 
@@ -15,18 +18,21 @@ const definitions = [
   { sheet: ACTOR_SHEETS.ARBITRE, key: "arbitres", label: "Arbitres", id: "id_arbitre_coc", affiliation: ["id_federation"] },
 ] as const
 
-const value = (row: Record<string, string>, keys: readonly string[]) => keys.some((key) => String(row[key] || "").trim())
 const normalized = (input: string) => input.trim().toLocaleLowerCase("fr")
 
 async function aggregateActorsDashboardStats(): Promise<ActorsDashboardStats> {
-  const rows = await getSheetsRows({ sheetNames: definitions.map((item) => item.sheet), spreadsheetId: getActeursSpreadsheetId() })
+  const [rows, officialAffiliations] = await Promise.all([
+    getSheetsRows({ sheetNames: definitions.map((item) => item.sheet), spreadsheetId: getActeursSpreadsheetId() }),
+    getAllOfficialAffiliations().catch(() => []),
+  ])
+  const primaryOfficialEntities = getPrimaryOfficialEntities(officialAffiliations)
   const types = definitions.map((definition) => {
     const actors = rows[definition.sheet].filter((row) => String(row[definition.id] || "").trim())
-    const fields = (row: Record<string, string>) => {
-      const checks = [value(row, ["nom_complet"]), value(row, ["id_sexe", "nom_sexe"]), value(row, ["telephone"]), value(row, ["email"]), value(row, ["statut"])]
-      if (definition.affiliation.length) checks.splice(2, 0, value(row, definition.affiliation))
-      return checks
-    }
+    const fields = (row: Record<string, string>) => actorCompletenessChecks(
+      row,
+      definition.affiliation,
+      definition.key === "officiels" && primaryOfficialEntities.has(row[definition.id]),
+    )
     const filled = actors.reduce((sum, row) => sum + fields(row).filter(Boolean).length, 0)
     return {
       key: definition.key, label: definition.label, total: actors.length,

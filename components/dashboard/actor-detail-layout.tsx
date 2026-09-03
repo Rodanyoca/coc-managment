@@ -38,6 +38,7 @@ interface ActorDetailLayoutProps {
   actorSexe?: string
   status?: "actif" | "inactif"
   mainInfo: InfoField[]
+  generalTabLabel?: string
   contactInfo?: InfoField[]
   additionalSections?: {
     id: string
@@ -92,6 +93,7 @@ export function ActorDetailLayout({
   actorSexe,
   status,
   mainInfo,
+  generalTabLabel = "Informations",
   contactInfo,
   additionalSections = [],
   documents = [],
@@ -223,7 +225,7 @@ export function ActorDetailLayout({
                   className="grid w-full"
                   style={{ gridTemplateColumns: `repeat(${2 + additionalSections.length}, minmax(0, 1fr))` }}
                 >
-                  <TabsTrigger value="infos">Informations</TabsTrigger>
+                  <TabsTrigger value="infos">{generalTabLabel}</TabsTrigger>
                   <TabsTrigger value="documents">Documents</TabsTrigger>
                   {additionalSections.map((section) => (
                     <TabsTrigger key={section.id} value={section.id}>

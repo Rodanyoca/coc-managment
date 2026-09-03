@@ -44,6 +44,10 @@ test("les périmètres officiels utilisent exactement le bon bloc", () => {
     ["/dashboard/documents/nouveau", "GET", "AUT-ADM"], ["/api/documents/DOC-1/file", "GET", "AUT-ADM"],
     ["/dashboard/federations", "GET", "AUT-SPT"], ["/api/officiels/affiliations", "POST", "AUT-SPT"],
     ["/dashboard/equipes-nationales", "GET", "AUT-SPT"], ["/api/competitions/COM-1/equipes-nationales", "POST", "AUT-SPT"],
+    ["/api/competitions/COM-1/programmes", "GET", "AUT-SPT"], ["/api/competitions/COM-1/programmes", "POST", "AUT-SPT"],
+    ["/api/competitions/COM-1/engagements", "POST", "AUT-SPT"], ["/api/equipes-nationales/EQN-1/campagnes", "POST", "AUT-SPT"],
+    ["/api/competitions/COM-1/participants", "POST", "AUT-SPT"], ["/api/equipes-nationales/EQN-1/selections", "POST", "AUT-SPT"],
+    ["/api/competitions/COM-1/resultats", "POST", "AUT-SPT"], ["/api/competitions/COM-1/segments", "POST", "AUT-SPT"], ["/api/competitions/COM-1/performances", "POST", "AUT-SPT"],
     ["/dashboard/articles", "GET", "AUT-COM"], ["/api/galeries", "POST", "AUT-COM"],
   ] as const
   for (const [path, method, block] of expected) {
@@ -67,9 +71,9 @@ test("toutes les routes protégées actuellement exposées appartiennent à la m
   const apis = [
     "/api/activites", "/api/activites/ACT-1", "/api/activites/ACT-1/entites", "/api/activites/ACT-1/participants",
     "/api/activites/acteurs/ATH-1", "/api/arbitres", "/api/athletes", "/api/autres", "/api/coachs", "/api/competitions",
-    "/api/competitions/COM-1", "/api/competitions/COM-1/equipes-nationales", "/api/dashboard/refresh", "/api/documents",
+    "/api/competitions/COM-1", "/api/competitions/COM-1/equipes-nationales", "/api/competitions/COM-1/programmes", "/api/competitions/COM-1/engagements", "/api/competitions/COM-1/participants", "/api/competitions/COM-1/resultats", "/api/competitions/COM-1/segments", "/api/competitions/COM-1/performances", "/api/dashboard/refresh", "/api/documents",
     "/api/documents/DOC-1", "/api/documents/DOC-1/download", "/api/documents/DOC-1/file", "/api/documents/DOC-1/preview",
-    "/api/equipes-nationales", "/api/equipes-nationales/EN-1", "/api/equipes-nationales/EN-1/membres",
+    "/api/equipes-nationales", "/api/equipes-nationales/EN-1", "/api/equipes-nationales/EN-1/membres", "/api/equipes-nationales/EN-1/campagnes", "/api/equipes-nationales/EN-1/selections",
     "/api/equipes-nationales/acteurs", "/api/equipes-nationales/acteurs/ATH-1", "/api/federations/ligues", "/api/federations/logo/FED-1",
     "/api/medecins", "/api/officiels", "/api/officiels/affiliations", "/api/upload-media",
   ]

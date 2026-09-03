@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"
 
@@ -27,7 +26,6 @@ const errorMessages: Record<Exclude<LoginError, null>, string> = {
 }
 
 export default function LoginPage() {
-  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -55,7 +53,10 @@ export default function LoginPage() {
       }
 
       const result = await response.json()
-      router.push(normalizeLoginRedirect(result.redirectTo))
+      // Une connexion change l'état d'authentification côté serveur. Une
+      // navigation complète évite de réutiliser un arbre RSC préchargé avant
+      // la pose du cookie de session, ce qui provoquait un retour vers /login.
+      window.location.assign(normalizeLoginRedirect(result.redirectTo))
     } catch {
       setError("service")
     } finally {

@@ -13,6 +13,7 @@ export default async function EntraineursPage() {
     getSheetRows({ sheetName: "COACHS", spreadsheetId: getActeursSpreadsheetId() }),
     getFederationOptions(),
   ])
+  const federationById = new Map(federationRows.map((federation) => [federation.id, federation]))
   const coachs: CoachListItem[] = rows.filter((r) => r.id_coach_coc || r.nom_complet).map((r) => ({
     id: r.id_coach_coc,
     idNational: r.id_national || "",
@@ -20,7 +21,7 @@ export default async function EntraineursPage() {
     nomComplet: r.nom_complet || "",
     sexe: r.nom_sexe || r.id_sexe || "",
     dateNaissance: r.date_de_naissance || "",
-    federation: r.nom_federation || "",
+    federation: federationById.get(r.id_federation || "")?.sigle || federationById.get(r.id_federation || "")?.nom || r.nom_federation || "",
     statut: r.statut || "",
     avatar: r.avatar_drive_url || null,
   }))

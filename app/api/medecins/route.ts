@@ -24,7 +24,7 @@ function normalize(row: Record<string, string>) {
     telephone: row.telephone,
     email: row.email,
     adresse: row.adresse,
-    id_specialite: row.id_specialite,
+    id_specialite_sante: row.id_specialite_sante || row.id_specialite,
     numero_passeport: row.numero_passeport,
     date_de_delivrance_passeport: row.date_de_delivrance_passeport,
     date_expiration_passeport: row.date_expiration_passeport,
@@ -45,19 +45,19 @@ async function validate(row: ReturnType<typeof normalize>) {
   const missing = required.find(([key]) => !row[key])
   if (missing) return { error: `${missing[1]} est obligatoire.`, status: 400 } as const
   const [entites, specialites, medecins] = await Promise.all([
-    getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }),
-    getSheetRows({ sheetName: "SPECIALITES_MEDECIN", spreadsheetId: getReferentialSpreadsheetId() }),
+    getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true }),
+    getSheetRows({ sheetName: "SPECIALITES_MEDECIN", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true }),
     getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getActeursSpreadsheetId(), bypassCache: true }),
   ])
   const entite = entites.find((item) => item.id_entite === row.id_entite)
   if (!entite) return { error: "Organisation inconnue.", status: 400 } as const
-  const specialite = row.id_specialite ? specialites.find((item) => item.id_specialite === row.id_specialite) : undefined
-  if (row.id_specialite && !specialite) return { error: "Spécialité inconnue.", status: 400 } as const
+  const specialite = row.id_specialite_sante ? specialites.find((item) => item.id_specialite_sante === row.id_specialite_sante) : undefined
+  if (row.id_specialite_sante && !specialite) return { error: "Spécialité inconnue.", status: 400 } as const
   return { entite, specialite, medecins }
 }
 
 function enrich(row: ReturnType<typeof normalize>, context: { entite: Record<string, string>; specialite?: Record<string, string> }) {
-  return { ...row, nom_entite: context.entite.nom_entite || "", nom_specialite: context.specialite?.nom_specialite || "", nom_sexe: row.id_sexe === "F" ? "Femme" : "Homme" }
+  return { ...row, nom_entite: context.entite.nom_officiel || context.entite.nom_entite || "", nom_specialite: context.specialite?.nom_specialite_sante || "", nom_sexe: row.id_sexe === "F" ? "Femme" : "Homme" }
 }
 
 export async function POST(request: Request) {
@@ -85,8 +85,7 @@ export async function PUT(request: Request) {
     const checked = await validate(row)
     if ("error" in checked) return NextResponse.json({ error: checked.error }, { status: checked.status })
     if (!checked.medecins.some((item) => item[ID_COLUMN] === id)) return NextResponse.json({ error: "Médecin introuvable." }, { status: 404 })
-    const updated = enrich(row, checked)
-    await updateSheetCells({ sheetName: SHEET_NAME, spreadsheetId: getActeursSpreadsheetId(), idColumn: ID_COLUMN, idValue: id, updates: Object.entries(updated).map(([column, value]) => ({ column, value })) })
+    await updateSheetCells({ sheetName: SHEET_NAME, spreadsheetId: getActeursSpreadsheetId(), idColumn: ID_COLUMN, idValue: id, updates: Object.entries(row).map(([column, value]) => ({ column, value })) })
     revalidatePath("/dashboard/acteurs/medecins")
     revalidatePath(`/dashboard/acteurs/medecins/${id}`)
     return NextResponse.json({ ok: true })
