@@ -30,8 +30,8 @@ test("T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journal
 test("T12: chaque mutation V1 utilise l'enveloppe sécurisée et auditée", async () => {
   const paths = [
     "app/api/competitions/route.ts", "app/api/competitions/[id]/programmes/route.ts", "app/api/competitions/[id]/engagements/route.ts",
-    "app/api/competitions/[id]/participants/route.ts", "app/api/competitions/[id]/resultats/route.ts", "app/api/competitions/[id]/segments/route.ts",
-    "app/api/competitions/[id]/performances/route.ts", "app/api/equipes-nationales/route.ts", "app/api/equipes-nationales/[id]/membres/route.ts",
+    "app/api/competitions/[id]/participants/route.ts", "app/api/competitions/[id]/resultats/route.ts", "app/api/competitions/[id]/medailles/route.ts",
+    "app/api/equipes-nationales/route.ts", "app/api/equipes-nationales/[id]/membres/route.ts",
     "app/api/equipes-nationales/[id]/campagnes/route.ts", "app/api/equipes-nationales/[id]/selections/route.ts",
   ]
   for (const path of paths) assert.match(await source(path), /runSportMutation/, path)
@@ -53,7 +53,7 @@ test("T12: les routes de lecture secondaires contrôlent AUT-SPT côté serveur"
 test("T12: les formulaires conservent leur état en erreur et bloquent l'action pendant l'enregistrement", async () => {
   const paths = [
     "app/dashboard/competitions/[id]/competition-programs.tsx", "components/dashboard/campaign-engagements.tsx", "components/dashboard/athlete-participations.tsx",
-    "components/dashboard/competition-results.tsx", "components/dashboard/result-segments.tsx", "components/dashboard/individual-performances.tsx",
+    "components/dashboard/competition-results.tsx", "components/dashboard/competition-medals.tsx",
     "components/dashboard/national-team-campaigns.tsx", "components/dashboard/campaign-selections.tsx",
   ]
   for (const path of paths) {

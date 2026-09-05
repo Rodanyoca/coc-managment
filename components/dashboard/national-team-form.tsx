@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import type { NationalTeam, NationalTeamReferences } from "@/lib/equipes-nationales/types"
 
-export const emptyNationalTeamForm = { id_federation: "", id_sport: "", id_discipline: "", nom_equipe_nationale: "", id_categorie_age: "", id_sexe: "", statut: "ACTIF", date_debut: "", date_fin: "", observations: "" }
+export const emptyNationalTeamForm = { id_federation: "", id_sport: "", id_discipline: "", nom_equipe_nationale: "", id_categorie_age: "", id_sexe: "", id_saison:"", statut: "ACTIF", observations: "" }
 export type NationalTeamFormValue = typeof emptyNationalTeamForm
 export const nationalTeamToForm = (team: NationalTeam) => Object.fromEntries(Object.keys(emptyNationalTeamForm).map((key) => [key, team[key as keyof NationalTeam] || ""])) as NationalTeamFormValue
 
@@ -26,7 +26,7 @@ export function NationalTeamForm({ value, onChange, references, saving, onSubmit
     if (key === "id_discipline") { onChange({ ...value, id_discipline: next, id_categorie_age: "" }); return }
     onChange({ ...value, [key]: next })
   }
-  const field = (label: string, key: keyof NationalTeamFormValue, type = "text") => <div className="space-y-2"><Label>{label}</Label><Input type={type} value={value[key]} onChange={(event) => update(key, event.target.value)} /></div>
+  const seasons=references.seasons||[],season=seasons.find((item)=>item.id===value.id_saison)
 
   return <div className="space-y-6">
     <div className="grid gap-4 sm:grid-cols-2">
@@ -37,7 +37,7 @@ export function NationalTeamForm({ value, onChange, references, saving, onSubmit
       <div className="space-y-2 sm:col-span-2"><Label>Nom de l’équipe nationale *</Label><Input value={value.nom_equipe_nationale} onChange={(event) => update("nom_equipe_nationale", event.target.value)} /></div>
       <div className="space-y-2"><Label>Sexe</Label><Select value={value.id_sexe || "aucun"} onValueChange={(next) => update("id_sexe", next === "aucun" ? "" : next)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="aucun">Non renseigné</SelectItem>{references.sexes.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select></div>
       <div className="space-y-2"><Label>Statut *</Label><Select value={value.statut} onValueChange={(next) => update("statut", next)}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="ACTIF">Actif</SelectItem><SelectItem value="INACTIF">Inactif</SelectItem></SelectContent></Select></div>
-      {field("Date de début", "date_debut", "date")}{field("Date de fin", "date_fin", "date")}
+      <div className="space-y-2"><Label>Saison *</Label><Select disabled={editing} value={value.id_saison} onValueChange={(next)=>update("id_saison",next)}><SelectTrigger><SelectValue placeholder="Sélectionner une saison"/></SelectTrigger><SelectContent>{seasons.map((item)=><SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{season&&<p className="text-xs text-muted-foreground">Du {season.dateStart} au {season.dateEnd}</p>}</div>
       <div className="space-y-2 sm:col-span-2"><Label>Observations</Label><Textarea value={value.observations} onChange={(event) => update("observations", event.target.value)} /></div>
     </div>
     <div className="flex justify-end gap-2">{onCancel && <Button variant="outline" onClick={onCancel}>Annuler</Button>}<Button disabled={saving} onClick={onSubmit}>{saving ? "Enregistrement…" : "Enregistrer"}</Button></div>

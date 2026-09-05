@@ -23,7 +23,6 @@ const headers = {
   ENGAGEMENTS_CAMPAGNES_PROGRAMMES: ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "date_debut", "date_fin", "id_federation_source", "date_transmission", "reference_source", "observation"],
   PARTICIPATIONS_ATHLETES_COMPETITION: ["id_participation_athlete", "id_engagement_campagne", "id_selection", "id_statut_participation", "date_statut", "id_selection_remplacement", "observation"],
   RESULTATS: ["id_resultat", "id_resultat_logique", "numero_version", "id_resultat_precedent", "est_version_courante", "id_engagement_campagne", "id_programme_competition", "date_resultat", "phase", "adversaire", "pays_adversaire", "id_resultat_synthetique", "valeur_rdc", "valeur_adversaire", "id_unite_mesure", "id_decision_resultat", "id_federation_source", "date_transmission", "reference_source", "id_statut_validation_resultat", "date_validation", "id_validateur_coc", "motif_correction", "observation"],
-  PERFORMANCES_INDIVIDUELLES: ["id_performance", "id_resultat", "id_participation_athlete", "id_type_resultat", "valeur", "id_unite_mesure", "rang", "est_record", "est_meilleure_performance", "id_distinction", "observation"],
   SELECTIONS_ATHLETES: ["id_selection", "id_campagne", "id_athlete", "id_poste", "id_categorie_poids", "id_grade_sportif", "numero_maillot", "date_selection", "id_statut_selection", "observation"],
 }
 
@@ -39,7 +38,6 @@ const refRows = {
   UNITES_MESURE: [["id_unite_mesure", "nom_unite_mesure", "type_mesure", "observations"], ["UNIT_POINT", "Point", "POINT", ""], ["UNIT_BUT", "But", "POINT", ""], ["UNIT_SECONDE", "Seconde", "TEMPS", ""], ["UNIT_METRE", "Mètre", "DISTANCE", ""], ["UNIT_CENTIMETRE", "Centimètre", "DISTANCE", ""], ["UNIT_KILOGRAMME", "Kilogramme", "POIDS", ""], ["UNIT_NOTE", "Note", "NOTE", ""]],
   TYPES_RESULTAT: [["id_type_resultat", "id_federation", "id_sport", "id_discipline", "nom_type_resultat", "id_unite_mesure", "sens_performance", "description", "statut", "observations"], ["TR_SCORE", "", "", "", "Score", "UNIT_POINT", "SUPERIEUR", "", "ACTIF", ""], ["TR_POINTS", "", "", "", "Points", "UNIT_POINT", "SUPERIEUR", "", "ACTIF", ""], ["TR_TEMPS", "", "", "", "Temps", "UNIT_SECONDE", "INFERIEUR", "", "ACTIF", ""], ["TR_DISTANCE", "", "", "", "Distance", "UNIT_METRE", "SUPERIEUR", "", "ACTIF", ""], ["TR_HAUTEUR", "", "", "", "Hauteur", "UNIT_METRE", "SUPERIEUR", "", "ACTIF", ""], ["TR_POIDS", "", "", "", "Poids", "UNIT_KILOGRAMME", "SUPERIEUR", "", "ACTIF", ""], ["TR_NOTE", "", "", "", "Note", "UNIT_NOTE", "SUPERIEUR", "", "ACTIF", ""], ["TR_RANG", "", "", "", "Rang", "", "INFERIEUR", "", "ACTIF", ""]],
   RESULTATS_SYNTHETIQUES: [["id_resultat_synthetique", "nom_resultat_synthetique", "description", "observations"], ...[["SYN_VICTOIRE", "Victoire"], ["SYN_NUL", "Nul"], ["SYN_DEFAITE", "Défaite"], ["SYN_QUALIFIE", "Qualifié"], ["SYN_ELIMINE", "Éliminé"], ["SYN_OR", "Médaille d’or"], ["SYN_ARGENT", "Médaille d’argent"], ["SYN_BRONZE", "Médaille de bronze"]].map(([id, label]) => [id, label, "", ""])],
-  TYPES_SEGMENTS_RESULTATS: [["id_type_segment", "id_federation", "id_sport", "id_discipline", "nom_type_segment", "ordre_maximal", "description", "statut", "observations"], ...[["SEG_QUART_TEMPS", "Quart-temps", "4"], ["SEG_MI_TEMPS", "Mi-temps", "2"], ["SEG_SET", "Set", ""], ["SEG_ROUND", "Round", ""], ["SEG_MANCHE", "Manche", ""]].map(([id, label, max]) => [id, "", "", "", label, max, "", "ACTIF", ""])],
   DECISIONS_RESULTATS: [["id_decision_resultat", "id_federation", "id_sport", "id_discipline", "nom_decision", "description", "statut", "observations"], ...[["DEC_FORFAIT", "Forfait"], ["DEC_ABANDON", "Abandon"], ["DEC_DISQUALIFICATION", "Disqualification"], ["DEC_DECISION_ARBITRALE", "Décision arbitrale"], ["DEC_WALKOVER", "Walkover"]].map(([id, label]) => [id, "", "", "", label, "", "ACTIF", ""])],
   ROLES_STAFF_EQUIPE_NATIONALE: [["id_role_staff", "id_type_acteur", "nom_role_staff", "observation"], ["ROLE_ENTRAINEUR_PRINCIPAL", "TYPACT002", "Entraîneur principal", ""], ["ROLE_ENTRAINEUR_ADJOINT", "TYPACT002", "Entraîneur adjoint", ""], ["ROLE_MEDECIN", "TYPACT003", "Médecin", ""], ["ROLE_OFFICIEL", "TYPACT005", "Officiel", ""], ["ROLE_CHEF_DELEGATION", "TYPACT006", "Chef de délégation", ""], ["ROLE_TEAM_MANAGER", "TYPACT006", "Team manager", ""]],
   DISTINCTIONS_SPORTIVES: [["id_distinction", "id_federation", "id_sport", "id_discipline", "nom_distinction", "description", "statut", "observations"]],
@@ -63,7 +61,7 @@ const freeze = (sheetId) => ({ updateSheetProperties: { properties: { sheetId, g
 const competitionMeta = await metadata(ids.competitions)
 const teamMeta = await metadata(ids.teams)
 const refMeta = await metadata(ids.refs)
-await assertEmpty(ids.competitions, ["COMPETITIONS", "PROGRAMMES_COMPETITION", "COMPETITIONS_EQUIPES_NATIONALES", "PARTICIPATIONS_ATHLETES_COMPETITION", "RESULTATS", "RESULTATS_SEGMENTS", "PERFORMANCES_INDIVIDUELLES"])
+await assertEmpty(ids.competitions, ["COMPETITIONS", "PROGRAMMES_COMPETITION", "COMPETITIONS_EQUIPES_NATIONALES", "PARTICIPATIONS_ATHLETES_COMPETITION", "RESULTATS"])
 await assertEmpty(ids.teams, ["EQUIPES_NATIONALES", "CAMPAGNES_EQUIPES_NATIONALES", "SELECTIONS_ATHLETES", "AFFECTATIONS_STAFF"])
 for (const name of Object.keys(refRows).filter((name) => (refMeta.data.sheets ?? []).some((sheet) => sheet.properties?.title === name))) await assertEmpty(ids.refs, [name])
 
@@ -90,7 +88,7 @@ const oldEngagementId = compMap.get("COMPETITIONS_EQUIPES_NATIONALES")
 const compRequests = [
   { updateSheetProperties: { properties: { sheetId: oldEngagementId, title: "ENGAGEMENTS_CAMPAGNES_PROGRAMMES" }, fields: "title" } },
   updateHeader(oldEngagementId, headers.ENGAGEMENTS_CAMPAGNES_PROGRAMMES), styleHeader(oldEngagementId, headers.ENGAGEMENTS_CAMPAGNES_PROGRAMMES.length), freeze(oldEngagementId),
-  ...["PARTICIPATIONS_ATHLETES_COMPETITION", "RESULTATS", "PERFORMANCES_INDIVIDUELLES"].flatMap((name) => [updateHeader(compMap.get(name), headers[name]), styleHeader(compMap.get(name), headers[name].length), freeze(compMap.get(name))]),
+  ...["PARTICIPATIONS_ATHLETES_COMPETITION", "RESULTATS"].flatMap((name) => [updateHeader(compMap.get(name), headers[name]), styleHeader(compMap.get(name), headers[name].length), freeze(compMap.get(name))]),
 ]
 await sheets.spreadsheets.batchUpdate({ spreadsheetId: ids.competitions, requestBody: { requests: compRequests } })
 

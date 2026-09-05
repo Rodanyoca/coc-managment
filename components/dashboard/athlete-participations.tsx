@@ -1,15 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Pencil, Plus } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Plus } from "lucide-react"
 import { toast } from "sonner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Textarea } from "@/components/ui/textarea"
 import type { AthleteParticipation, CampaignEngagement } from "@/lib/competitions/types"
 import type { AthleteSelection } from "@/lib/equipes-nationales/types"
@@ -18,13 +19,15 @@ type Option = { id: string; label: string }
 const NONE = "__NONE__"
 const empty = { id_engagement_campagne: "", id_selection: "", id_statut_participation: "", date_statut: "", id_selection_remplacement: "", observation: "" }
 
-export function AthleteParticipations({ competitionId, engagements, initialRows, references, canEdit }: {
+export function AthleteParticipations({ competitionId, engagements, initialRows, references, federations, canEdit }: {
   competitionId: string
   engagements: CampaignEngagement[]
   initialRows: AthleteParticipation[]
   references: { statuses: Option[]; selections: AthleteSelection[] }
+  federations: Option[]
   canEdit: boolean
 }) {
+  const router = useRouter()
   const [rows, setRows] = useState(initialRows)
   const [open, setOpen] = useState(false)
   const [editing, setEditing] = useState("")
@@ -32,6 +35,10 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
   const [saving, setSaving] = useState(false)
   const engagement = engagements.find((item) => item.id_engagement_campagne === form.id_engagement_campagne)
   const compatible = references.selections.filter((item) => item.id_campagne === engagement?.id_campagne)
+  const federationLabel = (item: CampaignEngagement) => {
+    const federationId = item.id_federation_responsable || item.id_federation_source
+    return federations.find((row) => row.id === federationId)?.label || federationId || "Fédération non renseignée"
+  }
 
   function show(row?: AthleteParticipation) {
     setEditing(row?.id_participation_athlete || "")
@@ -41,7 +48,7 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
 
   function openCreate() {
     if (!engagements.length) {
-      toast.error("Créez d’abord un engagement dans l’onglet « Équipes engagées » avant d’ajouter un participant.")
+      toast.error("Créez d’abord un engagement dans l’onglet « Équipes / unités » avant d’ajouter un participant.")
       return
     }
     if (!references.statuses.length) {
@@ -74,6 +81,7 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
         : [...current, result.row])
       setOpen(false)
       toast.success(editing ? "Participation modifiée." : "Participation enregistrée.")
+      router.refresh()
     } catch (error) {
       toast.error(error instanceof Error ? error.message : String(error))
     } finally {
@@ -91,19 +99,9 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
         {canEdit && <Button onClick={openCreate}><Plus className="mr-2 h-4 w-4" />Ajouter</Button>}
       </div>
       {!engagements.length && canEdit && <p className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-        Aucun engagement n’est disponible. Créez d’abord un engagement dans l’onglet « Équipes engagées ».
+        Aucun engagement n’est disponible. Créez d’abord un engagement dans l’onglet « Équipes / unités ».
       </p>}
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {rows.map((row) => <Card key={row.id_participation_athlete}><CardContent className="space-y-3 p-4">
-          <div className="flex justify-between"><div>
-            <p className="font-medium">{row.athlete_label || row.athlete_id || row.id_selection}</p>
-            <p className="text-xs text-muted-foreground">{row.id_participation_athlete}</p>
-          </div>{canEdit && <Button variant="ghost" size="icon" onClick={() => show(row)}><Pencil className="h-4 w-4" /></Button>}</div>
-          <Badge variant={row.id_statut_participation === "PARTICIPANT" ? "default" : "outline"}>{row.id_statut_participation}</Badge>
-          <p className="text-sm">État constaté le {row.date_statut}</p>
-        </CardContent></Card>)}
-      </div>
-      {!rows.length && <p className="rounded-lg border p-6 text-center text-muted-foreground">Aucune participation effective enregistrée. Les sélections restent valides.</p>}
+      <div className="min-w-0 overflow-hidden rounded-lg border"><Table><TableHeader><TableRow><TableHead>Athlète</TableHead><TableHead>Campagne</TableHead><TableHead>Statut</TableHead><TableHead className="hidden sm:table-cell">Date</TableHead></TableRow></TableHeader><TableBody>{rows.map(row => { const linkedEngagement = engagements.find(item => item.id_engagement_campagne === row.id_engagement_campagne); return <TableRow key={row.id_participation_acteur}><TableCell className="max-w-56 whitespace-normal font-medium">{row.athlete_label || row.actor_label || row.athlete_id || "—"}</TableCell><TableCell className="max-w-56 whitespace-normal">{linkedEngagement?.nom_campagne || linkedEngagement?.nom_equipe_nationale || "—"}</TableCell><TableCell><Badge variant={row.id_statut_participation === "PARTICIPANT" ? "default" : "outline"}>{row.id_statut_participation || "—"}</Badge></TableCell><TableCell className="hidden sm:table-cell">{row.date_statut || "—"}</TableCell></TableRow> })}{!rows.length && <TableRow><TableCell colSpan={4} className="h-20 text-center text-muted-foreground">Aucun participant effectif.</TableCell></TableRow>}</TableBody></Table></div>
     </div>
 
     <Sheet open={open} onOpenChange={setOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-lg">
@@ -114,7 +112,7 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
       <div className="space-y-4 px-4">
         <Field label="Engagement *"><Select disabled={!!editing} value={form.id_engagement_campagne} onValueChange={(value) => setForm({ ...form, id_engagement_campagne: value, id_selection: "", id_selection_remplacement: "" })}>
           <SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent>
-            {engagements.map((item) => <SelectItem key={item.id_engagement_campagne} value={item.id_engagement_campagne}>{item.nom_campagne} · {item.id_programme_competition}</SelectItem>)}
+            {engagements.map((item) => <SelectItem key={item.id_engagement_campagne} value={item.id_engagement_campagne}>{item.nom_campagne || "Campagne non renseignée"} · {federationLabel(item)}</SelectItem>)}
           </SelectContent>
         </Select></Field>
         <Field label="Sélection *"><Select disabled={!!editing || !engagement} value={form.id_selection} onValueChange={(value) => setForm({ ...form, id_selection: value })}>

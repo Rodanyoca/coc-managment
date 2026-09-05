@@ -8,10 +8,10 @@ export function createGoogleUsersSheetsAdapter(): UsersSheetsAdapter {
   const spreadsheetId = getUsersSpreadsheetId()
   return {
     readHeaders(sheetName) {
-      return getSheetHeaders({ sheetName, spreadsheetId, bypassCache: true })
+      return getSheetHeaders({ sheetName, spreadsheetId, cacheTtlMs: 60_000 })
     },
     readRows(sheetName) {
-      return getSheetRows({ sheetName, spreadsheetId, bypassCache: true })
+      return getSheetRows({ sheetName, spreadsheetId, cacheTtlMs: 60_000 })
     },
     appendRow(sheetName: string, row: SheetRow) {
       return appendSheetRow({ sheetName, row, spreadsheetId })

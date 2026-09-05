@@ -37,7 +37,7 @@ test("T11: la fiche équipe navigue par programme et engagement, jamais par part
   assert.match(detail, /engagements\.map/)
   assert.match(detail, /id_programme_competition/)
   assert.match(detail, /Engagements dans les programmes/)
-  assert.match(detail, /\/dashboard\/competitions\//)
+  assert.doesNotMatch(detail, /href=\{`\/dashboard\/competitions\//)
 })
 
 test("T11: les erreurs secondaires des détails restent isolées", async () => {
@@ -45,7 +45,7 @@ test("T11: les erreurs secondaires des détails restent isolées", async () => {
   const competitionDetail = await source("app/dashboard/competitions/[id]/competition-detail-client.tsx")
   const teamPage = await source("app/dashboard/equipes-nationales/[id]/page.tsx")
   assert.match(competitionPage, /Promise\.allSettled/)
-  for (const name of ["programsError", "engagementsError", "participationsError", "resultsError", "segmentsError", "performancesError", "documentsError"]) assert.match(competitionDetail, new RegExp(name))
+  for (const name of ["programsError", "engagementsError", "participationsError", "resultsError", "documentsError"]) assert.match(competitionDetail, new RegExp(name))
   for (const name of ["campaignsError", "selectionsError", "membersError", "engagementsError", "documentsError"]) assert.match(teamPage, new RegExp(name))
   assert.match(competitionDetail, /Les autres sections restent disponibles/)
 })
@@ -57,5 +57,5 @@ test("T11: les vues qualifient les valeurs et relations absentes", async () => {
   assert.match(competitionList, /Non renseigné/)
   assert.match(teamList, /Non renseigné/)
   assert.match(teamDetail, /Compétition inconnue/)
-  assert.match(teamDetail, /Programme non renseigné/)
+  assert.match(teamDetail, /id_programme_competition \|\| "—"/)
 })

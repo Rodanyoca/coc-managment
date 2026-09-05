@@ -110,18 +110,19 @@ Classeur : **07_COMPETITIONS**. Variable : `GOOGLE_SHEETS_COMPETITIONS_SPREADSHE
 - **COMPETITIONS** : `id_competition`, `nom_competition`, `id_type_competition`, `id_niveau_competition`, `edition`, `est_multisport`, `date_debut`, `date_fin`, `pays`, `ville`, `lieu`, `id_statut_competition`, `observation`
 - **PROGRAMMES_COMPETITION** : `id_programme_competition`, `id_competition`, `id_epreuve`, `id_categorie_age`, `id_sexe`, `date_debut`, `date_fin`, `observation`
 - **ENGAGEMENTS_CAMPAGNES_PROGRAMMES** : `id_engagement_campagne`, `id_programme_competition`, `id_campagne`, `id_statut_engagement`, `date_engagement`, `date_debut`, `date_fin`, `id_federation_source`, `date_transmission`, `reference_source`, `observation`
-- **PARTICIPATIONS_ATHLETES_COMPETITION** : `id_participation_athlete`, `id_engagement_campagne`, `id_selection`, `id_statut_participation`, `date_statut`, `id_selection_remplacement`, `observation`
-- **RESULTATS** : `id_resultat`, `id_resultat_logique`, `numero_version`, `id_resultat_precedent`, `est_version_courante`, `id_engagement_campagne`, `id_programme_competition`, `date_resultat`, `phase`, `adversaire`, `pays_adversaire`, `id_resultat_synthetique`, `valeur_rdc`, `valeur_adversaire`, `id_unite_mesure`, `id_decision_resultat`, `id_federation_source`, `date_transmission`, `reference_source`, `id_statut_validation_resultat`, `date_validation`, `id_validateur_coc`, `motif_correction`, `observation`
-- **RESULTATS_SEGMENTS** : `id_segment_resultat`, `id_resultat`, `id_type_segment`, `numero_segment`, `valeur_rdc`, `valeur_adversaire`, `observation`
-- **PERFORMANCES_INDIVIDUELLES** : `id_performance`, `id_resultat`, `id_participation_athlete`, `id_type_resultat`, `valeur`, `id_unite_mesure`, `rang`, `est_record`, `est_meilleure_performance`, `id_distinction`, `observation`
+- **PARTICIPATIONS_ACTEURS_COMPETITION** : `id_participation_acteur`, `id_engagement_campagne`, `id_acteur_coc`, `id_type_acteur`, `id_selection`, `id_affectation_staff`, `id_statut_participation`, `date_statut`, `id_participation_remplacement`, `observation`
+- **UNITES_PARTICIPANTES** : `id_unite_participante`, `id_engagement_campagne`, `type_unite`, `id_participation_acteur`, `nom_unite`, `observation`
+- **MEMBRES_UNITES_PARTICIPANTES** : `id_membre_unite`, `id_unite_participante`, `id_participation_acteur`, `role_membre`, `observation`
+- **RESULTATS** : `id_resultat`, `id_resultat_logique`, `numero_version`, `id_resultat_precedent`, `est_version_courante`, `id_engagement_campagne`, `id_programme_competition`, `id_unite_participante`, `date_resultat`, `phase`, `type_adversaire`, `nom_adversaire`, `pays_adversaire`, `organisation_adversaire`, `id_resultat_synthetique`, `valeur_coc`, `valeur_adversaire`, `id_unite_mesure`, `id_decision_resultat`, `id_statut_resultat`, `motif_correction`, `observation`
+- **MEDAILLES** : `id_medaille`, `id_resultat_logique`, `id_distinction`, `date_obtention`, `observation`. La compétition, l’épreuve et l’unité sont résolues depuis la version courante du résultat logique ; elles ne sont pas dupliquées.
 
 ## EQUIPES_NATIONALES â€” AUT-SPT
 
 Classeur : **08_EQUIPES_NATIONALES**. Variable : `GOOGLE_SHEETS_EQUIPES_NATIONALES_SPREADSHEET_ID`.
 
-- **EQUIPES_NATIONALES** : `id_equipe_nationale`, `id_federation`, `id_sport`, `id_discipline`, `nom_equipe_nationale`, `id_categorie_age`, `id_sexe`, `date_debut`, `date_fin`, `statut`, `observation`
-- **CAMPAGNES_EQUIPES_NATIONALES** : `id_campagne`, `id_equipe_nationale`, `nom_campagne`, `date_debut`, `date_fin`, `objectif`, `statut`, `observation`
-- **SELECTIONS_ATHLETES** : `id_selection`, `id_campagne`, `id_athlete`, `id_poste`, `id_categorie_poids`, `id_grade_sportif`, `numero_maillot`, `date_selection`, `id_statut_selection`, `observation`
+- **EQUIPES_NATIONALES** : `id_equipe_nationale`, `id_federation`, `id_sport`, `id_discipline`, `nom_equipe_nationale`, `id_categorie_age`, `id_sexe`, `id_saison`, `statut`, `observation`. La période est résolue depuis `SAISONS`; elle n’est pas dupliquée sur l’équipe.
+- **CAMPAGNES_EQUIPES_NATIONALES** : `id_campagne`, `id_equipe_nationale`, `nom_campagne`, `date_debut`, `date_fin`, `objectif`, `id_statut_campagne`, `observation`. L’équipe porte la saison; la campagne conserve sa période opérationnelle propre, obligatoirement comprise dans cette saison.
+- **SELECTIONS_ATHLETES** : `id_selection`, `id_campagne`, `id_athlete`, `id_poste`, `id_categorie_poids`, `id_grade_sportif`, `date_selection`, `id_statut_selection`, `observation`
 - **AFFECTATIONS_STAFF** : `id_affectation_staff`, `id_campagne`, `id_acteur_coc`, `id_type_acteur`, `id_role_staff`, `date_debut`, `date_fin`, `observation`
 
 ## UTILISATEURS â€” SUPER_ADMIN
@@ -138,4 +139,3 @@ Classeur : **09_USERS**. Variable : `GOOGLE_SHEETS_USERS_SPREADSHEET_ID`.
 - `TYPES_STRUCTURE` contient deux colonnes portant le mÃªme nom `observations`; elles doivent Ãªtre fusionnÃ©es dans le classeur source.
 - Les membres d'Ã©quipes nationales sont modÃ©lisÃ©s par campagnes (`SELECTIONS_ATHLETES` et `AFFECTATIONS_STAFF`), et non par un onglet gÃ©nÃ©rique.
 - Les colonnes physiques au singulier (`observation`) sont adaptÃ©es vers `observations` dans le modÃ¨le d'interface.
-

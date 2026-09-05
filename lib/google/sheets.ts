@@ -6,15 +6,37 @@ import { google } from "googleapis"
 const CACHE_TTL_MS = Number.parseInt(process.env.GOOGLE_SHEETS_CACHE_TTL_MS ?? "300000", 10)
 type SheetCache = Map<string, { data: Record<string, string>[]; ts: number }>
 type HeaderCache = Map<string, { data: string[]; ts: number }>
+type PendingSheetReads = Map<string, Promise<Record<string, string>[]>>
+type GoogleAuthClient = InstanceType<typeof google.auth.JWT> | InstanceType<typeof google.auth.OAuth2>
 
 // Next.js peut charger ce module dans plusieurs bundles serveur distincts.
 // Un cache global garantit qu'une écriture invalide aussi les lectures des pages.
 const sheetsGlobal = globalThis as typeof globalThis & {
   __cocGoogleSheetsCache?: SheetCache
   __cocGoogleSheetsHeaderCache?: HeaderCache
+  __cocGoogleSheetsPendingReads?: PendingSheetReads
+  __cocGoogleAuthClients?: Map<string, GoogleAuthClient>
+  __cocSheetsReadGate?: { active:number; queue:Array<()=>void>; total:number; maxActive:number }
 }
 const cache = sheetsGlobal.__cocGoogleSheetsCache ??= new Map()
 const headerCache = sheetsGlobal.__cocGoogleSheetsHeaderCache ??= new Map()
+const pendingReads = sheetsGlobal.__cocGoogleSheetsPendingReads ??= new Map()
+const authClients = sheetsGlobal.__cocGoogleAuthClients ??= new Map()
+const readGate = sheetsGlobal.__cocSheetsReadGate ??= {active:0,queue:[],total:0,maxActive:0}
+const MAX_CONCURRENT_SHEETS_READS=6
+const SHEETS_TIMEOUT_MS = Number.parseInt(process.env.GOOGLE_SHEETS_TIMEOUT_MS ?? "20000", 10)
+
+async function withSheetsReadPermit<T>(task:()=>Promise<T>):Promise<T>{
+ if(readGate.active>=MAX_CONCURRENT_SHEETS_READS)await new Promise<void>(resolve=>readGate.queue.push(resolve))
+ readGate.active+=1;readGate.total+=1;readGate.maxActive=Math.max(readGate.maxActive,readGate.active)
+ try{return await task()}finally{readGate.active-=1;readGate.queue.shift()?.()}
+}
+
+function withSheetsTimeout<T>(promise: Promise<T>) {
+  return withTimeout(promise, SHEETS_TIMEOUT_MS, () => undefined)
+}
+
+export function getSheetsRuntimeMetrics(){return{totalReads:readGate.total,activeReads:readGate.active,maxConcurrentReads:readGate.maxActive,limit:MAX_CONCURRENT_SHEETS_READS}}
 
 function getCached(key: string, ttlMs = CACHE_TTL_MS): Record<string, string>[] | null {
   const entry = cache.get(key)
@@ -30,6 +52,7 @@ function setCache(key: string, data: Record<string, string>[]) {
 export function clearSheetCache() {
   cache.clear()
   headerCache.clear()
+  pendingReads.clear()
 }
 
 function getPrivateKey() {
@@ -64,13 +87,19 @@ function getSheetCredentials(spreadsheetId: string) {
 }
 
 function getGoogleAuth(scopes: string[]) {
+  const credentialKind = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && getPrivateKey() ? "service-account" : "oauth"
+  const cacheKey = `${credentialKind}:${[...scopes].sort().join(",")}`
+  const cached = authClients.get(cacheKey)
+  if (cached) return cached
   // Les classeurs sont partagés avec le compte de service. Il doit être
   // prioritaire pour Sheets ; le jeton OAuth est principalement utilisé par
   // Drive et peut ne pas avoir accès aux mêmes classeurs.
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL
   const key = getPrivateKey()
   if (email && key) {
-    return new google.auth.JWT({ email, key, scopes })
+    const auth = new google.auth.JWT({ email, key, scopes })
+    authClients.set(cacheKey, auth)
+    return auth
   }
 
   const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID
@@ -79,6 +108,7 @@ function getGoogleAuth(scopes: string[]) {
   if (clientId && clientSecret && refreshToken) {
     const auth = new google.auth.OAuth2(clientId, clientSecret)
     auth.setCredentials({ refresh_token: refreshToken })
+    authClients.set(cacheKey, auth)
     return auth
   }
   throw new Error("Identifiants Google Sheets manquants")
@@ -98,6 +128,7 @@ export async function getSheetRows(params: {
   range?: string
   spreadsheetId: string
   bypassCache?: boolean
+  cacheTtlMs?: number
 }): Promise<Record<string, string>[]> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
@@ -106,27 +137,28 @@ export async function getSheetRows(params: {
   // Check cache first
   const cacheKey = `${spreadsheetId}:${range}`
   if (!params.bypassCache) {
-    const cached = getCached(cacheKey)
+    const cached = getCached(cacheKey, params.cacheTtlMs)
     if (cached) return cached
+    const pending = pendingReads.get(cacheKey)
+    if (pending) return pending
   }
 
+  const request = (async () => {
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
 
   const sheets = google.sheets({ version: "v4", auth })
 
   const controller = new AbortController()
-  const timeoutMs = Number.parseInt(process.env.GOOGLE_SHEETS_TIMEOUT_MS ?? "20000", 10)
-
   let res
   try {
-    res = await withTimeout(
+    res = await withSheetsReadPermit(()=>withTimeout(
       sheets.spreadsheets.values.get({
         spreadsheetId,
         range,
       }, { signal: controller.signal }),
-      timeoutMs,
+      SHEETS_TIMEOUT_MS,
       () => controller.abort()
-    )
+    ))
   } catch (err) {
     // En cas de quota temporairement dépassé, une ancienne valeur vaut mieux
     // qu'une page entièrement indisponible.
@@ -142,25 +174,42 @@ export async function getSheetRows(params: {
   const result = valuesToRecords(values)
 
   // Les lectures explicitement fraîches ne doivent ni lire ni alimenter le cache.
-  if (!params.bypassCache) setCache(cacheKey, result)
+  if (!params.bypassCache) {
+    setCache(cacheKey, result)
+    if (!params.range) {
+      const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
+      const headerCacheKey = `${spreadsheetId}:'${safeSheetName}'!1:1`
+      headerCache.set(headerCacheKey, { data: headers, ts: Date.now() })
+    }
+  }
 
   return result
+  })()
+
+  if (params.bypassCache) return request
+  pendingReads.set(cacheKey, request)
+  try {
+    return await request
+  } finally {
+    if (pendingReads.get(cacheKey) === request) pendingReads.delete(cacheKey)
+  }
 }
 
 export async function getSheetHeaders(params: {
   sheetName: string
   spreadsheetId: string
   bypassCache?: boolean
+  cacheTtlMs?: number
 }): Promise<string[]> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const safeSheetName = String(params.sheetName).replace(/'/g, "''")
   const cacheKey = `${spreadsheetId}:'${safeSheetName}'!1:1`
   const cached = params.bypassCache ? undefined : headerCache.get(cacheKey)
-  if (cached && Date.now() - cached.ts <= CACHE_TTL_MS) return cached.data
+  if (cached && Date.now() - cached.ts <= (params.cacheTtlMs ?? CACHE_TTL_MS)) return cached.data
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   try {
-    const result = await sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })
+    const result = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })))
     const headers = (result.data.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim()).filter(Boolean)
     if (!params.bypassCache) headerCache.set(cacheKey, { data: headers, ts: Date.now() })
     return headers
@@ -186,7 +235,7 @@ export async function getSheetsRows(params: {
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
-  const response = await sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })
+  const response = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
   const result: Record<string, Record<string, string>[]> = {}
   params.sheetNames.forEach((sheetName, index) => {
     const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
@@ -201,7 +250,7 @@ export async function getSheetsTables(params: { sheetNames: string[]; spreadshee
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
-  const response = await sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })
+  const response = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
   return Object.fromEntries(params.sheetNames.map((sheetName, index) => {
     const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
     const headers = (values[0] ?? []).map((header) => String(header ?? "").trim())

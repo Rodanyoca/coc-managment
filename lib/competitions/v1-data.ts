@@ -5,7 +5,7 @@ import { getCompetitionsSpreadsheetId } from "./config"
 import { getNationalTeamsSpreadsheetId } from "@/lib/equipes-nationales/config"
 import { V1_HEADERS, mapV1Row, missingHeaders, validateV1Relations, type V1Row, type V1SheetName } from "./v1-model"
 
-const competitionSheets = new Set<V1SheetName>(["COMPETITIONS", "PROGRAMMES_COMPETITION", "ENGAGEMENTS_CAMPAGNES_PROGRAMMES", "PARTICIPATIONS_ATHLETES_COMPETITION", "RESULTATS", "RESULTATS_SEGMENTS", "PERFORMANCES_INDIVIDUELLES"])
+const competitionSheets = new Set<V1SheetName>(["COMPETITIONS", "PROGRAMMES_COMPETITION", "ENGAGEMENTS_CAMPAGNES_PROGRAMMES", "PARTICIPATIONS_ACTEURS_COMPETITION", "UNITES_PARTICIPANTES", "MEMBRES_UNITES_PARTICIPANTES", "RESULTATS", "MEDAILLES"])
 const teamSheets = new Set<V1SheetName>(["EQUIPES_NATIONALES", "CAMPAGNES_EQUIPES_NATIONALES", "SELECTIONS_ATHLETES", "AFFECTATIONS_STAFF"])
 
 const cell = (row: object, column: string) => (row as Record<string, string>)[column] || ""
@@ -41,7 +41,7 @@ export async function readCompetitionGraph(options: { fresh?: boolean } = {}) {
       getSheetsRows({ sheetNames: teamNames, spreadsheetId: getNationalTeamsSpreadsheetId() }),
     ])
   const rows = Object.fromEntries(Object.entries({ ...competitionRows, ...teamRows }).map(([name, values]) => [name, (values as Record<string, string>[]).map((row) => mapV1Row(name as V1SheetName, row))])) as Record<V1SheetName, V1Row<V1SheetName>[]>
-  validateV1Relations({ programs: rows.PROGRAMMES_COMPETITION, campaigns: rows.CAMPAGNES_EQUIPES_NATIONALES, engagements: rows.ENGAGEMENTS_CAMPAGNES_PROGRAMMES, selections: rows.SELECTIONS_ATHLETES, participations: rows.PARTICIPATIONS_ATHLETES_COMPETITION, results: rows.RESULTATS })
+  validateV1Relations({ programs: rows.PROGRAMMES_COMPETITION, campaigns: rows.CAMPAGNES_EQUIPES_NATIONALES, engagements: rows.ENGAGEMENTS_CAMPAGNES_PROGRAMMES, selections: rows.SELECTIONS_ATHLETES, participations: rows.PARTICIPATIONS_ACTEURS_COMPETITION, results: rows.RESULTATS })
   return rows
 }
 

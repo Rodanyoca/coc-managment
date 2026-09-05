@@ -19,7 +19,7 @@ Une sélection peut donc exister sans participation. Seul le statut `PARTICIPANT
 
 ## Mapping
 
-`SELECTIONS_ATHLETES` utilise `id_selection`, `id_campagne`, `id_athlete`, `id_poste`, `id_categorie_poids`, `id_grade_sportif`, `numero_maillot`, `date_selection`, `id_statut_selection` et `observation`.
+`SELECTIONS_ATHLETES` utilise `id_selection`, `id_campagne`, `id_athlete`, `id_poste`, `id_categorie_poids`, `id_grade_sportif`, `date_selection`, `id_statut_selection` et `observation`.
 
 `PARTICIPATIONS_ATHLETES_COMPETITION` utilise `id_participation_athlete`, `id_engagement_campagne`, `id_selection`, `id_statut_participation`, `date_statut`, `id_selection_remplacement` et `observation`.
 

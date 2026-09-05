@@ -2,12 +2,11 @@ import assert from "node:assert/strict"
 import test from "node:test"
 import { loadFreshDashboardSections } from "../../lib/dashboard/fresh-load.ts"
 
-test("vide le cache Sheets avant de charger les données d'accueil", async () => {
+test("charge les données d'accueil sans vider le cache Sheets", async () => {
   const events: string[] = []
   const result = await loadFreshDashboardSections({
-    clear: () => { events.push("clear") },
     loaders: [async () => { events.push("load"); return 42 }],
   })
-  assert.deepEqual(events, ["clear", "load"])
+  assert.deepEqual(events, ["load"])
   assert.equal(result[0].status, "fulfilled")
 })

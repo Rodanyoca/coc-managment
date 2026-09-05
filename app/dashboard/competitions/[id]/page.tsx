@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { canAccess } from "@/lib/auth"
-import { getAthleteParticipations, getCampaignEngagements, getCompetition, getCompetitionPrograms, getCompetitionReferences, getCompetitionResults, getEngagementReferences, getIndividualPerformances, getParticipationReferences, getPerformanceReferences, getResultReferences, getResultSegments, getSegmentReferences, getTeamParticipations } from "@/lib/competitions/data"
+import { getAthleteParticipations, getCampaignEngagements, getCompetition, getCompetitionMedals, getCompetitionPrograms, getCompetitionReferences, getCompetitionResults, getEngagementReferences, getMedalReferences, getParticipationReferences, getResultReferences } from "@/lib/competitions/data"
 import { getDocumentsForEntity } from "@/lib/documents/data"
 import CompetitionDetailClient from "./competition-detail-client"
 import { classifyDataError, competitionQuality } from "@/lib/competitions/quality"
@@ -21,24 +21,21 @@ export default async function CompetitionDetailPage({ params }: { params: Promis
   if (!competition) notFound()
 
   const [canEdit, canReadDocuments] = await Promise.all([canAccess("AUT-SPT", "WRITE"), canAccess("AUT-ADM", "READ")])
-  const [referencesResult, programsResult, engagementsResult, engagementRefsResult, participationsResult, participationRefsResult, resultsResult, resultRefsResult, segmentsResult, segmentRefsResult, performancesResult, performanceRefsResult, teamsResult, documentsResult] = await Promise.allSettled([
+  const [referencesResult, programsResult, engagementsResult, engagementRefsResult, participationsResult, participationRefsResult, resultsResult, resultRefsResult, medalsResult, medalRefsResult, documentsResult] = await Promise.allSettled([
     getCompetitionReferences(),
     getCompetitionPrograms(id, { bypassCache: true }),
     getCampaignEngagements({ competitionId: id }),
     getEngagementReferences(),
-    getAthleteParticipations({ competitionId: id }),
+    getAthleteParticipations({ competitionId: id, fresh: true }),
     getParticipationReferences(),
     getCompetitionResults(id),
     getResultReferences(),
-    getResultSegments(id),
-    getSegmentReferences(),
-    getIndividualPerformances(id),
-    getPerformanceReferences(),
-    getTeamParticipations(id),
+    getCompetitionMedals(id),
+    getMedalReferences(),
     canReadDocuments ? getDocumentsForEntity("COMPETITION", id) : Promise.resolve(undefined),
   ])
-  const sectionIssues = [programsResult.status === "rejected" ? classifyDataError(programsResult.reason, "programmes") : null, engagementsResult.status === "rejected" ? classifyDataError(engagementsResult.reason, "engagements") : null, participationsResult.status === "rejected" ? classifyDataError(participationsResult.reason, "participants") : null, resultsResult.status === "rejected" ? classifyDataError(resultsResult.reason, "resultats") : null, segmentsResult.status === "rejected" ? classifyDataError(segmentsResult.reason, "segments") : null, performancesResult.status === "rejected" ? classifyDataError(performancesResult.reason, "performances") : null, documentsResult.status === "rejected" ? classifyDataError(documentsResult.reason, "documents") : null].filter((item) => item !== null)
-  const qualityReport = competitionQuality({ competition, programs: programsResult.status === "fulfilled" ? programsResult.value : [], engagements: engagementsResult.status === "fulfilled" ? engagementsResult.value : [], participations: participationsResult.status === "fulfilled" ? participationsResult.value : [], results: resultsResult.status === "fulfilled" ? resultsResult.value : [], segments: segmentsResult.status === "fulfilled" ? segmentsResult.value : [], performances: performancesResult.status === "fulfilled" ? performancesResult.value : [], sectionIssues, eventsAvailable: referencesResult.status === "fulfilled" && Boolean(referencesResult.value.events?.length) })
+  const sectionIssues = [programsResult.status === "rejected" ? classifyDataError(programsResult.reason, "programmes") : null, engagementsResult.status === "rejected" ? classifyDataError(engagementsResult.reason, "engagements") : null, participationsResult.status === "rejected" ? classifyDataError(participationsResult.reason, "participants") : null, resultsResult.status === "rejected" ? classifyDataError(resultsResult.reason, "resultats") : null, documentsResult.status === "rejected" ? classifyDataError(documentsResult.reason, "documents") : null].filter((item) => item !== null)
+  const qualityReport = competitionQuality({ competition, programs: programsResult.status === "fulfilled" ? programsResult.value : [], engagements: engagementsResult.status === "fulfilled" ? engagementsResult.value : [], participations: participationsResult.status === "fulfilled" ? participationsResult.value : [], results: resultsResult.status === "fulfilled" ? resultsResult.value : [], sectionIssues, eventsAvailable: referencesResult.status === "fulfilled" && Boolean(referencesResult.value.events?.length) })
 
   return <CompetitionDetailClient
     competition={competition}
@@ -53,16 +50,11 @@ export default async function CompetitionDetailPage({ params }: { params: Promis
       participationReferences={participationRefsResult.status === "fulfilled" ? participationRefsResult.value : { statuses: [], selections: [] }}
       participationsError={participationsResult.status === "rejected" || participationRefsResult.status === "rejected" ? "Impossible de charger les participants." : undefined}
       results={resultsResult.status === "fulfilled" ? resultsResult.value : []}
-      resultReferences={resultRefsResult.status === "fulfilled" ? resultRefsResult.value : { synthetics: [], units: [], decisions: [], statuses: [], federations: [] }}
+      resultReferences={{ ...(resultRefsResult.status === "fulfilled" ? resultRefsResult.value : { synthetics: [], units: [], decisions: [], statuses: [], federations: [] }), federations: engagementRefsResult.status === "fulfilled" ? engagementRefsResult.value.federations : [] }}
       resultsError={resultsResult.status === "rejected" || resultRefsResult.status === "rejected" ? "Impossible de charger les résultats." : undefined}
-      segments={segmentsResult.status === "fulfilled" ? segmentsResult.value : []}
-      segmentTypes={segmentRefsResult.status === "fulfilled" ? segmentRefsResult.value : []}
-      segmentsError={segmentsResult.status === "rejected" || segmentRefsResult.status === "rejected" ? "Impossible de charger les segments." : undefined}
-      performances={performancesResult.status === "fulfilled" ? performancesResult.value : []}
-      performanceReferences={performanceRefsResult.status === "fulfilled" ? performanceRefsResult.value : {types:[],units:[],distinctions:[]}}
-      performancesError={performancesResult.status === "rejected" || performanceRefsResult.status === "rejected" ? "Impossible de charger les performances." : undefined}
-    participations={teamsResult.status === "fulfilled" ? teamsResult.value : []}
-    teamsError={teamsResult.status === "rejected" ? "Impossible de charger les équipes nationales." : undefined}
+      medals={medalsResult.status === "fulfilled" ? medalsResult.value : []}
+      medalReferences={medalRefsResult.status === "fulfilled" ? medalRefsResult.value : []}
+      medalsError={medalsResult.status === "rejected" || medalRefsResult.status === "rejected" ? "Impossible de charger les médailles." : undefined}
     documents={documentsResult.status === "fulfilled" ? documentsResult.value : undefined}
     documentsError={documentsResult.status === "rejected" ? "Impossible de charger les documents." : undefined}
     canEdit={canEdit}

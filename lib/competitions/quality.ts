@@ -1,4 +1,4 @@
-import type { AthleteParticipation, CampaignEngagement, Competition, CompetitionProgram, CompetitionResult, IndividualPerformance, ResultSegment } from "./types"
+import type { AthleteParticipation, CampaignEngagement, Competition, CompetitionProgram, CompetitionResult } from "./types"
 import type { AthleteSelection, NationalTeam, NationalTeamCampaign, NationalTeamMember } from "@/lib/equipes-nationales/types"
 
 export type DataQualityState = "ABSENT" | "INCONNU" | "NON_APPLICABLE" | "NON_RENSEIGNE" | "SOURCE_INDISPONIBLE" | "ORPHELIN" | "SCHEMA_INVALIDE"
@@ -22,19 +22,17 @@ export function classifyDataError(error: unknown, scope: string): DataQualityIss
   return issue("READ_FAILED", "SOURCE_INDISPONIBLE", scope, "Cette section n’a pas pu être lue.", "Contrôler la source et réessayer.")
 }
 
-export function competitionQuality(input: { competition: Competition; programs: CompetitionProgram[]; engagements: CampaignEngagement[]; participations: AthleteParticipation[]; results: CompetitionResult[]; segments: ResultSegment[]; performances: IndividualPerformance[]; sectionIssues?: DataQualityIssue[]; eventsAvailable?: boolean }): DataQualityReport {
-  const { competition, programs, engagements, participations, results, segments, performances } = input
+export function competitionQuality(input: { competition: Competition; programs: CompetitionProgram[]; engagements: CampaignEngagement[]; participations: AthleteParticipation[]; results: CompetitionResult[]; sectionIssues?: DataQualityIssue[]; eventsAvailable?: boolean }): DataQualityReport {
+  const { competition, programs, engagements, participations, results } = input
   const required = [competition.nom_competition, competition.id_type_competition, competition.date_debut, competition.statut]
   const issues = [...(input.sectionIssues || [])]
   if (required.some((value) => !value)) issues.push(issue("COMPETITION_INCOMPLETE", "NON_RENSEIGNE", "general", "Des informations essentielles de la compétition ne sont pas renseignées.", "Compléter le nom, le type, la date de début et le statut.", true))
   if (input.eventsAvailable === false) issues.push(issue("EVENT_REFERENTIAL_EMPTY", "ABSENT", "programmes", "Le référentiel des épreuves est vide.", "Faire valider et renseigner les épreuves fédérales avant de créer un programme.", true))
-  const programIds = new Set(programs.map((row) => row.id_programme_competition)), engagementIds = new Set(engagements.map((row) => row.id_engagement_campagne)), resultIds = new Set(results.map((row) => row.id_resultat)), participantIds = new Set(participations.map((row) => row.id_participation_athlete))
+  const programIds = new Set(programs.map((row) => row.id_programme_competition)), engagementIds = new Set(engagements.map((row) => row.id_engagement_campagne))
   for (const row of engagements) if (!programIds.has(row.id_programme_competition)) issues.push(issue(`ENGAGEMENT_ORPHAN:${row.id_engagement_campagne}`, "ORPHELIN", "engagements", `L’engagement ${row.id_engagement_campagne} référence un programme inconnu.`, "Rétablir le programme référencé; aucune correction silencieuse n’est appliquée.", true))
   for (const row of participations) if (!engagementIds.has(row.id_engagement_campagne)) issues.push(issue(`PARTICIPATION_ORPHAN:${row.id_participation_athlete}`, "ORPHELIN", "participants", `La participation ${row.id_participation_athlete} référence un engagement inconnu.`, "Rétablir l’engagement ou corriger explicitement la relation.", true))
   for (const row of results) if (!engagementIds.has(row.id_engagement_campagne) || !programIds.has(row.id_programme_competition)) issues.push(issue(`RESULT_ORPHAN:${row.id_resultat}`, "ORPHELIN", "resultats", `Le résultat ${row.id_resultat} possède une relation programme/engagement inconnue.`, "Rétablir les relations avant toute correction du résultat.", true))
-  for (const row of segments) if (!resultIds.has(row.id_resultat)) issues.push(issue(`SEGMENT_ORPHAN:${row.id_segment_resultat}`, "ORPHELIN", "segments", `Le segment ${row.id_segment_resultat} référence un résultat inconnu.`, "Rétablir le résultat parent.", true))
-  for (const row of performances) if (!resultIds.has(row.id_resultat) || !participantIds.has(row.id_participation_athlete)) issues.push(issue(`PERFORMANCE_ORPHAN:${row.id_performance}`, "ORPHELIN", "performances", `La performance ${row.id_performance} possède une relation inconnue.`, "Rétablir le résultat et le participant effectif.", true))
-  const sourced = [...engagements, ...results].filter((row) => row.id_federation_source && row.date_transmission).length, sourceTotal = engagements.length + results.length
+  const sourced = engagements.filter((row) => row.id_federation_source && row.date_transmission).length, sourceTotal = engagements.length
   if (sourceTotal && sourced < sourceTotal) issues.push(issue("PROVENANCE_INCOMPLETE", "NON_RENSEIGNE", "provenance", "Certaines données transmises n’ont pas une provenance complète.", "Renseigner la fédération source et la date de transmission sur les lignes concernées."))
   return { completeness: percent(required.filter(Boolean).length, required.length), provenance: percent(sourced, sourceTotal), issues }
 }

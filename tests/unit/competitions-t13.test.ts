@@ -22,13 +22,13 @@ test("T13: distingue schéma invalide, timeout et source indisponible", () => {
 })
 
 test("T13: une relation orpheline est visible et ne fait pas échouer le rapport", () => {
-  const report = competitionQuality({ competition, programs: [], engagements: [{ id_engagement_campagne: "ENG-1", id_programme_competition: "PRG-X", id_campagne: "CAM-1", id_statut_engagement: "PREVU", date_engagement: "", date_debut: "", date_fin: "", id_federation_source: "", date_transmission: "", reference_source: "", observation: "" }], participations: [], results: [], segments: [], performances: [], eventsAvailable: true })
+  const report = competitionQuality({ competition, programs: [], engagements: [{ id_engagement_campagne: "ENG-1", id_programme_competition: "PRG-X", id_campagne: "CAM-1", id_statut_engagement: "PREVU", date_engagement: "", date_debut: "", date_fin: "", id_federation_source: "", date_transmission: "", reference_source: "", observation: "" }], participations: [], results: [], eventsAvailable: true })
   assert.equal(report.issues.some((item) => item.state === "ORPHELIN" && item.blockingWrite), true)
   assert.equal(report.provenance, 0)
 })
 
 test("T13: la complétude et la provenance sont calculées sans inventer de valeur", () => {
-  const complete = competitionQuality({ competition, programs: [], engagements: [], participations: [], results: [], segments: [], performances: [], eventsAvailable: true })
+  const complete = competitionQuality({ competition, programs: [], engagements: [], participations: [], results: [], eventsAvailable: true })
   assert.equal(complete.completeness, 100)
   assert.equal(complete.provenance, 100)
   const incomplete = nationalTeamQuality({ team: { ...team, id_federation: "" }, campaigns: [], selections: [], members: [], engagements: [] })

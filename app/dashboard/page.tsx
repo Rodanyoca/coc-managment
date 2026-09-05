@@ -8,6 +8,7 @@ import { TerritorialStructureSection } from "@/components/dashboard/territorial-
 import { DocumentsSummarySection } from "@/components/dashboard/documents-summary-section"
 import { CompetitionsSummarySection } from "@/components/dashboard/competitions-summary-section"
 import { NationalTeamsSummarySection } from "@/components/dashboard/national-teams-summary-section"
+import { MedalsSummarySection } from "@/components/dashboard/medals-summary-section"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { loadActorsDashboardStats } from "@/lib/acteurs/dashboard"
 import { loadActivitiesDashboardStats } from "@/lib/activites/dashboard"
@@ -17,12 +18,10 @@ import { loadCompetitionsDashboardStats } from "@/lib/competitions/dashboard"
 import { loadNationalTeamsDashboardStats } from "@/lib/equipes-nationales/dashboard"
 import { canAccess } from "@/lib/auth"
 import { loadFreshDashboardSections } from "@/lib/dashboard/fresh-load"
-import { clearSheetCache } from "@/lib/google/sheets"
 
 export default async function DashboardPage() {
   const [canReadAdministration, canReadSport] = await Promise.all([canAccess("AUT-ADM", "READ"), canAccess("AUT-SPT", "READ")])
   const [federationBundle, actors, activities, competitions, nationalTeams, documents] = await loadFreshDashboardSections({
-    clear: clearSheetCache,
     loaders: [
       () => canReadSport ? loadFederationDashboardBundle() : Promise.resolve(undefined),
       () => canReadSport ? loadActorsDashboardStats() : Promise.resolve(undefined),
@@ -53,6 +52,7 @@ export default async function DashboardPage() {
       {actors.status === "fulfilled" && actors.value && <ActorsSummarySection stats={actors.value} />}
       {activities.status === "fulfilled" && activities.value && <ActivitiesSummarySection stats={activities.value} />}
       {competitions.status === "fulfilled" && competitions.value && <CompetitionsSummarySection stats={competitions.value} />}
+      {competitions.status === "fulfilled" && competitions.value && <MedalsSummarySection stats={competitions.value.medals} />}
       {nationalTeams.status === "fulfilled" && nationalTeams.value && <NationalTeamsSummarySection stats={nationalTeams.value} />}
       {documents.status === "fulfilled" && documents.value && <DocumentsSummarySection stats={documents.value} />}
     </main>

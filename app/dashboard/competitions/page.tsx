@@ -13,14 +13,20 @@ export default async function CompetitionsPage({ searchParams }: { searchParams:
   const canEdit = await canAccess("AUT-SPT", "WRITE")
   let props: React.ComponentProps<typeof CompetitionsClient>
   try {
-    const [competitions, references, engagementLinks, engagements, athletes, staff] = await Promise.all([
-      getCompetitions({ bypassCache: true }),
+    const [competitions, references] = await Promise.all([
+      getCompetitions(),
       getCompetitionReferences(),
+    ])
+    const [engagementLinksResult, engagementsResult, athletesResult, staffResult] = await Promise.allSettled([
       getTeamParticipations(),
       getCampaignEngagements(),
       getAthleteParticipations(),
       getCampaignStaff(),
     ])
+    const engagementLinks = engagementLinksResult.status === "fulfilled" ? engagementLinksResult.value : []
+    const engagements = engagementsResult.status === "fulfilled" ? engagementsResult.value : []
+    const athletes = athletesResult.status === "fulfilled" ? athletesResult.value : []
+    const staff = staffResult.status === "fulfilled" ? staffResult.value : []
     const delegationCounts = calculateCompetitionDelegationCounts(
       competitions.map((item) => item.id_competition),
       engagementLinks,

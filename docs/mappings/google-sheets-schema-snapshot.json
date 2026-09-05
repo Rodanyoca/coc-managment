@@ -927,30 +927,12 @@
           ]
         },
         {
-          "name": "RESULTATS_SEGMENTS",
+          "name": "MEDAILLES",
           "headers": [
-            "id_segment_resultat",
-            "id_resultat",
-            "id_type_segment",
-            "numero_segment",
-            "valeur_rdc",
-            "valeur_adversaire",
-            "observation"
-          ]
-        },
-        {
-          "name": "PERFORMANCES_INDIVIDUELLES",
-          "headers": [
-            "id_performance",
-            "id_resultat",
-            "id_participation_athlete",
-            "id_type_resultat",
-            "valeur",
-            "id_unite_mesure",
-            "rang",
-            "est_record",
-            "est_meilleure_performance",
+            "id_medaille",
+            "id_resultat_logique",
             "id_distinction",
+            "date_obtention",
             "observation"
           ]
         }
@@ -1000,7 +982,6 @@
             "id_poste",
             "id_categorie_poids",
             "id_grade_sportif",
-            "numero_maillot",
             "date_selection",
             "id_statut_selection",
             "observation"

@@ -40,9 +40,9 @@ export class UsersRepository {
     parse: Parser<T>
   ): Promise<T[]> {
     try {
+      const rows = await this.adapter.readRows(sheetName, { fresh: true })
       const headers = await this.adapter.readHeaders(sheetName, { fresh: true })
       validateHeaders(headers)
-      const rows = await this.adapter.readRows(sheetName, { fresh: true })
       return rows.filter((row) => Object.values(row).some((value) => value.trim())).map((row, index) => parse(row, index + 2))
     } catch (error) {
       if (error instanceof UsersDataError) throw error

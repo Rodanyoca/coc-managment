@@ -12,6 +12,8 @@ test("les sélections d'athlètes utilisent un tableau responsive", async () => 
   assert.match(code, /sortedRows\.map/)
   assert.match(code, /options=\{athleteOptions\}/)
   assert.match(code, /localeCompare\([^)]*"fr"/)
+  assert.match(code, /TableHead[^>]*>Observation/)
+  assert.doesNotMatch(code, /numero_maillot|Maillot/)
   assert.doesNotMatch(code, /overflow-x-auto/)
 })
 
@@ -25,7 +27,7 @@ test("ouvrir l'ajout de staff charge immédiatement les acteurs du type initial"
   assert.match(route, /getActorOptions\(type,\s*\{\s*fresh:\s*true\s*\}\)/)
 })
 
-test("une modification de campagne rafraîchit ses dates dans le formulaire de sélection", async () => {
+test("une modification de campagne rafraîchit sa période dans le formulaire de sélection", async () => {
   const page = await source("app/dashboard/equipes-nationales/[id]/page.tsx")
   const campaigns = await source("components/dashboard/national-team-campaigns.tsx")
   const selections = await source("components/dashboard/campaign-selections.tsx")
@@ -39,4 +41,10 @@ test("une modification de campagne rafraîchit ses dates dans le formulaire de s
 test("la fiche relit les affectations du staff après une modification directe du classeur", async () => {
   const page = await source("app/dashboard/equipes-nationales/[id]/page.tsx")
   assert.match(page, /getNationalTeamMembers\(id,\s*undefined,\s*undefined,\s*\{\s*fresh:\s*true\s*\}\)/)
+})
+
+test("les membres du staff sont classés alphabétiquement par leur nom affiché", async () => {
+  const code = await source("app/dashboard/equipes-nationales/[id]/team-detail-client.tsx")
+  assert.match(code, /memberName\(a\)\.localeCompare\(memberName\(b\),\s*"fr",\s*\{\s*sensitivity:\s*"base"\s*\}\)/)
+  assert.doesNotMatch(code, /sort\(\(a, b\) => b\.date_debut\.localeCompare\(a\.date_debut\)\)/)
 })
