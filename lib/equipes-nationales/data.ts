@@ -72,8 +72,8 @@ export async function updateNationalTeamCampaign(teamId: string, id: string, inp
   return { ...current, ...row }
 }
 
-export async function getCampaignSelections(teamId?: string): Promise<AthleteSelection[]> {
-  const [campaigns, selections, athletes] = await Promise.all([getNationalTeamCampaigns(teamId), getSheetRows({sheetName:ATHLETE_SELECTION_SHEET,spreadsheetId:getNationalTeamsSpreadsheetId()}), getActorOptions("ATHLETE")])
+export async function getCampaignSelections(teamId?: string, options: { fresh?: boolean } = {}): Promise<AthleteSelection[]> {
+  const [campaigns, selections, athletes] = await Promise.all([getNationalTeamCampaigns(teamId, options), getSheetRows({sheetName:ATHLETE_SELECTION_SHEET,spreadsheetId:getNationalTeamsSpreadsheetId(),bypassCache:options.fresh}), getActorOptions("ATHLETE")])
   const campaignMap=new Map(campaigns.map((row)=>[row.id_campagne,row])), athleteMap=new Map(athletes.map((row)=>[row.id,row.label]))
   return selections.filter((row)=>campaignMap.has(row.id_campagne)).map((row)=>({id_selection:clean(row.id_selection),id_campagne:clean(row.id_campagne),id_athlete:clean(row.id_athlete),id_poste:clean(row.id_poste),id_categorie_poids:clean(row.id_categorie_poids),id_grade_sportif:clean(row.id_grade_sportif),date_selection:clean(row.date_selection),id_statut_selection:clean(row.id_statut_selection),observation:clean(row.observation),athlete_label:athleteMap.get(row.id_athlete)||row.id_athlete,campaign_label:campaignMap.get(row.id_campagne)?.nom_campagne||row.id_campagne})).filter((row)=>row.id_selection)
 }
@@ -89,12 +89,12 @@ export async function createCampaignSelection(teamId:string,input:Record<string,
   const row=validateSelectionInput(input),campaigns=await getNationalTeamCampaigns(teamId,{fresh:true}),campaign=campaigns.find((item)=>item.id_campagne===row.id_campagne);if(!campaign)throw new Error("Campagne étrangère à l’équipe.")
   const dateError=selectionCampaignDateError(row.date_selection,campaign.date_debut,campaign.date_fin);if(dateError)throw new Error(dateError)
   const refs=await getSelectionReferences();if(!refs.statuses.some((item)=>item.id===row.id_statut_selection))throw new Error("Statut de sélection absent du référentiel.");if(!refs.athletes.some((item)=>item.id===row.id_athlete))throw new Error("Athlète introuvable.")
-  const existing=await getCampaignSelections();if(existing.some((item)=>item.id_campagne===row.id_campagne&&item.id_athlete===row.id_athlete&&item.id_statut_selection!=="RETIRE"))throw new Error("Cet athlète possède déjà une sélection active dans la campagne.")
+  const existing=await getCampaignSelections(undefined,{fresh:true});if(existing.some((item)=>item.id_campagne===row.id_campagne&&item.id_athlete===row.id_athlete&&item.id_statut_selection!=="RETIRE"))throw new Error("Cet athlète possède déjà une sélection active dans la campagne.")
   const created={id_selection:nextId(existing.map((item)=>item.id_selection),"SEL",4),...row};await appendSheetRow({sheetName:ATHLETE_SELECTION_SHEET,spreadsheetId:getNationalTeamsSpreadsheetId(),row:created});return{...created,athlete_label:refs.athletes.find((item)=>item.id===row.id_athlete)?.label,campaign_label:campaign.nom_campagne}
 }
 
 export async function updateCampaignSelection(teamId:string,id:string,input:Record<string,unknown>){
-  const current=(await getCampaignSelections(teamId)).find((item)=>item.id_selection===id);if(!current)throw new Error("Sélection introuvable.")
+  const current=(await getCampaignSelections(teamId,{fresh:true})).find((item)=>item.id_selection===id);if(!current)throw new Error("Sélection introuvable.")
   const row=validateSelectionInput({...input,id_campagne:current.id_campagne,id_athlete:current.id_athlete}),campaign=(await getNationalTeamCampaigns(teamId)).find((item)=>item.id_campagne===current.id_campagne);if(!campaign)throw new Error("Campagne introuvable.")
   const dateError=selectionCampaignDateError(row.date_selection,campaign.date_debut,campaign.date_fin);if(dateError)throw new Error(dateError)
   const refs=await getSelectionReferences();if(!refs.statuses.some((item)=>item.id===row.id_statut_selection))throw new Error("Statut de sélection absent du référentiel.")

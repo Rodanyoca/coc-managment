@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (!team) notFound()
   const [canEdit, canReadDocuments] = await Promise.all([canAccess("AUT-SPT", "WRITE"), canAccess("AUT-ADM", "READ")])
   const [refs, campaigns, campaignRefs, selections, selectionRefs, members, competitions, programs, engagements, documents] = await Promise.allSettled([
-    getNationalTeamReferences(), getNationalTeamCampaigns(id, { fresh: true }), getCampaignReferences(), getCampaignSelections(id), getSelectionReferences(), getNationalTeamMembers(id, undefined, undefined, { fresh: true }), getCompetitions(), getCompetitionPrograms(), getCampaignEngagements({ teamId: id }),
+    getNationalTeamReferences(), getNationalTeamCampaigns(id, { fresh: true }), getCampaignReferences(), getCampaignSelections(id, { fresh: true }), getSelectionReferences(), getNationalTeamMembers(id, undefined, undefined, { fresh: true }), getCompetitions(), getCompetitionPrograms(), getCampaignEngagements({ teamId: id }),
     canReadDocuments ? getDocumentsForEntity("EQUIPE_NATIONALE", id) : Promise.resolve(undefined),
   ])
   const memberRows = members.status === "fulfilled" ? members.value.filter((row) => row.id_type_acteur !== "ATHLETE") : []
