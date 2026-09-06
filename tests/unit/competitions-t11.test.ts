@@ -57,5 +57,16 @@ test("T11: les vues qualifient les valeurs et relations absentes", async () => {
   assert.match(competitionList, /Non renseigné/)
   assert.match(teamList, /Non renseigné/)
   assert.match(teamDetail, /Compétition inconnue/)
-  assert.match(teamDetail, /id_programme_competition \|\| "—"/)
+  assert.match(teamDetail, /programDiscipline\(program\)/)
+  assert.match(teamDetail, /<TableHead className="hidden md:table-cell">Discipline<\/TableHead>/)
+  assert.doesNotMatch(teamDetail, /program\?\.id_programme_competition \|\| engagement\.id_programme_competition/)
+})
+
+test("T11: chaque engagement résout sa discipline depuis l’épreuve de son programme", async () => {
+  const data = await source("lib/equipes-nationales/data.ts")
+  const detail = await source("app/dashboard/equipes-nationales/[id]/team-detail-client.tsx")
+  assert.match(data, /"EPREUVES"/)
+  assert.match(data, /disciplineId: row\.id_discipline/)
+  assert.match(detail, /event\.id === program\?\.id_epreuve/)
+  assert.match(detail, /discipline\.id === disciplineId/)
 })
