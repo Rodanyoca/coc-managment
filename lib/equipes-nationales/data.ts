@@ -51,10 +51,24 @@ function assertCampaignPeriodWithinTeam(row: ReturnType<typeof validateCampaignI
   if (team.saison_fin && row.date_fin > team.saison_fin) throw new Error("La campagne se termine après la saison de l’équipe nationale.")
 }
 
+async function getCampaignMutationContext(teamId:string){
+  const [teamTables,referenceTables]=await Promise.all([
+    getSheetsRows({sheetNames:[TEAM_SHEET,CAMPAIGN_SHEET],spreadsheetId:getNationalTeamsSpreadsheetId()}),
+    getSheetsRows({sheetNames:["SAISONS","STATUTS_CAMPAGNE"],spreadsheetId:getReferentialSpreadsheetId()}),
+  ])
+  const seasonMap=new Map(referenceTables.SAISONS.map(row=>[row.id_saison,row]))
+  const teamRow=teamTables[TEAM_SHEET].find(row=>row.id_equipe_nationale===teamId)
+  const team=teamRow?mapTeam(teamRow,seasonMap):undefined
+  const allCampaigns=teamTables[CAMPAIGN_SHEET].map((row)=>({id_campagne:clean(row.id_campagne),id_equipe_nationale:clean(row.id_equipe_nationale),nom_campagne:clean(row.nom_campagne),date_debut:clean(row.date_debut),date_fin:clean(row.date_fin),objectif:clean(row.objectif),id_statut_campagne:clean(row.id_statut_campagne||row.statut),observation:clean(row.observation)})).filter(row=>row.id_campagne)
+  const campaigns=allCampaigns.filter(row=>row.id_equipe_nationale===teamId)
+  const statuses=new Set(referenceTables.STATUTS_CAMPAGNE.filter(row=>row.id_statut_campagne).map(row=>row.id_statut_campagne))
+  return{team,campaigns,allCampaigns,statuses}
+}
+
 export async function createNationalTeamCampaign(teamId: string, input: Record<string, unknown>) {
-  const team = await getNationalTeam(teamId, { fresh: true }); if (!team) throw new Error("Équipe nationale introuvable.")
-  const row = validateCampaignInput(input), existing = await getNationalTeamCampaigns(undefined, { fresh: true })
-  const refs=await getCampaignReferences(); assertCampaignPeriodWithinTeam(row, team); if(!refs.statuses.some((x)=>x.id===row.id_statut_campagne)) throw new Error("Statut de campagne absent du référentiel.")
+  const context=await getCampaignMutationContext(teamId),team=context.team;if(!team)throw new Error("Équipe nationale introuvable.")
+  const row=validateCampaignInput(input),existing=context.allCampaigns
+  assertCampaignPeriodWithinTeam(row,team);if(!context.statuses.has(row.id_statut_campagne))throw new Error("Statut de campagne absent du référentiel.")
   if (existing.some((item) => item.id_equipe_nationale === teamId && normalized(item.nom_campagne) === normalized(row.nom_campagne) && item.date_debut === row.date_debut && item.date_fin === row.date_fin)) throw new Error("Cette campagne existe déjà.")
   const created = { id_campagne: nextId(existing.map((item) => item.id_campagne), "CAM", 4), id_equipe_nationale: teamId, ...row }
   await appendSheetRow({ sheetName: CAMPAIGN_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), row: created })
@@ -62,11 +76,11 @@ export async function createNationalTeamCampaign(teamId: string, input: Record<s
 }
 
 export async function updateNationalTeamCampaign(teamId: string, id: string, input: Record<string, unknown>) {
-  const team=await getNationalTeam(teamId,{fresh:true});if(!team)throw new Error("Équipe nationale introuvable.")
-  const existing = await getNationalTeamCampaigns(teamId, { fresh: true }), current = existing.find((item) => item.id_campagne === id)
+  const context=await getCampaignMutationContext(teamId),team=context.team;if(!team)throw new Error("Équipe nationale introuvable.")
+  const existing=context.campaigns,current=existing.find((item)=>item.id_campagne===id)
   if (!current) throw new Error("Campagne introuvable.")
   const row = validateCampaignInput(input)
-  const refs=await getCampaignReferences(); assertCampaignPeriodWithinTeam(row, team); if(!refs.statuses.some((x)=>x.id===row.id_statut_campagne)) throw new Error("Statut de campagne absent du référentiel.")
+  assertCampaignPeriodWithinTeam(row,team);if(!context.statuses.has(row.id_statut_campagne))throw new Error("Statut de campagne absent du référentiel.")
   if (existing.some((item) => item.id_campagne !== id && normalized(item.nom_campagne) === normalized(row.nom_campagne) && item.date_debut === row.date_debut && item.date_fin === row.date_fin)) throw new Error("Cette campagne existe déjà.")
   await updateSheetCells({ sheetName: CAMPAIGN_SHEET, spreadsheetId: getNationalTeamsSpreadsheetId(), idColumn: "id_campagne", idValue: id, updates: Object.entries(row).map(([column, value]) => ({ column, value })) })
   return { ...current, ...row }

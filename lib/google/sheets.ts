@@ -343,13 +343,11 @@ export async function updateSheetCells(params: {
 
   const sheets = google.sheets({ version: "v4", auth })
   const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
-  const range = `'${safeSheetName}'!A:Z`
-
-  const res = await sheets.spreadsheets.values.get({ spreadsheetId, range })
-  const values: unknown[][] = (res?.data?.values ?? []) as unknown[][]
-  if (values.length === 0) throw new Error("La feuille est vide")
-
-  const headers = (values[0] ?? []).map((h: unknown) => String(h ?? "").trim())
+  const [headers, rows] = await Promise.all([
+    getSheetHeaders({ sheetName: params.sheetName, spreadsheetId }),
+    getSheetRows({ sheetName: params.sheetName, spreadsheetId }),
+  ])
+  if (headers.length === 0) throw new Error("La feuille est vide")
   const idColIdx = headers.indexOf(params.idColumn)
   if (idColIdx === -1) throw new Error(`Colonne "${params.idColumn}" introuvable dans "${params.sheetName}"`)
 
@@ -362,17 +360,12 @@ export async function updateSheetCells(params: {
     columnIndices.push({ colIdx: idx, value: upd.value })
   }
 
-  let rowIndex = -1
-  for (let i = 1; i < values.length; i++) {
-    if (String(values[i]?.[idColIdx] ?? "").trim() === params.idValue) {
-      rowIndex = i
-      break
-    }
-  }
-  if (rowIndex === -1) throw new Error(`Ligne avec ${params.idColumn}="${params.idValue}" introuvable`)
+  const recordIndex = rows.findIndex((row) => String(row[params.idColumn] ?? "").trim() === params.idValue)
+  if (recordIndex === -1) throw new Error(`Ligne avec ${params.idColumn}="${params.idValue}" introuvable`)
+  const rowNumber = recordIndex + 2
 
   const data = columnIndices.map(({ colIdx, value }) => ({
-    range: `'${safeSheetName}'!${columnToLetter(colIdx)}${rowIndex + 1}`,
+    range: `'${safeSheetName}'!${columnToLetter(colIdx)}${rowNumber}`,
     values: [[value]],
   }))
 
