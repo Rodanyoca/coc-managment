@@ -327,30 +327,42 @@ export async function getCompetitionMedalCounts(){
  return{total:valid.length,or:valid.filter(row=>clean(row.id_distinction)==="DIST_OR").length,argent:valid.filter(row=>clean(row.id_distinction)==="DIST_ARGENT").length,bronze:valid.filter(row=>clean(row.id_distinction)==="DIST_BRONZE").length}
 }
 
-async function prepareMedal(competitionId:string,input:Record<string,unknown>){
- const row=validateCompetitionMedalInput(input),[results,references]=await Promise.all([getCompetitionResults(competitionId,false),getMedalReferences()])
- const result=results.find(item=>item.id_resultat_logique===row.id_resultat_logique)
+async function getMedalMutationContext(competitionId:string){
+ const spreadsheetId=getCompetitionsSpreadsheetId()
+ const [tables,references]=await Promise.all([
+  getSheetsRows({sheetNames:["MEDAILLES","RESULTATS",TEAMS_SHEET,PROGRAMS_SHEET],spreadsheetId}),
+  getMedalReferences(),
+ ])
+ const programIds=new Set(tables[PROGRAMS_SHEET].filter(row=>row.id_competition===competitionId).map(row=>row.id_programme_competition))
+ const engagementIds=new Set(tables[TEAMS_SHEET].filter(row=>programIds.has(row.id_programme_competition)).map(row=>row.id_engagement_campagne))
+ const results=tables.RESULTATS.filter(row=>row.est_version_courante==="OUI"&&engagementIds.has(row.id_engagement_campagne))
+ return{medals:tables.MEDAILLES,results,references}
+}
+
+function prepareMedal(input:Record<string,unknown>,context:Awaited<ReturnType<typeof getMedalMutationContext>>){
+ const row=validateCompetitionMedalInput(input)
+ const result=context.results.find(item=>item.id_resultat_logique===row.id_resultat_logique)
  if(!result)throw new Error("Le résultat logique n’existe pas dans cette compétition.")
- if(!references.some(item=>item.id===row.id_distinction))throw new Error("La distinction sportive est absente du référentiel.")
+ if(!context.references.some(item=>item.id===row.id_distinction))throw new Error("La distinction sportive est absente du référentiel.")
  return{row,result}
 }
 
 export async function createCompetitionMedal(competitionId:string,input:Record<string,unknown>){
- const{row}=await prepareMedal(competitionId,input),existing=await getCompetitionMedals()
+ const context=await getMedalMutationContext(competitionId),{row}=prepareMedal(input,context),existing=context.medals
  if(existing.some(item=>item.id_resultat_logique===row.id_resultat_logique))throw new Error("Cette unité possède déjà une médaille pour ce résultat.")
  const created={id_medaille:nextId(existing.map(item=>item.id_medaille),"MED"),...row}
  await appendSheetRow({sheetName:"MEDAILLES",spreadsheetId:getCompetitionsSpreadsheetId(),row:created});return created
 }
 
 export async function updateCompetitionMedal(competitionId:string,id:string,input:Record<string,unknown>){
- const current=(await getCompetitionMedals(competitionId)).find(item=>item.id_medaille===id);if(!current)throw new Error("Médaille introuvable.")
- const{row}=await prepareMedal(competitionId,input),existing=await getCompetitionMedals()
+ const context=await getMedalMutationContext(competitionId),resultIds=new Set(context.results.map(item=>item.id_resultat_logique)),current=context.medals.find(item=>item.id_medaille===id&&resultIds.has(item.id_resultat_logique));if(!current)throw new Error("Médaille introuvable.")
+ const{row}=prepareMedal(input,context),existing=context.medals
  if(existing.some(item=>item.id_medaille!==id&&item.id_resultat_logique===row.id_resultat_logique))throw new Error("Cette unité possède déjà une médaille pour ce résultat.")
- await updateSheetCells({sheetName:"MEDAILLES",spreadsheetId:getCompetitionsSpreadsheetId(),idColumn:"id_medaille",idValue:id,updates:[{column:"id_resultat_logique",value:row.id_resultat_logique},{column:"id_distinction",value:row.id_distinction},{column:"date_obtention",value:row.date_obtention},{column:"observation",value:row.observation}]});return{...current,...row}
+ await updateSheetCells({sheetName:"MEDAILLES",spreadsheetId:getCompetitionsSpreadsheetId(),idColumn:"id_medaille",idValue:id,updates:[{column:"id_resultat_logique",value:row.id_resultat_logique},{column:"id_distinction",value:row.id_distinction},{column:"date_obtention",value:row.date_obtention},{column:"observation",value:row.observation}]});return{...current,...row,id_medaille:id}
 }
 
 export async function deleteCompetitionMedal(competitionId:string,id:string){
- const current=(await getCompetitionMedals(competitionId)).find(item=>item.id_medaille===id);if(!current)throw new Error("Médaille introuvable.")
+ const context=await getMedalMutationContext(competitionId),resultIds=new Set(context.results.map(item=>item.id_resultat_logique)),current=context.medals.find(item=>item.id_medaille===id&&resultIds.has(item.id_resultat_logique));if(!current)throw new Error("Médaille introuvable.")
  // Aucun processus dépendant ne référence id_medaille dans le modèle actuel.
  await deleteSheetRow({sheetName:"MEDAILLES",spreadsheetId:getCompetitionsSpreadsheetId(),idColumn:"id_medaille",idValue:id});return current
 }

@@ -2,12 +2,26 @@ import assert from "node:assert/strict"
 import { readFileSync } from "node:fs"
 import test from "node:test"
 import { MEDAL_DISTINCTIONS, validateCompetitionMedalInput } from "../../lib/competitions/validation.ts"
+import { readFile } from "node:fs/promises"
 import { participatingUnitMedalLabel } from "../../lib/competitions/medals.ts"
 
 test("valide les trois distinctions et une date ISO",()=>{
  for(const id_distinction of MEDAL_DISTINCTIONS)assert.equal(validateCompetitionMedalInput({id_resultat_logique:"RSL1",id_distinction,date_obtention:"2026-08-12"}).id_distinction,id_distinction)
  assert.throws(()=>validateCompetitionMedalInput({id_resultat_logique:"RSL1",id_distinction:"DIST_PLATINE",date_obtention:"2026-08-12"}),/or, d’argent et de bronze/i)
  assert.throws(()=>validateCompetitionMedalInput({id_resultat_logique:"RSL1",id_distinction:"DIST_OR",date_obtention:"12-08-2026"}),/date d’obtention/i)
+})
+
+test("l’ajout d’une médaille valide son contexte avec une lecture groupée sans projection enrichie",async()=>{
+ const source=await readFile(new URL("../../lib/competitions/data.ts",import.meta.url),"utf8")
+ const start=source.indexOf("async function getMedalMutationContext")
+ const end=source.indexOf("export async function createTeamParticipation",start)
+ const implementation=source.slice(start,end)
+ assert.ok(start>=0)
+ assert.match(implementation,/getSheetsRows/)
+ assert.match(implementation,/RESULTATS/)
+ assert.match(implementation,/MEDAILLES/)
+ assert.doesNotMatch(implementation,/getCompetitionMedals\(/)
+ assert.doesNotMatch(implementation,/getCompetitionResults\(/)
 })
 
 test("la donnée relie la médaille au résultat logique courant et protège les doublons",()=>{

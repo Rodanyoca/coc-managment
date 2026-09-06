@@ -254,6 +254,8 @@ export async function getSheetsRows(params: {
     const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
     result[sheetName] = valuesToRecords(values)
     setCache(`${spreadsheetId}:${ranges[index]}`, result[sheetName])
+    const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
+    headerCache.set(`${spreadsheetId}:'${sheetName.replace(/'/g, "''")}'!1:1`, { data: headers, ts: Date.now() })
   })
   return result
 }
@@ -393,8 +395,7 @@ export async function appendSheetRow(params: {
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets"])
   const sheets = google.sheets({ version: "v4", auth })
   const safeSheetName = params.sheetName.replace(/'/g, "''")
-  const headerResult = await sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })
-  const headers = (headerResult.data.values?.[0] ?? []).map((header) => String(header ?? "").trim())
+  const headers = await getSheetHeaders({ sheetName: params.sheetName, spreadsheetId })
   if (headers.length === 0) throw new Error(`La feuille "${params.sheetName}" ne contient pas d'en-têtes`)
   await sheets.spreadsheets.values.append({
     spreadsheetId,
