@@ -22,6 +22,7 @@ export default async function EntraineursPage() {
     sexe: r.nom_sexe || r.id_sexe || "",
     dateNaissance: r.date_de_naissance || "",
     federation: federationById.get(r.id_federation || "")?.sigle || federationById.get(r.id_federation || "")?.nom || r.nom_federation || "",
+    federationId: r.id_federation || "",
     statut: r.statut || "",
     avatar: r.avatar_drive_url || null,
   }))

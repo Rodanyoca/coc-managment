@@ -235,7 +235,20 @@ export async function getSheetsRows(params: {
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
-  const response = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
+  let response
+  try {
+    response = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
+  } catch (error) {
+    const staleResult: Record<string, Record<string, string>[]> = {}
+    const hasCompleteStaleSnapshot = params.sheetNames.every((sheetName, index) => {
+      const stale = cache.get(`${spreadsheetId}:${ranges[index]}`)?.data
+      if (stale) staleResult[sheetName] = stale
+      return Boolean(stale)
+    })
+    if (hasCompleteStaleSnapshot) return staleResult
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`Failed to read Google Sheets batch (spreadsheetId=${spreadsheetId}): ${message}`)
+  }
   const result: Record<string, Record<string, string>[]> = {}
   params.sheetNames.forEach((sheetName, index) => {
     const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]

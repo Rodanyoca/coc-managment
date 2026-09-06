@@ -23,6 +23,7 @@ export default async function MedecinsPage() {
     nomComplet: r.nom_complet || "",
     sexe: r.nom_sexe || r.id_sexe || "",
     dateNaissance: r.date_de_naissance || "",
+    organisationId: r.id_entite || r.id_federation || "",
     federation: (() => {
       const entity = entityById.get(r.id_entite || r.id_federation || "")
       return entity?.nom_officiel || entity?.nom_entite || entity?.sigle || r.nom_entite || r.nom_federation || ""

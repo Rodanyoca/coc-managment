@@ -74,7 +74,9 @@ test("distingue une requête invalide d’un service indisponible", async ({ pag
 
 test("affiche le chargement, bloque une double soumission puis redirige", async ({ page }) => {
   let calls = 0
-  await page.route("**/dashboard**", (route) => route.fulfill({ status: 200, contentType: "text/html", body: "<title>Tableau de bord simulé</title>" }))
+  let redirectSnapshot: { label: string; emailDisabled: boolean; passwordDisabled: boolean; buttonDisabled: boolean } | null = null
+  await page.exposeFunction("captureLoginRedirect", (snapshot: typeof redirectSnapshot) => { redirectSnapshot = snapshot })
+  await page.route("**/dashboard**", (route) => route.abort("failed"))
   await page.route("**/api/auth/login", async (route) => {
     calls += 1
     await new Promise((resolve) => setTimeout(resolve, 1_000))
@@ -82,12 +84,50 @@ test("affiche le chargement, bloque une double soumission puis redirige", async 
   })
   await page.goto("/login")
   await fillCredentials(page)
-  const submit = page.getByRole("button", { name: "Se connecter" })
-  await submit.click()
+  await page.evaluate(() => {
+    const observer = new MutationObserver(() => {
+      const button = document.querySelector<HTMLButtonElement>('button[type="submit"]')
+      if (button?.textContent?.includes("Redirection en cours")) {
+        void (window as unknown as { captureLoginRedirect: (value: unknown) => Promise<void> }).captureLoginRedirect({
+          label: button.textContent.trim(),
+          emailDisabled: Boolean(document.querySelector<HTMLInputElement>('#email')?.disabled),
+          passwordDisabled: Boolean(document.querySelector<HTMLInputElement>('#password')?.disabled),
+          buttonDisabled: button.disabled,
+        })
+        observer.disconnect()
+      }
+    })
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true })
+  })
+  const destinationRequest = page.waitForRequest((request) => new URL(request.url()).pathname === "/dashboard")
+  await page.locator("form").evaluate((form) => {
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }))
+    form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }))
+  })
   await expect(page.getByRole("button", { name: "Connexion en cours…" })).toBeDisabled()
-  await page.keyboard.press("Enter")
-  await page.waitForURL("**/dashboard")
+  await expect(page.getByLabel("Adresse e-mail")).toBeDisabled()
+  await expect(page.getByLabel("Mot de passe", { exact: true })).toBeDisabled()
+  await destinationRequest
+  await expect.poll(() => redirectSnapshot).not.toBeNull()
+  expect(redirectSnapshot).toEqual({ label: "Redirection en cours…", emailDisabled: true, passwordDisabled: true, buttonDisabled: true })
   expect(calls).toBe(1)
+})
+
+test("deux validations Entrée immédiates ne créent qu'une requête", async ({ page }) => {
+  let calls = 0
+  await page.route("**/api/auth/login", async (route) => {
+    calls += 1
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    await route.fulfill({ status: 401, contentType: "application/json", body: "{}" })
+  })
+  await page.goto("/login")
+  await fillCredentials(page)
+  await page.getByLabel("Mot de passe", { exact: true }).focus()
+  await page.keyboard.press("Enter")
+  await page.keyboard.press("Enter")
+  await expect(page.locator("#login-error")).toBeVisible()
+  expect(calls).toBe(1)
+  await expect(page.getByRole("button", { name: "Se connecter" })).toBeEnabled()
 })
 
 test("redirige une première connexion vers l'activation sans modifier l'interface", async ({ page }) => {
@@ -114,6 +154,7 @@ test("gère une panne réseau simulée", async ({ page }) => {
   await fillCredentials(page)
   await page.getByRole("button", { name: "Se connecter" }).click()
   await expect(page.locator("#login-error")).toContainText("momentanément indisponible")
+  await expect(page.getByRole("button", { name: "Se connecter" })).toBeEnabled()
 })
 
 for (const viewport of viewports) {

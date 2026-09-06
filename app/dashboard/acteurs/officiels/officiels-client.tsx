@@ -25,9 +25,12 @@ export type OfficielListItem = {
   sexe: string
   dateNaissance: string
   organisation: string
+  organisationId: string
   statut: string
   avatar: string | null
 }
+
+export type OrganisationOption = { id: string; sigle: string; nom: string }
 
 type OfficielForm = {
   id_officiel_federation: string
@@ -76,9 +79,10 @@ function displaySexe(value: string) {
   return value || "—"
 }
 
-export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }) {
+export function OfficielsClient({ officiels, organisations }: { officiels: OfficielListItem[]; organisations: OrganisationOption[] }) {
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
+  const [organisationFilter, setOrganisationFilter] = useState("TOUTES")
   const [editorOpen, setEditorOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState<OfficielForm>(emptyForm)
@@ -87,18 +91,21 @@ export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }
 
   const filteredOfficiels = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase("fr")
+    const byOrganisation = organisationFilter === "TOUTES"
+      ? officiels
+      : officiels.filter((officiel) => officiel.organisationId === organisationFilter)
     const matchingOfficiels = query
-      ? officiels.filter((officiel) =>
+      ? byOrganisation.filter((officiel) =>
           [officiel.idNational, officiel.idFederal, officiel.nomComplet, officiel.sexe,
             officiel.dateNaissance, officiel.organisation, officiel.statut]
             .some((value) => value.toLocaleLowerCase("fr").includes(query))
         )
-      : officiels
+      : byOrganisation
 
     return [...matchingOfficiels].sort((first, second) =>
       first.nomComplet.localeCompare(second.nomComplet, "fr", { sensitivity: "base" })
     )
-  }, [officiels, searchQuery])
+  }, [officiels, organisationFilter, searchQuery])
 
   function update<K extends keyof OfficielForm>(key: K, value: OfficielForm[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -180,9 +187,18 @@ export function OfficielsClient({ officiels }: { officiels: OfficielListItem[] }
       <Header title="Officiels" subtitle="Liste des officiels enregistrés" />
       <div className="space-y-6 p-6">
         <div className="flex flex-col justify-between gap-4 sm:flex-row">
-          <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Rechercher un officiel..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9" />
+          <div className="flex w-full flex-col gap-3 sm:max-w-2xl sm:flex-row">
+            <div className="relative w-full sm:max-w-md">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input placeholder="Rechercher un officiel..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9" />
+            </div>
+            <Select value={organisationFilter} onValueChange={setOrganisationFilter}>
+              <SelectTrigger className="w-full sm:w-64" aria-label="Filtrer par organisation"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="TOUTES">Toutes les organisations</SelectItem>
+                {organisations.map((item) => <SelectItem key={item.id} value={item.id}>{item.sigle || item.nom}</SelectItem>)}
+              </SelectContent>
+            </Select>
           </div>
           <Button onClick={() => setEditorOpen(true)}><Plus className="mr-2 h-4 w-4" />Ajouter un officiel</Button>
         </div>

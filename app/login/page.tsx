@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"
 
 import { PartnersStrip, type Partner } from "@/components/login/partners-strip"
@@ -18,6 +18,7 @@ const partners: Partner[] = [
 ]
 
 type LoginError = "credentials" | "service" | "validation" | null
+type SubmissionPhase = "idle" | "request" | "redirect"
 
 const errorMessages: Record<Exclude<LoginError, null>, string> = {
   credentials: "Les informations saisies ne permettent pas d’accéder au système. Vérifiez votre adresse e-mail et votre mot de passe.",
@@ -29,14 +30,18 @@ export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [phase, setPhase] = useState<SubmissionPhase>("idle")
   const [error, setError] = useState<LoginError>(null)
+  const submissionLocked = useRef(false)
+  const loading = phase !== "idle"
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (loading) return
+    if (submissionLocked.current) return
+    submissionLocked.current = true
     setError(null)
-    setLoading(true)
+    setPhase("request")
+    let authenticated = false
 
     try {
       const response = await fetch("/api/auth/login", {
@@ -53,14 +58,19 @@ export default function LoginPage() {
       }
 
       const result = await response.json()
+      authenticated = true
+      setPhase("redirect")
       // Une connexion change l'état d'authentification côté serveur. Une
       // navigation complète évite de réutiliser un arbre RSC préchargé avant
       // la pose du cookie de session, ce qui provoquait un retour vers /login.
-      window.location.assign(normalizeLoginRedirect(result.redirectTo))
+      window.location.replace(normalizeLoginRedirect(result.redirectTo))
     } catch {
       setError("service")
     } finally {
-      setLoading(false)
+      if (!authenticated) {
+        submissionLocked.current = false
+        setPhase("idle")
+      }
     }
   }
 
@@ -113,7 +123,7 @@ export default function LoginPage() {
             </div>
             <Button type="submit" className={styles.submit} disabled={loading}>
               {loading && <LoaderCircle className={styles.spinner} aria-hidden="true" />}
-              {loading ? "Connexion en cours…" : "Se connecter"}
+              {phase === "redirect" ? "Redirection en cours…" : loading ? "Connexion en cours…" : "Se connecter"}
             </Button>
           </form>
 

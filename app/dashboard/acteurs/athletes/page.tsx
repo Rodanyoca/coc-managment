@@ -29,6 +29,7 @@ export default async function AthletesPage() {
       sexe: row.nom_sexe || row.id_sexe || "",
       dateNaissance: row.date_de_naissance || "",
       federation: federationById.get(row.id_federation) || row.sigle_federation || "",
+      federationId: row.id_federation || "",
       statut: row.statut || "",
       avatar: row.avatar_drive_url || null,
     }))
