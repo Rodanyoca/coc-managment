@@ -94,7 +94,9 @@ Classeur : **05_ACTIVITES**. Variable : `GOOGLE_SHEETS_ACTIVITES_SPREADSHEET_ID`
 
 - **ACTIVITES** : `id_activite`, `id_type_activite`, `id_entite_organisatrice`, `nom_activite`, `titre_public`, `resume`, `date_debut`, `date_fin`, `pays`, `ville`, `lieu`, `id_statut_activite`, `observation`
 - **ACTIVITES_ENTITES** : `id_activite_entite`, `id_activite`, `id_entite`, `id_role_entite_activite`, `observation`
-- **ACTIVITES_PARTICIPANTS** : `id_participation`, `id_activite`, `id_acteur_coc`, `id_type_acteur`, `id_entite_representee`, `id_role_participation`, `observation`
+- **ACTIVITES_PARTICIPANTS** : `id_participation`, `id_activite`, `id_acteur_coc`, `id_type_acteur`, `id_activite_entite`, `observation`. La relation `id_activite_entite` impose que l’acteur appartienne à une entité déjà rattachée à l’activité ; aucun rôle ou statut de participation n’est dupliqué.
+
+Les rôles des entités proviennent exclusivement de **ROLES_ENTITE_ACTIVITE** (`REA001` Invitée, `REA002` Participante, `REA003` Partenaire, `REA004` Coorganisatrice, `REA005` Observatrice, `REA006` Organisatrice). L’entité organisatrice est automatiquement matérialisée dans `ACTIVITES_ENTITES`, ce qui permet de la choisir comme entité d’appartenance d’un participant. Les dix relations historiques de `ACTIVITES_ENTITES` antérieures au 6 septembre 2026 ont été conservées avec un rôle vide et une observation d’anomalie, car aucun rôle fiable ne pouvait être déduit.
 - **ACTIVITES_QUALIFICATIONS** : `id_qualification_activite`, `id_participation`, `type_qualification`, `id_valeur_avant`, `id_valeur_apres`, `observation`
 
 ## DOCUMENTS â€” AUT-ADM

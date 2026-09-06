@@ -20,5 +20,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     canAccess("AUT-ADM", "READ").then((allowed) => allowed ? getDocumentsForEntity("ACTIVITE", id).catch(() => []) : undefined),
   ])
   if (!activity) notFound()
-  return <Detail activity={activity} references={references} initialParticipants={participants.rows} participantsError={participants.error} initialEntities={entities.rows} entitiesError={entities.error} actorNames={Object.fromEntries(actorGroups.flat().map((item) => [item.id, item.label]))} activityDocuments={documents} />
+  const canEdit = await canAccess("AUT-ADM", "WRITE")
+  return <Detail activity={activity} references={references} initialParticipants={participants.rows} participantsError={participants.error} initialEntities={entities.rows} entitiesError={entities.error} actorNames={Object.fromEntries(actorGroups.flat().map((item) => [item.id, item.label]))} activityDocuments={documents} canEdit={canEdit} />
 }

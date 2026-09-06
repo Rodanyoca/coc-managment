@@ -791,8 +791,7 @@
             "id_activite",
             "id_acteur_coc",
             "id_type_acteur",
-            "id_entite_representee",
-            "id_role_participation",
+            "id_activite_entite",
             "observation"
           ]
         },

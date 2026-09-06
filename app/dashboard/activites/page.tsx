@@ -9,7 +9,7 @@ export default async function ActivitesPage() {
   } catch (error) {
     props = {
       initialRows: [],
-      references: { entites: [], types: [] },
+      references: { entites: [], types: [], entityRoles: [], actorTypes: [] },
       loadError: error instanceof Error ? error.message : String(error),
     }
   }
