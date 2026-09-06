@@ -28,7 +28,7 @@ export default async function CompetitionDetailPage({ params }: { params: Promis
     getEngagementReferences(),
     getAthleteParticipations({ competitionId: id, fresh: true }),
     getParticipationReferences(),
-    getCompetitionResults(id),
+    getCompetitionResults(id, true, { bypassCache: true }),
     getResultReferences(),
     getCompetitionMedals(id),
     getMedalReferences(),

@@ -22,3 +22,17 @@ test("la fiche compétition relit les programmes après une modification directe
   assert.match(data, /getCompetitionPrograms\(competitionId\?:\s*string,\s*options:\s*\{\s*bypassCache\?:\s*boolean\s*\}\s*=\s*\{\}\)/)
   assert.match(page, /getCompetitionPrograms\(id,\s*\{\s*bypassCache:\s*true\s*\}\)/)
 })
+
+test("la fiche relit les résultats et affiche leur programme physique après une modification directe", async () => {
+  const [page, data, results] = await Promise.all([
+    readFile("app/dashboard/competitions/[id]/page.tsx", "utf8"),
+    readFile("lib/competitions/data.ts", "utf8"),
+    readFile("components/dashboard/competition-results.tsx", "utf8"),
+  ])
+
+  assert.match(page, /getCompetitionResults\(id,\s*true,\s*\{\s*bypassCache:\s*true\s*\}\)/)
+  assert.match(data, /getCompetitionResults\([^)]*options:\s*\{\s*bypassCache\?:\s*boolean/)
+  assert.match(results, /getEventLabel\(row\.id_programme_competition\)/)
+  assert.match(results, /getDisciplineLabelForProgram\(row\.id_programme_competition\)/)
+  assert.doesNotMatch(results, /getEventLabel\(row\.id_engagement_campagne\)/)
+})
