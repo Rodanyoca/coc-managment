@@ -63,6 +63,8 @@ Classeur : **00_REFERENTIELS**. Variable : `GOOGLE_SHEETS_REFERENTIEL_SPREADSHEE
 
 Classeur : **01_STRUCTURE_TERRITORIALE**. Variable : `GOOGLE_SHEETS_STRUCTURE_TERRITORIALE_SPREADSHEET_ID`.
 
+- **PERSONNES_CONTACT_ENTITES** : `id_contact_entite`, `id_entite`, `id_type_acteur`, `id_acteur_coc`, `fonction_contact`, `est_contact_principal`, `statut`, `observation`. Cette feuille porte exclusivement la désignation explicite d’un acteur existant comme contact d’une entité. L’identité, le téléphone et l’e-mail restent dans la feuille Acteurs d’origine ; `OFFICIELS_AFFILIATIONS` reste une relation d’affiliation distincte.
+
 - **HIERARCHIE** : `id_hierarchie`, `id_federation`, `id_type_structure`, `id_type_structure_parent`, `niveau_hierarchique`, `niveau_obligatoire`, `observations`
 - **STRUCTURES_DISCIPLINES** : `id_structure_discipline`, `id_federation`, `id_type_structure`, `id_structure_coc`, `id_sport`, `id_discipline`, `observations`
 - **LIGUES** : `id_ligue_coc`, `id_ligue_federation`, `id_federation`, `id_province`, `nom_ligue`, `sigle_ligue`, `date_creation`, `date_reconnaissance`, `telephone`, `email`, `statut`, `observations`

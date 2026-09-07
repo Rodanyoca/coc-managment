@@ -1,8 +1,9 @@
 import type { ReactNode } from "react"
 import Link from "next/link"
-import { ArrowLeft, Building2, ExternalLink, Mail, Pencil, Phone, UserRound } from "lucide-react"
+import { ArrowLeft, Building2, ExternalLink, Mail, Pencil, Phone } from "lucide-react"
 import { Header } from "@/components/dashboard/header"
 import { FederationLogoManager } from "@/components/dashboard/federation-logo-manager"
+import { EntityContactsSection } from "@/components/dashboard/entity-contacts-section"
 import { FederationHierarchySummary, FederationStructureTables } from "@/components/dashboard/federation-structure-section"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Badge } from "@/components/ui/badge"
@@ -40,20 +41,8 @@ function CocStatus({ value }: { value: string }) {
   return <Badge variant="secondary" className={!value ? "text-muted-foreground" : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200"}>{readable(value)}</Badge>
 }
 
-function EntityContacts({ entity, contactsAvailable }: { entity: FederationLinkedEntity; contactsAvailable: boolean }) {
-  return <section aria-labelledby={`${entity.id_entite}-contacts`} className="space-y-3 border-t border-border pt-5">
-    <h3 id={`${entity.id_entite}-contacts`} className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Contact actuel</h3>
-    {!contactsAvailable ? <p className="text-sm text-muted-foreground">Les contacts sont temporairement indisponibles.</p>
-      : entity.contacts.length === 0 ? <p className="text-sm text-muted-foreground">Aucun contact actif lié à cette entité dans AUTRES.</p>
-      : <div className="grid gap-3 sm:grid-cols-2">{entity.contacts.map((contact) => <div key={contact.id || `${contact.nom}-${contact.email}`} className="min-w-0 rounded-lg border border-border/60 p-4">
-        <div className="mb-3 flex items-center gap-2"><UserRound className="h-4 w-4 text-muted-foreground" aria-hidden="true" /><p className="break-words font-semibold">{shown(contact.nom)}</p></div>
-        <div className="space-y-3 text-sm"><Field label="Fonction" value={contact.fonction} /><Field label="Téléphone">{contact.telephone ? <a className="break-all text-primary hover:underline" href={`tel:${contact.telephone}`}>{contact.telephone}</a> : missing}</Field><Field label="E-mail">{contact.email ? <a className="break-all text-primary hover:underline" href={`mailto:${contact.email}`}>{contact.email}</a> : missing}</Field></div>
-      </div>)}</div>}
-  </section>
-}
-
-function EntityTab({ entity, linked, dateLabel, date, contactsAvailable, emptyLabel }: {
-  entity?: FederationLinkedEntity; linked: boolean; dateLabel: string; date: string; contactsAvailable: boolean; emptyLabel: string
+function EntityTab({ entity, linked, dateLabel, date, emptyLabel }: {
+  entity?: FederationLinkedEntity; linked: boolean; dateLabel: string; date: string; contactsAvailable?: boolean; emptyLabel: string
 }) {
   if (!linked) return <Empty className="min-h-64"><EmptyHeader><EmptyMedia variant="icon"><Building2 /></EmptyMedia><EmptyTitle>{emptyLabel}</EmptyTitle><EmptyDescription>Aucune entité n’est liée à cette fédération dans le référentiel.</EmptyDescription></EmptyHeader></Empty>
   if (!entity) return <Empty className="min-h-64"><EmptyHeader><EmptyMedia variant="icon"><Building2 /></EmptyMedia><EmptyTitle>Entité liée introuvable</EmptyTitle><EmptyDescription>La référence existe dans FEDERATIONS mais ne correspond à aucune ligne de ENTITES.</EmptyDescription></EmptyHeader></Empty>
@@ -71,13 +60,12 @@ function EntityTab({ entity, linked, dateLabel, date, contactsAvailable, emptyLa
         <Field label="Site web" className="md:col-span-2">{entity.site_web ? <a className="break-all text-primary hover:underline" href={websiteUrl(entity.site_web)} target="_blank" rel="noopener noreferrer">{entity.site_web}<ExternalLink className="ml-1 inline h-3.5 w-3.5" aria-hidden="true" /><span className="sr-only"> (ouvre un nouvel onglet)</span></a> : missing}</Field>
       </div>
     </section>
-    <EntityContacts entity={entity} contactsAvailable={contactsAvailable} />
   </div>
 }
 
-function NationalCoordinates({ entity, contactsAvailable }: { entity?: FederationLinkedEntity; contactsAvailable: boolean }) {
+function NationalCoordinates({ entity }: { entity?: FederationLinkedEntity }) {
   if (!entity) return <p className="text-sm text-muted-foreground">Aucune coordonnée nationale n’est disponible.</p>
-  return <div className="space-y-6"><div className="grid grid-cols-1 gap-5 md:grid-cols-2"><Field label="Adresse du siège" value={entity.adresse_siege} /><Field label="Téléphone">{entity.telephone ? <a className="break-all text-primary hover:underline" href={`tel:${entity.telephone}`}><Phone className="mr-1 inline h-4 w-4" aria-hidden="true" />{entity.telephone}</a> : missing}</Field><Field label="E-mail">{entity.email ? <a className="break-all text-primary hover:underline" href={`mailto:${entity.email}`}><Mail className="mr-1 inline h-4 w-4" aria-hidden="true" />{entity.email}</a> : missing}</Field><Field label="Site web">{entity.site_web ? <a className="break-all text-primary hover:underline" href={websiteUrl(entity.site_web)} target="_blank" rel="noopener noreferrer">{entity.site_web}<ExternalLink className="ml-1 inline h-3.5 w-3.5" aria-hidden="true" /></a> : missing}</Field></div><EntityContacts entity={entity} contactsAvailable={contactsAvailable} /></div>
+  return <div className="grid grid-cols-1 gap-5 md:grid-cols-2"><Field label="Adresse du siège" value={entity.adresse_siege} /><Field label="Téléphone">{entity.telephone ? <a className="break-all text-primary hover:underline" href={`tel:${entity.telephone}`}><Phone className="mr-1 inline h-4 w-4" aria-hidden="true" />{entity.telephone}</a> : missing}</Field><Field label="E-mail">{entity.email ? <a className="break-all text-primary hover:underline" href={`mailto:${entity.email}`}><Mail className="mr-1 inline h-4 w-4" aria-hidden="true" />{entity.email}</a> : missing}</Field><Field label="Site web">{entity.site_web ? <a className="break-all text-primary hover:underline" href={websiteUrl(entity.site_web)} target="_blank" rel="noopener noreferrer">{entity.site_web}<ExternalLink className="ml-1 inline h-3.5 w-3.5" aria-hidden="true" /></a> : missing}</Field></div>
 }
 
 export default async function FederationDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -106,7 +94,8 @@ export default async function FederationDetailPage({ params }: { params: Promise
             <div className="mt-5 w-full space-y-3 text-sm"><div className="flex min-w-0 justify-between gap-3"><span className="text-muted-foreground">Identifiant</span><span className="break-all text-right font-mono text-xs font-medium">{shown(federation.id_federation)}</span></div><div className="flex min-w-0 justify-between gap-3"><span className="text-muted-foreground">Sport</span><span className="break-words text-right font-medium">{shown(federation.nom_sport)}</span></div></div>
           </div></section>
           <section className="min-w-0 space-y-5 lg:col-span-2" aria-labelledby="recognition-title"><h3 id="recognition-title" className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Reconnaissance nationale</h3><div className="grid grid-cols-1 gap-5 md:grid-cols-2"><Field label="Catégorie de l’entité" value={federation.categorie_entite} /><Field label="Reconnaissance ministérielle"><MinistryStatus value={federation.statut_reconnaissance_ministere} /></Field><Field label="Date de reconnaissance nationale" value={federation.date_reconnaissance_nationale} /><Field label="Affiliation au COC"><CocStatus value={federation.statut_affiliation_coc} /></Field><Field label="Date d’affiliation au COC" value={federation.date_affiliation_coc} /><Field label="Observations" value={federation.observations} className="md:col-span-2" /></div></section>
-          <section className="min-w-0 space-y-4 border-t border-border pt-6 lg:col-span-3" aria-labelledby="national-entity-title"><h3 id="national-entity-title" className="text-lg font-semibold">Coordonnées et personnes de contact</h3><NationalCoordinates entity={detail.national} contactsAvailable={detail.contactsAvailable} /></section>
+          <section className="min-w-0 space-y-4 border-t border-border pt-6 lg:col-span-3" aria-labelledby="national-entity-title"><h3 id="national-entity-title" className="text-lg font-semibold">Coordonnées</h3><NationalCoordinates entity={detail.national} /></section>
+          <div className="min-w-0 border-t border-border pt-6 lg:col-span-3"><EntityContactsSection entityId={federation.id_entite} canWrite={false} /></div>
           <section className="min-w-0 space-y-4 border-t border-border pt-6 lg:col-span-3" aria-labelledby="continental-entity-title"><h3 id="continental-entity-title" className="text-lg font-semibold">Rattachement continental</h3><EntityTab entity={detail.continental} linked={Boolean(federation.id_entite_continentale)} dateLabel="Date d’affiliation continentale" date={federation.date_affiliation_continentale} contactsAvailable={detail.contactsAvailable} emptyLabel="Aucune confédération continentale liée" /></section>
           <section className="min-w-0 space-y-4 border-t border-border pt-6 lg:col-span-3" aria-labelledby="international-entity-title"><h3 id="international-entity-title" className="text-lg font-semibold">Rattachement international</h3><EntityTab entity={detail.international} linked={Boolean(federation.id_entite_internationale)} dateLabel="Date d’affiliation internationale" date={federation.date_affiliation_internationale} contactsAvailable={detail.contactsAvailable} emptyLabel="Aucune fédération internationale liée" /></section>
         </div></TabsContent>

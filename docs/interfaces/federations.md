@@ -26,7 +26,7 @@ Une donnée simple absente affiche `Non renseigné`. Une absence de rattachement
 
 ## Contacts et limites du modèle
 
-La relation réelle `AUTRES.id_entite → ENTITES.id_entite` est utilisée ; aucune coordonnée n’est copiée dans la fédération. Seules les lignes `AUTRES` au statut `ACTIF` sont considérées comme actuelles. Le modèle ne fournit toutefois ni dates de validité, ni relation dédiée « contact principal », ni règle de priorité. Si plusieurs contacts actifs sont liés, ils sont tous affichés afin de ne pas en désigner arbitrairement un. Si la feuille `AUTRES` est temporairement indisponible, la fiche des organisations reste visible et l’indisponibilité des contacts est signalée.
+Les personnes de contact proviennent exclusivement de `PERSONNES_CONTACT_ENTITES`. Une affiliation ou un rattachement ne crée jamais implicitement un contact. L’interface résout le nom, le téléphone et l’e-mail depuis `COACHS`, `MEDECINS`, `ARBITRES`, `OFFICIELS` ou `AUTRES`; une donnée absente affiche `Non renseigné`. Les athlètes sont interdits. Un seul contact principal actif est admis par entité, et la désactivation porte uniquement sur la relation.
 
 ## Règles de présentation
 

@@ -1,7 +1,6 @@
-import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
 import { getSheetsRows } from "@/lib/google/sheets"
 import { getReferentialSpreadsheetId } from "./config"
-import { resolveActiveEntityContacts, type FederationLinkedEntity } from "./detail-mappers"
+import type { FederationLinkedEntity } from "./detail-mappers"
 import { mapEntiteRow, mapFederationRow, mapSportRow } from "./mappers"
 import type { Federation } from "./types"
 
@@ -14,16 +13,11 @@ export type FederationDetailData = {
 }
 
 export async function loadFederationDetail(id: string): Promise<FederationDetailData | undefined> {
-  const [referential, contactsResult] = await Promise.all([
-    getSheetsRows({
+  const referential = await getSheetsRows({
       sheetNames: ["FEDERATIONS", "ENTITES", "SPORTS", "CATEGORIES_ENTITES"],
       spreadsheetId: getReferentialSpreadsheetId(),
       cacheTtlMs: 5000,
-    }),
-    getSheetsRows({ sheetNames: ["AUTRES"], spreadsheetId: getActeursSpreadsheetId(), cacheTtlMs: 5000 })
-      .then((rows) => ({ rows: rows.AUTRES, available: true }))
-      .catch(() => ({ rows: [] as Record<string, string>[], available: false })),
-  ])
+    })
   const source = referential.FEDERATIONS.map(mapFederationRow).find((item) => item.id_federation === id)
   if (!source) return undefined
 
@@ -33,7 +27,7 @@ export async function loadFederationDetail(id: string): Promise<FederationDetail
   const nationalEntity = entities.get(source.id_entite)
   const linkedEntity = (entityId: string): FederationLinkedEntity | undefined => {
     const entity = entities.get(entityId)
-    return entity ? { ...entity, contacts: resolveActiveEntityContacts(contactsResult.rows, entityId) } : undefined
+    return entity ? { ...entity, contacts: [] } : undefined
   }
   return {
     federation: {
@@ -51,6 +45,6 @@ export async function loadFederationDetail(id: string): Promise<FederationDetail
     national: linkedEntity(source.id_entite),
     continental: linkedEntity(source.id_entite_continentale),
     international: linkedEntity(source.id_entite_internationale),
-    contactsAvailable: contactsResult.available,
+    contactsAvailable: true,
   }
 }
