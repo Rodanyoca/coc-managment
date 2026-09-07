@@ -4,6 +4,7 @@ import { useMemo, useState } from "react"
 import Link from "next/link"
 import { AlertCircle, Building2, Eye, Search } from "lucide-react"
 import { Header } from "@/components/dashboard/header"
+import { FederationCreateSheet, type FederationCreationReferences } from "@/components/dashboard/federation-create-sheet"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -11,6 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { Federation } from "@/lib/federations/types"
 
@@ -24,12 +26,15 @@ function StatusBadge({ value, shortLabel }: { value: string; shortLabel?: string
   return <Tooltip><TooltipTrigger asChild><Badge variant="outline" className={value && positive(value) ? "max-w-full border-green-300 bg-green-50 text-green-700" : value ? "max-w-full border-orange-300 bg-orange-50 text-orange-700" : "max-w-full text-muted-foreground"}><span className="whitespace-normal text-center leading-4 sm:hidden">{shortLabel || label}</span><span className="hidden whitespace-normal text-center leading-4 sm:inline">{label}</span></Badge></TooltipTrigger><TooltipContent>{label}</TooltipContent></Tooltip>
 }
 
-export default function FederationsClient({ initialFederations, loadError }: { initialFederations: Federation[]; loadError?: string }) {
+export default function FederationsClient({ initialFederations: initial, references, canWrite, loadError }: { initialFederations: Federation[]; references: FederationCreationReferences; canWrite: boolean; loadError?: string }) {
+  const [initialFederations, setFederations] = useState(initial)
   const [query, setQuery] = useState("")
-  const rows = useMemo(() => { const needle=normalize(query.trim()); return needle ? initialFederations.filter((item) => normalize([item.id_federation,item.nom_federation,item.sigle_federation,item.categorie_entite,item.statut_reconnaissance_ministere,item.statut_affiliation_coc].join(" ")).includes(needle)) : initialFederations }, [initialFederations, query])
-  return <div className="min-h-screen"><Header title="Fédérations" subtitle="Fédérations sportives nationales" /><main className="space-y-5 p-4 md:p-6">
+  const [category, setCategory] = useState("TOUTES")
+  const categories = useMemo(() => [...new Set(initialFederations.map((item) => item.categorie_entite).filter(Boolean))].sort((a, b) => a.localeCompare(b, "fr")), [initialFederations])
+  const rows = useMemo(() => { const needle=normalize(query.trim()); return initialFederations.filter((item) => (category === "TOUTES" || item.categorie_entite === category) && (!needle || normalize([item.id_federation,item.nom_federation,item.sigle_federation,item.categorie_entite,item.statut_reconnaissance_ministere,item.statut_affiliation_coc].join(" ")).includes(needle))) }, [category, initialFederations, query])
+  return <div className="min-h-screen"><Header title="Fédérations" subtitle="Fédérations sportives nationales" actions={canWrite ? <FederationCreateSheet references={references} onCreated={(federation) => setFederations((current) => [...current, federation].sort((a, b) => a.nom_federation.localeCompare(b.nom_federation, "fr")))} /> : undefined} /><main className="space-y-5 p-4 md:p-6">
     {loadError ? <Alert variant="destructive"><AlertCircle className="h-4 w-4" /><AlertTitle>Impossible de charger les fédérations</AlertTitle><AlertDescription>Les données sont temporairement indisponibles. Réessayez plus tard.</AlertDescription></Alert> : <>
-      <div className="relative max-w-xl"><Search aria-hidden="true" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input aria-label="Rechercher une fédération" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une fédération…" className="pl-9" /></div>
+      <div className="flex max-w-3xl flex-col gap-3 sm:flex-row"><div className="relative min-w-0 flex-1"><Search aria-hidden="true" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" /><Input aria-label="Rechercher une fédération" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Rechercher une fédération…" className="pl-9" /></div><Select value={category} onValueChange={setCategory}><SelectTrigger className="w-full sm:w-64" aria-label="Filtrer par catégorie"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUTES">Toutes les catégories</SelectItem>{categories.map((item) => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent></Select></div>
       <Card className="overflow-hidden"><CardContent className="p-0">{!initialFederations.length ? <Empty className="min-h-64 border-0"><EmptyHeader><EmptyMedia variant="icon"><Building2 /></EmptyMedia><EmptyTitle>Aucune fédération</EmptyTitle><EmptyDescription>Aucune fédération exploitable n’est disponible dans le référentiel.</EmptyDescription></EmptyHeader></Empty> : !rows.length ? <Empty className="min-h-64 border-0"><EmptyHeader><EmptyMedia variant="icon"><Search /></EmptyMedia><EmptyTitle>Aucun résultat</EmptyTitle><EmptyDescription>Aucune fédération ne correspond à cette recherche.</EmptyDescription></EmptyHeader></Empty> : <div className="w-full">
         <div className="hidden grid-cols-[minmax(0,.65fr)_3rem_minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,1.1fr)_2.75rem] gap-3 border-b bg-muted/40 px-4 py-3 text-xs font-medium text-muted-foreground lg:grid"><span>Identifiant</span><span>Logo</span><span>Nom et sigle</span><span>Catégorie</span><span>Reconnaissance</span><span>Affiliation COC</span><span className="sr-only">Action</span></div>
         <div className="divide-y">{rows.map((item) => {const href=`/dashboard/federations/${encodeURIComponent(item.id_federation)}`;return <article key={item.id_federation} className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] gap-3 p-4 transition-colors hover:bg-muted/30 lg:grid-cols-[minmax(0,.65fr)_3rem_minmax(0,2fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_minmax(0,1.1fr)_2.75rem] lg:items-center">

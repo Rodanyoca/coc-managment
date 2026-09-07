@@ -119,6 +119,8 @@ export function AthletesClient({
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [federationFilter, setFederationFilter] = useState("TOUTES")
+  const [sexFilter, setSexFilter] = useState("TOUS")
+  const [statusFilter, setStatusFilter] = useState("TOUS")
   const [editorOpen, setEditorOpen] = useState(false)
   const [saving, setSaving] = useState(false)
   const [form, setForm] = useState<AthleteForm>(emptyForm)
@@ -128,8 +130,10 @@ export function AthletesClient({
   const filteredAthletes = useMemo(() => {
     const query = searchQuery.trim().toLocaleLowerCase("fr")
     const federationRows = federationFilter === "TOUTES" ? athletes : athletes.filter((athlete) => athlete.federationId === federationFilter)
+    const sexRows = sexFilter === "TOUS" ? federationRows : federationRows.filter((athlete) => displaySexe(athlete.sexe) === sexFilter)
+    const statusRows = statusFilter === "TOUS" ? sexRows : sexRows.filter((athlete) => athlete.statut.trim().toLocaleUpperCase("fr") === statusFilter)
     const matchingAthletes = query
-      ? federationRows.filter((athlete) =>
+      ? statusRows.filter((athlete) =>
           [
             athlete.idNational,
             athlete.idFederal,
@@ -140,14 +144,14 @@ export function AthletesClient({
             athlete.statut,
           ].some((value) => value.toLocaleLowerCase("fr").includes(query))
         )
-      : federationRows
+      : statusRows
 
     return [...matchingAthletes].sort((first, second) =>
       first.nomComplet.localeCompare(second.nomComplet, "fr", {
         sensitivity: "base",
       })
     )
-  }, [athletes, federationFilter, searchQuery])
+  }, [athletes, federationFilter, searchQuery, sexFilter, statusFilter])
 
   function update<K extends keyof AthleteForm>(key: K, value: AthleteForm[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -240,7 +244,7 @@ export function AthletesClient({
 
       <div className="space-y-6 p-6">
         <div className="flex flex-col justify-between gap-4 sm:flex-row">
-          <div className="flex w-full flex-col gap-3 sm:max-w-2xl sm:flex-row"><div className="relative w-full max-w-md">
+          <div className="grid w-full gap-3 sm:grid-cols-2 lg:max-w-5xl xl:grid-cols-[minmax(16rem,1fr)_14rem_10rem_11rem]"><div className="relative w-full">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder="Rechercher un athlète..."
@@ -248,7 +252,7 @@ export function AthletesClient({
               onChange={(event) => setSearchQuery(event.target.value)}
               className="pl-9"
             />
-          </div><Select value={federationFilter} onValueChange={setFederationFilter}><SelectTrigger className="w-full sm:w-56" aria-label="Filtrer par fédération"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUTES">Toutes les fédérations</SelectItem>{federations.map((item) => <SelectItem key={item.id} value={item.id}>{item.sigle || item.nom}</SelectItem>)}</SelectContent></Select></div>
+          </div><Select value={federationFilter} onValueChange={setFederationFilter}><SelectTrigger className="w-full" aria-label="Filtrer par fédération"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUTES">Toutes les fédérations</SelectItem>{federations.map((item) => <SelectItem key={item.id} value={item.id}>{item.sigle || item.nom}</SelectItem>)}</SelectContent></Select><Select value={sexFilter} onValueChange={setSexFilter}><SelectTrigger className="w-full" aria-label="Filtrer par sexe"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les sexes</SelectItem><SelectItem value="H">Hommes</SelectItem><SelectItem value="F">Femmes</SelectItem></SelectContent></Select><Select value={statusFilter} onValueChange={setStatusFilter}><SelectTrigger className="w-full" aria-label="Filtrer par statut"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les statuts</SelectItem><SelectItem value="ACTIF">Actifs</SelectItem><SelectItem value="INACTIF">Inactifs</SelectItem></SelectContent></Select></div>
           <Button onClick={() => setEditorOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Ajouter un athlète

@@ -14,6 +14,13 @@ test("la liste fédérations utilise une grille responsive sans conteneur horizo
   assert.match(source, /className="overflow-hidden"/)
 })
 
+test("la liste fédérations propose un filtre de catégorie combiné à la recherche", async () => {
+  const source = await readFile(listPath, "utf8")
+  assert.match(source, /aria-label="Filtrer par catégorie"/)
+  assert.match(source, />Toutes les catégories</)
+  assert.match(source, /category === "TOUTES" \|\| item\.categorie_entite === category/)
+})
+
 test("l’action de détail est une icône accessible avec infobulle", async () => {
   const source = await readFile(listPath, "utf8")
   assert.match(source, /aria-label={`Voir la fiche de/)

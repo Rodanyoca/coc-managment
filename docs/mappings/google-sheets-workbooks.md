@@ -22,6 +22,8 @@ Classeur : **00_REFERENTIELS**. Variable : `GOOGLE_SHEETS_REFERENTIEL_SPREADSHEE
 - **DISCIPLINES** : `id_discipline`, `id_sport`, `nom_discipline`, `observations`
 - **ENTITES** : `id_entite`, `id_categorie_entite`, `nom_officiel`, `sigle`, `adresse_siege`, `telephone`, `email`, `site_web`, `statut`, `observations`
 - **FEDERATIONS** : `id_federation`, `id_entite`, `id_sport`, `statut_reconnaissance_ministere`, `date_reconnaissance_nationale`, `statut_affiliation_coc`, `date_affiliation_coc`, `id_entite_continentale`, `date_affiliation_continentale`, `id_entite_internationale`, `date_affiliation_internationale`, `statut`, `observations`, `logo_drive_id`, `logo_drive_url`
+
+La création d’une fédération écrit les coordonnées uniquement dans `ENTITES` et conserve dans `FEDERATIONS` la référence `id_entite` ainsi que les données sportives, institutionnelles et de logo.
 - **PROVINCES** : `id_province`, `nom_province`, `statut`, `observations`
 - **VILLES** : `id_ville`, `id_province`, `nom_ville`, `statut`, `observations`
 - **CATEGORIES_ENTITES** : `id_categorie_entite`, `nom_categorie_entite`, `observations`

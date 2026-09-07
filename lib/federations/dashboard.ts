@@ -7,7 +7,7 @@ export type { FederationsDashboardStats } from "./dashboard-stats"
 export const TERRITORIAL_DASHBOARD_CACHE_TAG = "territorial-dashboard"
 
 export type TerritorialLevelStats = {
-  key: "ligues" | "ententes" | "clubs" | "equipes"
+  key: "ligues" | "ententes" | "cercles" | "clubs" | "equipes"
   label: string
   total: number
   actif: number
@@ -41,6 +41,7 @@ function aggregateTerritorialDashboardStats(data: FederationData): TerritorialDa
   const rawLevels = [
     aggregateLevel("ligues", "Ligues", data.ligues.map((item) => ({ id: item.id_ligue_coc, statut: item.statut }))),
     aggregateLevel("ententes", "Ententes", data.ententes.map((item) => ({ id: item.id_entente_coc, statut: item.statut }))),
+    aggregateLevel("cercles", "Cercles", data.cercles.map((item) => ({ id: item.id_cercle_coc, statut: item.statut }))),
     aggregateLevel("clubs", "Clubs", data.clubs.map((item) => ({ id: item.id_club_coc, statut: item.statut }))),
   ]
   const totalStructures = rawLevels.reduce((sum, level) => sum + level.total, 0)
