@@ -14,7 +14,7 @@ export type AthleteParticipationHistoryRow = {
   idSelection: string
   competition: string
   edition: string
-  programme: string
+  discipline: string
   equipe: string
   campagne: string
   statutSelection: string
@@ -42,13 +42,15 @@ type Graph = {
 type Labels = {
   selections?: Map<string, string>
   participations?: Map<string, string>
-  events?: Map<string, string>
+  eventDisciplineIds?: Map<string, string>
+  disciplines?: Map<string, string>
 }
 
 export function projectAthleteSportHistory(athleteId: string, graph: Graph, labels: Labels = {}): AthleteSportHistory {
   const campaignsById = new Map(graph.CAMPAGNES_EQUIPES_NATIONALES.map((row) => [row.id_campagne, row]))
   const equipesById = new Map(graph.EQUIPES_NATIONALES.map((row) => [row.id_equipe_nationale, row]))
   const engagementsById = new Map(graph.ENGAGEMENTS_CAMPAGNES_PROGRAMMES.map((row) => [row.id_engagement_campagne, row]))
+  const engagedCampaignIds = new Set(graph.ENGAGEMENTS_CAMPAGNES_PROGRAMMES.map((row) => row.id_campagne).filter(Boolean))
   const programmesById = new Map(graph.PROGRAMMES_COMPETITION.map((row) => [row.id_programme_competition, row]))
   const competitionsById = new Map(graph.COMPETITIONS.map((row) => [row.id_competition, row]))
   const participationsBySelectionId = new Map<string, V1Row<"PARTICIPATIONS_ACTEURS_COMPETITION">[]>()
@@ -75,7 +77,7 @@ export function projectAthleteSportHistory(athleteId: string, graph: Graph, labe
     })
   }
 
-  const participations = selections.flatMap((selection) => {
+  const participations = selections.filter((selection) => engagedCampaignIds.has(selection.id_campagne)).flatMap((selection) => {
     const campaign = campaignsById.get(selection.id_campagne)
     const team = campaign && equipesById.get(campaign.id_equipe_nationale)
     const matches = participationsBySelectionId.get(selection.id_selection) || []
@@ -86,7 +88,7 @@ export function projectAthleteSportHistory(athleteId: string, graph: Graph, labe
       statutSelection: labels.selections?.get(selection.id_statut_selection) || selection.id_statut_selection,
       dateSelection: selection.date_selection,
     }
-    if (!matches.length) return [{ id: `selection:${selection.id_selection}`, ...common, competition: "", edition: "", programme: "", effective: false, statutParticipation: "", dateParticipation: "" }]
+    if (!matches.length) return [{ id: `selection:${selection.id_selection}`, ...common, competition: "", edition: "", discipline: "", effective: false, statutParticipation: "", dateParticipation: "" }]
     return matches.map((participation) => {
       const engagement = engagementsById.get(participation.id_engagement_campagne)
       const programme = engagement && programmesById.get(engagement.id_programme_competition)
@@ -96,7 +98,7 @@ export function projectAthleteSportHistory(athleteId: string, graph: Graph, labe
         ...common,
         competition: competition?.nom_competition || "",
         edition: competition?.edition || "",
-        programme: programme ? labels.events?.get(programme.id_epreuve) || programme.id_epreuve : "",
+        discipline: programme ? labels.disciplines?.get(labels.eventDisciplineIds?.get(programme.id_epreuve) || "") || "" : "",
         effective: true,
         statutParticipation: labels.participations?.get(participation.id_statut_participation) || participation.id_statut_participation,
         dateParticipation: participation.date_statut,

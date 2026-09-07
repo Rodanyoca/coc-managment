@@ -249,7 +249,7 @@ export function OfficielDetailClient({
           <div className="space-y-2"><Label>Remplacer l’avatar</Label><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /></div>
           <div className="space-y-2"><Label>Remplacer le passeport</Label><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /></div>
         </div>
-        <div className="border-t px-4 pt-5"><OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} compact /></div>
+        <div className="border-t px-4 pt-5"><OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} compact canEdit /></div>
         <SheetFooter><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button onClick={save} disabled={saving}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter>
       </SheetContent>
     </Sheet>
