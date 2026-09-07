@@ -55,6 +55,8 @@ test("la fiche athlète retire Activités, partage une lecture et reste responsi
   assert.match(history, /hidden lg:block/)
   assert.match(history, /lg:hidden/)
   assert.doesNotMatch(history, /overflow-x-auto/)
+  assert.match(history, /w-full min-w-0 rounded-lg border bg-card p-3/)
+  assert.match(history, /xl:grid-cols-5/)
   assert.match(route, /canAccess\("AUT-SPT", "READ"\)/)
   assert.match(globalActivities, /export async function GET/)
 })
