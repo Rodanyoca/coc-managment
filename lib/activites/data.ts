@@ -16,7 +16,7 @@ const activity=(row:Record<string,string>)=>({...map(row,ACTIVITY_HEADERS),statu
 const entity=(row:Record<string,string>)=>map(row,ACTIVITY_ENTITY_HEADERS) as ActivityEntity
 const participant=(row:Record<string,string>)=>map(row,PARTICIPANT_HEADERS) as ActivityParticipant
 async function assertHeaders(sheetName:string,expected:readonly string[]){const headers=await getSheetHeaders({sheetName,spreadsheetId:getActivitesSpreadsheetId()});const missing=expected.filter(key=>!headers.includes(key));if(missing.length)throw new Error(`En-têtes manquants dans ${sheetName} : ${missing.join(", ")}`)}
-export async function getActivities(){await assertHeaders("ACTIVITES",ACTIVITY_SHEET_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES",spreadsheetId:getActivitesSpreadsheetId()})).map(activity)}
+export async function getActivities(){const rows=await getSheetRows({sheetName:"ACTIVITES",spreadsheetId:getActivitesSpreadsheetId()});await assertHeaders("ACTIVITES",ACTIVITY_SHEET_HEADERS);return rows.map(activity)}
 export async function getActivity(id:string){return(await getActivities()).find(x=>x.id_activite===id)}
 export async function getActivityEntities(activityId?:string){await assertHeaders("ACTIVITES_ENTITES",ENTITY_SHEET_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_ENTITES",spreadsheetId:getActivitesSpreadsheetId()})).map(entity).filter(x=>!activityId||x.id_activite===activityId)}
 export async function getParticipants(activityId?:string,actorId?:string){await assertHeaders("ACTIVITES_PARTICIPANTS",PARTICIPANT_SHEET_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_PARTICIPANTS",spreadsheetId:getActivitesSpreadsheetId()})).map(participant).filter(x=>(!activityId||x.id_activite===activityId)&&(!actorId||x.id_acteur_coc===actorId))}

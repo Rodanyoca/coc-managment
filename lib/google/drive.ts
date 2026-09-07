@@ -35,6 +35,23 @@ export type DriveUploadResult = {
   url: string
 }
 
+const driveSizeCache = (globalThis as typeof globalThis & { __cocDriveSizeCache?: Map<string, { size: string; timestamp: number }> }).__cocDriveSizeCache ??= new Map()
+const DRIVE_SIZE_CACHE_TTL_MS = 5 * 60 * 1000
+
+export async function getDriveFileSize(fileId: string): Promise<string> {
+  const cached = driveSizeCache.get(fileId)
+  if (cached && Date.now() - cached.timestamp < DRIVE_SIZE_CACHE_TTL_MS) return cached.size
+  try {
+    const drive = google.drive({ version: "v3", auth: getDriveAuth() })
+    const response = await drive.files.get({ fileId, fields: "id,size" })
+    const size = String(response.data.size ?? "")
+    if (size) driveSizeCache.set(fileId, { size, timestamp: Date.now() })
+    return size
+  } catch (error) {
+    throw driveError(error)
+  }
+}
+
 export async function uploadPrivateFileToDrive(params: { fileName: string; mimeType: string; buffer: Buffer; folderId: string }): Promise<DriveUploadResult> {
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })

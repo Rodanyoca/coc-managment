@@ -1,6 +1,6 @@
 import "server-only"
 import { appendSheetRow, getSheetHeaders, getSheetRows, updateSheetCells } from "@/lib/google/sheets"
-import { deleteDriveFile, uploadPrivateFileToDrive } from "@/lib/google/drive"
+import { deleteDriveFile, getDriveFileSize, uploadPrivateFileToDrive } from "@/lib/google/drive"
 import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { getFederationOptions } from "@/lib/federations/options"
 import { getActivities, getActors } from "@/lib/activites/data"
@@ -22,8 +22,11 @@ async function assertDocumentHeaders() {
 }
 
 export async function getDocuments(options: { fresh?: boolean } = {}) {
+  const rows = await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), bypassCache: options.fresh })
   await assertDocumentHeaders()
-  return (await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), bypassCache: options.fresh })).map(mapDocument).filter((document) => document.id_document)
+  const documents = rows.map(mapDocument).filter((document) => document.id_document)
+  const sizes = await Promise.all(documents.map((document) => document.drive_document_id ? getDriveFileSize(document.drive_document_id).catch(() => "") : Promise.resolve("")))
+  return documents.map((document, index) => ({ ...document, taille: sizes[index] }))
 }
 
 export async function getDocument(id: string) {
@@ -47,14 +50,15 @@ async function getDocumentTypes(): Promise<{ options: DocumentOption[]; availabl
 }
 
 export async function getDocumentReferences(): Promise<DocumentReferences> {
+  const safeReference = async <T,>(request: Promise<T>, fallback: T) => request.catch(() => fallback)
   const [documentTypes, activities, competitions, nationalTeams, officials, federations, entities] = await Promise.all([
     getDocumentTypes(),
-    getActivities(),
-    getCompetitions(),
-    getNationalTeams(),
-    getActors("OFFICIEL"),
-    getFederationOptions(),
-    getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }),
+    safeReference(getActivities(), []),
+    safeReference(getCompetitions(), []),
+    safeReference(getNationalTeams(), []),
+    safeReference(getActors("OFFICIEL"), []),
+    safeReference(getFederationOptions(), []),
+    safeReference(getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }), []),
   ])
   const options: Record<DocumentEntityType, DocumentOption[]> = {
     ACTIVITE: activities.map((item) => ({ id: item.id_activite, label: item.nom_activite })),
