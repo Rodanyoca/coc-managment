@@ -23,7 +23,7 @@ async function createFederationRecord(input: Record<string, unknown>, logo?: Fil
     if (row.id_entite_internationale && !entityIds.has(row.id_entite_internationale)) throw new FederationCreationError("L’entité internationale n’existe pas.", "id_entite_internationale")
     const normalizedName = row.nom_officiel.toLocaleUpperCase("fr"), normalizedAcronym = row.sigle.toLocaleUpperCase("fr")
     if (data.ENTITES.some((item) => item.nom_officiel.trim().toLocaleUpperCase("fr") === normalizedName)) throw new FederationCreationError("Une entité portant ce nom officiel existe déjà.", "nom_officiel")
-    if (data.ENTITES.some((item) => item.sigle.trim().toLocaleUpperCase("fr") === normalizedAcronym)) throw new FederationCreationError("Une entité portant ce sigle existe déjà.", "sigle")
+    if (normalizedAcronym && data.ENTITES.some((item) => item.sigle.trim().toLocaleUpperCase("fr") === normalizedAcronym)) throw new FederationCreationError("Une entité portant ce sigle existe déjà.", "sigle")
     const idEntity = nextSequentialId(data.ENTITES, "id_entite", "RDCENT"), idFederation = nextSequentialId(data.FEDERATIONS, "id_federation", "FED")
     let uploaded: { fileId: string; url: string } | undefined, entityCreated = false
     try {

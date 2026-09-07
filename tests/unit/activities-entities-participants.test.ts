@@ -31,6 +31,8 @@ test("la fiche actualise localement les entités, participants et compteurs", as
   assert.match(detail, /leftOrganizer!==rightOrganizer/)
   assert.match(detail, /sortedParticipants\.map/)
   assert.match(detail, /setDisplayActorNames\(current=>/)
+  assert.match(detail, /<TableHead>Observation<\/TableHead>/)
+  assert.match(detail, /row\.observation\|\|"—"/)
   assert.match(detail, /Ajoutez d’abord une entité à cette activité/)
   assert.doesNotMatch(detail, /overflow-x-auto/)
   assert.doesNotMatch(detail, /Rôle du participant|Statut de participation/)

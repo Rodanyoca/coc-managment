@@ -1,7 +1,7 @@
 import "server-only"
 
 import { deleteDriveFile, uploadFileToDrive } from "@/lib/google/drive"
-import { getSheetHeaders, getSheetRows, updateSheetCells } from "@/lib/google/sheets"
+import { getSheetRows, updateSheetCells } from "@/lib/google/sheets"
 import { getFederationLogosFolderId, getReferentialSpreadsheetId } from "./config"
 import { replaceFederationLogo, type FederationLogoUploadInput } from "./logo"
 
@@ -20,14 +20,13 @@ export async function replaceFederationLogoInGoogle(input: Omit<FederationLogoUp
   const safeFederationId = input.federationId.replace(/[^a-zA-Z0-9_-]/g, "_")
   return replaceFederationLogo({ ...input, folderId, fileName: `LOGO_FEDERATION_${safeFederationId}.${extensionFor(input.mimeType)}` }, {
     find: async (federationId) => {
-      const [headers, rows] = await Promise.all([
-        getSheetHeaders({ sheetName: SHEET, spreadsheetId, bypassCache: true }),
-        getSheetRows({ sheetName: SHEET, spreadsheetId, bypassCache: true }),
-      ])
+      const rows = await getSheetRows({ sheetName: SHEET, spreadsheetId, bypassCache: true })
+      const row = rows.find((candidate) => candidate.id_federation === federationId)
+      if (!row) return undefined
+      const headers = Object.keys(row)
       const missing = REQUIRED_LOGO_COLUMNS.filter((column) => !headers.includes(column))
       if (missing.length) throw new Error(`Colonnes logo manquantes dans FEDERATIONS : ${missing.join(", ")}.`)
-      const row = rows.find((candidate) => candidate.id_federation === federationId)
-      return row ? { logoDriveId: row.logo_drive_id || "" } : undefined
+      return { logoDriveId: row.logo_drive_id || "" }
     },
     upload: uploadFileToDrive,
     update: async (federationId, file) => updateSheetCells({

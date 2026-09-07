@@ -23,7 +23,7 @@ export class FederationCreationError extends Error {
 }
 const date = /^\d{4}-\d{2}-\d{2}$/
 export function validateFederationCreation(row: FederationCreationInput) {
-  for (const [field, label] of [["id_categorie_entite", "La catégorie"], ["nom_officiel", "Le nom officiel"], ["sigle", "Le sigle"], ["id_sport", "Le sport"], ["statut", "Le statut général"], ["statut_reconnaissance_ministere", "La reconnaissance ministérielle"], ["statut_affiliation_coc", "L’affiliation au COC"]] as const) if (!row[field]) throw new FederationCreationError(`${label} est obligatoire.`, field)
+  for (const [field, label] of [["id_categorie_entite", "La catégorie"], ["nom_officiel", "Le nom officiel"], ["id_sport", "Le sport"], ["statut", "Le statut général"], ["statut_reconnaissance_ministere", "La reconnaissance ministérielle"], ["statut_affiliation_coc", "L’affiliation au COC"]] as const) if (!row[field]) throw new FederationCreationError(`${label} est obligatoire.`, field)
   if (row.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(row.email)) throw new FederationCreationError("L’adresse e-mail n’est pas valide.", "email")
   if (row.site_web) { try { new URL(/^https?:\/\//i.test(row.site_web) ? row.site_web : `https://${row.site_web}`) } catch { throw new FederationCreationError("Le site web n’est pas valide.", "site_web") } }
   for (const field of ["date_reconnaissance_nationale", "date_affiliation_coc", "date_affiliation_continentale", "date_affiliation_internationale"] as const) if (row[field] && !date.test(row[field])) throw new FederationCreationError("La date doit respecter le format AAAA-MM-JJ.", field)

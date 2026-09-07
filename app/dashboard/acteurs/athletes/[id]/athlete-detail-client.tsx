@@ -1,13 +1,12 @@
 "use client"
 
-import { FileText, ImageIcon, Mail, MapPin, Medal, Pencil, Phone } from "lucide-react"
+import { FileText, ImageIcon, Mail, MapPin, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
 import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
-import { ActorActivities } from "@/components/dashboard/actor-activities"
-import { ActorNationalTeams } from "@/components/dashboard/actor-national-teams"
+import { AthleteNationalTeams, AthleteSelections, useAthleteSportHistory } from "@/components/dashboard/athlete-sport-history"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -110,6 +109,7 @@ export function AthleteDetailClient({
   const [saving, setSaving] = useState(false)
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
   const [passportFile, setPassportFile] = useState<File | null>(null)
+  const sportHistory = useAthleteSportHistory(athlete.id)
   const [form, setForm] = useState<EditForm>({
     id_national: athlete.idNational,
     id_athlete_federation: athlete.idFederal,
@@ -255,22 +255,11 @@ export function AthleteDetailClient({
         mainInfo={mainInfo}
         contactInfo={contactInfo}
         additionalSections={[
-          { id: "equipes-nationales", label: "Équipes nationales", content: <ActorNationalTeams actorId={athlete.id} /> },
+          { id: "equipes-nationales", label: "Équipes nationales", content: <AthleteNationalTeams state={sportHistory} /> },
           {
             id: "selections",
             label: "Sélections",
-            content: (
-              <div className="flex min-h-64 flex-col items-center justify-center rounded-xl border border-dashed bg-muted/20 px-6 text-center">
-                <Medal className="mb-4 h-10 w-10 text-muted-foreground" />
-                <h3 className="font-semibold">Sélections</h3>
-                <p className="mt-1 text-sm text-muted-foreground">Bientôt disponible</p>
-              </div>
-            ),
-          },
-          {
-            id: "activites",
-            label: "Activités",
-            content: <ActorActivities actorId={athlete.id} />,
+            content: <AthleteSelections state={sportHistory} />,
           },
         ]}
         profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>}
