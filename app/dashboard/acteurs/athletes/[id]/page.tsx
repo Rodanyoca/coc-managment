@@ -46,7 +46,7 @@ export default async function AthleteDetailPage({ params }: { params: Promise<{ 
         ? "actif"
         : undefined,
     avatarUrl: row.avatar_drive_url || null,
-    urlPasseport: row.url_passeport || null,
+    urlPasseport: row.passeport_drive_url || null,
     numeroPasseport: row.numero_passeport || "",
     dateDelivrancePasseport: row.date_de_delivrance_passeport || "",
     dateExpirationPasseport: row["date_expiration passeport"] || "",

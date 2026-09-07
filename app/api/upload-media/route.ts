@@ -14,13 +14,13 @@ type MediaType = "avatar" | "passeport"
 
 const FOLDER_ENV: Record<MediaType, string> = { avatar: "GOOGLE_DRIVE_ACTEURS_AVATARS_FOLDER_ID", passeport: "GOOGLE_DRIVE_ACTEURS_PASSEPORTS_FOLDER_ID" }
 const ACCEPTED_TYPES: Record<MediaType, string[]> = { avatar: IMAGE_TYPES, passeport: ["application/pdf"] }
-const ACTOR_CONFIG: Record<string, { sheetName: string; idColumn: string; fileLabel: string }> = {
-  athletes: { sheetName: ACTOR_SHEETS.ATHLETE, idColumn: "id_athlete_coc", fileLabel: "ATHLETE" },
-  entraineurs: { sheetName: ACTOR_SHEETS.COACH, idColumn: "id_coach_coc", fileLabel: "COACH" },
-  medecins: { sheetName: ACTOR_SHEETS.MEDECIN, idColumn: "id_medecin_coc", fileLabel: "MEDECIN" },
-  officiels: { sheetName: ACTOR_SHEETS.OFFICIEL, idColumn: "id_officiel_coc", fileLabel: "OFFICIEL" },
-  arbitres: { sheetName: ACTOR_SHEETS.ARBITRE, idColumn: "id_arbitre_coc", fileLabel: "ARBITRE" },
-  autres: { sheetName: ACTOR_SHEETS.AUTRE, idColumn: "id_autre_acteur_coc", fileLabel: "AUTRE" },
+const ACTOR_CONFIG: Record<string, { sheetName: string; idColumn: string; fileLabel: string; passportUrlColumn: string }> = {
+  athletes: { sheetName: ACTOR_SHEETS.ATHLETE, idColumn: "id_athlete_coc", fileLabel: "ATHLETE", passportUrlColumn: "passeport_drive_url" },
+  entraineurs: { sheetName: ACTOR_SHEETS.COACH, idColumn: "id_coach_coc", fileLabel: "COACH", passportUrlColumn: "passeport_drive_url" },
+  medecins: { sheetName: ACTOR_SHEETS.MEDECIN, idColumn: "id_medecin_coc", fileLabel: "MEDECIN", passportUrlColumn: "passeport_drive_url" },
+  officiels: { sheetName: ACTOR_SHEETS.OFFICIEL, idColumn: "id_officiel_coc", fileLabel: "OFFICIEL", passportUrlColumn: "passeport_drive_url" },
+  arbitres: { sheetName: ACTOR_SHEETS.ARBITRE, idColumn: "id_arbitre_coc", fileLabel: "ARBITRE", passportUrlColumn: "passeport_drive_url" },
+  autres: { sheetName: ACTOR_SHEETS.AUTRE, idColumn: "id_autre_acteur_coc", fileLabel: "AUTRE", passportUrlColumn: "passeport_drive_url" },
 }
 
 export async function GET() {
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
 
     try {
       await updateSheetCells({ sheetName: actorConfig.sheetName, idColumn: actorConfig.idColumn, idValue: actorId, spreadsheetId, updates: [
-        { column: mediaType === "avatar" ? "avatar_drive_url" : ["entraineurs", "medecins", "arbitres", "autres"].includes(actorType) ? "passeport_drive_url" : "url_passeport", value: uploaded.url },
+        { column: mediaType === "avatar" ? "avatar_drive_url" : actorConfig.passportUrlColumn, value: uploaded.url },
         { column: driveIdColumn, value: uploaded.fileId },
       ] })
     } catch (error) { await deleteDriveFile(uploaded.fileId).catch(() => undefined); throw error }

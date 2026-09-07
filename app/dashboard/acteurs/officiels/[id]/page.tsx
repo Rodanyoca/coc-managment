@@ -55,7 +55,7 @@ export default async function OfficielDetailPage({ params }: { params: Promise<{
     adresse: row.adresse || "",
     statut: row.statut?.toLowerCase() === "inactif" ? "inactif" : "actif",
     avatarUrl: row.avatar_drive_url || null,
-    urlPasseport: row.url_passeport || null,
+    urlPasseport: row.passeport_drive_url || null,
     numeroPasseport: row.numero_passeport || "",
     dateDelivrancePasseport: row.date_de_delivrance_passeport || "",
     dateExpirationPasseport: row["date_expiration passeport"] || "",
