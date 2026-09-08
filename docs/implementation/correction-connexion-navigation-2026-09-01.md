@@ -54,6 +54,12 @@ Statut : corrigé et validé
 - Les comptes inactifs, bloqués, expirés ou sans session valide restent refusés.
 - Le dernier super-administrateur actif reste protégé contre la neutralisation.
 
+## Section Site web
+
+La navigation principale comprend une section repliable « Site web », visible par le super-administrateur et par les comptes disposant de `AUT-COM` en lecture. Son libellé ouvre le sous-menu sans être un lien. Elle regroupe, dans l’ordre : Sliders, Communiqués, Actualités, Galeries, Historique, Gouvernance, Jeux, Athlètes, Entités, Événements et Documents site web. Toutes ces entrées utilisent exclusivement le préfixe `/dashboard/site-web` afin de rester distinctes des écrans administratifs existants.
+
+La page Sliders lit et écrit l’onglet `SLIDERS_SITE` du classeur `10_SITE_WEB_CONTENUS` via `GET/POST /api/site-web/sliders` et `PUT /api/site-web/sliders/[id]`. La matrice applique `AUT-COM` en lecture ou écriture selon la méthode. Les statuts proviennent de `STATUTS_PUBLICATION` dans `00_REFERENTIELS`; les images sont stockées exclusivement dans le dossier Drive `SLIDERS`, configuré par `GOOGLE_DRIVE_SITE_WEB_SLIDERS_FOLDER_ID`.
+
 ## Addendum — accueil, navigation immédiate et fraîcheur des données
 
 Une seconde inspection du parcours authentifié a identifié trois défauts complémentaires :

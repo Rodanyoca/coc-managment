@@ -50,6 +50,8 @@ test("les périmètres officiels utilisent exactement le bon bloc", () => {
     ["/api/competitions/COM-1/resultats", "POST", "AUT-SPT"],
     ["/api/competitions/COM-1/medailles", "DELETE", "AUT-SPT"],
     ["/dashboard/articles", "GET", "AUT-COM"], ["/api/galeries", "POST", "AUT-COM"],
+    ["/dashboard/site-web/sliders", "GET", "AUT-COM"], ["/api/site-web/sliders", "GET", "AUT-COM"],
+    ["/api/site-web/sliders", "POST", "AUT-COM"], ["/api/site-web/sliders/SLD-1", "PUT", "AUT-COM"],
   ] as const
   for (const [path, method, block] of expected) {
     const policy = routePolicy(path, method)
