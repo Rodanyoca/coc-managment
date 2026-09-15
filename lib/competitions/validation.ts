@@ -32,10 +32,9 @@ export function validateProgramInput(input: Record<string, unknown>) {
 }
 
 export function validateEngagementInput(input: Record<string, unknown>) {
-  const row = { id_programme_competition: clean(input.id_programme_competition), id_campagne: clean(input.id_campagne), id_statut_engagement: clean(input.id_statut_engagement).toUpperCase(), date_engagement: clean(input.date_engagement), date_debut: clean(input.date_debut), date_fin: clean(input.date_fin), id_federation_source: clean(input.id_federation_source), date_transmission: clean(input.date_transmission), reference_source: clean(input.reference_source), observation: clean(input.observation) }
-  for (const field of ["id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "id_federation_source", "date_transmission"] as const) if (!row[field]) throw new Error(`${field} est obligatoire.`)
-  for (const field of ["date_engagement", "date_debut", "date_fin", "date_transmission"] as const) if (row[field] && !/^\d{4}-\d{2}-\d{2}$/.test(row[field])) throw new Error(`${field} est invalide.`)
-  if (row.date_fin && (!row.date_debut || row.date_fin < row.date_debut)) throw new Error("La période de l’engagement est invalide.")
+  const row = { id_programme_competition: clean(input.id_programme_competition), id_campagne: clean(input.id_campagne), id_statut_engagement: clean(input.id_statut_engagement).toUpperCase(), date_engagement: clean(input.date_engagement), id_federation_source: clean(input.id_federation_source), reference_source: clean(input.reference_source), observation: clean(input.observation) }
+  for (const field of ["id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "id_federation_source"] as const) if (!row[field]) throw new Error(`${field} est obligatoire.`)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.date_engagement)) throw new Error("date_engagement est invalide.")
   return row
 }
 export function validateAthleteParticipationInput(input: Record<string, unknown>) {

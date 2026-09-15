@@ -9,11 +9,11 @@ test("valide plusieurs campagnes temporelles sans les confondre avec l’équipe
   assert.throws(()=>validateCampaignInput({nom_campagne:"Sans période",id_statut_campagne:"ACTIVE"}),/dates/i)
 })
 
-test("exige programme, campagne, statut, dates et provenance d’un engagement", () => {
+test("exige programme, campagne, statut, date d’engagement et provenance", () => {
   assert.throws(()=>validateEngagementInput({}),/id_programme_competition/)
-  const row=validateEngagementInput({id_programme_competition:"PRG1",id_campagne:"CAM1",id_statut_engagement:"confirme",date_engagement:"2028-07-01",id_federation_source:"FED1",date_transmission:"2028-07-02"})
+  const row=validateEngagementInput({id_programme_competition:"PRG1",id_campagne:"CAM1",id_statut_engagement:"confirme",date_engagement:"2028-07-01",id_federation_source:"FED1"})
   assert.equal(row.id_statut_engagement,"CONFIRME")
-  assert.throws(()=>validateEngagementInput({...row,date_debut:"2028-07-20",date_fin:"2028-07-19"}),/période/i)
+  assert.deepEqual(Object.keys(row),["id_programme_competition","id_campagne","id_statut_engagement","date_engagement","id_federation_source","reference_source","observation"])
 })
 
 test("un programme peut dépasser la période de la compétition tout en gardant une période cohérente",()=>{
@@ -26,6 +26,7 @@ test("un programme peut dépasser la période de la compétition tout en gardant
 test("les vues T06 sont responsives et n’exposent plus l’engagement direct de l’équipe",()=>{
   const engagement=readFileSync("components/dashboard/campaign-engagements.tsx","utf8"),competition=readFileSync("app/dashboard/competitions/[id]/competition-detail-client.tsx","utf8")
   assert.doesNotMatch(engagement,/overflow-x-auto/)
+  assert.doesNotMatch(engagement,/date_transmission|Début opérationnel|Fin opérationnelle/)
   assert.match(competition,/TabsTrigger value="teams"/)
   assert.match(competition,/<CampaignEngagements/)
   assert.doesNotMatch(competition,/\/equipes-nationales.*method:/)

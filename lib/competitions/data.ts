@@ -18,7 +18,7 @@ const COMPETITIONS_SHEET = "COMPETITIONS"
 const TEAMS_SHEET = "ENGAGEMENTS_CAMPAGNES_PROGRAMMES"
 const PROGRAMS_SHEET = "PROGRAMMES_COMPETITION"
 const COMPETITION_SHEET_HEADERS = ["id_competition", "nom_competition", "id_type_competition", "id_niveau_competition", "edition", "est_multisport", "date_debut", "date_fin", "pays", "ville", "lieu", "id_statut_competition", "observation"] as const
-const TEAM_SHEET_HEADERS = ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "date_debut", "date_fin", "id_federation_source", "date_transmission", "reference_source", "observation"] as const
+const TEAM_SHEET_HEADERS = ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "id_federation_source", "reference_source", "observation"] as const
 const PROGRAM_SHEET_HEADERS = ["id_programme_competition", "id_competition", "id_epreuve", "id_categorie_age", "id_sexe", "date_debut", "date_fin", "observation"] as const
 const RESULT_HEADERS = ["id_resultat","id_resultat_logique","numero_version","id_resultat_precedent","est_version_courante","id_engagement_campagne","id_programme_competition","id_unite_participante","date_resultat","phase","type_adversaire","nom_adversaire","pays_adversaire","id_resultat_synthetique","valeur_coc","valeur_adversaire","id_unite_mesure","id_decision_resultat","id_statut_resultat","motif_correction","observation"] as const
 
@@ -227,15 +227,14 @@ async function prepareEngagement(competitionId: string, input: Record<string, un
   if (!references.federations.some((item) => item.id === row.id_federation_source)) throw new Error("Fédération source inconnue.")
   const start = program.date_debut || competition.date_debut, end = program.date_fin || competition.date_fin
   if ((campaign.dateEnd && campaign.dateEnd < start) || (end && campaign.dateStart > end)) throw new Error("La campagne est hors de la période du programme.")
-  if ((row.date_debut && row.date_debut < start) || (row.date_fin && end && row.date_fin > end)) throw new Error("L’engagement est hors de la période du programme.")
+  if (row.date_engagement < start || (end && row.date_engagement > end)) throw new Error("La date d’engagement est hors de la période du programme.")
   if (row.id_federation_source !== team.id_federation && !row.observation) throw new Error("Une fédération source différente doit être justifiée dans l’observation.")
   return row
 }
 
 export async function createCampaignEngagement(competitionId: string, input: Record<string, unknown>) {
   const row = await prepareEngagement(competitionId, input), existing = await getCampaignEngagements()
-  const overlaps = (item: CampaignEngagement) => { const leftStart = item.date_debut || item.date_engagement, rightStart = row.date_debut || row.date_engagement, leftEnd = item.date_fin || "9999-12-31", rightEnd = row.date_fin || "9999-12-31"; return leftStart <= rightEnd && rightStart <= leftEnd }
-  if (row.id_statut_engagement !== "ANNULE" && existing.some((item) => item.id_programme_competition === row.id_programme_competition && item.id_campagne === row.id_campagne && item.id_statut_engagement !== "ANNULE" && overlaps(item))) throw new Error("Cette campagne possède déjà un engagement actif sur cette période.")
+  if (row.id_statut_engagement !== "ANNULE" && existing.some((item) => item.id_programme_competition === row.id_programme_competition && item.id_campagne === row.id_campagne && item.id_statut_engagement !== "ANNULE")) throw new Error("Cette campagne est déjà engagée dans ce programme.")
   const created = { id_engagement_campagne: nextId(existing.map((item) => item.id_engagement_campagne), "ENG"), ...row }
   await appendSheetRow({ sheetName: TEAMS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), row: created })
   return (await getCampaignEngagements({ competitionId })).find((item) => item.id_engagement_campagne === created.id_engagement_campagne) || created
@@ -245,8 +244,7 @@ export async function updateCampaignEngagement(competitionId: string, id: string
   const current = (await getCampaignEngagements({ competitionId })).find((item) => item.id_engagement_campagne === id); if (!current) throw new Error("Engagement introuvable.")
   const row = await prepareEngagement(competitionId, input, { id_programme_competition: current.id_programme_competition, id_campagne: current.id_campagne })
   const siblings = (await getCampaignEngagements()).filter((item) => item.id_engagement_campagne !== id && item.id_programme_competition === current.id_programme_competition && item.id_campagne === current.id_campagne && item.id_statut_engagement !== "ANNULE")
-  const start = row.date_debut || row.date_engagement, end = row.date_fin || "9999-12-31"
-  if (row.id_statut_engagement !== "ANNULE" && siblings.some((item) => (item.date_debut || item.date_engagement) <= end && start <= (item.date_fin || "9999-12-31"))) throw new Error("Cette campagne possède déjà un engagement actif sur cette période.")
+  if (row.id_statut_engagement !== "ANNULE" && siblings.length) throw new Error("Cette campagne est déjà engagée dans ce programme.")
   await updateSheetCells({ sheetName: TEAMS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), idColumn: "id_engagement_campagne", idValue: id, updates: TEAM_SHEET_HEADERS.slice(3).map((column) => ({ column, value: row[column as keyof typeof row] })) })
   return { ...current, ...row }
 }
@@ -264,7 +262,7 @@ async function prepareParticipation(competitionId:string,input:Record<string,unk
   const selection=refs.selections.find((item)=>item.id_selection===row.id_selection);if(!selection||selection.id_campagne!==engagement.id_campagne)throw new Error("La sélection n’appartient pas à la campagne engagée.")
   if(!refs.statuses.some((item)=>item.id===row.id_statut_participation))throw new Error("Statut de participation absent du référentiel.")
   if(row.id_selection_remplacement){const replacement=refs.selections.find((item)=>item.id_selection===row.id_selection_remplacement);if(!replacement||replacement.id_campagne!==selection.id_campagne||replacement.id_statut_selection!=="REMPLACANT")throw new Error("La sélection remplaçante est invalide.")}
-  const start=engagement.date_debut||engagement.date_engagement,end=engagement.date_fin;if(row.date_statut<start||(end&&row.date_statut>end))throw new Error("La date de participation est hors de la période d’engagement.")
+  if(row.date_statut<engagement.date_engagement)throw new Error("La date de participation est antérieure à la date d’engagement.")
   return row
 }
 
@@ -305,7 +303,7 @@ async function prepareResult(competitionId:string,input:Record<string,unknown>,e
  if(row.id_epreuve&&row.id_epreuve!==program.id_epreuve)throw new Error("L’épreuve ne correspond pas au programme sélectionné.")
  if(row.id_discipline&&row.id_discipline!==(event?.disciplineId||""))throw new Error("La discipline ne correspond pas au programme sélectionné.")
  if(!refs.statuses.some((item)=>item.id===row.id_statut_resultat))throw new Error("Statut de résultat absent du référentiel.");if(row.id_resultat_synthetique&&!refs.synthetics.some((item)=>item.id===row.id_resultat_synthetique))throw new Error("Résultat synthétique inconnu.");if((row.valeur_coc||row.valeur_adversaire)&&!row.id_unite_mesure&&event?.resultTypeId!=="TR_RANG")throw new Error("L’unité de mesure est obligatoire pour ce type de valeur.");if(row.id_unite_mesure&&!refs.units.some((item)=>item.id===row.id_unite_mesure))throw new Error("Unité de mesure inconnue.");if(row.id_decision_resultat&&!refs.decisions.some((item)=>item.id===row.id_decision_resultat&&(!item.federationId||item.federationId===engagement.id_federation_responsable)&&(!item.sportId||item.sportId===event?.sportId)&&(!item.disciplineId||item.disciplineId===event?.disciplineId)))throw new Error("Décision incompatible avec le contexte sportif.")
- const resultUnits=await getParticipatingUnits(competitionId);if(!resultUnits.some((unit)=>unit.id_unite_participante===row.id_unite_participante&&unit.id_engagement_campagne===engagement.id_engagement_campagne))throw new Error("L’unité participante n’appartient pas à cet engagement.");const start=engagement.date_debut||engagement.date_engagement,end=engagement.date_fin;if(row.date_resultat<start||(end&&row.date_resultat>end))throw new Error("La date du résultat est hors de la période d’engagement.");return{row,program,engagement}}
+ const resultUnits=await getParticipatingUnits(competitionId);if(!resultUnits.some((unit)=>unit.id_unite_participante===row.id_unite_participante&&unit.id_engagement_campagne===engagement.id_engagement_campagne))throw new Error("L’unité participante n’appartient pas à cet engagement.");if(row.date_resultat<engagement.date_engagement)throw new Error("La date du résultat est antérieure à la date d’engagement.");return{row,program,engagement}}
 
 export async function createCompetitionResult(competitionId:string,input:Record<string,unknown>){const{row,program}=await prepareResult(competitionId,input),existing=await getCompetitionResults();const created={...row,id_resultat:nextId(existing.map((item)=>item.id_resultat),"RES"),id_resultat_logique:nextId(existing.map((item)=>item.id_resultat_logique),"RSL"),numero_version:"1",id_resultat_precedent:"",est_version_courante:"OUI",id_programme_competition:program.id_programme_competition,motif_correction:""};await appendSheetRow({sheetName:"RESULTATS",spreadsheetId:getCompetitionsSpreadsheetId(),row:created});return created}
 

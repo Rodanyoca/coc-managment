@@ -19,7 +19,7 @@ export const TEAM_V1_SHEETS = {
 export const V1_HEADERS = {
   COMPETITIONS: ["id_competition", "nom_competition", "id_type_competition", "id_niveau_competition", "edition", "est_multisport", "date_debut", "date_fin", "pays", "ville", "lieu", "id_statut_competition", "observation"],
   PROGRAMMES_COMPETITION: ["id_programme_competition", "id_competition", "id_epreuve", "id_categorie_age", "id_sexe", "date_debut", "date_fin", "observation"],
-  ENGAGEMENTS_CAMPAGNES_PROGRAMMES: ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "date_debut", "date_fin", "id_federation_source", "date_transmission", "reference_source", "observation"],
+  ENGAGEMENTS_CAMPAGNES_PROGRAMMES: ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "id_federation_source", "reference_source", "observation"],
   PARTICIPATIONS_ACTEURS_COMPETITION: ["id_participation_acteur", "id_engagement_campagne", "id_acteur_coc", "id_type_acteur", "id_selection", "id_affectation_staff", "id_statut_participation", "date_statut", "id_participation_remplacement", "observation"],
   UNITES_PARTICIPANTES: ["id_unite_participante", "id_engagement_campagne", "type_unite", "id_participation_acteur", "nom_unite", "observation"],
   MEMBRES_UNITES_PARTICIPANTES: ["id_membre_unite", "id_unite_participante", "id_participation_acteur", "role_membre", "observation"],
@@ -70,10 +70,9 @@ export function assertOneOf(value: string, values: readonly string[], field: str
   if (!values.includes(value)) throw new Error(`${field} invalide.`)
 }
 export function validateEngagement(row: EngagementV1) {
-  for (const field of ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "id_federation_source", "date_transmission"] as const) if (!row[field]) throw new Error(`${field} est obligatoire.`)
+  for (const field of ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "id_federation_source"] as const) if (!row[field]) throw new Error(`${field} est obligatoire.`)
   assertOneOf(row.id_statut_engagement, ENGAGEMENT_STATUSES, "id_statut_engagement")
-  assertIsoDate(row.date_engagement, "date_engagement", true); assertIsoDate(row.date_transmission, "date_transmission", true)
-  if (row.date_debut || row.date_fin) assertPeriod(row.date_debut || row.date_engagement, row.date_fin, "engagement")
+  assertIsoDate(row.date_engagement, "date_engagement", true)
   return row
 }
 export function validateParticipation(row: AthleteParticipationV1) {

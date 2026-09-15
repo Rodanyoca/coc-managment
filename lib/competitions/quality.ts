@@ -32,8 +32,8 @@ export function competitionQuality(input: { competition: Competition; programs: 
   for (const row of engagements) if (!programIds.has(row.id_programme_competition)) issues.push(issue(`ENGAGEMENT_ORPHAN:${row.id_engagement_campagne}`, "ORPHELIN", "engagements", `L’engagement ${row.id_engagement_campagne} référence un programme inconnu.`, "Rétablir le programme référencé; aucune correction silencieuse n’est appliquée.", true))
   for (const row of participations) if (!engagementIds.has(row.id_engagement_campagne)) issues.push(issue(`PARTICIPATION_ORPHAN:${row.id_participation_athlete}`, "ORPHELIN", "participants", `La participation ${row.id_participation_athlete} référence un engagement inconnu.`, "Rétablir l’engagement ou corriger explicitement la relation.", true))
   for (const row of results) if (!engagementIds.has(row.id_engagement_campagne) || !programIds.has(row.id_programme_competition)) issues.push(issue(`RESULT_ORPHAN:${row.id_resultat}`, "ORPHELIN", "resultats", `Le résultat ${row.id_resultat} possède une relation programme/engagement inconnue.`, "Rétablir les relations avant toute correction du résultat.", true))
-  const sourced = engagements.filter((row) => row.id_federation_source && row.date_transmission).length, sourceTotal = engagements.length
-  if (sourceTotal && sourced < sourceTotal) issues.push(issue("PROVENANCE_INCOMPLETE", "NON_RENSEIGNE", "provenance", "Certaines données transmises n’ont pas une provenance complète.", "Renseigner la fédération source et la date de transmission sur les lignes concernées."))
+  const sourced = engagements.filter((row) => row.id_federation_source).length, sourceTotal = engagements.length
+  if (sourceTotal && sourced < sourceTotal) issues.push(issue("PROVENANCE_INCOMPLETE", "NON_RENSEIGNE", "provenance", "Certaines données transmises n’ont pas une provenance complète.", "Renseigner la fédération source sur les lignes concernées."))
   return { completeness: percent(required.filter(Boolean).length, required.length), provenance: percent(sourced, sourceTotal), issues }
 }
 
@@ -46,6 +46,6 @@ export function nationalTeamQuality(input: { team: NationalTeam; campaigns: Nati
   for (const row of engagements) if (!campaignIds.has(row.id_campagne)) issues.push(issue(`ENGAGEMENT_CAMPAIGN_ORPHAN:${row.id_engagement_campagne}`, "ORPHELIN", "engagements", `L’engagement ${row.id_engagement_campagne} référence une campagne inconnue.`, "Rétablir la campagne avant de modifier l’engagement.", true))
   const datedMembers = members.filter((row) => row.date_debut).length
   if (members.length && datedMembers < members.length) issues.push(issue("STAFF_PERIOD_INCOMPLETE", "NON_RENSEIGNE", "staff", "Certaines affectations du staff n’ont pas de date de début.", "Compléter les périodes des affectations concernées."))
-  const sourced = engagements.filter((row) => row.id_federation_source && row.date_transmission).length
+  const sourced = engagements.filter((row) => row.id_federation_source).length
   return { completeness: percent(required.filter(Boolean).length, required.length), provenance: percent(sourced, engagements.length), issues }
 }

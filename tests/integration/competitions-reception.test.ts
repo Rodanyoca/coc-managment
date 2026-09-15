@@ -10,7 +10,7 @@ const programs = [
   mapV1Row("PROGRAMMES_COMPETITION", { id_programme_competition: "PRG-VOLLEY", id_competition: "COM-JO-2028", id_epreuve: "VOLLEY-SALLE" }),
   mapV1Row("PROGRAMMES_COMPETITION", { id_programme_competition: "PRG-ATH-100M", id_competition: "COM-JO-2028", id_epreuve: "ATH-100M" }),
 ]
-const engagement = (id: string, program: string) => validateEngagement(mapV1Row("ENGAGEMENTS_CAMPAGNES_PROGRAMMES", { id_engagement_campagne: id, id_programme_competition: program, id_campagne: campaign.id_campagne, id_statut_engagement: "CONFIRME", date_engagement: "2028-06-01", id_federation_source: "FED-RDC", date_transmission: "2028-06-02" }))
+const engagement = (id: string, program: string) => validateEngagement(mapV1Row("ENGAGEMENTS_CAMPAGNES_PROGRAMMES", { id_engagement_campagne: id, id_programme_competition: program, id_campagne: campaign.id_campagne, id_statut_engagement: "CONFIRME", date_engagement: "2028-06-01", id_federation_source: "FED-RDC" }))
 const engagements = [engagement("ENG-BASKET", "PRG-BASKET"), engagement("ENG-VOLLEY", "PRG-VOLLEY"), engagement("ENG-ATH", "PRG-ATH-100M")]
 const selected = mapV1Row("SELECTIONS_ATHLETES", { id_selection: "SEL-TIT", id_campagne: campaign.id_campagne, id_athlete: "ATH-1", date_selection: "2028-06-10", id_statut_selection: "SELECTIONNE" })
 const substitute = mapV1Row("SELECTIONS_ATHLETES", { id_selection: "SEL-REM", id_campagne: campaign.id_campagne, id_athlete: "ATH-2", date_selection: "2028-06-10", id_statut_selection: "REMPLACANT" })
