@@ -11,7 +11,7 @@ export interface AuthorizationDecision {
 }
 
 export async function authorizeWithSource(input: {
-  user: User
+  user: Pick<User, "idUser" | "typeUser" | "estSuperAdmin">
   requirement: AuthorizationRequirement
   action: AuthorizationAction
   loadAuthorizations: () => Promise<readonly UserAuthorization[]>

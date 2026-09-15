@@ -4,7 +4,9 @@ import { createHash, randomUUID } from "node:crypto"
 import { NextResponse } from "next/server"
 import { apiErrorPayload } from "@/lib/api/errors"
 import { writeAudit } from "@/lib/audit/logger"
-import { canAccess, getSession } from "@/lib/auth"
+import { getSession } from "@/lib/auth"
+import { authorizeWithSource } from "@/lib/auth/authorization"
+import { getAuthorizationsForUser } from "@/lib/users/data"
 import { createGoogleUsersSheetsAdapter } from "@/lib/users/google-adapter"
 import { UsersRepository } from "@/lib/users/repository"
 
@@ -22,9 +24,17 @@ export async function runSportMutation<T>(
     const failure = apiErrorPayload(new Error("Authentification requise."), randomUUID(), 401)
     return NextResponse.json(failure.payload, { status: 401 })
   }
-  if (!(await canAccess("AUT-SPT", "WRITE"))) {
-    const failure = apiErrorPayload(new Error("Accès refusé."), randomUUID(), 403)
-    return NextResponse.json(failure.payload, { status: 403 })
+  const access = await authorizeWithSource({
+    user: session,
+    requirement: { scope: "BUSINESS", blocks: ["AUT-SPT"] },
+    action: "WRITE",
+    loadAuthorizations: () => getAuthorizationsForUser(session.idUser),
+  })
+  if (!access.allowed) {
+    const sourceUnavailable = access.reason === "SOURCE_UNAVAILABLE"
+    const status = sourceUnavailable ? 503 : 403
+    const failure = apiErrorPayload(new Error(sourceUnavailable ? "Service d’autorisation temporairement indisponible." : "Accès refusé."), randomUUID(), status)
+    return NextResponse.json(failure.payload, { status })
   }
 
   const suppliedRequestId = request.headers.get("x-request-id")?.trim() || ""

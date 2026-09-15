@@ -401,6 +401,28 @@ export async function appendSheetRow(params: {
   clearSheetCache()
 }
 
+export async function appendSheetRows(params: {
+  sheetName: string
+  rows: Record<string, string>[]
+  spreadsheetId: string
+}): Promise<void> {
+  if (!params.rows.length) return
+  const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
+  const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets"])
+  const sheets = google.sheets({ version: "v4", auth })
+  const safeSheetName = params.sheetName.replace(/'/g, "''")
+  const headers = await getSheetHeaders({ sheetName: params.sheetName, spreadsheetId })
+  if (headers.length === 0) throw new Error(`La feuille "${params.sheetName}" ne contient pas d'en-têtes`)
+  await sheets.spreadsheets.values.append({
+    spreadsheetId,
+    range: `'${safeSheetName}'!A:Z`,
+    valueInputOption: "RAW",
+    insertDataOption: "INSERT_ROWS",
+    requestBody: { values: params.rows.map((row) => headers.map((header) => row[header] ?? "")) },
+  })
+  clearSheetCache()
+}
+
 export async function deleteSheetRow(params: {
   sheetName: string
   idColumn: string

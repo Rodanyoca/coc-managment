@@ -27,6 +27,24 @@ test("la route qualifie les pannes temporaires et le client réessaie sans boucl
   assert.match(sheets, /hasCompleteStaleSnapshot/)
 })
 
+test("une saturation de la source des autorisations ne devient pas un refus 403", async () => {
+  const mutation = await readFile(new URL("../../lib/competitions/mutation.ts", import.meta.url), "utf8")
+
+  assert.match(mutation, /authorizeWithSource/)
+  assert.match(mutation, /SOURCE_UNAVAILABLE[\s\S]*503/)
+  assert.doesNotMatch(mutation, /canAccess\("AUT-SPT", "WRITE"\)/)
+})
+
+test("la composition d’une unité est écrite en lot pour éviter le quota Sheets", async () => {
+  const data = await readFile(new URL("../../lib/competitions/data.ts", import.meta.url), "utf8")
+  const start = data.indexOf("export async function createParticipatingUnit")
+  const end = data.indexOf("export async function updateParticipatingUnit", start)
+  const implementation = data.slice(start, end)
+
+  assert.match(implementation, /appendSheetRows/)
+  assert.doesNotMatch(implementation, /for\s*\([^)]*memberIds[^)]*\)[\s\S]*appendSheetRow/)
+})
+
 test("un résultat nouvellement créé affiche son contexte depuis l’engagement déjà chargé", async () => {
   const results = await readFile(new URL("../../components/dashboard/competition-results.tsx", import.meta.url), "utf8")
   assert.match(results, /function getResultContextLabel/)
