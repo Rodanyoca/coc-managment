@@ -26,7 +26,7 @@ export default async function MedecinsPage() {
     organisationId: r.id_entite || r.id_federation || "",
     federation: (() => {
       const entity = entityById.get(r.id_entite || r.id_federation || "")
-      return entity?.nom_officiel || entity?.nom_entite || entity?.sigle || r.nom_entite || r.nom_federation || ""
+      return entity?.sigle || entity?.sigle_entite || r.sigle_entite || r.sigle_federation || entity?.nom_officiel || entity?.nom_entite || r.nom_entite || r.nom_federation || ""
     })(),
     specialite: specialtyById.get(r.id_specialite_sante || r.id_specialite || "")?.nom_specialite_sante || r.nom_specialite || "",
     statut: r.statut || "",
