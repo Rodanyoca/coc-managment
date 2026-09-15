@@ -2,21 +2,23 @@ import { notFound } from "next/navigation"
 import { getActeursSpreadsheetId } from "@/lib/acteurs/config"
 import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { getSheetRows } from "@/lib/google/sheets"
+import { findActorRowById } from "@/lib/acteurs/row-identity"
 import { MedecinDetailClient, type MedecinDetail } from "./medecin-detail-client"
 import type { EntityOption, SpecialtyOption } from "../medecins-client"
 
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
+export const fetchCache = "force-no-store"
 
 export default async function MedecinDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const [rows, entityRows, specialtyRows] = await Promise.all([
-    getSheetRows({ sheetName: "MEDECINS", spreadsheetId: getActeursSpreadsheetId() }),
+    getSheetRows({ sheetName: "MEDECINS", spreadsheetId: getActeursSpreadsheetId(), bypassCache: true }),
     getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true }),
     getSheetRows({ sheetName: "SPECIALITES_MEDECIN", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true }),
   ])
-  const r = rows.find((row) => row.id_medecin_coc === id)
+  const r = findActorRowById(rows, "id_medecin_coc", decodeURIComponent(id))
   if (!r) notFound()
   const linkedEntity = entityRows.find((row) => row.id_entite === (r.id_entite || r.id_federation))
   const linkedSpecialty = specialtyRows.find((row) => row.id_specialite_sante === (r.id_specialite_sante || r.id_specialite))

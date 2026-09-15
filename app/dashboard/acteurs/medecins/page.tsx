@@ -17,7 +17,7 @@ export default async function MedecinsPage() {
   const entityById = new Map(entityRows.map((row) => [row.id_entite, row]))
   const specialtyById = new Map(specialtyRows.map((row) => [row.id_specialite_sante, row]))
   const medecins: MedecinListItem[] = rows.filter((r) => r.id_medecin_coc || r.nom_complet).map((r) => ({
-    id: r.id_medecin_coc,
+    id: r.id_medecin_coc.trim(),
     idNational: r.id_national || "",
     idFederal: r.id_medecin_entite || r.id_medecin_federation || "",
     nomComplet: r.nom_complet || "",
