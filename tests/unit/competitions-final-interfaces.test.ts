@@ -32,7 +32,7 @@ test("les unités sont créables et modifiables, et les erreurs de résultat con
  assert.doesNotMatch(units,/TableHead>Programme</)
  assert.match(participants,/router\.refresh\(\)/)
  assert.match(participants,/<Table>/);assert.match(participants,/<TableHead>Athlète<\/TableHead>/);assert.match(participants,/<TableHead>Campagne<\/TableHead>/);assert.doesNotMatch(participants,/ID acteur|ID engagement|<Card/)
- assert.match(route,/export async function PUT/);assert.match(results,/catch\(error\)\{toast\.error/);assert.doesNotMatch(results,/catch\(error\)[\s\S]*setForm\(empty\)/)
+ assert.match(route,/export async function PUT/);assert.match(results,/catch\s*\(error\)\s*\{\s*toast\.error/);assert.doesNotMatch(results,/catch\s*\(error\)[\s\S]*setForm\(empty\)/)
 })
 
 test("la fiche relit les participations modifiées directement dans le classeur",async()=>{
@@ -57,11 +57,14 @@ test("la fiche compétition ne conserve pas l’ancien résumé des équipes eng
  assert.match(detail,/<ParticipatingUnits/)
 })
 
-test("le tableau des résultats affiche la synthèse référencée",async()=>{
+test("le tableau des résultats affiche la synthèse et la décision référencées",async()=>{
  const results=await source("components/dashboard/competition-results.tsx")
- assert.match(results,/TableHead[^>]*>Synthèse<\/TableHead>/)
- assert.match(results,/label\(references\.synthetics,row\.id_resultat_synthetique\)/)
- assert.match(results,/colSpan=\{7\}/)
+ assert.match(results,/<TableHead>Synthèse<\/TableHead>/)
+ assert.doesNotMatch(results,/<TableHead>Statut<\/TableHead>|references\.statuses|id_statut_resultat/)
+ assert.match(results,/formatResultSummary/)
+ assert.match(results,/label\(references\.synthetics, row\.id_resultat_synthetique/)
+ assert.match(results,/references\.decisions\.find/)
+ assert.match(results,/colSpan=\{6\}/)
 })
 
 test("les unités participantes partagent une seule lecture client",async()=>{
@@ -90,6 +93,6 @@ test("la couche Sheets mutualise les lectures simultanées après un redémarrag
 
 test("le formulaire de résultat affiche la fédération dans la liste des engagements",async()=>{
  const results=await source("components/dashboard/competition-results.tsx")
- assert.match(results,/getFederationLabel\(x\)/)
- assert.doesNotMatch(results,/x\.nom_campagne\|\|x\.id_campagne\} · \$\{x\.id_programme_competition/)
+ assert.match(results,/references\.federations\?\.find/)
+ assert.doesNotMatch(results,/id_programme_competition\}\s*·/)
 })
