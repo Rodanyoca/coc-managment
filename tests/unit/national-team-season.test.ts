@@ -17,3 +17,16 @@ test("une campagne conserve ses dates dans les bornes de la saison de son équip
  const source=await readFile(new URL("../../lib/equipes-nationales/data.ts",import.meta.url),"utf8")
  assert.match(source,/assertCampaignPeriodWithinTeam/);assert.match(source,/campagne commence avant la saison/);assert.match(source,/campagne se termine après la saison/)
 })
+
+test("la vue globale relit les équipes et les classe par saison puis par nom",async()=>{
+ const [page,client]=await Promise.all([
+  readFile(new URL("../../app/dashboard/equipes-nationales/page.tsx",import.meta.url),"utf8"),
+  readFile(new URL("../../app/dashboard/equipes-nationales/teams-client.tsx",import.meta.url),"utf8"),
+ ])
+ assert.match(page,/getNationalTeams\(\{\s*fresh:\s*true\s*\}\)/)
+ assert.match(client,/team\.id_saison/)
+ assert.match(client,/saison[^\n]*===\s*"toutes"/)
+ assert.match(client,/b\.saison_(?:debut|label)[\s\S]{0,240}?nom_equipe_nationale\.localeCompare/)
+ assert.match(client,/<TableHead>Saison<\/TableHead>/)
+ assert.doesNotMatch(client,/<TableHead>Catégorie \/ sexe<\/TableHead>/)
+})

@@ -127,9 +127,9 @@ export async function getNationalTeamMembers(teamId?: string, actorId?: string, 
   return [...athletes,...staff].filter((member) => member.id_equipe_nationale && (!teamId || member.id_equipe_nationale === teamId) && (!actorId || member.id_acteur_coc === actorId) && (!actorType || member.id_type_acteur === actorType))
 }
 
-export async function getNationalTeamReferences(): Promise<NationalTeamReferences> {
+export async function getNationalTeamReferences(options: { fresh?: boolean } = {}): Promise<NationalTeamReferences> {
   const spreadsheetId = getReferentialSpreadsheetId()
-  const [federations, refs] = await Promise.all([getFederationOptions(), getSheetsRows({ sheetNames: ["SPORTS", "DISCIPLINES", "EPREUVES", "CATEGORIES_AGE", "SEXES","SAISONS"], spreadsheetId })])
+  const [federations, refs] = await Promise.all([getFederationOptions({ fresh: options.fresh }), getSheetsRows({ sheetNames: ["SPORTS", "DISCIPLINES", "EPREUVES", "CATEGORIES_AGE", "SEXES","SAISONS"], spreadsheetId, bypassCache: options.fresh })])
   let roles: { id: string; label: string }[] = NATIONAL_TEAM_ROLES.map((id) => ({ id, label: ({ ATHLETE: "Athlète", COACH_PRINCIPAL: "Coach principal", ASSISTANT_COACH: "Assistant coach", MEDECIN: "Médecin", PREPARATEUR: "Préparateur", SPARRING_PARTNER: "Sparring-partner", OFFICIEL: "Officiel", AUTRE: "Autre" } as Record<string, string>)[id] }))
   let rolesReferentialAvailable = false
   try { const found = (await getSheetRows({ sheetName: "ROLES_STAFF_EQUIPE_NATIONALE", spreadsheetId })).filter((row) => row.id_role_staff).map((row) => ({ id: row.id_role_staff, label: row.nom_role_staff || row.id_role_staff, parentId: row.id_type_acteur })); if (found.length) { roles = found; rolesReferentialAvailable = true } } catch {}
