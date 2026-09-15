@@ -223,10 +223,11 @@ export async function getSheetsRows(params: {
   sheetNames: string[]
   spreadsheetId: string
   cacheTtlMs?: number
+  bypassCache?: boolean
 }): Promise<Record<string, Record<string, string>[]>> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const cachedResult: Record<string, Record<string, string>[]> = {}
-  const allCached = params.sheetNames.every((sheetName) => {
+  const allCached = !params.bypassCache && params.sheetNames.every((sheetName) => {
     const rows = getCached(`${spreadsheetId}:'${sheetName.replace(/'/g, "''")}'!A:Z`, params.cacheTtlMs)
     if (rows) cachedResult[sheetName] = rows
     return Boolean(rows)
@@ -253,9 +254,9 @@ export async function getSheetsRows(params: {
   params.sheetNames.forEach((sheetName, index) => {
     const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
     result[sheetName] = valuesToRecords(values)
-    setCache(`${spreadsheetId}:${ranges[index]}`, result[sheetName])
+    if (!params.bypassCache) setCache(`${spreadsheetId}:${ranges[index]}`, result[sheetName])
     const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
-    headerCache.set(`${spreadsheetId}:'${sheetName.replace(/'/g, "''")}'!1:1`, { data: headers, ts: Date.now() })
+    if (!params.bypassCache) headerCache.set(`${spreadsheetId}:'${sheetName.replace(/'/g, "''")}'!1:1`, { data: headers, ts: Date.now() })
   })
   return result
 }

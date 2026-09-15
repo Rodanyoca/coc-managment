@@ -27,6 +27,7 @@ export default async function OfficielDetailPage({ params }: { params: Promise<{
     getSheetRows({
       sheetName: "ENTITES",
       spreadsheetId: getReferentialSpreadsheetId(),
+      bypassCache: true,
     }),
     getSheetRows({
       sheetName: "FONCTIONS_OFFICIEL",

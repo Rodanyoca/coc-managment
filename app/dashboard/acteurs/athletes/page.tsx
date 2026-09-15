@@ -16,7 +16,7 @@ export default async function AthletesPage() {
       spreadsheetId: getActeursSpreadsheetId(),
       bypassCache: true,
     }),
-    getFederationOptions(),
+    getFederationOptions({ fresh: true }),
   ])
   const federationById = new Map(federationRows.map((item) => [item.id, item.sigle || item.nom || item.id]))
 

@@ -55,8 +55,9 @@ export async function getCompetitions(options?: { bypassCache?: boolean }) {
   })).map(mapCompetition).filter((row) => row.id_competition)
 }
 
-export async function getCompetition(id: string) {
-  return (await getCompetitions()).find((row) => row.id_competition === clean(id))
+export async function getCompetition(id: string, options: { bypassCache?: boolean } = {}) {
+  const normalizedId = clean(id).toLocaleUpperCase("fr")
+  return (await getCompetitions(options)).find((row) => row.id_competition.toLocaleUpperCase("fr") === normalizedId)
 }
 
 export async function getTeamParticipations(competitionId?: string) {

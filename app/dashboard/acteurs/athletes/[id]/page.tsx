@@ -19,7 +19,7 @@ export default async function AthleteDetailPage({ params }: { params: Promise<{ 
       sheetName: ACTOR_SHEETS.ATHLETE,
       spreadsheetId: getActeursSpreadsheetId(),
     }),
-    getFederationOptions(),
+    getFederationOptions({ fresh: true }),
   ])
   const federationById = new Map(federationRows.map((item) => [item.id, item.sigle || item.nom || item.id]))
   const row = rows.find((item) => item.id_athlete_coc === id)

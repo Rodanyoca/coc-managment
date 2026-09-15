@@ -20,6 +20,7 @@ export default async function OfficielsPage() {
     getSheetRows({
       sheetName: "ENTITES",
       spreadsheetId: getReferentialSpreadsheetId(),
+      bypassCache: true,
     }),
     getAllOfficialAffiliations(),
   ])

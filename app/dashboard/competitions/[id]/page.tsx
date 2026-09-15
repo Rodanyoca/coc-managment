@@ -8,12 +8,13 @@ import { classifyDataError, competitionQuality } from "@/lib/competitions/qualit
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
+export const fetchCache = "force-no-store"
 
 export default async function CompetitionDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   let competition
   try {
-    competition = await getCompetition(id)
+    competition = await getCompetition(id, { bypassCache: true })
   } catch (error) {
     console.error("Chargement compétition", error)
     return <p className="p-6 text-destructive">Impossible de charger la compétition.</p>

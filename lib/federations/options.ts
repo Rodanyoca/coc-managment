@@ -11,11 +11,12 @@ export type FederationOption = {
   idSport: string
 }
 
-export async function getFederationOptions(): Promise<FederationOption[]> {
+export async function getFederationOptions(options: { fresh?: boolean } = {}): Promise<FederationOption[]> {
   const rows = await getSheetsRows({
     sheetNames: ["FEDERATIONS", "ENTITES"],
     spreadsheetId: getReferentialSpreadsheetId(),
     cacheTtlMs: 5000,
+    bypassCache: options.fresh,
   })
   const entities = new Map(rows.ENTITES.map((row) => [row.id_entite, row]))
   return rows.FEDERATIONS

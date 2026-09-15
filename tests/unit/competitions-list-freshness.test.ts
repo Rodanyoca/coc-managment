@@ -23,6 +23,16 @@ test("la fiche compétition relit les programmes après une modification directe
   assert.match(page, /getCompetitionPrograms\(id,\s*\{\s*bypassCache:\s*true\s*\}\)/)
 })
 
+test("la fiche compétition relit la compétition après une création", async () => {
+  const [page, data] = await Promise.all([
+    readFile("app/dashboard/competitions/[id]/page.tsx", "utf8"),
+    readFile("lib/competitions/data.ts", "utf8"),
+  ])
+
+  assert.match(data, /getCompetition\(id:\s*string,\s*options:\s*\{\s*bypassCache\?:\s*boolean\s*\}/)
+  assert.match(page, /getCompetition\(id,\s*\{\s*bypassCache:\s*true\s*\}\)/)
+})
+
 test("la fiche relit les résultats et affiche leur programme physique après une modification directe", async () => {
   const [page, data, results] = await Promise.all([
     readFile("app/dashboard/competitions/[id]/page.tsx", "utf8"),
