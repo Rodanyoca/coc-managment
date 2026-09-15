@@ -5,23 +5,23 @@
 
 :root {
   /* COC Theme - Light Mode */
-  --background: oklch(0.98 0.005 240);
-  --foreground: oklch(0.15 0.02 250);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0.02 250);
+  --background: oklch(0.975 0.012 88);
+  --foreground: oklch(0.22 0.055 255);
+  --card: oklch(0.995 0.006 88);
+  --card-foreground: oklch(0.22 0.055 255);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.15 0.02 250);
   
   /* Primary - Blue (COC Flag) */
-  --primary: oklch(0.55 0.2 250);
+  --primary: oklch(0.47 0.16 252);
   --primary-foreground: oklch(1 0 0);
   
   /* Secondary - Gold/Yellow (COC Flag) */
-  --secondary: oklch(0.85 0.16 85);
+  --secondary: oklch(0.86 0.16 91);
   --secondary-foreground: oklch(0.2 0.02 85);
   
-  --muted: oklch(0.96 0.005 240);
-  --muted-foreground: oklch(0.45 0.02 250);
+  --muted: oklch(0.955 0.014 88);
+  --muted-foreground: oklch(0.48 0.035 255);
   
   /* Accent - Gold */
   --accent: oklch(0.85 0.16 85);
@@ -31,9 +31,9 @@
   --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(1 0 0);
   
-  --border: oklch(0.9 0.01 240);
-  --input: oklch(0.9 0.01 240);
-  --ring: oklch(0.55 0.2 250);
+  --border: oklch(0.885 0.022 252);
+  --input: oklch(0.86 0.025 252);
+  --ring: oklch(0.47 0.16 252);
   
   /* Charts - Olympic Colors */
   --chart-1: oklch(0.55 0.2 250);
@@ -42,16 +42,16 @@
   --chart-4: oklch(0.55 0.2 145);
   --chart-5: oklch(0.3 0 0);
   
-  --radius: 0.5rem;
+  --radius: 0.625rem;
   
   /* Sidebar */
-  --sidebar: oklch(0.2 0.04 250);
+  --sidebar: oklch(0.205 0.065 255);
   --sidebar-foreground: oklch(0.95 0 0);
   --sidebar-primary: oklch(0.85 0.16 85);
   --sidebar-primary-foreground: oklch(0.15 0 0);
-  --sidebar-accent: oklch(0.3 0.04 250);
+  --sidebar-accent: oklch(0.29 0.075 253);
   --sidebar-accent-foreground: oklch(0.95 0 0);
-  --sidebar-border: oklch(0.3 0.04 250);
+  --sidebar-border: oklch(0.34 0.06 253);
   --sidebar-ring: oklch(0.85 0.16 85);
   
   /* Custom COC colors */
@@ -149,7 +149,20 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at 92% 0%, color-mix(in oklch, var(--secondary) 13%, transparent), transparent 26rem),
+      linear-gradient(180deg, color-mix(in oklch, var(--background) 96%, white) 0%, var(--background) 100%);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
+  ::selection { background: color-mix(in oklch, var(--secondary) 65%, white); color: var(--foreground); }
+}
+
+@layer components {
+  [data-slot="card"] { box-shadow: 0 1px 2px rgba(7, 25, 54, .04), 0 12px 32px rgba(7, 25, 54, .045); }
+  [data-slot="table-container"] { border-radius: var(--radius); }
+  [data-slot="table-header"] { background: color-mix(in oklch, var(--muted) 78%, white); }
+  [data-slot="table-head"] { color: var(--muted-foreground); font-size: .72rem; font-weight: 700; letter-spacing: .055em; text-transform: uppercase; }
+  [data-slot="table-cell"] { height: 3.25rem; }
 }
 
 /* Hide scrollbar but keep scroll */

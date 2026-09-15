@@ -15,13 +15,13 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
   const router = useRouter()
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-background px-6">
+    <header className="sticky top-0 z-30 flex min-h-20 items-center justify-between border-b border-border/70 bg-card/80 px-4 shadow-[0_1px_18px_rgba(7,25,54,.04)] backdrop-blur-xl sm:px-6">
       <div className="flex items-center gap-4">
         <Button variant="ghost" size="icon" className="lg:hidden">
           <Menu className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="text-lg font-semibold text-foreground">{title}</h1>
+          <h1 className="font-serif text-xl font-semibold tracking-[-0.02em] text-foreground sm:text-2xl">{title}</h1>
           {subtitle && (
             <p className="text-sm text-muted-foreground">{subtitle}</p>
           )}
