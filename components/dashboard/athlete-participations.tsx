@@ -76,9 +76,15 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
       })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error)
+      const selectedAthlete = references.selections.find((item) => item.id_selection === form.id_selection)
+      const displayedRow: AthleteParticipation = {
+        ...result.row,
+        athlete_id: selectedAthlete?.id_athlete || result.row.id_acteur_coc,
+        athlete_label: selectedAthlete?.athlete_label || selectedAthlete?.id_athlete || result.row.id_acteur_coc,
+      }
       setRows((current) => editing
-        ? current.map((item) => item.id_participation_athlete === editing ? { ...item, ...result.row } : item)
-        : [...current, result.row])
+        ? current.map((item) => item.id_participation_athlete === editing ? { ...item, ...displayedRow } : item)
+        : [...current, displayedRow])
       setOpen(false)
       toast.success(editing ? "Participation modifiée." : "Participation enregistrée.")
       router.refresh()
