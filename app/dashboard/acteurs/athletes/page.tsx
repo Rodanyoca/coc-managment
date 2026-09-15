@@ -14,6 +14,7 @@ export default async function AthletesPage() {
     getSheetRows({
       sheetName: ACTOR_SHEETS.ATHLETE,
       spreadsheetId: getActeursSpreadsheetId(),
+      bypassCache: true,
     }),
     getFederationOptions(),
   ])

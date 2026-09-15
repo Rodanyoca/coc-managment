@@ -10,7 +10,7 @@ export const fetchCache = "force-no-store"
 
 export default async function MedecinsPage() {
   const [rows, entityRows, specialtyRows] = await Promise.all([
-    getSheetRows({ sheetName: "MEDECINS", spreadsheetId: getActeursSpreadsheetId() }),
+    getSheetRows({ sheetName: "MEDECINS", spreadsheetId: getActeursSpreadsheetId(), bypassCache: true }),
     getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true }),
     getSheetRows({ sheetName: "SPECIALITES_MEDECIN", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true }),
   ])

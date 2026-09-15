@@ -15,6 +15,7 @@ export default async function OfficielsPage() {
     getSheetRows({
       sheetName: "OFFICIELS",
       spreadsheetId: getActeursSpreadsheetId(),
+      bypassCache: true,
     }),
     getSheetRows({
       sheetName: "ENTITES",

@@ -7,10 +7,11 @@ import ArbitresClient, { type ArbitreListItem, type GradeOption } from "./arbitr
 export const runtime = "nodejs"
 export const dynamic = "force-dynamic"
 export const revalidate = 0
+export const fetchCache = "force-no-store"
 
 export default async function ArbitresPage() {
   const [rows, federations, gradeRows] = await Promise.all([
-    getSheetRows({ sheetName: "ARBITRES", spreadsheetId: getActeursSpreadsheetId() }),
+    getSheetRows({ sheetName: "ARBITRES", spreadsheetId: getActeursSpreadsheetId(), bypassCache: true }),
     getFederationOptions(),
     getSheetRows({ sheetName: "GRADES_ARBITRE", spreadsheetId: getReferentialSpreadsheetId(), bypassCache: true }),
   ])

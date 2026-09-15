@@ -10,7 +10,7 @@ export const fetchCache = "force-no-store"
 
 export default async function EntraineursPage() {
   const [rows, federationRows] = await Promise.all([
-    getSheetRows({ sheetName: "COACHS", spreadsheetId: getActeursSpreadsheetId() }),
+    getSheetRows({ sheetName: "COACHS", spreadsheetId: getActeursSpreadsheetId(), bypassCache: true }),
     getFederationOptions(),
   ])
   const federationById = new Map(federationRows.map((federation) => [federation.id, federation]))
