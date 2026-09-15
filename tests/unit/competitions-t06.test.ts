@@ -16,7 +16,7 @@ test("exige programme, campagne, statut, date d’engagement et provenance", () 
   assert.deepEqual(Object.keys(row),["id_programme_competition","id_campagne","id_statut_engagement","date_engagement","id_federation_source","reference_source","observation"])
 })
 
-test("un programme peut dépasser la période de la compétition tout en gardant une période cohérente",()=>{
+test("un programme conserve une période interne cohérente",()=>{
   const data=readFileSync("lib/competitions/data.ts","utf8")
   assert.doesNotMatch(data,/assertProgramPeriod|commence avant la compétition|se termine après la compétition/)
   assert.deepEqual(validateProgramInput({id_epreuve:"EPR1",date_debut:"2028-07-01",date_fin:"2028-08-15"}),{id_epreuve:"EPR1",id_categorie_age:"",id_sexe:"",date_debut:"2028-07-01",date_fin:"2028-08-15",observations:""})

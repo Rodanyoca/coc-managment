@@ -5,7 +5,7 @@ import { classifyDataError, competitionQuality, nationalTeamQuality, qualifiedVa
 import type { Competition } from "../../lib/competitions/types.ts"
 
 const source = (path: string) => readFile(new URL(`../../${path}`, import.meta.url), "utf8")
-const competition: Competition = { id_competition: "COM-1", nom_competition: "Jeux", id_type_competition: "TYPE", niveau_competition: "INT", edition: "2026", est_multisport: "OUI", date_debut: "2026-09-01", date_fin: "", pays: "", ville: "", lieu: "", statut: "PLANIFIEE", statut_normalise: "PLANIFIEE", observations: "" }
+const competition: Competition = { id_competition: "COM-1", nom_competition: "Jeux", id_type_competition: "TYPE", niveau_competition: "INT", edition: "2026", est_multisport: "OUI", date_debut: "2026-09-01", date_fin: "2026-09-15", pays: "", ville: "", lieu: "", statut: "PLANIFIEE", statut_normalise: "PLANIFIEE", observations: "" }
 const team = { id_equipe_nationale: "EQ-1", id_federation: "FED-1", id_sport: "SP-1", id_discipline: "", nom_equipe_nationale: "RDC", id_categorie_age: "", id_sexe: "", date_debut: "2026-01-01", date_fin: "", statut: "ACTIF", observations: "" }
 
 test("T13: qualifie distinctement non renseigné, inconnu et non applicable", () => {

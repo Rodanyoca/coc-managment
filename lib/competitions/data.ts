@@ -9,7 +9,7 @@ import { getNationalTeamsSpreadsheetId } from "@/lib/equipes-nationales/config"
 import { getCompetitionsSpreadsheetId } from "./config"
 import { normalizeCompetitionStatus } from "./format"
 import { COMPETITION_HEADERS, PROGRAM_HEADERS, type AthleteParticipation, type CampaignEngagement, type Competition, type CompetitionMedal, type CompetitionProgram, type CompetitionReferences, type CompetitionResult, type NationalTeamOption, type ParticipatingUnit, type TeamParticipation } from "./types"
-import { MEDAL_DISTINCTIONS, validateAthleteParticipationInput, validateCompetitionInput, validateCompetitionMedalInput, validateCompetitionResultInput, validateEngagementInput, validateProgramInput } from "./validation"
+import { MEDAL_DISTINCTIONS, validateAthleteParticipationInput, validateCompetitionInput, validateCompetitionMedalInput, validateCompetitionResultInput, validateEngagementInput, validateProgramInput, validateProgramSchedule } from "./validation"
 import { ENGAGEMENT_STATUSES } from "./v1-model"
 import { participatingUnitMedalLabel } from "./medals"
 
@@ -169,6 +169,7 @@ export async function createCompetitionProgram(competitionId: string, input: Rec
   const competition = await getCompetition(competitionId)
   if (!competition) throw new Error("Compétition introuvable.")
   const row = validateProgramInput(input)
+  validateProgramSchedule(row, competition)
   const references = await getCompetitionReferences()
   const event = assertProgramReferences(row, references)
   const existing = await getCompetitionPrograms()
@@ -190,6 +191,7 @@ export async function updateCompetitionProgram(competitionId: string, id: string
   const current = (await getCompetitionPrograms(competitionId)).find((item) => item.id_programme_competition === id)
   if (!competition || !current) throw new Error("Programme introuvable.")
   const row = validateProgramInput({ ...input, id_epreuve: current.id_epreuve })
+  validateProgramSchedule(row, competition)
   const references = await getCompetitionReferences(); assertProgramReferences(row, references)
   const existing = await getCompetitionPrograms()
   if (existing.some((item) => item.id_programme_competition !== id && item.id_competition === competitionId && item.id_epreuve === row.id_epreuve && item.id_categorie_age === row.id_categorie_age && item.id_sexe === row.id_sexe)) throw new Error("Ce programme existe déjà.")

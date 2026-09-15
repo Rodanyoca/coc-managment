@@ -11,7 +11,7 @@ const valid = { nom_competition: "Jeux 2028", id_type_competition: "JEUX", est_m
 test("le volet de création bloque les données obligatoires avant l'appel API", () => {
   assert.equal(competitionFormError({ ...valid, nom_competition: "" }, types, levels, statuses), "Le nom de la compétition est obligatoire.")
   assert.equal(competitionFormError({ ...valid, niveau_competition: "" }, types, levels, statuses), "Sélectionnez un niveau de compétition.")
-  assert.equal(competitionFormError({ ...valid, date_debut: "" }, types, levels, statuses), "La date de début est obligatoire.")
+  assert.equal(competitionFormError({ ...valid, date_debut: "" }, types, levels, statuses), "La date de la cérémonie d’ouverture est obligatoire.")
   assert.equal(competitionFormError(valid, types, levels, statuses), null)
 })
 

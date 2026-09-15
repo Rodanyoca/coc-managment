@@ -1,4 +1,5 @@
-import type { CompetitionStatus } from "./types"
+import { programScheduleError } from "./program-calendar.ts"
+import type { Competition, CompetitionProgram, CompetitionStatus } from "./types"
 
 const allowedStatuses: CompetitionStatus[] = ["PLANIFIEE", "EN_COURS", "TERMINEE", "REPORTEE", "ANNULEE"]
 const clean = (value: unknown) => String(value ?? "").trim()
@@ -9,8 +10,9 @@ export function validateCompetitionInput(input: Record<string, unknown>) {
     niveau_competition: clean(input.niveau_competition), date_debut: clean(input.date_debut), date_fin: clean(input.date_fin),
     pays: clean(input.pays), ville: clean(input.ville), lieu: clean(input.lieu), statut: clean(input.statut).toUpperCase(), observations: clean(input.observations),
   }
-  if (!row.nom_competition || !row.id_type_competition || !row.date_debut || !row.statut) throw new Error("Le nom, le type, la date de début et le statut sont obligatoires.")
-  if (row.date_fin && row.date_fin < row.date_debut) throw new Error("La date de fin doit être postérieure ou égale à la date de début.")
+  if (!row.nom_competition || !row.id_type_competition || !row.date_debut || !row.statut) throw new Error("Le nom, le type, la date de la cérémonie d’ouverture et le statut sont obligatoires.")
+  if (!row.date_fin) throw new Error("La date de la cérémonie de clôture est obligatoire.")
+  if (row.date_fin < row.date_debut) throw new Error("La cérémonie de clôture doit avoir lieu après ou le même jour que la cérémonie d’ouverture.")
   if (!allowedStatuses.includes(row.statut as CompetitionStatus)) throw new Error("Statut de compétition invalide.")
   if (!["OUI", "NON"].includes(row.est_multisport)) throw new Error("Le caractère multisport doit valoir OUI ou NON.")
   return row
@@ -29,6 +31,11 @@ export function validateProgramInput(input: Record<string, unknown>) {
   if (row.date_fin && !/^\d{4}-\d{2}-\d{2}$/.test(row.date_fin)) throw new Error("Date de fin du programme invalide.")
   if (row.date_fin && (!row.date_debut || row.date_fin < row.date_debut)) throw new Error("La période du programme est invalide.")
   return row
+}
+
+export function validateProgramSchedule(program: Pick<CompetitionProgram, "date_debut" | "date_fin">, competition: Pick<Competition, "date_debut" | "date_fin">) {
+  const error = programScheduleError(program, competition)
+  if (error) throw new Error(error)
 }
 
 export function validateEngagementInput(input: Record<string, unknown>) {

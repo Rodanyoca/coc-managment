@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs"
 import { validateCompetitionInput, validateProgramInput } from "../../lib/competitions/validation.ts"
 
 test("conserve explicitement la portée mono ou multisport", () => {
-  const base = { nom_competition: "Jeux", id_type_competition: "TYPE_JO", date_debut: "2028-07-14", statut: "PLANIFIEE" }
+  const base = { nom_competition: "Jeux", id_type_competition: "TYPE_JO", date_debut: "2028-07-14", date_fin: "2028-07-30", statut: "PLANIFIEE" }
   assert.equal(validateCompetitionInput({ ...base, est_multisport: "OUI" }).est_multisport, "OUI")
   assert.equal(validateCompetitionInput({ ...base, est_multisport: "NON" }).est_multisport, "NON")
   assert.throws(() => validateCompetitionInput({ ...base, est_multisport: "INCONNU" }), /multisport/)

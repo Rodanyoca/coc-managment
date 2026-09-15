@@ -3,11 +3,11 @@ import {readFile} from "node:fs/promises"
 import test from "node:test"
 const source=(path:string)=>readFile(new URL(`../../${path}`,import.meta.url),"utf8")
 
-test("la liste finale expose les champs, la période et une action accessible",async()=>{
+test("la liste finale expose les champs, les cérémonies et une action accessible",async()=>{
  const code=await source("app/dashboard/competitions/competitions-client.tsx")
- for(const value of ["Nom de la compétition","Édition","Période","Statut"])assert.match(code,new RegExp(value))
+ for(const value of ["Nom de la compétition","Édition","Cérémonies","Statut"])assert.match(code,new RegExp(value))
  assert.doesNotMatch(code,/<TableHead>Identifiant<\/TableHead>/)
- assert.match(code,/Période à partir du/);assert.match(code,/Période jusqu’au/);assert.match(code,/Voir les détails de/);assert.match(code,/TooltipContent>Voir les détails/);assert.doesNotMatch(code,/overflow-x-auto/)
+ assert.match(code,/Ouverture à partir du/);assert.match(code,/Clôture jusqu’au/);assert.match(code,/Voir les détails de/);assert.match(code,/TooltipContent>Voir les détails/);assert.doesNotMatch(code,/overflow-x-auto/)
 })
 
 test("la fiche finale possède cinq onglets et conserve le modèle campagne-programme-unité",async()=>{

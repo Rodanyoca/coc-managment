@@ -16,10 +16,24 @@ import type { CampaignEngagement, CompetitionProgram, CompetitionReferences } fr
 
 type Refs = { campaigns: { id: string; label: string; teamId: string; teamName: string; federationId: string; dateStart: string; dateEnd: string; status: string }[]; statuses: { id: string; label: string }[]; federations: { id: string; label: string }[] }
 const empty = { id_programme_competition: "", id_campagne: "", id_statut_engagement: "", date_engagement: "", id_federation_source: "", reference_source: "", observation: "" }
+type CampaignEngagementForm = typeof empty
+
+function campaignEngagementToForm(row?: Partial<CampaignEngagement>): CampaignEngagementForm {
+  if (!row) return { ...empty }
+  return {
+    id_programme_competition: row.id_programme_competition ?? "",
+    id_campagne: row.id_campagne ?? "",
+    id_statut_engagement: row.id_statut_engagement ?? "",
+    date_engagement: row.date_engagement ?? "",
+    id_federation_source: row.id_federation_source ?? "",
+    reference_source: row.reference_source ?? "",
+    observation: row.observation ?? "",
+  }
+}
 
 export function CampaignEngagements({ competitionId, programs, initialRows, references, competitionReferences, canEdit }: { competitionId: string; programs: CompetitionProgram[]; initialRows: CampaignEngagement[]; references: Refs; competitionReferences: CompetitionReferences; canEdit: boolean }) {
   const [rows, setRows] = useState(initialRows), [open, setOpen] = useState(false), [editing, setEditing] = useState(""), [form, setForm] = useState(empty), [saving, setSaving] = useState(false)
-  const show = (row?: CampaignEngagement) => { setEditing(row?.id_engagement_campagne || ""); setForm(row ? { ...empty, ...row } : empty); setOpen(true) }
+  const show = (row?: CampaignEngagement) => { setEditing(row?.id_engagement_campagne || ""); setForm(campaignEngagementToForm(row)); setOpen(true) }
   const campaign = references.campaigns.find(item => item.id === form.id_campagne), responsible = campaign?.federationId
   const campaignOptions = references.campaigns.map(item => {
     const federation = references.federations.find(row => row.id === item.federationId)?.label || item.federationId || "Fédération non renseignée"

@@ -29,3 +29,7 @@ export function formatCompetitionPeriod(start: string, end: string) {
   if (!end || end === start) return formatDateFr(start || end)
   return `${formatDateFr(start)} – ${formatDateFr(end)}`
 }
+
+export function formatCompetitionCeremonies(opening: string, closing: string) {
+  return `Ouverture : ${formatDateFr(opening)} · Clôture : ${formatDateFr(closing)}`
+}

@@ -24,7 +24,7 @@ export function classifyDataError(error: unknown, scope: string): DataQualityIss
 
 export function competitionQuality(input: { competition: Competition; programs: CompetitionProgram[]; engagements: CampaignEngagement[]; participations: AthleteParticipation[]; results: CompetitionResult[]; sectionIssues?: DataQualityIssue[]; eventsAvailable?: boolean }): DataQualityReport {
   const { competition, programs, engagements, participations, results } = input
-  const required = [competition.nom_competition, competition.id_type_competition, competition.date_debut, competition.statut]
+  const required = [competition.nom_competition, competition.id_type_competition, competition.date_debut, competition.date_fin, competition.statut]
   const issues = [...(input.sectionIssues || [])]
   if (required.some((value) => !value)) issues.push(issue("COMPETITION_INCOMPLETE", "NON_RENSEIGNE", "general", "Des informations essentielles de la compétition ne sont pas renseignées.", "Compléter le nom, le type, la date de début et le statut.", true))
   if (input.eventsAvailable === false) issues.push(issue("EVENT_REFERENTIAL_EMPTY", "ABSENT", "programmes", "Le référentiel des épreuves est vide.", "Faire valider et renseigner les épreuves fédérales avant de créer un programme.", true))

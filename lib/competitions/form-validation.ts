@@ -20,8 +20,9 @@ export function competitionFormError(
   const type = types.find((item) => item.id === value.id_type_competition)
   if (!type) return "Sélectionnez un type de compétition."
   if (!levels.some((item) => item.id === value.niveau_competition)) return "Sélectionnez un niveau de compétition."
-  if (!value.date_debut) return "La date de début est obligatoire."
-  if (value.date_fin && value.date_fin < value.date_debut) return "La date de fin doit être postérieure ou égale à la date de début."
+  if (!value.date_debut) return "La date de la cérémonie d’ouverture est obligatoire."
+  if (!value.date_fin) return "La date de la cérémonie de clôture est obligatoire."
+  if (value.date_fin < value.date_debut) return "La cérémonie de clôture doit avoir lieu après ou le même jour que la cérémonie d’ouverture."
   if (!statuses.some((item) => item.id === value.statut)) return "Sélectionnez un statut de compétition."
   if (type.scope === "MULTISPORTS" && value.est_multisport !== "OUI") return "Ce type de compétition doit être multisport."
   if (type.scope === "MONOSPORT" && value.est_multisport !== "NON") return "Ce type de compétition doit être monosport."
