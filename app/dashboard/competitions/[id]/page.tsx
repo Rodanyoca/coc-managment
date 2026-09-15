@@ -25,7 +25,7 @@ export default async function CompetitionDetailPage({ params }: { params: Promis
   const [referencesResult, programsResult, engagementsResult, engagementRefsResult, participationsResult, participationRefsResult, resultsResult, resultRefsResult, medalsResult, medalRefsResult, documentsResult] = await Promise.allSettled([
     getCompetitionReferences(),
     getCompetitionPrograms(id, { bypassCache: true }),
-    getCampaignEngagements({ competitionId: id }),
+    getCampaignEngagements({ competitionId: id, fresh: true }),
     getEngagementReferences(),
     getAthleteParticipations({ competitionId: id, fresh: true }),
     getParticipationReferences(),

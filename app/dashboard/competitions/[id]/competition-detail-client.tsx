@@ -19,7 +19,7 @@ import {Card,CardContent,CardHeader,CardTitle} from "@/components/ui/card"
 import {Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle} from "@/components/ui/sheet"
 import {Tabs,TabsContent,TabsList,TabsTrigger} from "@/components/ui/tabs"
 import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
-import {competitionStatusLabels,formatCompetitionCeremonies} from "@/lib/competitions/format"
+import {competitionStatusLabels} from "@/lib/competitions/format"
 import type {AthleteParticipation,CampaignEngagement,Competition,CompetitionMedal,CompetitionProgram,CompetitionReferences,CompetitionResult} from "@/lib/competitions/types"
 import type {AthleteSelection} from "@/lib/equipes-nationales/types"
 import type {DocumentRecord} from "@/lib/documents/types"
@@ -37,8 +37,8 @@ export default function CompetitionDetailClient({competition:initial,qualityRepo
  async function saveCompetition(){setSaving(true);try{const response=await fetch("/api/competitions",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:competition.id_competition,row:form})}),result=await response.json();if(!response.ok)throw new Error(result.message||result.error);setCompetition(result.row);setEditOpen(false);toast.success("Compétition modifiée.")}catch(error){toast.error(error instanceof Error?error.message:String(error))}finally{setSaving(false)}}
  const openEdit=()=>{setForm(competitionToForm(competition));setEditOpen(true)}
  const contextFields=[["Type de compétition",label(references.types,competition.id_type_competition)],["Niveau",label(references.levels||[],competition.niveau_competition)],["Caractère",competition.est_multisport==="OUI"?"Multisport":"Monosport"]]
- const scheduleFields=[["Date de la cérémonie d’ouverture",competition.date_debut],["Date de la cérémonie de clôture",competition.date_fin],["Pays",competition.pays],["Ville",competition.ville],["Lieu",competition.lieu]]
- return <div className="min-h-screen min-w-0 overflow-x-hidden"><Header title={competition.nom_competition} subtitle={[competition.edition,formatCompetitionCeremonies(competition.date_debut,competition.date_fin)].filter(Boolean).join(" · ")} actions={canEdit&&<Button onClick={openEdit} size="sm" variant="outline"><Pencil className="h-4 w-4"/>Modifier</Button>}/><main className="min-w-0 space-y-6 p-4 md:p-6">
+ const scheduleFields=[["Pays",competition.pays],["Ville",competition.ville],["Lieu",competition.lieu]]
+ return <div className="min-h-screen min-w-0 overflow-x-hidden"><Header title={competition.nom_competition} subtitle={competition.edition} actions={canEdit&&<Button onClick={openEdit} size="sm" variant="outline"><Pencil className="h-4 w-4"/>Modifier</Button>}/><main className="min-w-0 space-y-6 p-4 md:p-6">
   <Button asChild variant="ghost" size="sm" className="gap-2"><Link href="/dashboard/competitions"><ArrowLeft className="h-4 w-4"/>Retour aux compétitions</Link></Button>
   <Card className="min-w-0 border-border/50"><Tabs defaultValue="general" className="w-full"><CardHeader className="pb-0"><TabsList className="grid h-auto w-full grid-cols-2 lg:grid-cols-5"><TabsTrigger value="general">Général</TabsTrigger><TabsTrigger value="programs">Programmes</TabsTrigger><TabsTrigger value="teams">Équipes / unités</TabsTrigger><TabsTrigger value="participants">Participants</TabsTrigger><TabsTrigger value="results">Résultats</TabsTrigger></TabsList></CardHeader><CardContent className="pt-6">
    <TabsContent value="general" className="mt-0 min-w-0 space-y-6"><div className="grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-3">

@@ -200,10 +200,10 @@ export async function updateCompetitionProgram(competitionId: string, id: string
   return mapProgram({ ...current, ...row, observation: row.observations })
 }
 
-export async function getCampaignEngagements(filters: { competitionId?: string; teamId?: string } = {}): Promise<CampaignEngagement[]> {
+export async function getCampaignEngagements(filters: { competitionId?: string; teamId?: string; fresh?: boolean } = {}): Promise<CampaignEngagement[]> {
   const [engagements, programs, campaigns, teams] = await Promise.all([
-    getSheetRows({ sheetName: TEAMS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId() }), getCompetitionPrograms(),
-    getSheetRows({ sheetName: "CAMPAGNES_EQUIPES_NATIONALES", spreadsheetId: getNationalTeamsSpreadsheetId() }), getCentralNationalTeams(),
+    getSheetRows({ sheetName: TEAMS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), bypassCache: filters.fresh }), getCompetitionPrograms(undefined, { bypassCache: filters.fresh }),
+    getSheetRows({ sheetName: "CAMPAGNES_EQUIPES_NATIONALES", spreadsheetId: getNationalTeamsSpreadsheetId(), bypassCache: filters.fresh }), getCentralNationalTeams({ fresh: filters.fresh }),
   ])
   const programMap = new Map(programs.map((row) => [row.id_programme_competition, row])), campaignMap = new Map(campaigns.map((row) => [row.id_campagne, row])), teamMap = new Map(teams.map((row) => [row.id_equipe_nationale, row]))
   return engagements.map((row) => { const campaign = campaignMap.get(row.id_campagne), team = teamMap.get(campaign?.id_equipe_nationale || ""); return { ...Object.fromEntries(TEAM_SHEET_HEADERS.map((header) => [header, clean(row[header])])), id_equipe_nationale: clean(campaign?.id_equipe_nationale), nom_equipe_nationale: clean(team?.nom_equipe_nationale), nom_campagne: clean(campaign?.nom_campagne), id_federation_responsable: clean(team?.id_federation) } as CampaignEngagement }).filter((row) => row.id_engagement_campagne && (!filters.competitionId || programMap.get(row.id_programme_competition)?.id_competition === filters.competitionId) && (!filters.teamId || row.id_equipe_nationale === filters.teamId))
@@ -239,7 +239,7 @@ export async function createCampaignEngagement(competitionId: string, input: Rec
   if (row.id_statut_engagement !== "ANNULE" && existing.some((item) => item.id_programme_competition === row.id_programme_competition && item.id_campagne === row.id_campagne && item.id_statut_engagement !== "ANNULE")) throw new Error("Cette campagne est déjà engagée dans ce programme.")
   const created = { id_engagement_campagne: nextId(existing.map((item) => item.id_engagement_campagne), "ENG"), ...row }
   await appendSheetRow({ sheetName: TEAMS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), row: created })
-  return (await getCampaignEngagements({ competitionId })).find((item) => item.id_engagement_campagne === created.id_engagement_campagne) || created
+  return (await getCampaignEngagements({ competitionId, fresh: true })).find((item) => item.id_engagement_campagne === created.id_engagement_campagne) || created
 }
 
 export async function updateCampaignEngagement(competitionId: string, id: string, input: Record<string, unknown>) {
@@ -252,7 +252,7 @@ export async function updateCampaignEngagement(competitionId: string, id: string
 }
 
 export async function getAthleteParticipations(filters:{competitionId?:string;engagementId?:string;fresh?:boolean}={}):Promise<AthleteParticipation[]>{
-  const [rows,engagements,selections]=await Promise.all([getSheetRows({sheetName:"PARTICIPATIONS_ACTEURS_COMPETITION",spreadsheetId:getCompetitionsSpreadsheetId(),bypassCache:filters.fresh}),getCampaignEngagements(filters.competitionId?{competitionId:filters.competitionId}:{}),getCampaignSelections()])
+  const [rows,engagements,selections]=await Promise.all([getSheetRows({sheetName:"PARTICIPATIONS_ACTEURS_COMPETITION",spreadsheetId:getCompetitionsSpreadsheetId(),bypassCache:filters.fresh}),getCampaignEngagements(filters.competitionId?{competitionId:filters.competitionId,fresh:filters.fresh}:{fresh:filters.fresh}),getCampaignSelections()])
   const engagementIds=new Set(engagements.map((row)=>row.id_engagement_campagne)),selectionMap=new Map(selections.map((row)=>[row.id_selection,row]))
   return rows.filter((row)=>engagementIds.has(row.id_engagement_campagne)&&(!filters.engagementId||row.id_engagement_campagne===filters.engagementId)).map((row)=>{const selection=selectionMap.get(row.id_selection),id=clean(row.id_participation_acteur);return{id_participation_acteur:id,id_participation_athlete:id,id_engagement_campagne:clean(row.id_engagement_campagne),id_acteur_coc:clean(row.id_acteur_coc),id_type_acteur:clean(row.id_type_acteur),id_selection:clean(row.id_selection),id_affectation_staff:clean(row.id_affectation_staff),id_statut_participation:clean(row.id_statut_participation),date_statut:clean(row.date_statut),id_participation_remplacement:clean(row.id_participation_remplacement),id_selection_remplacement:clean(row.id_participation_remplacement),observation:clean(row.observation),athlete_id:selection?.id_athlete||clean(row.id_acteur_coc),athlete_label:selection?.athlete_label,campaign_id:selection?.id_campagne}}).filter((row)=>row.id_participation_acteur)
 }

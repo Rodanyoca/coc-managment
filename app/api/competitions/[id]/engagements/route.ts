@@ -5,7 +5,7 @@ import { createCampaignEngagement, getCampaignEngagements, getEngagementReferenc
 import { runSportMutation } from "@/lib/competitions/mutation"
 
 type Context = { params: Promise<{ id: string }> }
-export async function GET(_: Request, context: Context) { if (!(await canAccess("AUT-SPT", "READ"))) return NextResponse.json({ error: "Accès refusé." }, { status: 403 }); const { id } = await context.params; return NextResponse.json({ rows: await getCampaignEngagements({ competitionId: id }), references: await getEngagementReferences() }) }
+export async function GET(_: Request, context: Context) { if (!(await canAccess("AUT-SPT", "READ"))) return NextResponse.json({ error: "Accès refusé." }, { status: 403 }); const { id } = await context.params; return NextResponse.json({ rows: await getCampaignEngagements({ competitionId: id, fresh: true }), references: await getEngagementReferences() }) }
 async function write(request: Request, context: Context, update: boolean) {
   const { id: competitionId } = await context.params
   return runSportMutation(request, { action: update ? "MODIFICATION_ENGAGEMENT_CAMPAGNE" : "CREATION_ENGAGEMENT_CAMPAGNE", typeObjet: "ENGAGEMENT_CAMPAGNE" }, async (body) => { const row = update ? await updateCampaignEngagement(competitionId, String(body.id || ""), body.row || {}) : await createCampaignEngagement(competitionId, body.row || {}); revalidatePath(`/dashboard/competitions/${competitionId}`); revalidatePath("/dashboard/equipes-nationales"); revalidateTag("competitions-dashboard", "max"); return { row, objectId: row.id_engagement_campagne } })

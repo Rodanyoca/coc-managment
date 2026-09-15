@@ -3,9 +3,10 @@ import {readFile} from "node:fs/promises"
 import test from "node:test"
 const source=(path:string)=>readFile(new URL(`../../${path}`,import.meta.url),"utf8")
 
-test("la liste finale expose les champs, les cérémonies et une action accessible",async()=>{
+test("la liste finale masque les cérémonies et conserve une action accessible",async()=>{
  const code=await source("app/dashboard/competitions/competitions-client.tsx")
- for(const value of ["Nom de la compétition","Édition","Cérémonies","Statut"])assert.match(code,new RegExp(value))
+ for(const value of ["Nom de la compétition","Édition","Statut"])assert.match(code,new RegExp(value))
+ assert.doesNotMatch(code,/<TableHead>Cérémonies<\/TableHead>|formatCompetitionCeremonies/)
  assert.doesNotMatch(code,/<TableHead>Identifiant<\/TableHead>/)
  assert.match(code,/Ouverture à partir du/);assert.match(code,/Clôture jusqu’au/);assert.match(code,/Voir les détails de/);assert.match(code,/TooltipContent>Voir les détails/);assert.doesNotMatch(code,/overflow-x-auto/)
 })
@@ -15,6 +16,7 @@ test("la fiche finale possède cinq onglets et conserve le modèle campagne-prog
  const engagements=await source("components/dashboard/campaign-engagements.tsx")
  for(const tab of ["Général","Programmes","Participants","Équipes / unités","Résultats"])assert.match(code,new RegExp(`>${tab}<`))
  assert.match(code,/id_engagement_campagne/);assert.match(engagements,/id_programme_competition/);assert.match(code,/id_statut_selection/);assert.match(code,/id_statut_participation/);assert.match(code,/Aucun athlète enregistré pour cette compétition/);assert.doesNotMatch(code,/overflow-x-auto/)
+ assert.doesNotMatch(code,/Date de la cérémonie d’ouverture|Date de la cérémonie de clôture|formatCompetitionCeremonies/)
 })
 
 test("les écritures restent contextuelles et masquées sans droit",async()=>{
