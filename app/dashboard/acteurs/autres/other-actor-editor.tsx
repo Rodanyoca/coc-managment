@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -38,7 +40,7 @@ export function OtherActorEditor({ initialValue, references, actorId, presentati
     data.append("mediaType", mediaType)
     data.append("actorType", "autres")
     data.append("actorId", savedId)
-    const response = await fetch("/api/upload-media", { method: "POST", body: data })
+    const response = await apiFetch("/api/upload-media", { method: "POST", body: data })
     const result = await response.json().catch(() => ({}))
     if (!response.ok) throw new Error(result.error || `Envoi du fichier ${mediaType} impossible.`)
   }
@@ -50,7 +52,7 @@ export function OtherActorEditor({ initialValue, references, actorId, presentati
     }
     setSaving(true)
     try {
-      const response = await fetch("/api/autres", { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: actorId, row: form }) })
+      const response = await apiFetch("/api/autres", { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: actorId, row: form }) })
       const result = await response.json().catch(() => ({}))
       if (!response.ok) throw new Error(result.error || "Enregistrement impossible.")
       const savedId = String(actorId || result.row?.id_autre_acteur_coc || "")

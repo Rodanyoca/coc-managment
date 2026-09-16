@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { Mail, MapPin, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -27,12 +29,12 @@ export function ArbitreDetailClient({ arbitre: initial, federations, grades }: {
   const [form, setForm] = useState<ArbitreForm>({ ...emptyArbitreForm, id_arbitre_federation: initial.idFederal, id_federation: initial.idFederation, id_national: initial.idNational, id_international: initial.idInternational, nom_complet: initial.nomComplet, id_sexe: sexId(initial.sexe), date_de_naissance: initial.dateNaissance, lieu_de_naissance: initial.lieuNaissance, nationalite: initial.nationalite, telephone: initial.telephone, email: initial.email, adresse: initial.adresse, id_grade: initial.idGrade, date_affiliation: initial.dateAffiliation, numero_passeport: initial.numeroPasseport, date_de_delivrance_passeport: initial.dateDelivrancePasseport, date_expiration_passeport: initial.dateExpirationPasseport, statut: initial.statut === "inactif" ? "INACTIF" : "ACTIF" })
   function update<K extends keyof ArbitreForm>(key: K, value: ArbitreForm[K]) { setForm((current) => ({ ...current, [key]: value })) }
   function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const valid = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!valid || file.size > 5 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 5 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }
-  async function upload(file: File, type: "avatar" | "passeport") { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "arbitres"); data.append("actorId", arbitre.id); const res = await fetch("/api/upload-media", { method: "POST", body: data }); const out = await res.json(); if (!res.ok) throw new Error(out.error || "Échec du média"); return out as { url: string } }
+  async function upload(file: File, type: "avatar" | "passeport") { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "arbitres"); data.append("actorId", arbitre.id); const res = await apiFetch("/api/upload-media", { method: "POST", body: data }); const out = await res.json(); if (!res.ok) throw new Error(out.error || "Échec du média"); return out as { url: string } }
   async function save() {
     if (!form.nom_complet || !form.id_federation || !form.id_sexe) return toast.error("Nom, fédération et sexe sont obligatoires.")
     setSaving(true)
     try {
-      const res = await fetch("/api/arbitres", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: arbitre.id, row: form }) })
+      const res = await apiFetch("/api/arbitres", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: arbitre.id, row: form }) })
       const out = await res.json(); if (!res.ok) throw new Error(out.error || "Modification impossible")
       const av = avatar ? await upload(avatar, "avatar") : null; const pp = passport ? await upload(passport, "passeport") : null
       const federation = federations.find((item) => item.id === form.id_federation); const grade = grades.find((item) => item.id === form.id_grade)

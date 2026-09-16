@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation"
 import { canAccess } from "@/lib/auth"
-import { getAthleteParticipations, getCampaignEngagements, getCompetition, getCompetitionMedals, getCompetitionPrograms, getCompetitionReferences, getCompetitionResults, getEngagementReferences, getMedalReferences, getParticipationReferences, getResultReferences } from "@/lib/competitions/data"
+import { getCompetitionParticipants, getCampaignEngagements, getCompetition, getCompetitionMedals, getCompetitionPrograms, getCompetitionReferences, getCompetitionResults, getEngagementReferences, getMedalReferences, getParticipationReferences, getResultReferences } from "@/lib/competitions/data"
 import { getDocumentsForEntity } from "@/lib/documents/data"
 import CompetitionDetailClient from "./competition-detail-client"
 import { classifyDataError, competitionQuality } from "@/lib/competitions/quality"
@@ -27,7 +27,7 @@ export default async function CompetitionDetailPage({ params }: { params: Promis
     getCompetitionPrograms(id, { bypassCache: true }),
     getCampaignEngagements({ competitionId: id, fresh: true }),
     getEngagementReferences(),
-    getAthleteParticipations({ competitionId: id, fresh: true }),
+    getCompetitionParticipants(id, true),
     getParticipationReferences(),
     getCompetitionResults(id, true, { bypassCache: true }),
     getResultReferences(),

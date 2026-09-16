@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Link from "next/link"
 import { Eye, FileText, ImageIcon, Plus, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -187,7 +189,7 @@ export function AthletesClient({
     data.append("mediaType", mediaType)
     data.append("actorType", "athletes")
     data.append("actorId", athleteId)
-    const response = await fetch("/api/upload-media", { method: "POST", body: data })
+    const response = await apiFetch("/api/upload-media", { method: "POST", body: data })
     const result = await response.json().catch(() => null)
     if (!response.ok) throw new Error(result?.error || (response.status === 413 ? "Le fichier dépasse 4 Mo." : `Échec de l'envoi du fichier ${mediaType} (${response.status})`))
   }
@@ -206,7 +208,7 @@ export function AthletesClient({
 
     setSaving(true)
     try {
-      const response = await fetch("/api/athletes", {
+      const response = await apiFetch("/api/athletes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ row: form }),

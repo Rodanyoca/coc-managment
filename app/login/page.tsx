@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Image from "next/image"
 import { useRef, useState } from "react"
 import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"
@@ -44,7 +46,7 @@ export default function LoginPage() {
     let authenticated = false
 
     try {
-      const response = await fetch("/api/auth/login", {
+      const response = await apiFetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

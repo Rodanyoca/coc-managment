@@ -29,10 +29,14 @@ test("la route qualifie les pannes temporaires et le client réessaie sans boucl
 
 test("une saturation de la source des autorisations ne devient pas un refus 403", async () => {
   const mutation = await readFile(new URL("../../lib/competitions/mutation.ts", import.meta.url), "utf8")
+  const route = await readFile(new URL("../../app/api/competitions/[id]/unites/route.ts", import.meta.url), "utf8")
 
   assert.match(mutation, /authorizeWithSource/)
   assert.match(mutation, /SOURCE_UNAVAILABLE[\s\S]*503/)
   assert.doesNotMatch(mutation, /canAccess\("AUT-SPT", "WRITE"\)/)
+  assert.match(route, /authorizeWithSource/)
+  assert.match(route, /SOURCE_UNAVAILABLE[\s\S]*503/)
+  assert.doesNotMatch(route, /canAccess\("AUT-SPT","READ"\)/)
 })
 
 test("la composition d’une unité est écrite en lot pour éviter le quota Sheets", async () => {

@@ -1,9 +1,10 @@
+import { apiFetch } from "@/lib/api/client"
 import type { ParticipatingUnit } from "./types"
 
 const pendingUnitRequests = new Map<string, Promise<ParticipatingUnit[]>>()
 
 async function fetchUnits(key: string, attempt = 0): Promise<ParticipatingUnit[]> {
-  const response = await fetch(`/api/competitions/${encodeURIComponent(key)}/unites`)
+  const response = await apiFetch(`/api/competitions/${encodeURIComponent(key)}/unites`)
   const payload = await response.json()
   if (!response.ok) {
     if (payload.retryable && attempt < 2) {

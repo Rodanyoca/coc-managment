@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,7 +18,7 @@ export default function UserDetailClient({ initial, initialAuthorizations, audit
 
   async function patchUser() {
     if (!confirm("Cette modification peut révoquer les sessions. Continuer ?")) return
-    const response = await fetch(`/api/users/${user.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID(), patch: { nomComplet: user.nomComplet, email: user.email, typeUser: user.typeUser, statut: user.statut, estSuperAdmin: user.estSuperAdmin } }) })
+    const response = await apiFetch(`/api/users/${user.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID(), patch: { nomComplet: user.nomComplet, email: user.email, typeUser: user.typeUser, statut: user.statut, estSuperAdmin: user.estSuperAdmin } }) })
     const result = await response.json()
     setMessage(response.ok ? "Compte mis à jour." : result.error)
     if (result.temporaryAccess) setSecret(result.temporaryAccess)
@@ -24,21 +26,21 @@ export default function UserDetailClient({ initial, initialAuthorizations, audit
 
   async function revoke() {
     if (!confirm("Déconnecter toutes les sessions de ce compte ?")) return
-    const response = await fetch(`/api/users/${user.id}/revoke-sessions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID() }) })
+    const response = await apiFetch(`/api/users/${user.id}/revoke-sessions`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID() }) })
     const result = await response.json()
     setMessage(response.ok ? "Toutes les sessions sont révoquées." : result.error)
   }
 
   async function reset() {
     if (!confirm("Réinitialiser l’accès et révoquer toutes les sessions ?")) return
-    const response = await fetch(`/api/users/${user.id}/reset-access`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID() }) })
+    const response = await apiFetch(`/api/users/${user.id}/reset-access`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID() }) })
     const result = await response.json()
     setMessage(response.ok ? "Accès réinitialisé." : result.error)
     if (result.temporaryAccess) setSecret(result.temporaryAccess)
   }
 
   async function addAuthorization(form: FormData) {
-    const response = await fetch(`/api/users/${user.id}/authorizations`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID(), block: form.get("block"), dateDebut: form.get("dateDebut"), dateFin: form.get("dateFin") }) })
+    const response = await apiFetch(`/api/users/${user.id}/authorizations`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID(), block: form.get("block"), dateDebut: form.get("dateDebut"), dateFin: form.get("dateFin") }) })
     const result = await response.json()
     if (response.ok && result.authorization) setAuthorizations([...authorizations, result.authorization])
     else setMessage(result.error ?? "Requête déjà traitée.")
@@ -46,7 +48,7 @@ export default function UserDetailClient({ initial, initialAuthorizations, audit
 
   async function closeAuthorization(id: string) {
     if (!confirm("Retirer cette autorisation ?")) return
-    const response = await fetch(`/api/users/${user.id}/authorizations`, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID(), id }) })
+    const response = await apiFetch(`/api/users/${user.id}/authorizations`, { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ requestId: crypto.randomUUID(), id }) })
     const result = await response.json()
     if (response.ok) setAuthorizations(authorizations.map((item) => item.idUserAutorisation === id ? result.authorization : item))
     else setMessage(result.error)

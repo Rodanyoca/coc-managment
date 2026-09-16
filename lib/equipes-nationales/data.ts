@@ -15,7 +15,7 @@ const ATHLETE_SELECTION_SHEET = "SELECTIONS_ATHLETES"
 const STAFF_ASSIGNMENT_SHEET = "AFFECTATIONS_STAFF"
 // CompatibilitÃ© temporaire des mutations; les lectures utilisent le modÃ¨le campagne/sÃ©lections.
 const MEMBER_SHEET = "EQUIPES_NATIONALES_MEMBRES"
-const TEAM_SHEET_HEADERS = ["id_equipe_nationale", "id_federation", "id_sport", "id_discipline", "nom_equipe_nationale", "id_categorie_age", "id_sexe", "id_saison", "statut", "observation"] as const
+const TEAM_SHEET_HEADERS = ["id_equipe_nationale", "id_federation", "id_sport", "id_discipline", "nom_equipe_nationale", "id_categorie_age", "id_saison", "statut", "observation"] as const
 const clean = (value: unknown) => String(value ?? "").trim()
 const normalized = (value: string) => clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("fr")
 const nextId = (values: string[], prefix: string, padding = 3) => `${prefix}${String(values.reduce((max, value) => { const match = value.match(new RegExp(`^${prefix}(\\d+)$`, "i")); return match ? Math.max(max, Number(match[1])) : max }, 0) + 1).padStart(padding, "0")}`
@@ -129,7 +129,7 @@ export async function getNationalTeamMembers(teamId?: string, actorId?: string, 
 
 export async function getNationalTeamReferences(options: { fresh?: boolean } = {}): Promise<NationalTeamReferences> {
   const spreadsheetId = getReferentialSpreadsheetId()
-  const [federations, refs] = await Promise.all([getFederationOptions({ fresh: options.fresh }), getSheetsRows({ sheetNames: ["SPORTS", "DISCIPLINES", "EPREUVES", "CATEGORIES_AGE", "SEXES","SAISONS"], spreadsheetId, bypassCache: options.fresh })])
+  const [federations, refs] = await Promise.all([getFederationOptions({ fresh: options.fresh }), getSheetsRows({ sheetNames: ["SPORTS", "DISCIPLINES", "EPREUVES", "CATEGORIES_AGE", "SAISONS"], spreadsheetId, bypassCache: options.fresh })])
   let roles: { id: string; label: string }[] = NATIONAL_TEAM_ROLES.map((id) => ({ id, label: ({ ATHLETE: "Athlète", COACH_PRINCIPAL: "Coach principal", ASSISTANT_COACH: "Assistant coach", MEDECIN: "Médecin", PREPARATEUR: "Préparateur", SPARRING_PARTNER: "Sparring-partner", OFFICIEL: "Officiel", AUTRE: "Autre" } as Record<string, string>)[id] }))
   let rolesReferentialAvailable = false
   try { const found = (await getSheetRows({ sheetName: "ROLES_STAFF_EQUIPE_NATIONALE", spreadsheetId })).filter((row) => row.id_role_staff).map((row) => ({ id: row.id_role_staff, label: row.nom_role_staff || row.id_role_staff, parentId: row.id_type_acteur })); if (found.length) { roles = found; rolesReferentialAvailable = true } } catch {}
@@ -140,7 +140,6 @@ export async function getNationalTeamReferences(options: { fresh?: boolean } = {
     disciplines: uniqueReferenceOptions(refs.DISCIPLINES.filter((row) => row.id_discipline).map((row) => ({ id: row.id_discipline, label: row.nom_discipline, parentId: row.id_sport }))),
     events: uniqueReferenceOptions(refs.EPREUVES.filter((row) => row.id_epreuve).map((row) => ({ id: row.id_epreuve, label: row.nom_epreuve || row.id_epreuve, disciplineId: row.id_discipline }))),
     ageCategories,
-    sexes: uniqueReferenceOptions(refs.SEXES.filter((row) => row.id_sexe).map((row) => ({ id: row.id_sexe, label: row.nom_sexe || row.id_sexe }))),
     seasons:refs.SAISONS.filter(row=>row.id_saison).map(row=>({id:row.id_saison,label:row.nom_saison||row.id_saison,dateStart:row.date_debut,dateEnd:row.date_fin})),
     roles: uniqueReferenceOptions(roles),
     ageCategoriesAvailable: ageCategories.length > 0,
@@ -155,11 +154,10 @@ function assertTeamReferences(row: ReturnType<typeof validateTeamInput>, refs: N
   if (federation.parentId && federation.parentId !== row.id_sport) throw new Error("Le sport ne correspond pas à la fédération.")
   if (row.id_discipline && !refs.disciplines.some((item) => item.id === row.id_discipline && item.parentId === row.id_sport)) throw new Error("Discipline incohérente avec le sport.")
   if (row.id_categorie_age) { const expectedParent = row.id_discipline || row.id_sport; if (!refs.ageCategories.some((item) => item.id === row.id_categorie_age && item.parentId === expectedParent)) throw new Error("Catégorie d’âge incohérente avec le sport ou la discipline.") }
-  if (row.id_sexe && !refs.sexes.some((item) => item.id === row.id_sexe)) throw new Error("Sexe inconnu.")
   if (!refs.seasons?.some((item) => item.id === row.id_saison)) throw new Error("Saison inconnue.")
 }
 
-const sameTeamIdentity = (left: NationalTeam, right: ReturnType<typeof validateTeamInput>) => left.id_federation === right.id_federation && left.id_sport === right.id_sport && left.id_discipline === right.id_discipline && left.id_categorie_age === right.id_categorie_age && left.id_sexe === right.id_sexe && left.id_saison===right.id_saison && normalized(left.nom_equipe_nationale) === normalized(right.nom_equipe_nationale)
+const sameTeamIdentity = (left: NationalTeam, right: ReturnType<typeof validateTeamInput>) => left.id_federation === right.id_federation && left.id_sport === right.id_sport && left.id_discipline === right.id_discipline && left.id_categorie_age === right.id_categorie_age && left.id_saison===right.id_saison && normalized(left.nom_equipe_nationale) === normalized(right.nom_equipe_nationale)
 
 export async function createNationalTeam(input: Record<string, unknown>) {
   const row = validateTeamInput(input)

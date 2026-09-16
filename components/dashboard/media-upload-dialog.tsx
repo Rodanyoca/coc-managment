@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import {
   Dialog,
   DialogContent,
@@ -110,7 +112,7 @@ export function MediaUploadDialog({
       if (actorType) formData.append("actorType", actorType)
       if (actorId) formData.append("actorId", actorId)
 
-      const res = await fetch("/api/upload-media", { method: "POST", body: formData })
+      const res = await apiFetch("/api/upload-media", { method: "POST", body: formData })
       const data = await res.json().catch(() => null)
 
       if (!res.ok) {

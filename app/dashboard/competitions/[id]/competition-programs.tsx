@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useMemo, useState } from "react"
 import { Plus } from "lucide-react"
 import { toast } from "sonner"
@@ -46,7 +48,7 @@ export function CompetitionPrograms({ competition, initialRows, references, canE
     if (formError) { toast.error(formError); return }
     setSaving(true)
     try {
-      const response = await fetch(`/api/competitions/${encodeURIComponent(competitionId)}/programmes`, { method: editingId ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editingId, row: form }) })
+      const response = await apiFetch(`/api/competitions/${encodeURIComponent(competitionId)}/programmes`, { method: editingId ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editingId, row: form }) })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error)
       setRows((current) => editingId ? current.map((item) => item.id_programme_competition === editingId ? result.row : item) : [...current, result.row])

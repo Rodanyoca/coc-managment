@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useEffect, useState } from "react"
 import { History, Plus } from "lucide-react"
 import { toast } from "sonner"
@@ -42,7 +44,7 @@ export function CompetitionResults({ competitionId, engagements, programs, compe
   function getDisciplineLabelForProgram(programId: string) { const event = eventForProgram(programId); return competitionReferences.disciplines?.find((item) => item.id === event?.disciplineId)?.label || event?.disciplineId || "—" }
   const selectedEvent = eventForProgram(form.id_programme_competition)
   const selectedEngagement = engagements.find((item) => item.id_engagement_campagne === form.id_engagement_campagne)
-  const compatibleDecisions = filterResultDecisions(references.decisions, { federationId: selectedEngagement?.id_federation_responsable || selectedEngagement?.id_federation_source, sportId: selectedEvent?.sportId, disciplineId: selectedEvent?.disciplineId })
+  const compatibleDecisions = filterResultDecisions(references.decisions, { federationId: selectedEngagement?.id_federation_responsable, sportId: selectedEvent?.sportId, disciplineId: selectedEvent?.disciplineId })
   const decisionOptions: ResultDecisionOption[] = editing && form.id_decision_resultat && !compatibleDecisions.some((item) => item.id === form.id_decision_resultat) ? [...compatibleDecisions, { ...(references.decisions.find((item) => item.id === form.id_decision_resultat) || { id: form.id_decision_resultat, label: "Décision non reconnue" }), disabled: true }] : compatibleDecisions
   const policy = resultFormPolicy(selectedEvent?.resultTypeId || "", compatibleDecisions)
   const syntheticError = policy.syntheticRequired && !form.id_resultat_synthetique ? "Le résultat synthétique est obligatoire." : ""
@@ -50,7 +52,7 @@ export function CompetitionResults({ competitionId, engagements, programs, compe
   const compatibleEngagements = engagements.filter((item) => !form.id_programme_competition || item.id_programme_competition === form.id_programme_competition)
   const compatibleUnits = units.filter((item) => !form.id_engagement_campagne || item.id_engagement_campagne === form.id_engagement_campagne)
   const unitLabel = (id: string) => { const unit = units.find((item) => item.id_unite_participante === id); return unit?.nom_unite || unit?.composition?.join(", ") || id || "Unité manquante" }
-  const resultSummary = (row: CompetitionResult) => { const decision = references.decisions.find((item) => item.id === row.id_decision_resultat); return formatResultSummary({ synthetic: label(references.synthetics, row.id_resultat_synthetique, ""), decision: row.id_decision_resultat ? decision?.label || "Décision non reconnue" : "", value: row.valeur_coc || row.valeur_rdc, opponentValue: row.valeur_adversaire, unit: label(references.units, row.id_unite_mesure, "") }) }
+  const resultSummary = (row: CompetitionResult) => { const decision = references.decisions.find((item) => item.id === row.id_decision_resultat); return formatResultSummary({ decision: row.id_decision_resultat ? decision?.label || "Décision non reconnue" : "", value: row.valeur_coc || row.valeur_rdc, opponentValue: row.valeur_adversaire, unit: label(references.units, row.id_unite_mesure, "") }) }
 
   async function show(row?: CompetitionResult) {
     setEditing(row?.id_resultat || "")
@@ -64,7 +66,7 @@ export function CompetitionResults({ competitionId, engagements, programs, compe
     if (syntheticError || decisionError) { toast.error(syntheticError || decisionError); return }
     setSaving(true)
     try {
-      const response = await fetch("/api/competitions/" + encodeURIComponent(competitionId) + "/resultats", { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: normalizeResultForType(form, selectedEvent?.resultTypeId || "") }) })
+      const response = await apiFetch("/api/competitions/" + encodeURIComponent(competitionId) + "/resultats", { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: normalizeResultForType(form, selectedEvent?.resultTypeId || "") }) })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error)
       setRows((current) => editing ? [result.row, ...current.map((item) => item.id_resultat === editing ? { ...item, est_version_courante: "NON" } : item)] : [result.row, ...current])
@@ -80,7 +82,7 @@ export function CompetitionResults({ competitionId, engagements, programs, compe
   <Sheet open={open} onOpenChange={setOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-xl"><SheetHeader><SheetTitle>{editing ? "Corriger le résultat" : "Ajouter un résultat"}</SheetTitle><SheetDescription>Les champs restent conservés si la validation échoue.</SheetDescription></SheetHeader><div className="space-y-4 px-4">
     <Choice label="Épreuve *" value={form.id_programme_competition} options={programs.map((program) => ({ id: program.id_programme_competition, label: competitionReferences.events?.find((item) => item.id === program.id_epreuve)?.label || program.id_epreuve }))} onChange={(programId) => { const program = programs.find((item) => item.id_programme_competition === programId), event = eventForProgram(programId); setForm(normalizeResultForType({ ...form, id_programme_competition: programId, id_epreuve: program?.id_epreuve || "", id_discipline: event?.disciplineId || "", id_engagement_campagne: "", id_unite_participante: "", id_decision_resultat: "" }, event?.resultTypeId || "")) }} optional={false}/>
     <Field label="Discipline"><Input value={competitionReferences.disciplines?.find((item) => item.id === selectedEvent?.disciplineId)?.label || selectedEvent?.disciplineId || "—"} readOnly className="bg-muted"/></Field>
-    <Choice label="Engagement *" value={form.id_engagement_campagne} options={compatibleEngagements.map((item) => ({ id: item.id_engagement_campagne, label: (item.nom_campagne || item.id_campagne) + " · " + (references.federations?.find((row) => row.id === (item.id_federation_responsable || item.id_federation_source))?.label || item.id_federation_responsable || item.id_federation_source) }))} onChange={(value) => setForm({ ...form, id_engagement_campagne: value, id_unite_participante: "", id_decision_resultat: "" })} optional={false}/>
+    <Choice label="Engagement *" value={form.id_engagement_campagne} options={compatibleEngagements.map((item) => ({ id: item.id_engagement_campagne, label: (item.nom_campagne || item.id_campagne) + " · " + (references.federations?.find((row) => row.id === item.id_federation_responsable)?.label || item.id_federation_responsable || "—") }))} onChange={(value) => setForm({ ...form, id_engagement_campagne: value, id_unite_participante: "", id_decision_resultat: "" })} optional={false}/>
     <Choice label="Unité participante *" value={form.id_unite_participante} options={compatibleUnits.map((item) => ({ id: item.id_unite_participante, label: item.nom_unite || item.composition?.join(", ") || item.id_unite_participante }))} onChange={(value) => setForm({ ...form, id_unite_participante: value })} optional={false}/>
     <div className="grid gap-4 sm:grid-cols-2"><Field label="Date du résultat *"><Input type="date" value={form.date_resultat} onChange={(event) => setForm({ ...form, date_resultat: event.target.value })}/></Field><Field label="Phase"><Input value={form.phase} onChange={(event) => setForm({ ...form, phase: event.target.value })}/></Field></div>
     <Choice label="Type d’adversaire *" value={form.type_adversaire} options={references.opponentTypes || [{ id: "AUCUN", label: "Aucun" }, { id: "ATHLETE", label: "Athlète" }, { id: "EQUIPE", label: "Équipe" }]} onChange={(value) => setForm({ ...form, type_adversaire: value, nom_adversaire: value === "AUCUN" ? "" : form.nom_adversaire, valeur_adversaire: value === "AUCUN" ? "" : form.valeur_adversaire })} optional={false}/>

@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { Plus } from "lucide-react"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
@@ -31,7 +33,7 @@ export function CampaignSelections({ teamId, campaigns, initialRows, references,
   async function save() {
     setSaving(true)
     try {
-      const response = await fetch(`/api/equipes-nationales/${encodeURIComponent(teamId)}/selections`, { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: form }) })
+      const response = await apiFetch(`/api/equipes-nationales/${encodeURIComponent(teamId)}/selections`, { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: form }) })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error)
       setRows((current) => editing ? current.map((item) => item.id_selection === editing ? { ...item, ...result.row } : item) : [...current, result.row])

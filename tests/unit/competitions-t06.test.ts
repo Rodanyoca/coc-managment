@@ -11,9 +11,9 @@ test("valide plusieurs campagnes temporelles sans les confondre avec l’équipe
 
 test("exige programme, campagne, statut, date d’engagement et provenance", () => {
   assert.throws(()=>validateEngagementInput({}),/id_programme_competition/)
-  const row=validateEngagementInput({id_programme_competition:"PRG1",id_campagne:"CAM1",id_statut_engagement:"confirme",date_engagement:"2028-07-01",id_federation_source:"FED1"})
+  const row=validateEngagementInput({id_programme_competition:"PRG1",id_campagne:"CAM1",id_statut_engagement:"confirme",date_engagement:"2028-07-01"})
   assert.equal(row.id_statut_engagement,"CONFIRME")
-  assert.deepEqual(Object.keys(row),["id_programme_competition","id_campagne","id_statut_engagement","date_engagement","id_federation_source","reference_source","observation"])
+  assert.deepEqual(Object.keys(row),["id_programme_competition","id_campagne","id_statut_engagement","date_engagement","observation"])
 })
 
 test("un programme conserve une période interne cohérente",()=>{

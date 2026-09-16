@@ -1,6 +1,7 @@
 import "server-only"
 
 import { google } from "googleapis"
+import { runGoogleRequest } from "./request"
 
 // --- In-memory cache to avoid Google Sheets API quota limits ---
 const CACHE_TTL_MS = Number.parseInt(process.env.GOOGLE_SHEETS_CACHE_TTL_MS ?? "300000", 10)
@@ -32,8 +33,8 @@ async function withSheetsReadPermit<T>(task:()=>Promise<T>):Promise<T>{
  try{return await task()}finally{readGate.active-=1;readGate.queue.shift()?.()}
 }
 
-function withSheetsTimeout<T>(promise: Promise<T>) {
-  return withTimeout(promise, SHEETS_TIMEOUT_MS, () => undefined)
+function withSheetsTimeout<T>(task: () => Promise<T>) {
+  return runGoogleRequest(task, { timeoutMs: SHEETS_TIMEOUT_MS })
 }
 
 export function getSheetsRuntimeMetrics(){return{totalReads:readGate.total,activeReads:readGate.active,maxConcurrentReads:readGate.maxActive,limit:MAX_CONCURRENT_SHEETS_READS}}
@@ -59,26 +60,6 @@ function getPrivateKey() {
   const key = process.env.GOOGLE_PRIVATE_KEY
   if (!key) return ""
   return key.replace(/\\n/g, "\n")
-}
-
-async function withTimeout<T>(
-  promise: Promise<T>,
-  timeoutMs: number,
-  onTimeout: () => void
-): Promise<T> {
-  let timeoutId: NodeJS.Timeout | undefined
-  const timeoutPromise = new Promise<never>((_, reject) => {
-    timeoutId = setTimeout(() => {
-      onTimeout()
-      reject(new Error(`Google Sheets request timed out after ${timeoutMs}ms`))
-    }, timeoutMs)
-  })
-
-  try {
-    return (await Promise.race([promise, timeoutPromise])) as T
-  } finally {
-    if (timeoutId) clearTimeout(timeoutId)
-  }
 }
 
 function getSheetCredentials(spreadsheetId: string) {
@@ -148,16 +129,11 @@ export async function getSheetRows(params: {
 
   const sheets = google.sheets({ version: "v4", auth })
 
-  const controller = new AbortController()
   let res
   try {
-    res = await withSheetsReadPermit(()=>withTimeout(
-      sheets.spreadsheets.values.get({
-        spreadsheetId,
-        range,
-      }, { signal: controller.signal }),
-      SHEETS_TIMEOUT_MS,
-      () => controller.abort()
+    res = await withSheetsReadPermit(() => runGoogleRequest(
+      () => sheets.spreadsheets.values.get({ spreadsheetId, range }, { timeout: SHEETS_TIMEOUT_MS }),
+      { timeoutMs: SHEETS_TIMEOUT_MS },
     ))
   } catch (err) {
     // En cas de quota temporairement dépassé, une ancienne valeur vaut mieux
@@ -209,7 +185,7 @@ export async function getSheetHeaders(params: {
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   try {
-    const result = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })))
+    const result = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })))
     const headers = (result.data.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim()).filter(Boolean)
     if (!params.bypassCache) headerCache.set(cacheKey, { data: headers, ts: Date.now() })
     return headers
@@ -238,7 +214,7 @@ export async function getSheetsRows(params: {
   const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
   let response
   try {
-    response = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
+    response = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
   } catch (error) {
     const staleResult: Record<string, Record<string, string>[]> = {}
     const hasCompleteStaleSnapshot = params.sheetNames.every((sheetName, index) => {
@@ -266,7 +242,7 @@ export async function getSheetsTables(params: { sheetNames: string[]; spreadshee
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
-  const response = await withSheetsReadPermit(()=>withSheetsTimeout(sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
+  const response = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
   return Object.fromEntries(params.sheetNames.map((sheetName, index) => {
     const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
     const headers = (values[0] ?? []).map((header) => String(header ?? "").trim())
@@ -290,7 +266,7 @@ export async function updateSheetCell(params: {
   const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
   const range = `'${safeSheetName}'!A:Z`
 
-  const res = await sheets.spreadsheets.values.get({ spreadsheetId, range })
+  const res = await runGoogleRequest(() => sheets.spreadsheets.values.get({ spreadsheetId, range }))
   const values: unknown[][] = (res?.data?.values ?? []) as unknown[][]
   if (values.length === 0) throw new Error("Sheet is empty")
 
@@ -315,12 +291,12 @@ export async function updateSheetCell(params: {
   const colLetter = String.fromCharCode(65 + targetColIdx)
   const cellRange = `'${safeSheetName}'!${colLetter}${rowIndex + 1}`
 
-  await sheets.spreadsheets.values.update({
+  await runGoogleRequest(() => sheets.spreadsheets.values.update({
     spreadsheetId,
     range: cellRange,
     valueInputOption: "RAW",
     requestBody: { values: [[params.value]] },
-  })
+  }), { idempotent: false })
 }
 
 function columnToLetter(colIdx: number): string {
@@ -370,13 +346,13 @@ export async function updateSheetCells(params: {
     values: [[value]],
   }))
 
-  await sheets.spreadsheets.values.batchUpdate({
+  await runGoogleRequest(() => sheets.spreadsheets.values.batchUpdate({
     spreadsheetId,
     requestBody: {
       valueInputOption: "RAW",
       data,
     },
-  })
+  }), { idempotent: false })
   clearSheetCache()
 }
 
@@ -391,13 +367,13 @@ export async function appendSheetRow(params: {
   const safeSheetName = params.sheetName.replace(/'/g, "''")
   const headers = await getSheetHeaders({ sheetName: params.sheetName, spreadsheetId })
   if (headers.length === 0) throw new Error(`La feuille "${params.sheetName}" ne contient pas d'en-têtes`)
-  await sheets.spreadsheets.values.append({
+  await runGoogleRequest(() => sheets.spreadsheets.values.append({
     spreadsheetId,
     range: `'${safeSheetName}'!A:Z`,
     valueInputOption: "RAW",
     insertDataOption: "INSERT_ROWS",
     requestBody: { values: [headers.map((header) => params.row[header] ?? "")] },
-  })
+  }), { idempotent: false })
   clearSheetCache()
 }
 
@@ -413,13 +389,13 @@ export async function appendSheetRows(params: {
   const safeSheetName = params.sheetName.replace(/'/g, "''")
   const headers = await getSheetHeaders({ sheetName: params.sheetName, spreadsheetId })
   if (headers.length === 0) throw new Error(`La feuille "${params.sheetName}" ne contient pas d'en-têtes`)
-  await sheets.spreadsheets.values.append({
+  await runGoogleRequest(() => sheets.spreadsheets.values.append({
     spreadsheetId,
     range: `'${safeSheetName}'!A:Z`,
     valueInputOption: "RAW",
     insertDataOption: "INSERT_ROWS",
     requestBody: { values: params.rows.map((row) => headers.map((header) => row[header] ?? "")) },
-  })
+  }), { idempotent: false })
   clearSheetCache()
 }
 
@@ -433,20 +409,20 @@ export async function deleteSheetRow(params: {
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets"])
   const sheets = google.sheets({ version: "v4", auth })
   const safeSheetName = params.sheetName.replace(/'/g, "''")
-  const metadata = await sheets.spreadsheets.get({ spreadsheetId })
+  const metadata = await runGoogleRequest(() => sheets.spreadsheets.get({ spreadsheetId }))
   const sheet = metadata.data.sheets?.find((item) => item.properties?.title === params.sheetName)
   const sheetId = sheet?.properties?.sheetId
   if (sheetId === undefined || sheetId === null) throw new Error(`Feuille "${params.sheetName}" introuvable`)
-  const valuesResult = await sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!A:Z` })
+  const valuesResult = await runGoogleRequest(() => sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!A:Z` }))
   const values = valuesResult.data.values ?? []
   const headers = (values[0] ?? []).map((header) => String(header ?? "").trim())
   const idIndex = headers.indexOf(params.idColumn)
   if (idIndex < 0) throw new Error(`Colonne "${params.idColumn}" introuvable`)
   const rowIndex = values.findIndex((row, index) => index > 0 && String(row[idIndex] ?? "").trim() === params.idValue)
   if (rowIndex < 1) throw new Error("Enregistrement introuvable")
-  await sheets.spreadsheets.batchUpdate({
+  await runGoogleRequest(() => sheets.spreadsheets.batchUpdate({
     spreadsheetId,
     requestBody: { requests: [{ deleteDimension: { range: { sheetId, dimension: "ROWS", startIndex: rowIndex, endIndex: rowIndex + 1 } } }] },
-  })
+  }), { idempotent: false })
   clearSheetCache()
 }

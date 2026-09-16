@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { Mail, MapPin, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -128,7 +130,7 @@ export function OfficielDetailClient({
     data.append("mediaType", mediaType)
     data.append("actorType", "officiels")
     data.append("actorId", officiel.id)
-    const response = await fetch("/api/upload-media", { method: "POST", body: data })
+    const response = await apiFetch("/api/upload-media", { method: "POST", body: data })
     const result = await response.json()
     if (!response.ok) throw new Error(result.error || "Échec du média")
     return result as { fileId: string; url: string }
@@ -141,7 +143,7 @@ export function OfficielDetailClient({
     }
     setSaving(true)
     try {
-      const response = await fetch("/api/officiels", {
+      const response = await apiFetch("/api/officiels", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: officiel.id, row: form }),

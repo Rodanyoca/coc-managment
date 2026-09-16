@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Link from "next/link"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -25,7 +27,7 @@ export default function DocumentDetailClient({ document, references, typeLabel, 
     setUploading(true)
     try {
       const body = new FormData(); body.append("file", file)
-      const response = await fetch(`/api/documents/${encodeURIComponent(document.id_document)}/file`, { method: "PUT", body })
+      const response = await apiFetch(`/api/documents/${encodeURIComponent(document.id_document)}/file`, { method: "PUT", body })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || "Le fichier n’a pas pu être remplacé.")
       toast.success(document.drive_document_id ? "Fichier remplacé." : "Fichier ajouté."); setFile(null); router.refresh()

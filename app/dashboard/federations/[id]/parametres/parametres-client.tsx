@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -55,7 +57,7 @@ export default function ParametresClient({ data, federationId }: { data: Federat
     if (validationError) return setFeedback({ type: "error", text: validationError })
     setSaving(true); setFeedback(null)
     try {
-      const response = await fetch(`/api/federations/${editor.resource}`, { method: editor.id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editor.id ? { id: editor.id, row: editor.row } : { row: editor.row }) })
+      const response = await apiFetch(`/api/federations/${editor.resource}`, { method: editor.id ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(editor.id ? { id: editor.id, row: editor.row } : { row: editor.row }) })
       const result = await response.json().catch(() => ({})) as { error?: string }
       if (!response.ok) return setFeedback({ type: "error", text: result.error || "L’enregistrement a échoué. Vérifiez les informations saisies." })
       setEditor(null); setFeedback({ type: "success", text: `${label(editor.resource)} : enregistrement effectué avec succès.` }); router.refresh()
@@ -67,7 +69,7 @@ export default function ParametresClient({ data, federationId }: { data: Federat
   }
   async function disableHierarchy(id: string) {
     if (!window.confirm("Désactiver ce niveau ? Les éléments existants ne seront ni supprimés ni déplacés.")) return
-    const response = await fetch("/api/federations/hierarchie", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, federationId }) })
+    const response = await apiFetch("/api/federations/hierarchie", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id, federationId }) })
     const result = await response.json().catch(() => ({})) as { error?: string }
     setFeedback(response.ok ? { type: "success", text: "Niveau désactivé. Les éléments existants ont été conservés." } : { type: "error", text: result.error || "Impossible de désactiver ce niveau." })
     if (response.ok) router.refresh()

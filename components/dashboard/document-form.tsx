@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -39,10 +41,10 @@ export function DocumentForm({ references, initial, documentId, onSaved }: { ref
     setSaving(true)
     try {
       let response: Response
-      if (documentId) response = await fetch(`/api/documents/${encodeURIComponent(documentId)}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) })
+      if (documentId) response = await apiFetch(`/api/documents/${encodeURIComponent(documentId)}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) })
       else {
         const body = new FormData(); body.append("metadata", JSON.stringify(form)); if (file) body.append("file", file)
-        response = await fetch("/api/documents", { method: "POST", body })
+        response = await apiFetch("/api/documents", { method: "POST", body })
       }
       const result = await response.json()
       if (!response.ok) throw new Error(result.error || "Enregistrement impossible.")

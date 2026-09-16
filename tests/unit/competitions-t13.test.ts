@@ -22,7 +22,7 @@ test("T13: distingue schéma invalide, timeout et source indisponible", () => {
 })
 
 test("T13: une relation orpheline est visible et ne fait pas échouer le rapport", () => {
-  const report = competitionQuality({ competition, programs: [], engagements: [{ id_engagement_campagne: "ENG-1", id_programme_competition: "PRG-X", id_campagne: "CAM-1", id_statut_engagement: "PREVU", date_engagement: "", id_federation_source: "", reference_source: "", observation: "" }], participations: [], results: [], eventsAvailable: true })
+  const report = competitionQuality({ competition, programs: [], engagements: [{ id_engagement_campagne: "ENG-1", id_programme_competition: "PRG-X", id_campagne: "CAM-1", id_statut_engagement: "PREVU", date_engagement: "", observation: "" }], participations: [], results: [], eventsAvailable: true })
   assert.equal(report.issues.some((item) => item.state === "ORPHELIN" && item.blockingWrite), true)
   assert.equal(report.provenance, 0)
 })

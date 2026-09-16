@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Link from "next/link"
 import { Eye, FileText, ImageIcon, Plus, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -137,7 +139,7 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
     data.append("mediaType", mediaType)
     data.append("actorType", "officiels")
     data.append("actorId", officielId)
-    const response = await fetch("/api/upload-media", { method: "POST", body: data })
+    const response = await apiFetch("/api/upload-media", { method: "POST", body: data })
     const result = await response.json()
     if (!response.ok) throw new Error(result.error || `Échec de l’envoi du fichier ${mediaType}`)
   }
@@ -155,7 +157,7 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
 
     setSaving(true)
     try {
-      const response = await fetch("/api/officiels", {
+      const response = await apiFetch("/api/officiels", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ row: form }),

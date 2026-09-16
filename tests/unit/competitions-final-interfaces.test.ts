@@ -13,15 +13,16 @@ test("la liste finale masque les cérémonies et conserve une action accessible"
 
 test("la fiche finale possède cinq onglets et conserve le modèle campagne-programme-unité",async()=>{
  const code=await source("app/dashboard/competitions/[id]/competition-detail-client.tsx")
+ const participants=await source("components/dashboard/competition-participants.tsx")
  const engagements=await source("components/dashboard/campaign-engagements.tsx")
  for(const tab of ["Général","Programmes","Participants","Équipes / unités","Résultats"])assert.match(code,new RegExp(`>${tab}<`))
- assert.match(code,/id_engagement_campagne/);assert.match(engagements,/id_programme_competition/);assert.match(code,/id_statut_selection/);assert.match(code,/id_statut_participation/);assert.match(code,/Aucun athlète enregistré pour cette compétition/);assert.doesNotMatch(code,/overflow-x-auto/)
+ assert.match(participants,/id_engagement_campagne/);assert.match(engagements,/id_programme_competition/);assert.match(participants,/id_type_acteur/);assert.match(participants,/id_statut_participation/);assert.match(participants,/Aucun participant ne correspond aux critères/);assert.doesNotMatch(code,/overflow-x-auto/)
  assert.doesNotMatch(code,/Date de la cérémonie d’ouverture|Date de la cérémonie de clôture|formatCompetitionCeremonies/)
 })
 
 test("les écritures restent contextuelles et masquées sans droit",async()=>{
- const code=await source("app/dashboard/competitions/[id]/competition-detail-client.tsx"),list=await source("app/dashboard/competitions/competitions-client.tsx"),create=await source("app/dashboard/competitions/nouveau/page.tsx")
- assert.match(code,/canEdit&&<Button onClick=\{openEdit\}/);assert.match(code,/Gérer les participants/);assert.match(code,/<CampaignEngagements[^>]+canEdit=\{canEdit\}/);assert.match(code,/Ajouter ou modifier un résultat/);assert.match(code,/\/api\/competitions/);assert.match(list,/Sheet open=\{createOpen\}/);assert.match(list,/CompetitionForm value=\{form\}/);assert.match(create,/redirect\("\/dashboard\/competitions\?nouveau=1"\)/)
+ const code=await source("app/dashboard/competitions/[id]/competition-detail-client.tsx"),participants=await source("components/dashboard/competition-participants.tsx"),list=await source("app/dashboard/competitions/competitions-client.tsx"),create=await source("app/dashboard/competitions/nouveau/page.tsx")
+ assert.match(code,/canEdit&&<Button onClick=\{openEdit\}/);assert.match(participants,/canEdit&&<Button onClick=\{show\}/);assert.match(code,/<CampaignEngagements[^>]+canEdit=\{canEdit\}/);assert.match(code,/Ajouter ou modifier un résultat/);assert.match(participants,/\/api\/competitions/);assert.match(list,/Sheet open=\{createOpen\}/);assert.match(list,/CompetitionForm value=\{form\}/);assert.match(create,/redirect\("\/dashboard\/competitions\?nouveau=1"\)/)
 })
 
 test("les unités sont créables et modifiables, et les erreurs de résultat conservent le formulaire",async()=>{
@@ -37,8 +38,15 @@ test("les unités sont créables et modifiables, et les erreurs de résultat con
 
 test("la fiche relit les participations modifiées directement dans le classeur",async()=>{
  const page=await source("app/dashboard/competitions/[id]/page.tsx"),data=await source("lib/competitions/data.ts")
- assert.match(page,/getAthleteParticipations\(\{\s*competitionId:\s*id,\s*fresh:\s*true\s*\}\)/)
+ assert.match(page,/getCompetitionParticipants\(id, true\)/)
  assert.match(data,/PARTICIPATIONS_ACTEURS_COMPETITION[^\n]+bypassCache:\s*filters\.fresh/)
+})
+
+test("les participants sont regroupés par sport et type et l'ajout COC exclut les athlètes",async()=>{
+ const ui=await source("components/dashboard/competition-participants.tsx"),data=await source("lib/competitions/data.ts")
+ assert.match(ui,/Regroupés par sport puis par type d’acteur/);assert.match(ui,/TYPES\.filter\(value=>value!=="ATHLETE"\)/)
+ assert.match(data,/id_campagne===engagement\.id_campagne&&row\.id_acteur_coc===actorId&&row\.id_type_acteur===type/)
+ assert.match(data,/id_selection:"",id_affectation_staff:assignment\.id_affectation_staff/)
 })
 
 test("la liste des compétitions résiste au quota des données de délégation",async()=>{
@@ -64,6 +72,7 @@ test("le tableau des résultats affiche la synthèse et la décision référenc�
  assert.match(results,/formatResultSummary/)
  assert.match(results,/label\(references\.synthetics, row\.id_resultat_synthetique/)
  assert.match(results,/references\.decisions\.find/)
+ assert.doesNotMatch(results,/formatResultSummary\(\{\s*synthetic:/)
  assert.match(results,/colSpan=\{6\}/)
 })
 

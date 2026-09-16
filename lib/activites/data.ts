@@ -34,7 +34,7 @@ const actorSheets: Record<ActorType, { sheetName: string; idKey: string }> = {
   OFFICIEL: { sheetName: ACTOR_SHEETS.OFFICIEL, idKey: "id_officiel_coc" },
   MEDECIN: { sheetName: ACTOR_SHEETS.MEDECIN, idKey: "id_medecin_coc" },
   ARBITRE: { sheetName: ACTOR_SHEETS.ARBITRE, idKey: "id_arbitre_coc" },
-  AUTRE: { sheetName: ACTOR_SHEETS.AUTRE, idKey: "id_autre_coc" },
+  AUTRE: { sheetName: ACTOR_SHEETS.AUTRE, idKey: "id_autre_acteur_coc" },
 }
 const actorTypeAliases: Record<string, ActorType> = {
   ATHLETE: "ATHLETE", ATHLETES: "ATHLETE", COACH: "COACH", COACHS: "COACH", COACHES: "COACH", ENTRAINEUR: "COACH", ENTRAINEURS: "COACH",
@@ -53,7 +53,7 @@ export async function getActors(value: string, options: { fresh?: boolean } = {}
   const type = normalizeActorType(value)
   const { sheetName, idKey } = actorSheets[type]
   const rows = await getSheetRows({ sheetName, spreadsheetId: getActeursSpreadsheetId(), bypassCache: options.fresh })
-  const actors = rows.map((row) => ({ id: clean(row[idKey]), label: clean(row.nom_complet) || clean(row[idKey]) })).filter((actor) => actor.id)
+  const actors = rows.map((row) => { const id=clean(row[idKey] || (type==="AUTRE" ? row.id_autre_coc : "")); return { id, label: clean(row.nom_complet) || id } }).filter((actor) => actor.id)
   if (!actors.length && rows.length) {
     const headers = await getSheetHeaders({ sheetName, spreadsheetId: getActeursSpreadsheetId() })
     const missing = [idKey, "nom_complet"].filter((header) => !headers.includes(header))

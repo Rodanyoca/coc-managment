@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useEffect, useReducer, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
@@ -46,7 +48,7 @@ export function FederationLogoManager({ federationId, federationName, initials, 
     try {
       const formData = new FormData()
       formData.append("file", file)
-      const response = await fetch(`/api/federations/logo/${encodeURIComponent(federationId)}`, { method: "POST", body: formData })
+      const response = await apiFetch(`/api/federations/logo/${encodeURIComponent(federationId)}`, { method: "POST", body: formData })
       const result = await response.json().catch(() => null)
       if (!response.ok) throw new Error(result?.error || "Le logo n’a pas pu être envoyé.")
       setLogoUrl(result.url)

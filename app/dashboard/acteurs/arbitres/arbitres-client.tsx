@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Link from "next/link"
 import { Eye, FileText, ImageIcon, Plus, Search } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -36,12 +38,12 @@ export default function ArbitresClient({ arbitres, federations, grades }: { arbi
   function update<K extends keyof ArbitreForm>(key: K, value: ArbitreForm[K]) { setForm((current) => ({ ...current, [key]: value })) }
   function close() { setOpen(false); setForm(emptyArbitreForm); setAvatar(null); setPassport(null) }
   function pick(file: File | undefined, type: "avatar" | "passeport") { if (!file) return; const valid = type === "avatar" ? ["image/png", "image/jpeg", "image/jpg", "image/webp"].includes(file.type) : file.type === "application/pdf"; if (!valid || file.size > 4 * 1024 * 1024) return toast.error("Fichier invalide ou supérieur à 4 Mo."); if (type === "avatar") setAvatar(file); else setPassport(file) }
-  async function upload(file: File, type: "avatar" | "passeport", id: string) { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "arbitres"); data.append("actorId", id); const res = await fetch("/api/upload-media", { method: "POST", body: data }); const out = await res.json(); if (!res.ok) throw new Error(out.error || "Échec du média") }
+  async function upload(file: File, type: "avatar" | "passeport", id: string) { const data = new FormData(); data.append("file", file); data.append("mediaType", type); data.append("actorType", "arbitres"); data.append("actorId", id); const res = await apiFetch("/api/upload-media", { method: "POST", body: data }); const out = await res.json(); if (!res.ok) throw new Error(out.error || "Échec du média") }
   async function save() {
     if (!form.nom_complet || !form.id_federation || !form.id_sexe) return toast.error("Nom, fédération et sexe sont obligatoires.")
     setSaving(true)
     try {
-      const res = await fetch("/api/arbitres", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ row: form }) })
+      const res = await apiFetch("/api/arbitres", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ row: form }) })
       const out = await res.json(); if (!res.ok) throw new Error(out.error || "Création impossible")
       const id = String(out.row?.id_arbitre_coc || "")
       const uploads = [avatar ? upload(avatar, "avatar", id) : null, passport ? upload(passport, "passeport", id) : null].filter(Boolean) as Promise<void>[]

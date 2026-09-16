@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
 import { useRef, useState } from "react"
 import { LoaderCircle, Plus } from "lucide-react"
 import { toast } from "sonner"
@@ -24,7 +25,7 @@ export function FederationCreateSheet({ references, onCreated }: { references: F
     const required = Object.entries({ id_categorie_entite: form.id_categorie_entite, nom_officiel: form.nom_officiel, id_sport: form.id_sport, statut: form.statut, statut_reconnaissance_ministere: form.statut_reconnaissance_ministere, statut_affiliation_coc: form.statut_affiliation_coc }).find(([, value]) => !value.trim())
     if (required) { setFieldError(required[0]); return setError("Renseignez tous les champs obligatoires.") }
     locked.current = true; setSaving(true); setError("")
-    try { const body = new FormData(); body.set("data", JSON.stringify(form)); if (logo) body.set("logo", logo); const response = await fetch("/api/federations", { method: "POST", headers: { "x-request-id": crypto.randomUUID() }, body }); const result = await response.json(); if (!response.ok) { setFieldError(result.field || ""); throw new Error(result.error || "Création impossible.") }; onCreated(result.federation); setOpen(false); setForm(initial); setLogo(null); toast.success("Fédération ajoutée.") }
+    try { const body = new FormData(); body.set("data", JSON.stringify(form)); if (logo) body.set("logo", logo); const response = await apiFetch("/api/federations", { method: "POST", headers: { "x-request-id": crypto.randomUUID() }, body }); const result = await response.json(); if (!response.ok) { setFieldError(result.field || ""); throw new Error(result.error || "Création impossible.") }; onCreated(result.federation); setOpen(false); setForm(initial); setLogo(null); toast.success("Fédération ajoutée.") }
     catch (cause) { setError(cause instanceof Error ? cause.message : "Création impossible.") } finally { locked.current = false; setSaving(false) }
   }
   const field = (key: keyof typeof initial, label: string, type = "text", required = false) => { const isRequired = required && key !== "sigle"; return <div className="space-y-2"><Label htmlFor={`fed-${key}`}>{label}{key === "sigle" ? " (facultatif)" : isRequired && " *"}</Label><Input id={`fed-${key}`} type={type} value={form[key]} required={isRequired} aria-invalid={fieldError === key} onChange={(event) => update(key, key === "sigle" ? event.target.value.toLocaleUpperCase("fr") : event.target.value)} />{fieldError === key && <p className="text-xs text-destructive">{error}</p>}</div> }

@@ -4,11 +4,12 @@ import { appendSheetRow, appendSheetRows, deleteSheetRow, getSheetHeaders, getSh
 import { getReferentialSpreadsheetId } from "@/lib/federations/config"
 import { getNationalTeamReferences, getNationalTeams as getCentralNationalTeams } from "@/lib/equipes-nationales/data"
 import { getCampaignSelections } from "@/lib/equipes-nationales/data"
+import { getActors } from "@/lib/activites/data"
 import { getFederationOptions } from "@/lib/federations/options"
 import { getNationalTeamsSpreadsheetId } from "@/lib/equipes-nationales/config"
 import { getCompetitionsSpreadsheetId } from "./config"
 import { normalizeCompetitionStatus } from "./format"
-import { COMPETITION_HEADERS, PROGRAM_HEADERS, type AthleteParticipation, type CampaignEngagement, type Competition, type CompetitionMedal, type CompetitionProgram, type CompetitionReferences, type CompetitionResult, type NationalTeamOption, type ParticipatingUnit, type TeamParticipation } from "./types"
+import { COMPETITION_HEADERS, PROGRAM_HEADERS, type AthleteParticipation, type CampaignEngagement, type Competition, type CompetitionMedal, type CompetitionParticipant, type CompetitionProgram, type CompetitionReferences, type CompetitionResult, type NationalTeamOption, type ParticipatingUnit, type TeamParticipation } from "./types"
 import { MEDAL_DISTINCTIONS, validateAthleteParticipationInput, validateCompetitionInput, validateCompetitionMedalInput, validateCompetitionResultInput, validateEngagementInput, validateProgramInput, validateProgramSchedule } from "./validation"
 import { ENGAGEMENT_STATUSES } from "./v1-model"
 import { participatingUnitMedalLabel } from "./medals"
@@ -19,7 +20,7 @@ const COMPETITIONS_SHEET = "COMPETITIONS"
 const TEAMS_SHEET = "ENGAGEMENTS_CAMPAGNES_PROGRAMMES"
 const PROGRAMS_SHEET = "PROGRAMMES_COMPETITION"
 const COMPETITION_SHEET_HEADERS = ["id_competition", "nom_competition", "id_type_competition", "id_niveau_competition", "edition", "est_multisport", "date_debut", "date_fin", "pays", "ville", "lieu", "id_statut_competition", "observation"] as const
-const TEAM_SHEET_HEADERS = ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "id_federation_source", "reference_source", "observation"] as const
+const TEAM_SHEET_HEADERS = ["id_engagement_campagne", "id_programme_competition", "id_campagne", "id_statut_engagement", "date_engagement", "observation"] as const
 const PROGRAM_SHEET_HEADERS = ["id_programme_competition", "id_competition", "id_epreuve", "id_categorie_age", "id_sexe", "date_debut", "date_fin", "observation"] as const
 const RESULT_HEADERS = ["id_resultat","id_resultat_logique","numero_version","id_resultat_precedent","est_version_courante","id_engagement_campagne","id_programme_competition","id_unite_participante","date_resultat","phase","type_adversaire","nom_adversaire","pays_adversaire","id_resultat_synthetique","valeur_coc","valeur_adversaire","id_unite_mesure","id_decision_resultat","id_statut_resultat","motif_correction","observation"] as const
 
@@ -227,11 +228,9 @@ async function prepareEngagement(competitionId: string, input: Record<string, un
   const campaign = references.campaigns.find((item) => item.id === row.id_campagne); if (!campaign) throw new Error("Campagne introuvable.")
   const team = teams.find((item) => item.id_equipe_nationale === campaign.teamId); if (!team) throw new Error("Équipe nationale de la campagne introuvable.")
   if (!references.statuses.some((item) => item.id === row.id_statut_engagement) || !ENGAGEMENT_STATUSES.includes(row.id_statut_engagement as (typeof ENGAGEMENT_STATUSES)[number])) throw new Error("Statut d’engagement inconnu.")
-  if (!references.federations.some((item) => item.id === row.id_federation_source)) throw new Error("Fédération source inconnue.")
   const start = program.date_debut || competition.date_debut, end = program.date_fin || competition.date_fin
   if ((campaign.dateEnd && campaign.dateEnd < start) || (end && campaign.dateStart > end)) throw new Error("La campagne est hors de la période du programme.")
   if (row.date_engagement < start || (end && row.date_engagement > end)) throw new Error("La date d’engagement est hors de la période du programme.")
-  if (row.id_federation_source !== team.id_federation && !row.observation) throw new Error("Une fédération source différente doit être justifiée dans l’observation.")
   return row
 }
 
@@ -256,6 +255,52 @@ export async function getAthleteParticipations(filters:{competitionId?:string;en
   const [rows,engagements,selections]=await Promise.all([getSheetRows({sheetName:"PARTICIPATIONS_ACTEURS_COMPETITION",spreadsheetId:getCompetitionsSpreadsheetId(),bypassCache:filters.fresh}),getCampaignEngagements(filters.competitionId?{competitionId:filters.competitionId,fresh:filters.fresh}:{fresh:filters.fresh}),getCampaignSelections()])
   const engagementIds=new Set(engagements.map((row)=>row.id_engagement_campagne)),selectionMap=new Map(selections.map((row)=>[row.id_selection,row]))
   return rows.filter((row)=>engagementIds.has(row.id_engagement_campagne)&&(!filters.engagementId||row.id_engagement_campagne===filters.engagementId)).map((row)=>{const selection=selectionMap.get(row.id_selection),id=clean(row.id_participation_acteur);return{id_participation_acteur:id,id_participation_athlete:id,id_engagement_campagne:clean(row.id_engagement_campagne),id_acteur_coc:clean(row.id_acteur_coc),id_type_acteur:clean(row.id_type_acteur),id_selection:clean(row.id_selection),id_affectation_staff:clean(row.id_affectation_staff),id_statut_participation:clean(row.id_statut_participation),date_statut:clean(row.date_statut),id_participation_remplacement:clean(row.id_participation_remplacement),id_selection_remplacement:clean(row.id_participation_remplacement),observation:clean(row.observation),athlete_id:selection?.id_athlete||clean(row.id_acteur_coc),athlete_label:selection?.athlete_label,campaign_id:selection?.id_campagne}}).filter((row)=>row.id_participation_acteur)
+}
+
+const PARTICIPANT_ACTOR_TYPES = ["ATHLETE", "COACH", "OFFICIEL", "ARBITRE", "MEDECIN", "AUTRE"] as const
+const ACTOR_TYPE_LABELS: Record<string,string> = { ATHLETE:"Athlètes", COACH:"Entraîneurs", OFFICIEL:"Officiels", ARBITRE:"Arbitres", MEDECIN:"Médecins", AUTRE:"Autres" }
+
+export async function getCompetitionParticipants(competitionId:string, fresh=false):Promise<CompetitionParticipant[]> {
+  const [participants, engagements, campaigns, teams, references, assignments, roles, actorGroups] = await Promise.all([
+    getAthleteParticipations({competitionId,fresh}),
+    getCampaignEngagements({competitionId,fresh}),
+    getSheetRows({sheetName:"CAMPAGNES_EQUIPES_NATIONALES",spreadsheetId:getNationalTeamsSpreadsheetId(),bypassCache:fresh}),
+    getCentralNationalTeams({fresh}),
+    getCompetitionReferences(),
+    getSheetRows({sheetName:"AFFECTATIONS_STAFF",spreadsheetId:getNationalTeamsSpreadsheetId(),bypassCache:fresh}),
+    getSheetRows({sheetName:"ROLES_STAFF_EQUIPE_NATIONALE",spreadsheetId:getReferentialSpreadsheetId(),bypassCache:fresh}).catch(()=>[]),
+    Promise.all(PARTICIPANT_ACTOR_TYPES.map(async type=>[type,await getActors(type,{fresh})] as const)),
+  ])
+  const engagementMap=new Map(engagements.map(row=>[row.id_engagement_campagne,row])), campaignMap=new Map(campaigns.map(row=>[row.id_campagne,row])), teamMap=new Map(teams.map(row=>[row.id_equipe_nationale,row]))
+  const sportMap=new Map((references.sports||[]).map(row=>[row.id,row.label])), assignmentMap=new Map(assignments.map(row=>[row.id_affectation_staff,row])), roleMap=new Map(roles.map(row=>[row.id_role_staff,row.nom_role_staff||row.id_role_staff]))
+  const actorMap=new Map<string,string>(actorGroups.flatMap(([type,actors])=>actors.map(actor=>[`${type}:${actor.id}`,actor.label] as [string,string])))
+  return participants.map(row=>{const engagement=engagementMap.get(row.id_engagement_campagne),campaign=campaignMap.get(engagement?.id_campagne||""),team=teamMap.get(campaign?.id_equipe_nationale||""),assignment=assignmentMap.get(row.id_affectation_staff),sportId=team?.id_sport||"NON_RENSEIGNE";return {...row,actor_label:actorMap.get(`${row.id_type_acteur}:${row.id_acteur_coc}`)||row.athlete_label||row.id_acteur_coc,sport_id:sportId,sport_label:sportMap.get(sportId)||team?.id_sport||"Sport non renseigné",actor_type_label:ACTOR_TYPE_LABELS[row.id_type_acteur]||row.id_type_acteur,role_label:roleMap.get(assignment?.id_role_staff||"")||assignment?.id_role_staff||"",campaign_label:engagement?.nom_campagne||campaign?.nom_campagne||engagement?.id_campagne||""}})
+}
+
+export async function getCocParticipantReferences(actorType?:string) {
+  const type=clean(actorType).toUpperCase()
+  const actors=PARTICIPANT_ACTOR_TYPES.includes(type as typeof PARTICIPANT_ACTOR_TYPES[number])&&type!=="ATHLETE"?await getActors(type,{fresh:true}):[]
+  const roles=await getSheetRows({sheetName:"ROLES_STAFF_EQUIPE_NATIONALE",spreadsheetId:getReferentialSpreadsheetId()}).catch(()=>[])
+  const typeIds:Record<string,string[]>={COACH:["COACH","TYPACT002"],MEDECIN:["MEDECIN","TYPACT003"],ARBITRE:["ARBITRE","TYPACT004"],OFFICIEL:["OFFICIEL","OFFICIELS","TYPACT005"],AUTRE:["AUTRE","AUTRES","TYPACT006"]}
+  return {actors,roles:roles.filter(row=>row.id_role_staff&&(!row.id_type_acteur||(typeIds[type]||[type]).includes(row.id_type_acteur))).map(row=>({id:row.id_role_staff,label:row.nom_role_staff||row.id_role_staff}))}
+}
+
+export async function createCocParticipant(competitionId:string,input:Record<string,unknown>) {
+  const engagementId=clean(input.id_engagement_campagne),type=clean(input.id_type_acteur).toUpperCase(),actorId=clean(input.id_acteur_coc),roleId=clean(input.id_role_staff),dateStart=clean(input.date_debut),dateEnd=clean(input.date_fin),observation=clean(input.observation)
+  if(!PARTICIPANT_ACTOR_TYPES.includes(type as typeof PARTICIPANT_ACTOR_TYPES[number])||type==="ATHLETE")throw new Error("Type d’acteur COC invalide.")
+  if(!engagementId||!actorId||!dateStart)throw new Error("L’engagement, l’acteur et la date de début sont obligatoires.")
+  if(dateEnd&&dateEnd<dateStart)throw new Error("La date de fin doit être postérieure à la date de début.")
+  const [engagements,actors,participantRows,assignmentRows,statusRows]=await Promise.all([getCampaignEngagements({competitionId,fresh:true}),getActors(type,{fresh:true}),getSheetRows({sheetName:"PARTICIPATIONS_ACTEURS_COMPETITION",spreadsheetId:getCompetitionsSpreadsheetId(),bypassCache:true}),getSheetRows({sheetName:"AFFECTATIONS_STAFF",spreadsheetId:getNationalTeamsSpreadsheetId(),bypassCache:true}),getSheetRows({sheetName:"STATUTS_PARTICIPATION_ATHLETE",spreadsheetId:getReferentialSpreadsheetId()})])
+  const engagement=engagements.find(row=>row.id_engagement_campagne===engagementId);if(!engagement)throw new Error("Engagement étranger à la compétition.")
+  if(!actors.some(row=>row.id===actorId))throw new Error("Acteur introuvable ou type incohérent.")
+  if(dateStart<engagement.date_engagement)throw new Error("La date de début est antérieure à la date d’engagement.")
+  const duplicate=participantRows.find(row=>row.id_engagement_campagne===engagementId&&row.id_acteur_coc===actorId&&row.id_type_acteur===type);if(duplicate)return (await getCompetitionParticipants(competitionId,true)).find(row=>row.id_participation_acteur===duplicate.id_participation_acteur)
+  let assignment=assignmentRows.find(row=>row.id_campagne===engagement.id_campagne&&row.id_acteur_coc===actorId&&row.id_type_acteur===type)
+  if(!assignment){if(type!=="ARBITRE"&&!roleId)throw new Error("Le rôle est obligatoire pour ce type d’acteur.");assignment={id_affectation_staff:nextId(assignmentRows.map(row=>row.id_affectation_staff),"AFF"),id_campagne:engagement.id_campagne,id_acteur_coc:actorId,id_type_acteur:type,id_role_staff:roleId,date_debut:dateStart,date_fin:dateEnd,observation};await appendSheetRow({sheetName:"AFFECTATIONS_STAFF",spreadsheetId:getNationalTeamsSpreadsheetId(),row:assignment})}
+  const participantStatus=statusRows.find(row=>row.id_statut_participation==="PARTICIPANT")?.id_statut_participation||statusRows.find(row=>row.id_statut_participation)?.id_statut_participation;if(!participantStatus)throw new Error("Statut initial de participation indisponible.")
+  const physical={id_participation_acteur:nextId(participantRows.map(row=>row.id_participation_acteur),"PAR"),id_engagement_campagne:engagementId,id_acteur_coc:actorId,id_type_acteur:type,id_selection:"",id_affectation_staff:assignment.id_affectation_staff,id_statut_participation:participantStatus,date_statut:dateStart,id_participation_remplacement:"",observation}
+  await appendSheetRow({sheetName:"PARTICIPATIONS_ACTEURS_COMPETITION",spreadsheetId:getCompetitionsSpreadsheetId(),row:physical})
+  return (await getCompetitionParticipants(competitionId,true)).find(row=>row.id_participation_acteur===physical.id_participation_acteur)
 }
 
 export async function getParticipationReferences(){const [statuses,selections]=await Promise.all([getSheetRows({sheetName:"STATUTS_PARTICIPATION_ATHLETE",spreadsheetId:getReferentialSpreadsheetId()}),getCampaignSelections()]);return{statuses:statuses.filter((row)=>row.id_statut_participation).map((row)=>({id:row.id_statut_participation,label:row.nom_statut_participation||row.id_statut_participation})),selections}}

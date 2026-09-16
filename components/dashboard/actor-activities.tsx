@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Link from "next/link"
 import { Eye } from "lucide-react"
 import { useEffect, useState } from "react"
@@ -18,7 +20,7 @@ export function ActorActivities({ actorId }: { actorId: string }) {
 
   useEffect(() => {
     let active = true
-    fetch(`/api/activites/acteurs/${encodeURIComponent(actorId)}`, { cache: "no-store" })
+    apiFetch(`/api/activites/acteurs/${encodeURIComponent(actorId)}`, { cache: "no-store" })
       .then(async (response) => { const data = await response.json(); if (!response.ok) throw new Error(); if (active) { setRows(data.rows); setRefs(data.references) } })
       .catch(() => active && setError(true))
       .finally(() => active && setLoading(false))

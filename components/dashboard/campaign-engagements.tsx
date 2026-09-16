@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useState } from "react"
 import { Plus } from "lucide-react"
 import { toast } from "sonner"
@@ -15,7 +17,7 @@ import { ActorSearchSelect } from "@/components/dashboard/actor-search-select"
 import type { CampaignEngagement, CompetitionProgram, CompetitionReferences } from "@/lib/competitions/types"
 
 type Refs = { campaigns: { id: string; label: string; teamId: string; teamName: string; federationId: string; dateStart: string; dateEnd: string; status: string }[]; statuses: { id: string; label: string }[]; federations: { id: string; label: string }[] }
-const empty = { id_programme_competition: "", id_campagne: "", id_statut_engagement: "", date_engagement: "", id_federation_source: "", reference_source: "", observation: "" }
+const empty = { id_programme_competition: "", id_campagne: "", id_statut_engagement: "", date_engagement: "", observation: "" }
 type CampaignEngagementForm = typeof empty
 
 function campaignEngagementToForm(row?: Partial<CampaignEngagement>): CampaignEngagementForm {
@@ -25,8 +27,6 @@ function campaignEngagementToForm(row?: Partial<CampaignEngagement>): CampaignEn
     id_campagne: row.id_campagne ?? "",
     id_statut_engagement: row.id_statut_engagement ?? "",
     date_engagement: row.date_engagement ?? "",
-    id_federation_source: row.id_federation_source ?? "",
-    reference_source: row.reference_source ?? "",
     observation: row.observation ?? "",
   }
 }
@@ -34,7 +34,7 @@ function campaignEngagementToForm(row?: Partial<CampaignEngagement>): CampaignEn
 export function CampaignEngagements({ competitionId, programs, initialRows, references, competitionReferences, canEdit }: { competitionId: string; programs: CompetitionProgram[]; initialRows: CampaignEngagement[]; references: Refs; competitionReferences: CompetitionReferences; canEdit: boolean }) {
   const [rows, setRows] = useState(initialRows), [open, setOpen] = useState(false), [editing, setEditing] = useState(""), [form, setForm] = useState(empty), [saving, setSaving] = useState(false)
   const show = (row?: CampaignEngagement) => { setEditing(row?.id_engagement_campagne || ""); setForm(campaignEngagementToForm(row)); setOpen(true) }
-  const campaign = references.campaigns.find(item => item.id === form.id_campagne), responsible = campaign?.federationId
+  const campaign = references.campaigns.find(item => item.id === form.id_campagne)
   const campaignOptions = references.campaigns.map(item => {
     const federation = references.federations.find(row => row.id === item.federationId)?.label || item.federationId || "Fédération non renseignée"
     const period = `${item.dateStart || "date inconnue"} — ${item.dateEnd || "en cours"}`
@@ -48,7 +48,7 @@ export function CampaignEngagements({ competitionId, programs, initialRows, refe
     const federation = references.federations.find(item => item.id === resolvedFederationId)?.label || resolvedFederationId || "—"
     return { program, sport, federation, programName: event?.label || "Programme non renseigné" }
   }
-  async function save() { setSaving(true); try { const response = await fetch(`/api/competitions/${encodeURIComponent(competitionId)}/engagements`, { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: form }) }), result = await response.json(); if (!response.ok) throw new Error(result.error); setRows(current => editing ? current.map(item => item.id_engagement_campagne === editing ? result.row : item) : [...current, result.row]); setOpen(false); toast.success(editing ? "Engagement modifié." : "Campagne engagée.") } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) } }
+  async function save() { setSaving(true); try { const response = await apiFetch(`/api/competitions/${encodeURIComponent(competitionId)}/engagements`, { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: form }) }), result = await response.json(); if (!response.ok) throw new Error(result.error); setRows(current => editing ? current.map(item => item.id_engagement_campagne === editing ? result.row : item) : [...current, result.row]); setOpen(false); toast.success(editing ? "Engagement modifié." : "Campagne engagée.") } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) } }
 
   return <>
     <div className="space-y-4">
@@ -61,8 +61,7 @@ export function CampaignEngagements({ competitionId, programs, initialRows, refe
       <Field label="Campagne *"><ActorSearchSelect disabled={Boolean(editing)} value={form.id_campagne} onValueChange={value => setForm({ ...form, id_campagne: value })} options={campaignOptions} placeholder="Rechercher une campagne ou une équipe" /></Field>{campaign && <p className="text-xs text-muted-foreground">Équipe : {campaign.teamName || campaign.teamId} · Campagne : {campaign.dateStart || "—"} — {campaign.dateEnd || "en cours"}</p>}
       <Field label="Statut *"><Select value={form.id_statut_engagement} onValueChange={value => setForm({ ...form, id_statut_engagement: value })}><SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent>{references.statuses.map(item => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select></Field>
       <Field label="Date d’engagement *"><Input type="date" value={form.date_engagement} onChange={event => setForm({ ...form, date_engagement: event.target.value })} /></Field>
-      <Field label="Fédération source *"><Select value={form.id_federation_source} onValueChange={value => setForm({ ...form, id_federation_source: value })}><SelectTrigger><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent>{references.federations.map(item => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select></Field>{responsible && <p className="text-xs text-muted-foreground">Fédération responsable : {references.federations.find(item => item.id === responsible)?.label || responsible}</p>}
-      <Field label="Référence source"><Input value={form.reference_source} onChange={event => setForm({ ...form, reference_source: event.target.value })} /></Field><Field label="Observation"><Textarea value={form.observation} onChange={event => setForm({ ...form, observation: event.target.value })} /></Field><div className="flex justify-end gap-2"><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button disabled={saving} onClick={save}>Enregistrer</Button></div>
+      <Field label="Observation"><Textarea value={form.observation} onChange={event => setForm({ ...form, observation: event.target.value })} /></Field><div className="flex justify-end gap-2"><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button disabled={saving} onClick={save}>Enregistrer</Button></div>
     </div></SheetContent></Sheet>
   </>
 }

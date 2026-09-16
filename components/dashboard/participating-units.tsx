@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useEffect, useState } from "react"
 import { Pencil, Plus } from "lucide-react"
 import { toast } from "sonner"
@@ -25,12 +27,12 @@ export function ParticipatingUnits({ competitionId, engagements, participants, p
     const program = programs.find(item => item.id_programme_competition === engagement?.id_programme_competition)
     const event = references.events?.find(item => item.id === program?.id_epreuve)
     const sport = references.sports?.find(item => item.id === event?.sportId)?.label || event?.sportId || "—"
-    const federationId = event?.federationId || engagement?.id_federation_responsable || engagement?.id_federation_source
+    const federationId = event?.federationId || engagement?.id_federation_responsable
     const federation = references.federations?.find(item => item.id === federationId)?.label || federationId || "—"
     return { program, sport, federation }
   }
   function show(row?: ParticipatingUnit) { setEditing(row?.id_unite_participante || ""); setForm(row ? { id_engagement_campagne: row.id_engagement_campagne, type_unite: row.type_unite, id_participation_acteur: row.id_participation_acteur, nom_unite: row.nom_unite, membres: row.membres || [], observation: row.observation } : empty); setOpen(true) }
-  async function save() { setSaving(true); try { const response = await fetch(`/api/competitions/${encodeURIComponent(competitionId)}/unites`, { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: form }) }), payload = await response.json(); if (!response.ok) throw new Error(payload.error); setOpen(false); setEditing(""); setForm(empty); await load(true); toast.success(editing ? "Unité participante modifiée." : "Unité participante créée.") } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) } }
+  async function save() { setSaving(true); try { const response = await apiFetch(`/api/competitions/${encodeURIComponent(competitionId)}/unites`, { method: editing ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editing, row: form }) }), payload = await response.json(); if (!response.ok) throw new Error(payload.error); setOpen(false); setEditing(""); setForm(empty); await load(true); toast.success(editing ? "Unité participante modifiée." : "Unité participante créée.") } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) } }
 
   return <>
     <div className="space-y-3">

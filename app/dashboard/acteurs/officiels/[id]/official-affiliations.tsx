@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -32,7 +34,7 @@ export function OfficialAffiliations({ officialId, initialRows, organisations, f
     if (!form.id_entite || !form.id_fonction || !form.date_debut) return toast.error("Entité, fonction et date de début sont obligatoires.")
     setSaving(true)
     try {
-      const response = await fetch("/api/officiels/affiliations", { method: editingId ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editingId, row: { ...form, id_officiel_coc: officialId } }) })
+      const response = await apiFetch("/api/officiels/affiliations", { method: editingId ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: editingId, row: { ...form, id_officiel_coc: officialId } }) })
       const result = await response.json(); if (!response.ok) throw new Error(result.error || "Enregistrement impossible")
       setRows((current) => [...current.filter((item) => item.id_affiliation !== result.row.id_affiliation), result.row].sort((a, b) => b.date_debut.localeCompare(a.date_debut)))
       toast.success(editingId ? "Affiliation modifiée." : "Affiliation ajoutée."); setOpen(false); router.refresh()

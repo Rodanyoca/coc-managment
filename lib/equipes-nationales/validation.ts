@@ -2,7 +2,7 @@ import { ACTOR_TYPES, type ActorType } from "./types.ts"
 const clean = (value: unknown) => String(value ?? "").trim()
 export const NATIONAL_TEAM_STATUSES = ["ACTIF", "INACTIF"] as const
 export function validateTeamInput(input: Record<string, unknown>) {
-  const row = { id_federation: clean(input.id_federation), id_sport: clean(input.id_sport), id_discipline: clean(input.id_discipline), nom_equipe_nationale: clean(input.nom_equipe_nationale), id_categorie_age: clean(input.id_categorie_age), id_sexe: clean(input.id_sexe), id_saison:clean(input.id_saison), statut: clean(input.statut).toUpperCase(), observations: clean(input.observations) }
+  const row = { id_federation: clean(input.id_federation), id_sport: clean(input.id_sport), id_discipline: clean(input.id_discipline), nom_equipe_nationale: clean(input.nom_equipe_nationale), id_categorie_age: clean(input.id_categorie_age), id_saison:clean(input.id_saison), statut: clean(input.statut).toUpperCase(), observations: clean(input.observations) }
   if (!row.id_federation || !row.id_sport || !row.nom_equipe_nationale || !row.id_saison || !row.statut) throw new Error("La fédération, le sport, le nom, la saison et le statut sont obligatoires.")
   if (!NATIONAL_TEAM_STATUSES.includes(row.statut as (typeof NATIONAL_TEAM_STATUSES)[number])) throw new Error("Statut d’équipe nationale invalide.")
   return row

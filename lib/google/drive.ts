@@ -2,6 +2,7 @@ import "server-only"
 
 import { Readable } from "stream"
 import { google } from "googleapis"
+import { runGoogleRequest } from "./request"
 
 function getDriveAuth() {
   const clientId = process.env.GOOGLE_OAUTH_CLIENT_ID
@@ -43,7 +44,7 @@ export async function getDriveFileSize(fileId: string): Promise<string> {
   if (cached && Date.now() - cached.timestamp < DRIVE_SIZE_CACHE_TTL_MS) return cached.size
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })
-    const response = await drive.files.get({ fileId, fields: "id,size" })
+    const response = await runGoogleRequest(() => drive.files.get({ fileId, fields: "id,size" }))
     const size = String(response.data.size ?? "")
     if (size) driveSizeCache.set(fileId, { size, timestamp: Date.now() })
     return size
@@ -55,7 +56,7 @@ export async function getDriveFileSize(fileId: string): Promise<string> {
 export async function uploadPrivateFileToDrive(params: { fileName: string; mimeType: string; buffer: Buffer; folderId: string }): Promise<DriveUploadResult> {
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })
-    const response = await drive.files.create({ requestBody: { name: params.fileName, parents: [params.folderId] }, media: { mimeType: params.mimeType, body: Readable.from(params.buffer) }, fields: "id" })
+    const response = await runGoogleRequest(() => drive.files.create({ requestBody: { name: params.fileName, parents: [params.folderId] }, media: { mimeType: params.mimeType, body: Readable.from(params.buffer) }, fields: "id" }), { idempotent: false })
     const fileId = response.data.id
     if (!fileId) throw new Error("Upload Drive échoué : aucun ID retourné")
     return { fileId, url: `https://drive.google.com/file/d/${fileId}/view` }
@@ -68,8 +69,8 @@ export async function downloadDriveFile(fileId: string): Promise<{ buffer: Buffe
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })
     const [metadata, content] = await Promise.all([
-      drive.files.get({ fileId, fields: "name,mimeType" }),
-      drive.files.get({ fileId, alt: "media" }, { responseType: "arraybuffer" }),
+      runGoogleRequest(() => drive.files.get({ fileId, fields: "name,mimeType" })),
+      runGoogleRequest(() => drive.files.get({ fileId, alt: "media" }, { responseType: "arraybuffer" })),
     ])
     return { buffer: Buffer.from(content.data as ArrayBuffer), mimeType: metadata.data.mimeType || "application/pdf", name: metadata.data.name || "document.pdf" }
   } catch (error) {
@@ -80,10 +81,10 @@ export async function downloadDriveFile(fileId: string): Promise<{ buffer: Buffe
 export async function verifyDriveFolderAccess(folderId: string): Promise<void> {
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })
-    const response = await drive.files.get({
+    const response = await runGoogleRequest(() => drive.files.get({
       fileId: folderId,
       fields: "id,mimeType,capabilities(canAddChildren)",
-    })
+    }))
     if (
       response.data.mimeType !== "application/vnd.google-apps.folder" ||
       !response.data.capabilities?.canAddChildren
@@ -103,7 +104,7 @@ export async function uploadFileToDrive(params: {
 }): Promise<DriveUploadResult> {
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })
-    const response = await drive.files.create({
+    const response = await runGoogleRequest(() => drive.files.create({
       requestBody: {
         name: params.fileName,
         parents: [params.folderId],
@@ -113,15 +114,15 @@ export async function uploadFileToDrive(params: {
         body: Readable.from(params.buffer),
       },
       fields: "id",
-    })
+    }), { idempotent: false })
 
     const fileId = response.data.id
     if (!fileId) throw new Error("Upload Drive échoué : aucun ID retourné")
 
-    await drive.permissions.create({
+    await runGoogleRequest(() => drive.permissions.create({
       fileId,
       requestBody: { role: "reader", type: "anyone" },
-    })
+    }), { idempotent: false })
 
     return {
       fileId,
@@ -137,7 +138,7 @@ export async function uploadFileToDrive(params: {
 export async function deleteDriveFile(fileId: string): Promise<void> {
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })
-    await drive.files.delete({ fileId })
+    await runGoogleRequest(() => drive.files.delete({ fileId }), { idempotent: false })
   } catch (error) {
     throw driveError(error)
   }

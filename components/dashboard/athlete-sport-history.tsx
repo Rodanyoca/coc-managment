@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Link from "next/link"
 import { Eye } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
@@ -17,7 +19,7 @@ export function useAthleteSportHistory(athleteId: string) {
   const [error, setError] = useState(false)
   const load = useCallback(() => {
     setLoading(true); setError(false)
-    fetch(`/api/athletes/${encodeURIComponent(athleteId)}/sport-history`, { cache: "no-store" })
+    apiFetch(`/api/athletes/${encodeURIComponent(athleteId)}/sport-history`, { cache: "no-store" })
       .then(async (response) => { const body = await response.json(); if (!response.ok) throw new Error(); setData(body) })
       .catch(() => setError(true))
       .finally(() => setLoading(false))

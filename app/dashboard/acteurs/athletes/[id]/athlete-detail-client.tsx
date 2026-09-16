@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { FileText, ImageIcon, Mail, MapPin, Pencil, Phone } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -170,7 +172,7 @@ export function AthleteDetailClient({
     data.append("mediaType", mediaType)
     data.append("actorType", "athletes")
     data.append("actorId", athlete.id)
-    const response = await fetch("/api/upload-media", { method: "POST", body: data })
+    const response = await apiFetch("/api/upload-media", { method: "POST", body: data })
     const result = await response.json().catch(() => null)
     if (!response.ok) throw new Error(result?.error || (response.status === 413 ? "Le fichier dépasse 4 Mo." : `Échec du média (${response.status})`))
     if (!result) throw new Error("Réponse d’envoi invalide")
@@ -184,7 +186,7 @@ export function AthleteDetailClient({
     }
     setSaving(true)
     try {
-      const response = await fetch("/api/athletes", {
+      const response = await apiFetch("/api/athletes", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: athlete.id, row: form }),

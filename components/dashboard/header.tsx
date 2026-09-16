@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useRouter } from "next/navigation"
 import { LogOut, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -35,7 +37,7 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
           size="sm"
           className="gap-2"
           onClick={async () => {
-            await fetch("/api/auth/logout", { method: "POST" })
+            await apiFetch("/api/auth/logout", { method: "POST" })
             router.push("/login")
           }}
         >

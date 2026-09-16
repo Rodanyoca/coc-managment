@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import Link from "next/link"
 import { useState } from "react"
 import { AlertCircle, ArrowLeft, Check, Copy, ShieldCheck, UserPlus } from "lucide-react"
@@ -31,7 +33,7 @@ export default function NewUserClient() {
     setError("")
     setSubmitting(true)
     try {
-      const response = await fetch("/api/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, requestId: crypto.randomUUID(), authorizations: selected.map((block) => ({ block, dateDebut: form.dateDebut })) }) })
+      const response = await apiFetch("/api/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, requestId: crypto.randomUUID(), authorizations: selected.map((block) => ({ block, dateDebut: form.dateDebut })) }) })
       const result = await response.json()
       if (!response.ok) {
         setError(result.existingUserId ? `${result.error} Compte : ${result.existingUserId}` : result.error || "La création du compte a échoué.")

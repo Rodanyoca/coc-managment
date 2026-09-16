@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Plus } from "lucide-react"
@@ -36,7 +38,7 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
   const engagement = engagements.find((item) => item.id_engagement_campagne === form.id_engagement_campagne)
   const compatible = references.selections.filter((item) => item.id_campagne === engagement?.id_campagne)
   const federationLabel = (item: CampaignEngagement) => {
-    const federationId = item.id_federation_responsable || item.id_federation_source
+    const federationId = item.id_federation_responsable
     return federations.find((row) => row.id === federationId)?.label || federationId || "Fédération non renseignée"
   }
 
@@ -69,7 +71,7 @@ export function AthleteParticipations({ competitionId, engagements, initialRows,
     }
     setSaving(true)
     try {
-      const response = await fetch(`/api/competitions/${encodeURIComponent(competitionId)}/participants`, {
+      const response = await apiFetch(`/api/competitions/${encodeURIComponent(competitionId)}/participants`, {
         method: editing ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: editing, row: form }),

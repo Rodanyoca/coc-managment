@@ -1,5 +1,7 @@
 "use client"
 
+import { apiFetch } from "@/lib/api/client"
+
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Check, RefreshCw } from "lucide-react"
@@ -17,7 +19,7 @@ export function DashboardRefreshButton() {
   async function refresh() {
     setState("loading")
     try {
-      const response = await fetch("/api/dashboard/refresh", { method: "POST", cache: "no-store" })
+      const response = await apiFetch("/api/dashboard/refresh", { method: "POST", cache: "no-store" })
       if (!response.ok) throw new Error("Actualisation impossible")
       router.refresh()
       setState("success")
