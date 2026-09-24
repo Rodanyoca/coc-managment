@@ -25,7 +25,7 @@ export const ROUTE_RULES: readonly Rule[] = [
   { id: "page-administration", pattern: /^\/dashboard\/(?:activites|documents)(?:\/.*)?$/, requirement: ADM },
   { id: "page-sport", pattern: /^\/dashboard\/(?:federations|acteurs|competitions|equipes-nationales)(?:\/.*)?$/, requirement: SPT },
   { id: "page-communication", pattern: /^\/dashboard\/(?:articles|galeries|partenaires|contenus-web)(?:\/.*)?$/, requirement: COM },
-  { id: "page-site-web", pattern: /^\/dashboard\/site-web\/(?:sliders|communiques|actualites|galeries|historique|gouvernance|jeux|athletes|entites|evenements|documents)(?:\/.*)?$/, requirement: COM },
+  { id: "page-site-web", pattern: /^\/dashboard\/site-web(?:\/(?:sliders|communiques|actualites|galeries|historique|gouvernance|jeux|athletes|entites|evenements|documents)(?:\/.*)?)?$/, requirement: COM },
   { id: "page-dashboard", pattern: /^\/dashboard$/, requirement: ANY_BUSINESS },
   { id: "api-super-admin", pattern: /^\/api\/(?:users|authorizations|autorisations|referentiels)(?:\/.*)?$/, requirement: SUPER_ADMIN },
   { id: "api-dashboard-refresh", methods: ["POST"], pattern: /^\/api\/dashboard\/refresh$/, requirement: ANY_BUSINESS, action: "WRITE" },

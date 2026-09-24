@@ -5,7 +5,7 @@ import { apiFetch } from "@/lib/api/client"
 import { useState } from "react"
 import { Archive, Eye, ImageOff, LoaderCircle, Pencil, Plus, RotateCw } from "lucide-react"
 import { toast } from "sonner"
-import { Header } from "@/components/dashboard/header"
+import { Header as DashboardHeader } from "@/components/dashboard/header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -21,6 +21,10 @@ import type { PublicationStatus, Slider } from "@/lib/site-web/sliders"
 type Form = Omit<Slider, "id_slide" | "image_url">
 const empty: Form = { titre: "", description: "", libelle_bouton: "", lien_bouton: "", ordre_affichage: "", id_statut_publication: "", date_debut_publication: "", date_fin_publication: "" }
 const labelDate = (value: string) => value ? new Intl.DateTimeFormat("fr-FR").format(new Date(`${value}T00:00:00`)) : "Non renseigné"
+
+function Header({ actions, ...props }: React.ComponentProps<typeof DashboardHeader>) {
+  return <><DashboardHeader {...props} />{actions && <div className="flex justify-end px-4 pt-4 sm:px-6">{actions}</div>}</>
+}
 
 export default function SlidersClient({ initialSliders, statuses, canEdit, initialError }: { initialSliders: Slider[]; statuses: PublicationStatus[]; canEdit: boolean; initialError: boolean }) {
   const [sliders, setSliders] = useState(initialSliders), [failed, setFailed] = useState(initialError), [loading, setLoading] = useState(false), [open, setOpen] = useState(false), [mode, setMode] = useState<"view" | "edit">("edit"), [selected, setSelected] = useState<Slider | null>(null), [form, setForm] = useState<Form>(empty), [image, setImage] = useState<File | null>(null), [saving, setSaving] = useState(false), [error, setError] = useState(""), [fieldError, setFieldError] = useState("")

@@ -22,19 +22,7 @@ export const dashboardNavigation: readonly DashboardNavigationItem[] = [
   { name: "Équipes nationales", href: "/dashboard/equipes-nationales", icon: "shield", blocks: ["AUT-SPT"] },
   { name: "Activités", href: "/dashboard/activites", icon: "calendar", blocks: ["AUT-ADM"] },
   { name: "Documents", href: "/dashboard/documents", icon: "file", blocks: ["AUT-ADM"] },
-  { name: "Site web", icon: "globe", blocks: ["AUT-COM"], children: [
-    { name: "Sliders", href: "/dashboard/site-web/sliders" },
-    { name: "Communiqués", href: "/dashboard/site-web/communiques" },
-    { name: "Actualités", href: "/dashboard/site-web/actualites" },
-    { name: "Galeries", href: "/dashboard/site-web/galeries" },
-    { name: "Historique", href: "/dashboard/site-web/historique" },
-    { name: "Gouvernance", href: "/dashboard/site-web/gouvernance" },
-    { name: "Jeux", href: "/dashboard/site-web/jeux" },
-    { name: "Athlètes", href: "/dashboard/site-web/athletes" },
-    { name: "Entités", href: "/dashboard/site-web/entites" },
-    { name: "Événements", href: "/dashboard/site-web/evenements" },
-    { name: "Documents site web", href: "/dashboard/site-web/documents" },
-  ] },
+  { name: "Site web", href: "/dashboard/site-web", icon: "globe", blocks: ["AUT-COM"] },
   { name: "Utilisateurs", href: "/dashboard/utilisateurs", icon: "users", blocks: [], superOnly: true },
 ]
 
