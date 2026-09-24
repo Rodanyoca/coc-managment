@@ -28,6 +28,8 @@ test("la date de fin est bornée et le client revérifie avant fetch", async () 
   ])
 
   assert.match(formSource, /min=\{value\.date_debut \|\| undefined\}/)
+  assert.doesNotMatch(formSource, /"edition"/)
+  assert.doesNotMatch(formSource, />Édition</)
   assert.match(clientSource, /const validationError=competitionFormError\(form,types,levels,statuses\)/)
   assert.match(clientSource, /if\(validationError\)\{toast\.error\(validationError\);return\}/)
 })

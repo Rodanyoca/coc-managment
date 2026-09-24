@@ -24,6 +24,11 @@ export function formatDateFr(value: string) {
   return match ? `${match[3]}/${match[2]}/${match[1]}` : value
 }
 
+export function normalizeCompetitionDate(value: string) {
+  const french = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/)
+  return french ? `${french[3]}-${french[2]}-${french[1]}` : value
+}
+
 export function formatCompetitionPeriod(start: string, end: string) {
   if (!start && !end) return "—"
   if (!end || end === start) return formatDateFr(start || end)

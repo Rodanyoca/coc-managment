@@ -144,8 +144,8 @@ export async function updateCompetition(id: string, input: Record<string, unknow
   if (!references.levels?.some((level) => level.id === row.niveau_competition)) throw new Error("Niveau de compétition inconnu.")
   if (!references.statuses?.some((status) => status.id === row.statut)) throw new Error("Statut de compétition inconnu.")
   const physical: Record<string, string> = competitionSheetRow(row)
-  await updateSheetCells({ sheetName: COMPETITIONS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), idColumn: "id_competition", idValue: current.id_competition, updates: ["nom_competition","id_type_competition","edition","est_multisport","id_niveau_competition","date_debut","date_fin","pays","ville","lieu","id_statut_competition","observation"].map((column) => ({ column, value: physical[column] })) })
-  return mapCompetition({ id_competition: current.id_competition, ...row })
+  await updateSheetCells({ sheetName: COMPETITIONS_SHEET, spreadsheetId: getCompetitionsSpreadsheetId(), idColumn: "id_competition", idValue: current.id_competition, updates: ["nom_competition","id_type_competition","est_multisport","id_niveau_competition","date_debut","date_fin","pays","ville","lieu","id_statut_competition","observation"].map((column) => ({ column, value: physical[column] })) })
+  return mapCompetition({ id_competition: current.id_competition, ...row, edition: current.edition })
 }
 
 function mapProgram(row: Record<string, string>): CompetitionProgram {
