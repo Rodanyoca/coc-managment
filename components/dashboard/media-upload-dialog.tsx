@@ -145,10 +145,10 @@ export function MediaUploadDialog({
       }}
     >
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="border border-border/80 bg-card text-foreground shadow-[0_24px_60px_rgba(7,25,54,0.28)] sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-foreground">{title}</DialogTitle>
+          <DialogDescription className="text-muted-foreground">
             {description ||
               `Formats acceptés : ${config.formatLabel} — Taille max : ${MAX_SIZE_MB} Mo`}
           </DialogDescription>
@@ -156,23 +156,23 @@ export function MediaUploadDialog({
 
         {success ? (
           <div className="flex flex-col items-center py-6">
-            <div className="rounded-full bg-coc-green/10 p-4 mb-3">
-              <Check className="h-6 w-6 text-coc-green" />
+            <div className="mb-3 rounded-full bg-primary/10 p-4">
+              <Check className="h-6 w-6 text-primary" />
             </div>
-            <p className="font-medium">Fichier envoyé avec succès</p>
+            <p className="font-medium text-foreground">Fichier envoyé avec succès</p>
           </div>
         ) : (
           <div className="space-y-4">
             {identityFields && identityFields.length > 0 && (
-              <div className="rounded-lg border border-border bg-muted/30 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">
+              <div className="rounded-lg border border-border/80 bg-secondary/20 p-4">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   Vérification
                 </p>
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
                   {identityFields.map((f, i) => (
                     <Fragment key={i}>
                       <span className="text-muted-foreground">{f.label}</span>
-                      <span className="font-medium truncate" title={f.value}>{f.value}</span>
+                      <span className="truncate font-medium text-foreground" title={f.value}>{f.value}</span>
                     </Fragment>
                   ))}
                 </div>
@@ -181,7 +181,7 @@ export function MediaUploadDialog({
 
             {!file ? (
               <div
-                className="border-2 border-dashed border-border rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/30 transition-colors"
+                className="cursor-pointer rounded-lg border-2 border-dashed border-border/80 bg-secondary/20 p-8 text-center transition-colors hover:border-primary/50 hover:bg-primary/5"
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Upload className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
@@ -217,12 +217,12 @@ export function MediaUploadDialog({
                     </Button>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-3 rounded-lg border border-border p-4 overflow-hidden">
+                  <div className="flex items-center gap-3 overflow-hidden rounded-lg border border-border/80 bg-background/40 p-4">
                     <div className="shrink-0 rounded-lg bg-destructive/10 p-2">
                       <FileText className="h-5 w-5 text-destructive" />
                     </div>
-                    <div className="flex-1 min-w-0 overflow-hidden">
-                      <p className="font-medium text-sm truncate" title={file.name}>{file.name}</p>
+                    <div className="min-w-0 flex-1 overflow-hidden">
+                      <p className="truncate text-sm font-medium text-foreground" title={file.name}>{file.name}</p>
                       <p className="text-xs text-muted-foreground">
                         {(file.size / 1024 / 1024).toFixed(2)} Mo
                       </p>
@@ -230,7 +230,7 @@ export function MediaUploadDialog({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="shrink-0 h-8 w-8"
+                      className="h-8 w-8 shrink-0"
                       onClick={() => setFile(null)}
                     >
                       <X className="h-4 w-4" />
@@ -263,7 +263,7 @@ export function MediaUploadDialog({
               <Button
                 onClick={handleUpload}
                 disabled={!file || uploading}
-                className="gap-2"
+                className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90"
               >
                 {uploading ? (
                   <>

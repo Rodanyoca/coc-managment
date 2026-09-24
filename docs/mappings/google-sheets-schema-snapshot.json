@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-01T20:10:03.056Z",
+  "generatedAt": "2026-09-24T21:07:15.715Z",
   "workbooks": [
     {
       "name": "REFERENTIEL",
@@ -7,14 +7,6 @@
       "envKey": "GOOGLE_SHEETS_REFERENTIEL_SPREADSHEET_ID",
       "title": "00_REFERENTIELS",
       "sheets": [
-        {
-          "name": "TABLEAU_DE_BORD",
-          "headers": [
-            "RÉFÉRENTIEL COC — TABLEAU DE PILOTAGE",
-            "",
-            "ÉTAT D’AVANCEMENT"
-          ]
-        },
         {
           "name": "SPORTS",
           "headers": [
@@ -102,7 +94,6 @@
             "id_type_structure",
             "nom_type_structure",
             "description",
-            "observations",
             "observations"
           ]
         },
@@ -147,20 +138,6 @@
           ]
         },
         {
-          "name": "CATEGORIES_POIDS",
-          "headers": [
-            "id_categorie_poids",
-            "id_federation",
-            "id_sport",
-            "id_discipline",
-            "id_sexe",
-            "nom_categorie_poids",
-            "poids_min",
-            "poids_max",
-            "observations"
-          ]
-        },
-        {
           "name": "SPECIALITES_MEDECIN",
           "headers": [
             "id_specialite_sante",
@@ -199,14 +176,6 @@
           ]
         },
         {
-          "name": "STATUS_ACTIVITES",
-          "headers": [
-            "id_statut_activite",
-            "nom_statut_activite",
-            "observation"
-          ]
-        },
-        {
           "name": "ROLES_ENTITE_ACTIVITE",
           "headers": [
             "id_role_entite_activite",
@@ -223,6 +192,17 @@
           ]
         },
         {
+          "name": "SAISONS",
+          "headers": [
+            "id_saison",
+            "nom_saison",
+            "date_debut",
+            "date_fin",
+            "statut",
+            "observation"
+          ]
+        },
+        {
           "name": "ROLES_STAFF_EQUIPE_NATIONALE",
           "headers": [
             "id_role_staff",
@@ -232,28 +212,11 @@
           ]
         },
         {
-          "name": "NIVEAUX_ENTRAINEURS",
+          "name": "STATUTS_CAMPAGNE",
           "headers": [
-            "id_niveau_entraineur",
-            "id_federation",
-            "id_sport",
-            "id_discipline",
-            "nom_niveau",
-            "description",
-            "observations"
-          ]
-        },
-        {
-          "name": "GRADES_SPORTIF",
-          "headers": [
-            "id_grade_sportif",
-            "id_federation",
-            "id_sport",
-            "id_discipline",
-            "nom_grade",
-            "ordre",
-            "description",
-            "observations"
+            "id_statut_campagne",
+            "nom_statut_campagne",
+            "observation"
           ]
         },
         {
@@ -316,38 +279,11 @@
           ]
         },
         {
-          "name": "POSTES_ATHLETES",
-          "headers": [
-            "id_poste",
-            "id_federation",
-            "id_sport",
-            "id_discipline",
-            "nom_poste",
-            "description",
-            "statut",
-            "observations"
-          ]
-        },
-        {
           "name": "RESULTATS_SYNTHETIQUES",
           "headers": [
             "id_resultat_synthetique",
             "nom_resultat_synthetique",
             "description",
-            "observations"
-          ]
-        },
-        {
-          "name": "TYPES_SEGMENTS_RESULTATS",
-          "headers": [
-            "id_type_segment",
-            "id_federation",
-            "id_sport",
-            "id_discipline",
-            "nom_type_segment",
-            "ordre_maximal",
-            "description",
-            "statut",
             "observations"
           ]
         },
@@ -389,14 +325,6 @@
           ]
         },
         {
-          "name": "BLOCS_AUTORISATION",
-          "headers": [
-            "id_bloc_autorisation",
-            "nom_bloc",
-            "observations"
-          ]
-        },
-        {
           "name": "STATUTS_SELECTION",
           "headers": [
             "id_statut_selection",
@@ -432,6 +360,30 @@
             "statut",
             "observations"
           ]
+        },
+        {
+          "name": "STATUTS_RESULTAT",
+          "headers": [
+            "id_statut_resultat",
+            "nom_statut_resultat",
+            "observation"
+          ]
+        },
+        {
+          "name": "TYPES_ADVERSAIRES",
+          "headers": [
+            "id_type_adversaire",
+            "nom_type_adversaire",
+            "observation"
+          ]
+        },
+        {
+          "name": "STATUTS_PUBLICATION",
+          "headers": [
+            "id_statut_publication",
+            "nom_statut_publication",
+            "observation"
+          ]
         }
       ]
     },
@@ -447,21 +399,7 @@
             "id_hierarchie",
             "id_federation",
             "id_type_structure",
-            "id_type_structure_parent",
             "niveau_hierarchique",
-            "niveau_obligatoire",
-            "observations"
-          ]
-        },
-        {
-          "name": "STRUCTURES_DISCIPLINES",
-          "headers": [
-            "id_structure_discipline",
-            "id_federation",
-            "id_type_structure",
-            "id_structure_coc",
-            "id_sport",
-            "id_discipline",
             "observations"
           ]
         },
@@ -488,7 +426,6 @@
             "id_entente_coc",
             "id_entente_federation",
             "id_federation",
-            "id_type_structure_parent",
             "id_structure_parent_coc",
             "id_ville",
             "nom_entente",
@@ -507,8 +444,6 @@
             "id_cercle_coc",
             "id_cercle_federation",
             "id_federation",
-            "id_type_structure_parent",
-            "id_structure_parent_coc",
             "id_ville",
             "nom_cercle",
             "sigle_cercle",
@@ -517,7 +452,8 @@
             "telephone",
             "email",
             "statut",
-            "observations"
+            "observations",
+            "id_structure_parent_coc"
           ]
         },
         {
@@ -526,7 +462,6 @@
             "id_club_coc",
             "id_club_federation",
             "id_federation",
-            "id_type_structure_parent",
             "id_structure_parent_coc",
             "id_categorie_club",
             "id_province",
@@ -555,6 +490,19 @@
             "nom_equipe",
             "statut",
             "observations"
+          ]
+        },
+        {
+          "name": "PERSONNES_CONTACT_ENTITES",
+          "headers": [
+            "id_contact_entite",
+            "id_entite",
+            "id_type_acteur",
+            "id_acteur_coc",
+            "fonction_contact",
+            "est_contact_principal",
+            "statut",
+            "observation"
           ]
         }
       ]
@@ -876,23 +824,23 @@
             "id_campagne",
             "id_statut_engagement",
             "date_engagement",
-            "date_debut",
-            "date_fin",
             "id_federation_source",
-            "date_transmission",
             "reference_source",
             "observation"
           ]
         },
         {
-          "name": "PARTICIPATIONS_ATHLETES_COMPETITION",
+          "name": "PARTICIPATIONS_ACTEURS_COMPETITION",
           "headers": [
-            "id_participation_athlete",
+            "id_participation_acteur",
             "id_engagement_campagne",
+            "id_acteur_coc",
+            "id_type_acteur",
             "id_selection",
+            "id_affectation_staff",
             "id_statut_participation",
             "date_statut",
-            "id_selection_remplacement",
+            "id_participation_remplacement",
             "observation"
           ]
         },
@@ -906,22 +854,40 @@
             "est_version_courante",
             "id_engagement_campagne",
             "id_programme_competition",
+            "id_unite_participante",
             "date_resultat",
             "phase",
-            "adversaire",
+            "type_adversaire",
+            "nom_adversaire",
             "pays_adversaire",
             "id_resultat_synthetique",
-            "valeur_rdc",
+            "valeur_coc",
             "valeur_adversaire",
             "id_unite_mesure",
             "id_decision_resultat",
-            "id_federation_source",
-            "date_transmission",
-            "reference_source",
-            "id_statut_validation_resultat",
-            "date_validation",
-            "id_validateur_coc",
+            "id_statut_resultat",
             "motif_correction",
+            "observation"
+          ]
+        },
+        {
+          "name": "UNITES_PARTICIPANTES",
+          "headers": [
+            "id_unite_participante",
+            "id_engagement_campagne",
+            "type_unite",
+            "id_participation_acteur",
+            "nom_unite",
+            "observation"
+          ]
+        },
+        {
+          "name": "MEMBRES_UNITES_PARTICIPANTES",
+          "headers": [
+            "id_membre_unite",
+            "id_unite_participante",
+            "id_participation_acteur",
+            "role_membre",
             "observation"
           ]
         },
@@ -953,8 +919,7 @@
             "nom_equipe_nationale",
             "id_categorie_age",
             "id_sexe",
-            "date_debut",
-            "date_fin",
+            "id_saison",
             "statut",
             "observation"
           ]
@@ -968,7 +933,7 @@
             "date_debut",
             "date_fin",
             "objectif",
-            "statut",
+            "id_statut_campagne",
             "observation"
           ]
         },

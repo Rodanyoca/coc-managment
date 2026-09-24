@@ -83,7 +83,6 @@ async function validateAndEnrich(resource: TerritorialResource, input: Record<st
     const parentId = row.id_structure_parent_coc
     const parentIdColumn = parentName.includes("entente") ? "id_entente_coc" : "id_ligue_coc"
     if (parent && !parentRows.some((item) => item.id_federation === federationId && item[parentIdColumn] === parentId)) throw new Error("Le parent sélectionné n’appartient pas à cette fédération")
-    row.id_type_structure_parent = parent?.id_type_structure ?? ""
     if (row.id_ville && !refs.VILLES.some((item) => item.id_ville === row.id_ville)) throw new Error("Ville inconnue du référentiel")
   }
   if (resource === "clubs") {
@@ -98,7 +97,6 @@ async function validateAndEnrich(resource: TerritorialResource, input: Record<st
     if (expectsCercle) {
       const cercle = territorial.CERCLES.find((item) => item.id_cercle_coc === row.id_cercle_coc && item.id_federation === federationId)
       if (!cercle && parentRequired) throw new Error("Un cercle de cette fédération est obligatoire")
-      if (cercle) row.id_type_structure_parent = hierarchy[clubIndex - 1].id_type_structure ?? ""
       Object.assign(row, { id_entente_coc: "", id_ligue_coc: "" })
     } else if (expectsEntente) {
       const entente = territorial.ENTENTES.find((item) => item.id_entente_coc === row.id_entente_coc && item.id_federation === federationId)

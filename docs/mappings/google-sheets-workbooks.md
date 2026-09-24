@@ -1,6 +1,6 @@
 # Cartographie des classeurs Google Sheets
 
-GÃ©nÃ©rÃ© le 2026-09-01T20:10:03.056Z. Ce document ne contient ni identifiant de classeur ni donnÃ©e mÃ©tier : uniquement les onglets et leurs en-tÃªtes.
+GÃ©nÃ©rÃ© le 2026-09-24T21:07:15.715Z. Ce document ne contient ni identifiant de classeur ni donnÃ©e mÃ©tier : uniquement les onglets et leurs en-tÃªtes.
 
 ## Blocs d'autorisation
 
@@ -17,63 +17,56 @@ Les noms ci-dessous sont les noms physiques. L'interface conserve ses noms fonct
 
 Classeur : **00_REFERENTIELS**. Variable : `GOOGLE_SHEETS_REFERENTIEL_SPREADSHEET_ID`.
 
-- **TABLEAU_DE_BORD** : `RÉFÉRENTIEL COC — TABLEAU DE PILOTAGE`, `ÉTAT D’AVANCEMENT`
 - **SPORTS** : `id_sport`, `nom_sport`, `description`, `sport_olympique`, `statut`
 - **DISCIPLINES** : `id_discipline`, `id_sport`, `nom_discipline`, `observations`
 - **ENTITES** : `id_entite`, `id_categorie_entite`, `nom_officiel`, `sigle`, `adresse_siege`, `telephone`, `email`, `site_web`, `statut`, `observations`
 - **FEDERATIONS** : `id_federation`, `id_entite`, `id_sport`, `statut_reconnaissance_ministere`, `date_reconnaissance_nationale`, `statut_affiliation_coc`, `date_affiliation_coc`, `id_entite_continentale`, `date_affiliation_continentale`, `id_entite_internationale`, `date_affiliation_internationale`, `statut`, `observations`, `logo_drive_id`, `logo_drive_url`
-
-La création d’une fédération écrit les coordonnées uniquement dans `ENTITES` et conserve dans `FEDERATIONS` la référence `id_entite` ainsi que les données sportives, institutionnelles et de logo.
 - **PROVINCES** : `id_province`, `nom_province`, `statut`, `observations`
 - **VILLES** : `id_ville`, `id_province`, `nom_ville`, `statut`, `observations`
 - **CATEGORIES_ENTITES** : `id_categorie_entite`, `nom_categorie_entite`, `observations`
-- **TYPES_STRUCTURE** : `id_type_structure`, `nom_type_structure`, `description`, `observations`, `observations`
+- **TYPES_STRUCTURE** : `id_type_structure`, `nom_type_structure`, `description`, `observations`
 - **CATEGORIES_CLUB** : `id_categorie_club`, `id_federation`, `nom_categorie_club`, `observations`
 - **SEXES** : `id_sexe`, `nom_sexe`, `observation`
 - **TYPES_ACTEURS** : `id_type_acteur`, `nom_type_acteur`, `description`, `statut`, `observations`
 - **CATEGORIES_AGE** : `id_categorie_age`, `id_federation`, `id_sport`, `id_discipline`, `nom_categorie_age`, `age_min`, `age_max`, `observations`
-- **CATEGORIES_POIDS** : `id_categorie_poids`, `id_federation`, `id_sport`, `id_discipline`, `id_sexe`, `nom_categorie_poids`, `poids_min`, `poids_max`, `observations`
 - **SPECIALITES_MEDECIN** : `id_specialite_sante`, `nom_specialite_sante`, `description`, `observations`
 - **GRADES_ARBITRE** : `id_grade_arbitre`, `id_federation`, `id_sport`, `id_discipline`, `nom_grade`, `description`, `observations`
 - **FONCTIONS_OFFICIEL** : `id_fonction_acteur`, `nom_fonction`, `observations`
 - **TYPES_ACTIVITE** : `id_type_activite`, `nom_type_activite`, `id_federation`, `observation`
-- **STATUS_ACTIVITES** : `id_statut_activite`, `nom_statut_activite`, `observation`
 - **ROLES_ENTITE_ACTIVITE** : `id_role_entite_activite`, `nom_role_entite_activite`, `observation`
 - **TYPES_DOCUMENT** : `id_type_document`, `nom_type_document`, `observations`
+- **SAISONS** : `id_saison`, `nom_saison`, `date_debut`, `date_fin`, `statut`, `observation`
 - **ROLES_STAFF_EQUIPE_NATIONALE** : `id_role_staff`, `id_type_acteur`, `nom_role_staff`, `observation`
-- **NIVEAUX_ENTRAINEURS** : `id_niveau_entraineur`, `id_federation`, `id_sport`, `id_discipline`, `nom_niveau`, `description`, `observations`
-- **GRADES_SPORTIF** : `id_grade_sportif`, `id_federation`, `id_sport`, `id_discipline`, `nom_grade`, `ordre`, `description`, `observations`
+- **STATUTS_CAMPAGNE** : `id_statut_campagne`, `nom_statut_campagne`, `observation`
 - **TYPES_COMPETITION** : `id_type_competition`, `nom_type_competition`, `portee_sportive`, `niveau_competition`, `description`, `statut`, `observations`
 - **FORMATS_PARTICIPATION** : `id_format_participation`, `nom_format_participation`, `description`, `observations`
 - **UNITES_MESURE** : `id_unite_mesure`, `nom_unite_mesure`, `type_mesure`, `observations`
 - **TYPES_RESULTAT** : `id_type_resultat`, `id_federation`, `id_sport`, `id_discipline`, `nom_type_resultat`, `id_unite_mesure`, `sens_performance`, `description`, `statut`, `observations`
 - **EPREUVES** : `id_epreuve`, `id_federation`, `id_sport`, `id_discipline`, `nom_epreuve`, `id_format_participation`, `id_type_resultat`, `description`, `observations`
-- **POSTES_ATHLETES** : `id_poste`, `id_federation`, `id_sport`, `id_discipline`, `nom_poste`, `description`, `statut`, `observations`
 - **RESULTATS_SYNTHETIQUES** : `id_resultat_synthetique`, `nom_resultat_synthetique`, `description`, `observations`
-- **TYPES_SEGMENTS_RESULTATS** : `id_type_segment`, `id_federation`, `id_sport`, `id_discipline`, `nom_type_segment`, `ordre_maximal`, `description`, `statut`, `observations`
 - **DECISIONS_RESULTATS** : `id_decision_resultat`, `id_federation`, `id_sport`, `id_discipline`, `nom_decision`, `description`, `statut`, `observations`
 - **NIVEAUX_COMPETITION** : `id_niveau_competition`, `nom_niveau_competition`, `observation`
 - **STATUTS_COMPETITION** : `id_statut_competition`, `nom_statut_competition`, `observation`
 - **STATUTS_PARTICIPATION_ATHLETE** : `id_statut_participation`, `nom_statut_participation`, `observation`
-- **BLOCS_AUTORISATION** : `id_bloc_autorisation`, `nom_bloc`, `observations`
 - **STATUTS_SELECTION** : `id_statut_selection`, `nom_statut_selection`, `observation`
 - **STATUTS_ENGAGEMENT_PROGRAMME** : `id_statut_engagement`, `nom_statut_engagement`, `observation`
 - **STATUTS_VALIDATION_RESULTAT** : `id_statut_validation_resultat`, `nom_statut_validation_resultat`, `observation`
 - **DISTINCTIONS_SPORTIVES** : `id_distinction`, `id_federation`, `id_sport`, `id_discipline`, `nom_distinction`, `description`, `statut`, `observations`
+- **STATUTS_RESULTAT** : `id_statut_resultat`, `nom_statut_resultat`, `observation`
+- **TYPES_ADVERSAIRES** : `id_type_adversaire`, `nom_type_adversaire`, `observation`
+- **STATUTS_PUBLICATION** : `id_statut_publication`, `nom_statut_publication`, `observation`
 
 ## STRUCTURE_TERRITORIALE â€” AUT-SPT
 
 Classeur : **01_STRUCTURE_TERRITORIALE**. Variable : `GOOGLE_SHEETS_STRUCTURE_TERRITORIALE_SPREADSHEET_ID`.
 
-- **PERSONNES_CONTACT_ENTITES** : `id_contact_entite`, `id_entite`, `id_type_acteur`, `id_acteur_coc`, `fonction_contact`, `est_contact_principal`, `statut`, `observation`. Cette feuille porte exclusivement la désignation explicite d’un acteur existant comme contact d’une entité. L’identité, le téléphone et l’e-mail restent dans la feuille Acteurs d’origine ; `OFFICIELS_AFFILIATIONS` reste une relation d’affiliation distincte.
-
-- **HIERARCHIE** : `id_hierarchie`, `id_federation`, `id_type_structure`, `id_type_structure_parent`, `niveau_hierarchique`, `niveau_obligatoire`, `observations`
-- **STRUCTURES_DISCIPLINES** : `id_structure_discipline`, `id_federation`, `id_type_structure`, `id_structure_coc`, `id_sport`, `id_discipline`, `observations`
+- **HIERARCHIE** : `id_hierarchie`, `id_federation`, `id_type_structure`, `niveau_hierarchique`, `observations`
 - **LIGUES** : `id_ligue_coc`, `id_ligue_federation`, `id_federation`, `id_province`, `nom_ligue`, `sigle_ligue`, `date_creation`, `date_reconnaissance`, `telephone`, `email`, `statut`, `observations`
-- **ENTENTES** : `id_entente_coc`, `id_entente_federation`, `id_federation`, `id_type_structure_parent`, `id_structure_parent_coc`, `id_ville`, `nom_entente`, `sigle_entente`, `date_creation`, `date_reconnaissance`, `telephone`, `email`, `statut`, `observations`
-- **CERCLES** : `id_cercle_coc`, `id_cercle_federation`, `id_federation`, `id_type_structure_parent`, `id_structure_parent_coc`, `id_ville`, `nom_cercle`, `sigle_cercle`, `date_creation`, `date_reconnaissance`, `telephone`, `email`, `statut`, `observations`
-- **CLUBS** : `id_club_coc`, `id_club_federation`, `id_federation`, `id_type_structure_parent`, `id_structure_parent_coc`, `id_categorie_club`, `id_province`, `id_ville`, `nom_club`, `sigle_club`, `date_creation`, `date_affiliation`, `telephone`, `email`, `statut`, `observations`
+- **ENTENTES** : `id_entente_coc`, `id_entente_federation`, `id_federation`, `id_structure_parent_coc`, `id_ville`, `nom_entente`, `sigle_entente`, `date_creation`, `date_reconnaissance`, `telephone`, `email`, `statut`, `observations`
+- **CERCLES** : `id_cercle_coc`, `id_cercle_federation`, `id_federation`, `id_ville`, `nom_cercle`, `sigle_cercle`, `date_creation`, `date_reconnaissance`, `telephone`, `email`, `statut`, `observations`, `id_structure_parent_coc`
+- **CLUBS** : `id_club_coc`, `id_club_federation`, `id_federation`, `id_structure_parent_coc`, `id_categorie_club`, `id_province`, `id_ville`, `nom_club`, `sigle_club`, `date_creation`, `date_affiliation`, `telephone`, `email`, `statut`, `observations`
 - **EQUIPES** : `id_equipe_coc`, `id_equipe_federation`, `id_federation`, `id_club_coc`, `id_sport`, `id_discipline`, `id_categorie_age`, `id_sexe`, `nom_equipe`, `statut`, `observations`
+- **PERSONNES_CONTACT_ENTITES** : `id_contact_entite`, `id_entite`, `id_type_acteur`, `id_acteur_coc`, `fonction_contact`, `est_contact_principal`, `statut`, `observation`
 
 ## ACTEURS â€” AUT-SPT
 
@@ -98,9 +91,7 @@ Classeur : **05_ACTIVITES**. Variable : `GOOGLE_SHEETS_ACTIVITES_SPREADSHEET_ID`
 
 - **ACTIVITES** : `id_activite`, `id_type_activite`, `id_entite_organisatrice`, `nom_activite`, `titre_public`, `resume`, `date_debut`, `date_fin`, `pays`, `ville`, `lieu`, `id_statut_activite`, `observation`
 - **ACTIVITES_ENTITES** : `id_activite_entite`, `id_activite`, `id_entite`, `id_role_entite_activite`, `observation`
-- **ACTIVITES_PARTICIPANTS** : `id_participation`, `id_activite`, `id_acteur_coc`, `id_type_acteur`, `id_activite_entite`, `observation`. La relation `id_activite_entite` impose que l’acteur appartienne à une entité déjà rattachée à l’activité ; aucun rôle ou statut de participation n’est dupliqué.
-
-Les rôles des entités proviennent exclusivement de **ROLES_ENTITE_ACTIVITE** (`REA001` Invitée, `REA002` Participante, `REA003` Partenaire, `REA004` Coorganisatrice, `REA005` Observatrice, `REA006` Organisatrice). L’entité organisatrice est automatiquement matérialisée dans `ACTIVITES_ENTITES`, ce qui permet de la choisir comme entité d’appartenance d’un participant. Les dix relations historiques de `ACTIVITES_ENTITES` antérieures au 6 septembre 2026 ont été conservées avec un rôle vide et une observation d’anomalie, car aucun rôle fiable ne pouvait être déduit.
+- **ACTIVITES_PARTICIPANTS** : `id_participation`, `id_activite`, `id_acteur_coc`, `id_type_acteur`, `id_activite_entite`, `observation`
 - **ACTIVITES_QUALIFICATIONS** : `id_qualification_activite`, `id_participation`, `type_qualification`, `id_valeur_avant`, `id_valeur_apres`, `observation`
 
 ## DOCUMENTS â€” AUT-ADM
@@ -115,19 +106,19 @@ Classeur : **07_COMPETITIONS**. Variable : `GOOGLE_SHEETS_COMPETITIONS_SPREADSHE
 
 - **COMPETITIONS** : `id_competition`, `nom_competition`, `id_type_competition`, `id_niveau_competition`, `edition`, `est_multisport`, `date_debut`, `date_fin`, `pays`, `ville`, `lieu`, `id_statut_competition`, `observation`
 - **PROGRAMMES_COMPETITION** : `id_programme_competition`, `id_competition`, `id_epreuve`, `id_categorie_age`, `id_sexe`, `date_debut`, `date_fin`, `observation`
-- **ENGAGEMENTS_CAMPAGNES_PROGRAMMES** : `id_engagement_campagne`, `id_programme_competition`, `id_campagne`, `id_statut_engagement`, `date_engagement`, `date_debut`, `date_fin`, `id_federation_source`, `date_transmission`, `reference_source`, `observation`
+- **ENGAGEMENTS_CAMPAGNES_PROGRAMMES** : `id_engagement_campagne`, `id_programme_competition`, `id_campagne`, `id_statut_engagement`, `date_engagement`, `id_federation_source`, `reference_source`, `observation`
 - **PARTICIPATIONS_ACTEURS_COMPETITION** : `id_participation_acteur`, `id_engagement_campagne`, `id_acteur_coc`, `id_type_acteur`, `id_selection`, `id_affectation_staff`, `id_statut_participation`, `date_statut`, `id_participation_remplacement`, `observation`
+- **RESULTATS** : `id_resultat`, `id_resultat_logique`, `numero_version`, `id_resultat_precedent`, `est_version_courante`, `id_engagement_campagne`, `id_programme_competition`, `id_unite_participante`, `date_resultat`, `phase`, `type_adversaire`, `nom_adversaire`, `pays_adversaire`, `id_resultat_synthetique`, `valeur_coc`, `valeur_adversaire`, `id_unite_mesure`, `id_decision_resultat`, `id_statut_resultat`, `motif_correction`, `observation`
 - **UNITES_PARTICIPANTES** : `id_unite_participante`, `id_engagement_campagne`, `type_unite`, `id_participation_acteur`, `nom_unite`, `observation`
 - **MEMBRES_UNITES_PARTICIPANTES** : `id_membre_unite`, `id_unite_participante`, `id_participation_acteur`, `role_membre`, `observation`
-- **RESULTATS** : `id_resultat`, `id_resultat_logique`, `numero_version`, `id_resultat_precedent`, `est_version_courante`, `id_engagement_campagne`, `id_programme_competition`, `id_unite_participante`, `date_resultat`, `phase`, `type_adversaire`, `nom_adversaire`, `pays_adversaire`, `id_resultat_synthetique`, `valeur_coc`, `valeur_adversaire`, `id_unite_mesure`, `id_decision_resultat`, `id_statut_resultat`, `motif_correction`, `observation`
-- **MEDAILLES** : `id_medaille`, `id_resultat_logique`, `id_distinction`, `date_obtention`, `observation`. La compétition, l’épreuve et l’unité sont résolues depuis la version courante du résultat logique ; elles ne sont pas dupliquées.
+- **MEDAILLES** : `id_medaille`, `id_resultat_logique`, `id_distinction`, `date_obtention`, `observation`
 
 ## EQUIPES_NATIONALES â€” AUT-SPT
 
 Classeur : **08_EQUIPES_NATIONALES**. Variable : `GOOGLE_SHEETS_EQUIPES_NATIONALES_SPREADSHEET_ID`.
 
-- **EQUIPES_NATIONALES** : `id_equipe_nationale`, `id_federation`, `id_sport`, `id_discipline`, `nom_equipe_nationale`, `id_categorie_age`, `id_sexe`, `id_saison`, `statut`, `observation`. La période est résolue depuis `SAISONS`; elle n’est pas dupliquée sur l’équipe.
-- **CAMPAGNES_EQUIPES_NATIONALES** : `id_campagne`, `id_equipe_nationale`, `nom_campagne`, `date_debut`, `date_fin`, `objectif`, `id_statut_campagne`, `observation`. L’équipe porte la saison; la campagne conserve sa période opérationnelle propre, obligatoirement comprise dans cette saison.
+- **EQUIPES_NATIONALES** : `id_equipe_nationale`, `id_federation`, `id_sport`, `id_discipline`, `nom_equipe_nationale`, `id_categorie_age`, `id_sexe`, `id_saison`, `statut`, `observation`
+- **CAMPAGNES_EQUIPES_NATIONALES** : `id_campagne`, `id_equipe_nationale`, `nom_campagne`, `date_debut`, `date_fin`, `objectif`, `id_statut_campagne`, `observation`
 - **SELECTIONS_ATHLETES** : `id_selection`, `id_campagne`, `id_athlete`, `id_poste`, `id_categorie_poids`, `id_grade_sportif`, `date_selection`, `id_statut_selection`, `observation`
 - **AFFECTATIONS_STAFF** : `id_affectation_staff`, `id_campagne`, `id_acteur_coc`, `id_type_acteur`, `id_role_staff`, `date_debut`, `date_fin`, `observation`
 
@@ -145,3 +136,4 @@ Classeur : **09_USERS**. Variable : `GOOGLE_SHEETS_USERS_SPREADSHEET_ID`.
 - `TYPES_STRUCTURE` contient deux colonnes portant le mÃªme nom `observations`; elles doivent Ãªtre fusionnÃ©es dans le classeur source.
 - Les membres d'Ã©quipes nationales sont modÃ©lisÃ©s par campagnes (`SELECTIONS_ATHLETES` et `AFFECTATIONS_STAFF`), et non par un onglet gÃ©nÃ©rique.
 - Les colonnes physiques au singulier (`observation`) sont adaptÃ©es vers `observations` dans le modÃ¨le d'interface.
+

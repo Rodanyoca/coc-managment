@@ -83,9 +83,9 @@ export default async function FederationDetailPage({ params }: { params: Promise
   let structureLoadError = false
   try { structure = await loadFederationStructure(id) } catch { structureLoadError = true }
   return <div className="min-h-screen">
-    <Header title={title} subtitle={[federation.sigle_federation, federation.nom_sport].filter(Boolean).join(" · ") || undefined} actions={canEditLogo ? <Button asChild size="sm" variant="outline"><Link href={`/dashboard/federations/${encodeURIComponent(id)}/parametres`}><Pencil className="h-4 w-4" />Modifier</Link></Button> : undefined} />
+    <Header title={title} subtitle={[federation.sigle_federation, federation.nom_sport].filter(Boolean).join(" · ") || undefined} />
     <main className="space-y-6 p-4 md:p-6">
-      <Button asChild variant="ghost" size="sm" className="gap-2"><Link href="/dashboard/federations"><ArrowLeft className="h-4 w-4" />Retour aux fédérations</Link></Button>
+      <div className="flex flex-wrap items-center justify-between gap-3"><Button asChild variant="ghost" size="sm" className="gap-2"><Link href="/dashboard/federations"><ArrowLeft className="h-4 w-4" />Retour aux fédérations</Link></Button>{canEditLogo && <Button asChild size="sm" variant="outline"><Link href={`/dashboard/federations/${encodeURIComponent(id)}/parametres`}><Pencil className="h-4 w-4" />Modifier</Link></Button>}</div>
       <Card className="min-w-0 border-border/50"><Tabs defaultValue="identification" className="w-full"><CardHeader className="pb-0"><div className="grid grid-cols-1 lg:grid-cols-3"><TabsList className="grid h-auto w-full grid-cols-2 lg:col-span-2 lg:col-start-2"><TabsTrigger value="identification">Identification</TabsTrigger><TabsTrigger value="structure">Structure</TabsTrigger></TabsList></div></CardHeader><CardContent className="pt-6">
         <TabsContent value="identification" className="mt-0 min-w-0"><div className="grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-3">
           <section className="min-w-0 self-start rounded-xl border border-border/60 p-5 lg:col-span-1" aria-labelledby="federation-identity-title"><div className="flex flex-col items-center text-center">

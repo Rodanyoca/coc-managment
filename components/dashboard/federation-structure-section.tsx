@@ -17,12 +17,12 @@ const shown = (value: string) => value || "—"
 const secondaryLabel = (key: FederationStructureSection["key"]) => key === "ententes" ? "Ligue" : key === "clubs" ? "Entente" : "Localisation / parent"
 
 export function FederationHierarchySummary({ structure, loadError }: { structure?: FederationStructure; loadError?: boolean }) {
-  return <section className="min-w-0 rounded-lg border border-border/60 bg-muted/20 p-4" aria-labelledby="hierarchy-title">
-    <h3 id="hierarchy-title" className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Hiérarchie appliquée</h3>
+  return <section className="min-w-0 rounded-xl border border-border/70 bg-card/80 p-4 shadow-[0_12px_28px_rgba(7,25,54,.04)]" aria-labelledby="hierarchy-title">
+    <h3 id="hierarchy-title" className="mb-3 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.16em] text-primary/80 before:h-0.5 before:w-8 before:bg-primary/80">Hiérarchie appliquée</h3>
     {loadError ? <p className="text-sm text-destructive">La hiérarchie territoriale est temporairement indisponible.</p>
       : structure && structure.hierarchy.length > 1 ? <div className="flex flex-wrap items-center gap-1.5">{structure.hierarchy.map((level, index) => <span key={`${level}-${index}`} className="contents"><Badge variant={index === 0 ? "secondary" : "outline"} className="whitespace-normal text-center">{level}</Badge>{index < structure.hierarchy.length - 1 && <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />}</span>)}</div>
       : <p className="text-sm text-muted-foreground">Aucune hiérarchie territoriale n’est paramétrée pour cette fédération.</p>}
-    {structure && <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">{structure.sections.map((section) => <div key={section.key} className="rounded-md border bg-background px-3 py-2"><p className="text-xs text-muted-foreground">{section.label}</p><p className="text-lg font-semibold tabular-nums">{number.format(section.items.length)}</p></div>)}</div>}
+    {structure && <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5">{structure.sections.map((section) => <div key={section.key} className="rounded-lg border border-border/60 bg-background/35 px-3 py-2"><p className="text-[10px] font-semibold uppercase tracking-[.14em] text-muted-foreground">{section.label}</p><p className="mt-2 text-lg font-semibold tabular-nums">{number.format(section.items.length)}</p></div>)}</div>}
   </section>
 }
 
@@ -50,7 +50,7 @@ function StructureTable({ section }: { section: FederationStructureSection }) {
 
 export function FederationStructureTables({ structure, loadError }: { structure?: FederationStructure; loadError?: boolean }) {
   const sections = structure?.sections ?? emptySections()
-  return <div className="space-y-6">{sections.map((section) => <Card key={section.key} className="min-w-0 border-border/50"><CardHeader className="flex flex-row items-center justify-between gap-3 pb-3"><CardTitle className="text-base">{section.label}</CardTitle><Badge variant="secondary">{number.format(section.items.length)}</Badge></CardHeader><CardContent>
+  return <div className="space-y-6">{sections.map((section) => <Card key={section.key} className="min-w-0 border-border/70 bg-card/85 shadow-[0_12px_28px_rgba(7,25,54,.04)]"><CardHeader className="flex flex-row items-center justify-between gap-3 pb-3"><CardTitle className="text-base tracking-[-0.01em]">{section.label}</CardTitle><Badge variant="secondary">{number.format(section.items.length)}</Badge></CardHeader><CardContent>
     {loadError ? <p className="text-sm text-destructive">Impossible de déterminer la configuration de ce niveau.</p>
       : !section.configured ? <p className="text-sm text-muted-foreground">Ce niveau territorial n’est pas paramétré pour cette fédération.</p>
       : section.items.length === 0 ? <p className="text-sm text-muted-foreground">Ce niveau est paramétré, mais aucun élément n’est encore enregistré.</p>

@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto"
 import { after, NextResponse } from "next/server"
 import { createSession } from "@/lib/auth"
 import { attemptState, recordAttempt, progressiveDelay, waitForDelay } from "@/lib/auth/attempts"
+import { describeAuthenticationFailure } from "@/lib/auth/login-error"
 import { hashPassword, verifyPassword } from "@/lib/auth/password"
 import { postLoginRoute } from "@/lib/auth/post-login-route"
 import { getTelemetryKey, pseudonymizeTelemetry } from "@/lib/auth/telemetry-hash"
@@ -61,7 +62,9 @@ export async function POST(request: Request) {
       ])
     })
     return NextResponse.json({ ok: true, redirectTo: postLoginRoute(user, authorizations) })
-  } catch {
-    return NextResponse.json({ error: "Le service de connexion est momentanément indisponible." }, { status: 503 })
+  } catch (error) {
+    const failure = describeAuthenticationFailure(error)
+    console.error("[auth/login] Échec de connexion", error)
+    return NextResponse.json({ error: failure.message }, { status: failure.status })
   }
 }

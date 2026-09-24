@@ -19,11 +19,11 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex min-h-20 items-center justify-between border-b border-border/70 bg-card/80 px-4 shadow-[0_1px_18px_rgba(7,25,54,.04)] backdrop-blur-xl sm:px-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="lg:hidden">
+        <Button variant="ghost" size="icon" className="lg:hidden border border-border/70 bg-background/60 text-foreground hover:bg-sidebar-accent hover:text-sidebar-primary">
           <Menu className="h-5 w-5" />
         </Button>
         <div>
-          <h1 className="font-serif text-xl font-semibold tracking-[-0.02em] text-foreground sm:text-2xl">{title}</h1>
+          <h1 className="font-sans text-xl font-semibold tracking-[-0.02em] text-foreground sm:text-2xl">{title}</h1>
           {subtitle && (
             <p className="text-sm text-muted-foreground">{subtitle}</p>
           )}
@@ -35,7 +35,7 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
         <Button
           variant="outline"
           size="sm"
-          className="gap-2"
+          className="gap-2 border-primary/25 bg-background/60 text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
           onClick={async () => {
             await apiFetch("/api/auth/logout", { method: "POST" })
             router.push("/login")

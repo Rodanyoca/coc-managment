@@ -21,11 +21,11 @@ export const TERRITORIAL_RESOURCES = {
 export type TerritorialResource = keyof typeof TERRITORIAL_RESOURCES
 
 export const SHEET_COLUMNS = {
-  HIERARCHIE: ["id_hierarchie", "id_federation", "id_type_structure", "id_type_structure_parent", "niveau_hierarchique", "niveau_obligatoire", "observations"],
+  HIERARCHIE: ["id_hierarchie", "id_federation", "id_type_structure", "niveau_hierarchique", "niveau_obligatoire", "observations"],
   LIGUES: ["id_ligue_coc", "id_ligue_federation", "id_federation", "id_province", "nom_ligue", "sigle_ligue", "date_creation", "date_reconnaissance", "telephone", "email", "statut", "observations"],
-  ENTENTES: ["id_entente_coc", "id_entente_federation", "id_federation", "id_type_structure_parent", "id_structure_parent_coc", "id_ville", "nom_entente", "sigle_entente", "date_creation", "date_reconnaissance", "telephone", "email", "statut", "observations"],
-  CERCLES: ["id_cercle_coc", "id_cercle_federation", "id_federation", "id_type_structure_parent", "id_structure_parent_coc", "id_ville", "nom_cercle", "sigle_cercle", "date_creation", "date_reconnaissance", "telephone", "email", "statut", "observations"],
-  CLUBS: ["id_club_coc", "id_club_federation", "id_federation", "id_type_structure_parent", "id_structure_parent_coc", "id_categorie_club", "id_province", "id_ville", "nom_club", "sigle_club", "date_creation", "date_affiliation", "telephone", "email", "statut", "observations"],
+  ENTENTES: ["id_entente_coc", "id_entente_federation", "id_federation", "id_structure_parent_coc", "id_ville", "nom_entente", "sigle_entente", "date_creation", "date_reconnaissance", "telephone", "email", "statut", "observations"],
+  CERCLES: ["id_cercle_coc", "id_cercle_federation", "id_federation", "id_structure_parent_coc", "id_ville", "nom_cercle", "sigle_cercle", "date_creation", "date_reconnaissance", "telephone", "email", "statut", "observations"],
+  CLUBS: ["id_club_coc", "id_club_federation", "id_federation", "id_structure_parent_coc", "id_categorie_club", "id_province", "id_ville", "nom_club", "sigle_club", "date_creation", "date_affiliation", "telephone", "email", "statut", "observations"],
   EQUIPES: ["id_equipe_coc", "id_equipe_federation", "id_federation", "id_club_coc", "id_sport", "id_discipline", "id_categorie_age", "id_sexe", "nom_equipe", "statut", "observations"],
 } as const
 

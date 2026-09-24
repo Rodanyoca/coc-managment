@@ -35,8 +35,9 @@ export default async function DashboardPage() {
   const hasError = [federationBundle, actors, activities, competitions, nationalTeams, documents].some((result) => result.status === "rejected")
 
   return <div className="min-h-screen">
-    <Header title="Tableau de bord" subtitle="Vue synthétique des données du Comité Olympique Congolais" actions={<DashboardRefreshButton />} />
+    <Header title="Tableau de bord" subtitle="Vue synthétique des données du Comité Olympique Congolais" />
     <main className="space-y-6 p-4 md:p-6">
+      <div className="flex justify-end"><DashboardRefreshButton /></div>
       {hasError && <Alert><AlertDescription>Certaines données de synthèse sont indisponibles. Les sections disponibles restent affichées.</AlertDescription></Alert>}
       <GeneralSummarySection
         federations={federationStats?.federations}

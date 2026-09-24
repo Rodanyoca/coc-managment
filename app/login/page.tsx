@@ -6,18 +6,11 @@ import Image from "next/image"
 import { useRef, useState } from "react"
 import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"
 
-import { PartnersStrip, type Partner } from "@/components/login/partners-strip"
 import { normalizeLoginRedirect } from "@/lib/auth/login-redirect"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import styles from "./login.module.css"
-
-const partners: Partner[] = [
-  { name: "Association des Comités Nationaux Olympiques d’Afrique", shortName: "ACNOA", logo: "/images/partners/acnoa.jpeg", logoVariant: "standard" },
-  { name: "Association des Comités Nationaux Olympiques", shortName: "ANOC", logo: "/images/partners/anoc.jpg", logoVariant: "wide-canvas" },
-  { name: "Comité International Olympique", shortName: "CIO", logo: "/images/partners/cio.png", logoVariant: "compact" },
-]
 
 type LoginError = "credentials" | "service" | "validation" | null
 type SubmissionPhase = "idle" | "request" | "redirect"
@@ -79,25 +72,33 @@ export default function LoginPage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero} aria-labelledby="institution-title">
-        <Image src="/images/login/delegation-rdc.jpeg" alt="Délégation sportive de la République démocratique du Congo réunie dans un stade" fill priority sizes="(min-width: 1440px) calc(100vw - 520px), calc(100vw - 440px)" className={styles.heroImage} />
+        <Image src="/images/login/delegation-rdc.jpeg" alt="Délégation sportive de la République démocratique du Congo réunie dans un stade" fill priority sizes="(max-width: 1023px) 100vw, 62vw" className={styles.heroImage} />
         <div className={styles.heroShade} />
-        <div className={styles.heroContent}>
-          <p className={styles.eyebrow}>Portail institutionnel du mouvement sportif congolais</p>
-          <h1 id="institution-title">Ensemble, portons plus haut les couleurs de la RDC.</h1>
-          <p className={styles.introduction}>Une plateforme unifiée pour structurer, administrer et valoriser les données du Comité Olympique Congolais.</p>
+        <div className={styles.heroInner}>
+          <div className={styles.brandLockup}>
+            <div className={styles.brandLogo}>
+              <Image src="/images/logo-coc.png" alt="Logo du Comité Olympique Congolais" fill sizes="64px" className={styles.brandLogoImage} />
+            </div>
+            <div>
+              <p className={styles.brandName}>COC</p>
+              <p className={styles.brandCountry}>Comité Olympique Congolais</p>
+            </div>
+          </div>
+          <div className={styles.heroContent}>
+            <p className={styles.eyebrow}>Institution sportive nationale</p>
+            <h1 id="institution-title">Ensemble, portons plus haut les couleurs de la RDC.</h1>
+            <p className={styles.introduction}>Une plateforme nationale dédiée à la structuration, à l’identification et au développement du mouvement olympique congolais.</p>
+          </div>
         </div>
         <div className={styles.nationalLine} aria-hidden="true" />
       </section>
 
       <aside className={styles.loginPanel} aria-labelledby="login-title">
         <div className={styles.panelContent}>
-          <div className={styles.logoWrap}>
-            <Image src="/images/logo-coc.png" alt="Comité Olympique Congolais" width={400} height={570} priority className={styles.cocLogo} />
-          </div>
           <div className={styles.welcome}>
-            <p className={styles.panelEyebrow}>Espace sécurisé</p>
-            <h2 id="login-title">Bienvenue</h2>
-            <p>Accédez à votre espace de gestion du Comité Olympique Congolais.</p>
+            <p className={styles.panelEyebrow}>Comité Olympique Congolais</p>
+            <h2 id="login-title">Espace institutionnel</h2>
+            <p>Connectez-vous pour accéder à la plateforme de gestion du mouvement olympique congolais.</p>
           </div>
 
           <form onSubmit={handleSubmit} className={styles.form} aria-busy={loading}>
@@ -129,12 +130,14 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className={styles.help}>Un problème d’accès ? Contactez l’administrateur du système.</p>
+          <div className={styles.panelMeta}>
+            <span>Version 1.0 · Accès sécurisé</span>
+            <span>Administration COC</span>
+          </div>
+          <p className={styles.platformLabel}>Plateforme du référentiel sportif national</p>
           <p className={styles.signature} aria-label="Design par DS Concept"><span>Design by</span><strong>DS Concept</strong></p>
         </div>
       </aside>
-
-      <PartnersStrip partners={partners} />
     </main>
   )
 }
