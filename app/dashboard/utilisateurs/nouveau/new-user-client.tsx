@@ -60,7 +60,7 @@ export default function NewUserClient() {
 
   return <main className="min-w-0 space-y-5 p-4 md:p-6"><div className="mx-auto max-w-4xl space-y-5">
     <Button asChild variant="ghost" size="sm" className="-ml-2"><Link href="/dashboard/utilisateurs"><ArrowLeft className="h-4 w-4" />Retour aux utilisateurs</Link></Button>
-    <div><h1 className="flex items-center gap-3 text-2xl font-semibold tracking-tight"><UserPlus className="h-6 w-6 text-primary" />Créer un utilisateur</h1><p className="mt-1 text-sm text-muted-foreground">Renseignez son identité, son niveau d’accès et ses autorisations initiales.</p></div>
+    <div><h1 className="flex items-center gap-3 text-xl font-bold tracking-[-0.02em]"><UserPlus className="h-6 w-6 text-primary" />Créer un utilisateur</h1><p className="mt-1 text-sm text-muted-foreground">Renseignez son identité, son niveau d’accès et ses autorisations initiales.</p></div>
 
     <form onSubmit={submit} className="space-y-5">
       <Card><CardHeader><CardTitle className="text-lg">Informations du compte</CardTitle><CardDescription>Ces informations permettront d’identifier l’utilisateur et de lui transmettre son accès.</CardDescription></CardHeader>

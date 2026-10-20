@@ -17,15 +17,15 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
   const router = useRouter()
 
   return (
-    <header className="sticky top-0 z-30 flex min-h-20 items-center justify-between border-b border-border/70 bg-card/80 px-4 shadow-[0_1px_18px_rgba(7,25,54,.04)] backdrop-blur-xl sm:px-6">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" className="lg:hidden border border-border/70 bg-background/60 text-foreground hover:bg-sidebar-accent hover:text-sidebar-primary">
+    <header className="sticky top-0 z-30 flex min-h-16 flex-wrap items-center justify-between gap-4 border-b border-border/80 bg-background/90 px-4 py-3 shadow-[0_10px_30px_rgba(2,12,23,0.18)] backdrop-blur-xl sm:px-6">
+      <div className="flex min-w-0 items-center gap-4">
+        <Button variant="ghost" size="icon" aria-label="Menu" className="lg:hidden border border-border/70 bg-background/60 text-foreground hover:bg-sidebar-accent hover:text-sidebar-primary">
           <Menu className="h-5 w-5" />
         </Button>
-        <div>
-          <h1 className="font-sans text-xl font-semibold tracking-[-0.02em] text-foreground sm:text-2xl">{title}</h1>
+        <div className="min-w-0 border-l-2 border-primary pl-3">
+          <h1 className="break-words text-xl font-bold tracking-[-0.02em] text-foreground">{title}</h1>
           {subtitle && (
-            <p className="text-sm text-muted-foreground">{subtitle}</p>
+            <p className="text-sm break-words text-muted-foreground">{subtitle}</p>
           )}
         </div>
       </div>
@@ -34,8 +34,7 @@ export function Header({ title, subtitle, actions }: HeaderProps) {
         {actions}
         <Button
           variant="outline"
-          size="sm"
-          className="gap-2 border-primary/25 bg-background/60 text-foreground hover:border-primary/40 hover:bg-primary/5 hover:text-primary"
+          className="gap-2 border-white/15 bg-white/[0.04] hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
           onClick={async () => {
             await apiFetch("/api/auth/logout", { method: "POST" })
             router.push("/login")

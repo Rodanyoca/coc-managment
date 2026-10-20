@@ -30,8 +30,10 @@ test("le formulaire bloque le payload invalide avant l’appel API", async () =>
   assert.match(programs, /disabled=\{saving \|\| !form\.id_epreuve \|\| Boolean\(formError\)\}/)
 })
 
-test("le chargement de la fiche reprend la silhouette du Gantt", async () => {
+test("le chargement de la fiche reprend les deux cartes du cadre général", async () => {
   const loading = await source("app/dashboard/competitions/[id]/loading.tsx")
   assert.match(loading, /Skeleton/)
-  assert.match(loading, /grid-cols-\[minmax\(13rem,17rem\)_1fr\]/)
+  assert.match(loading, /grid gap-5 lg:grid-cols-2/)
+  assert.match(loading, /grid-cols-2 gap-1 sm:grid-cols-3 lg:grid-cols-5/)
+  assert.doesNotMatch(loading, /minmax\(13rem,17rem\)/)
 })

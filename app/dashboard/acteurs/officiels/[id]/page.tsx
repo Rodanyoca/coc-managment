@@ -54,6 +54,7 @@ export default async function OfficielDetailPage({ params }: { params: Promise<{
     telephone: row.telephone || "",
     email: row.email || "",
     adresse: row.adresse || "",
+    observations: row.observations || "",
     statut: row.statut?.toLowerCase() === "inactif" ? "inactif" : "actif",
     avatarUrl: row.avatar_drive_url || null,
     urlPasseport: row.passeport_drive_url || null,

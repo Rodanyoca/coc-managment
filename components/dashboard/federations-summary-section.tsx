@@ -11,14 +11,14 @@ export function FederationsSummarySection({ stats }: { stats: FederationsDashboa
     part: stats.totalFederations ? Math.round((status.total / stats.totalFederations) * 100) : 0,
   })))
 
-  return <section aria-labelledby="federations-summary-title" className="space-y-4">
+  return <section aria-labelledby="federations-summary-title" className="space-y-4 border-t border-border pt-6">
     <div className="space-y-2">
-      <h2 id="federations-summary-title" className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.16em] text-primary/80 before:h-0.5 before:w-8 before:bg-primary/80">Fédérations</h2>
+      <h2 id="federations-summary-title" className="text-lg font-semibold">Fédérations</h2>
       <p className="text-sm text-muted-foreground">Répartition des {number.format(stats.totalFederations)} fédération{stats.totalFederations > 1 ? "s" : ""} enregistrée{stats.totalFederations > 1 ? "s" : ""} par statut</p>
     </div>
-    <div className="overflow-x-auto rounded-xl border border-border/70 bg-card/80 shadow-[0_10px_28px_rgba(7,25,54,.04)]">
+    <div className="overflow-x-auto rounded-lg border">
       <Table>
-        <TableHeader><TableRow className="bg-secondary/80 hover:bg-secondary/80"><TableHead>Indicateur</TableHead><TableHead>Statut</TableHead><TableHead className="text-right">Effectif</TableHead><TableHead className="text-right">Part</TableHead></TableRow></TableHeader>
+        <TableHeader><TableRow><TableHead>Indicateur</TableHead><TableHead>Statut</TableHead><TableHead className="text-right">Effectif</TableHead><TableHead className="text-right">Part</TableHead></TableRow></TableHeader>
         <TableBody>
           {rows.map((row, index) => <TableRow key={`${row.dimensionKey}-${row.status.label}`}>
             <TableCell className="font-medium">{index === 0 || rows[index - 1].dimensionKey !== row.dimensionKey ? row.dimension : <span className="sr-only">{row.dimension}</span>}</TableCell>

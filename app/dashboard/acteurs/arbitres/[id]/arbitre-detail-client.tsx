@@ -2,20 +2,20 @@
 
 import { apiFetch } from "@/lib/api/client"
 
-import { Mail, MapPin, Pencil, Phone } from "lucide-react"
+import { Contact, Fingerprint, Info, User } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 import type { FederationOption } from "@/lib/federations/options"
-import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
+import { ActorInfoCard, ActorPassportCard, ActorRecordLayout } from "@/components/dashboard/actor-record-layout"
+import { getAthleteAge } from "@/lib/athletes/presentation"
 import { ActorActivities } from "@/components/dashboard/actor-activities"
 import { ActorNationalTeams } from "@/components/dashboard/actor-national-teams"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { ArbitreFields, emptyArbitreForm, type ArbitreForm, type GradeOption } from "../arbitres-client"
 
-export type ArbitreDetail = { id: string; idFederation: string; idFederal: string; idNational: string; idInternational: string; nomComplet: string; sexe: string; dateNaissance: string; lieuNaissance: string; nationalite: string; federation: string; idGrade: string; grade: string; dateAffiliation: string; telephone: string; email: string; adresse: string; numeroPasseport: string; dateDelivrancePasseport: string; dateExpirationPasseport: string; statut: "actif" | "inactif"; avatarUrl: string | null; urlPasseport: string | null }
+export type ArbitreDetail = { id: string; idFederation: string; idFederal: string; idNational: string; idInternational: string; nomComplet: string; sexe: string; dateNaissance: string; lieuNaissance: string; nationalite: string; federation: string; idGrade: string; grade: string; dateAffiliation: string; telephone: string; email: string; adresse: string; observations?: string; numeroPasseport: string; dateDelivrancePasseport: string; dateExpirationPasseport: string; statut: "actif" | "inactif"; avatarUrl: string | null; urlPasseport: string | null }
 const initials = (name: string) => name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase()
 const sexId = (value: string) => ["f", "femme", "féminin", "feminin"].includes(value.trim().toLowerCase()) ? "F" : "M"
 
@@ -42,10 +42,45 @@ export function ArbitreDetailClient({ arbitre: initial, federations, grades }: {
       toast.success("Arbitre modifié."); setOpen(false); setAvatar(null); setPassport(null); router.refresh()
     } catch (error) { toast.error(error instanceof Error ? error.message : String(error)) } finally { setSaving(false) }
   }
-  const info = [{ label: "ID national", value: arbitre.idNational || "—" }, { label: "ID fédéral", value: arbitre.idFederal || "—" }, { label: "ID international", value: arbitre.idInternational || "—" }, { label: "Nom complet", value: arbitre.nomComplet }, { label: "Sexe", value: arbitre.sexe === "F" ? "Femme" : "Homme" }, { label: "Date de naissance", value: arbitre.dateNaissance || "—" }, { label: "Lieu de naissance", value: arbitre.lieuNaissance || "—" }, { label: "Nationalité", value: arbitre.nationalite || "—" }, { label: "Fédération", value: arbitre.federation ? <Badge variant="outline">{arbitre.federation}</Badge> : "—" }, { label: "Grade", value: arbitre.grade || "—" }, { label: "Date d’affiliation", value: arbitre.dateAffiliation || "—" }]
-  const contacts = [arbitre.telephone ? { label: "Téléphone", value: arbitre.telephone, icon: <Phone className="h-4 w-4" /> } : null, arbitre.email ? { label: "E-mail", value: arbitre.email, icon: <Mail className="h-4 w-4" /> } : null, arbitre.adresse ? { label: "Adresse", value: arbitre.adresse, icon: <MapPin className="h-4 w-4" /> } : null].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
-  return <><ActorDetailLayout backHref="/dashboard/acteurs/arbitres" backLabel="Retour aux arbitres" title={arbitre.nomComplet} subtitle={arbitre.grade || arbitre.federation || undefined} avatarInitials={initials(arbitre.nomComplet)} avatarColorClass="bg-chart-5/10 text-chart-5" avatarUrl={arbitre.avatarUrl} urlPasseport={arbitre.urlPasseport} passportInfo={[{ label: "N° Passeport", value: arbitre.numeroPasseport || "—" }, { label: "Délivré le", value: arbitre.dateDelivrancePasseport || "—" }, { label: "Expire le", value: arbitre.dateExpirationPasseport || "—" }]} actorType="arbitres" actorId={arbitre.id} showActorId={false} actorDateNaissance={arbitre.dateNaissance} actorSexe={arbitre.sexe} status={arbitre.statut} mainInfo={info} contactInfo={contacts} additionalSections={activitySections(arbitre.id)} profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>} />
-  <Sheet open={open} onOpenChange={setOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier l’arbitre</SheetTitle><SheetDescription>Le grade est alimenté par le référentiel GRADES_ARBITRE.</SheetDescription></SheetHeader><ArbitreFields form={form} update={update} federations={federations} grades={grades} pick={pick} /><SheetFooter><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button disabled={saving} onClick={save}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet></>
+   const age = getAthleteAge(arbitre.dateNaissance)
+  const identityFields = [
+    { label: "Nom", value: arbitre.nomComplet },
+    { label: "Date de naissance", value: arbitre.dateNaissance },
+    { label: "Sexe", value: arbitre.sexe },
+  ]
+  return <><ActorRecordLayout
+    backHref="/dashboard/acteurs/arbitres" backLabel="Retour aux arbitres"
+    title={arbitre.nomComplet} subtitle={arbitre.federation || undefined}
+    avatarInitials={initials(arbitre.nomComplet)} avatarUrl={arbitre.avatarUrl} status={arbitre.statut}
+    onEdit={() => setOpen(true)}
+    generalContent={<div className="grid gap-6 md:grid-cols-2">
+      <ActorInfoCard title="Identité" icon={User} fields={[
+        { label: "Nom complet", value: arbitre.nomComplet },
+        { label: "Sexe", value: arbitre.sexe },
+        { label: "Date de naissance", value: arbitre.dateNaissance },
+        { label: "Âge", value: age === null ? "—" : `${age} ans` },
+        { label: "Lieu de naissance", value: arbitre.lieuNaissance },
+        { label: "Nationalité", value: arbitre.nationalite },
+        { label: "Grade", value: arbitre.grade },
+        { label: "Date d’affiliation", value: arbitre.dateAffiliation },
+      ]} />
+      <ActorInfoCard title="Contact" icon={Contact} fields={[
+        { label: "Téléphone", value: arbitre.telephone },
+        { label: "E-mail", value: arbitre.email },
+        { label: "Adresse", value: arbitre.adresse },
+      ]} />
+      <ActorInfoCard title="Identifiants" icon={Fingerprint} fields={[
+        { label: "ID national", value: arbitre.idNational },
+        { label: "ID fédéral", value: arbitre.idFederal },
+        { label: "ID international", value: arbitre.idInternational },
+        { label: "Fédération", value: arbitre.federation },
+      ]} />
+      <ActorInfoCard title="Observations" icon={Info} fields={[{ label: "Remarques", value: arbitre.observations || "Aucune observation enregistrée." }]} />
+    </div>}
+    documents={<ActorPassportCard actorType="arbitres" actorId={arbitre.id} number={arbitre.numeroPasseport} issued={arbitre.dateDelivrancePasseport} expires={arbitre.dateExpirationPasseport} url={arbitre.urlPasseport} identityFields={identityFields} onUploaded={(url) => { setArbitre(current => ({ ...current, urlPasseport: url })); router.refresh() }} />}
+    additionalSections={activitySections(arbitre.id)}
+  />
+    <Sheet open={open} onOpenChange={setOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier l’arbitre</SheetTitle><SheetDescription>Le grade est alimenté par le référentiel GRADES_ARBITRE.</SheetDescription></SheetHeader><ArbitreFields form={form} update={update} federations={federations} grades={grades} pick={pick} /><SheetFooter><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button disabled={saving} onClick={save}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet></>
 }
 
 const activitySections = (actorId: string) => [

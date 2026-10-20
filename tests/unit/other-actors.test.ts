@@ -49,9 +49,18 @@ test("id_national reste absent des interfaces et des validations de AUTRES", asy
 })
 
 test("la fiche Autres se limite aux onglets Général et Documents", async () => {
-  const detail = await readFile(new URL("../../app/dashboard/acteurs/autres/[id]/page.tsx", import.meta.url), "utf8")
-  assert.match(detail, /generalTabLabel="Général"/)
-  assert.doesNotMatch(detail, /additionalSections|Parcours/)
+  const [page, detail, layout] = await Promise.all([
+    readFile(new URL("../../app/dashboard/acteurs/autres/[id]/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../../app/dashboard/acteurs/autres/[id]/other-actor-detail-client.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../../components/dashboard/actor-record-layout.tsx", import.meta.url), "utf8"),
+  ])
+  assert.match(page, /<OtherActorDetailClient/)
+  assert.match(detail, /<ActorRecordLayout/)
+  assert.match(detail, /additionalSections=\{\[\]\}/)
+  assert.match(detail, /canManageMedia=\{false\}/)
+  assert.match(layout, /value="general"[^>]*>Général/)
+  assert.match(layout, /value="documents"[^>]*>Documents/)
+  assert.doesNotMatch(detail, /Parcours|id_national/)
 })
 
 test("l’ajout et la modification de AUTRES utilisent le même volet latéral", async () => {

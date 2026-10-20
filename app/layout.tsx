@@ -1,7 +1,11 @@
 import type { Metadata, Viewport } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans", display: "swap" })
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" })
 
 export const metadata: Metadata = {
   title: "COC — Système de gestion",
@@ -14,5 +18,5 @@ export const viewport: Viewport = {
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fr"><body className="font-sans antialiased">{children}<Toaster richColors position="top-right" /><Analytics /></body></html>
+  return <html lang="fr" className={`${geist.variable} ${geistMono.variable}`}><body className="font-sans antialiased">{children}<Toaster richColors position="top-right" /><Analytics /></body></html>
 }

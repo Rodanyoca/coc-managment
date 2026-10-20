@@ -1,9 +1,9 @@
-import { getCompetitionMedalCounts, getCompetitionReferences, getCompetitions, getTeamParticipations } from "./data"
+import { getCompetitionMedalCounts, getCompetitionReferences, getCompetitionResults, getCompetitions, getTeamParticipations } from "./data"
 import type { CompetitionStatus } from "./types"
 
 export type CompetitionTypeStats = { key: string; label: string; total: number; aVenir: number; enCours: number; terminees: number; equipesNationales: number }
 export type MedalDashboardStats = { total:number; or:number; argent:number; bronze:number }
-export type CompetitionsDashboardStats = { totalCompetitions: number; aVenir: number; enCours: number; terminees: number; types: CompetitionTypeStats[]; medals:MedalDashboardStats }
+export type CompetitionsDashboardStats = { totalCompetitions: number; totalResults: number; aVenir: number; enCours: number; terminees: number; types: CompetitionTypeStats[]; medals:MedalDashboardStats }
 export const COMPETITIONS_DASHBOARD_CACHE_TAG = "competitions-dashboard"
 
 function statusCounts(statuses: CompetitionStatus[]) {
@@ -11,7 +11,7 @@ function statusCounts(statuses: CompetitionStatus[]) {
 }
 
 async function aggregate(): Promise<CompetitionsDashboardStats> {
-  const [competitions, participations, references, medals] = await Promise.all([getCompetitions(), getTeamParticipations(), getCompetitionReferences(), getCompetitionMedalCounts()])
+  const [competitions, participations, references, medals, results] = await Promise.all([getCompetitions(), getTeamParticipations(), getCompetitionReferences(), getCompetitionMedalCounts(), getCompetitionResults(undefined, false)])
   const typeIds = [...new Set(competitions.map((item) => item.id_type_competition))]
   const types = typeIds.map((key) => {
     const rows = competitions.filter((item) => item.id_type_competition === key)
@@ -19,7 +19,7 @@ async function aggregate(): Promise<CompetitionsDashboardStats> {
     return { key: key || "NON_RENSEIGNE", label: references.types.find((type) => type.id === key)?.label || key || "Type non renseigné", ...statusCounts(rows.map((item) => item.statut_normalise)), equipesNationales: participations.filter((item) => ids.has(item.id_competition)).length }
   }).sort((a, b) => a.label.localeCompare(b.label, "fr"))
   const totals = statusCounts(competitions.map((item) => item.statut_normalise))
-  return { totalCompetitions: competitions.length, aVenir: totals.aVenir, enCours: totals.enCours, terminees: totals.terminees, types, medals }
+  return { totalCompetitions: competitions.length, totalResults: results.length, aVenir: totals.aVenir, enCours: totals.enCours, terminees: totals.terminees, types, medals }
 }
 
 export const loadCompetitionsDashboardStats = aggregate

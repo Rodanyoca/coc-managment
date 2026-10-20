@@ -55,7 +55,7 @@ export default function UserDetailClient({ initial, initialAuthorizations, audit
   }
 
   return <main className="space-y-7 p-6">
-    <h1 className="text-2xl font-semibold">{user.nomComplet}</h1>
+    <h1 className="text-xl font-bold tracking-[-0.02em]">{user.nomComplet}</h1>
     <section className="grid max-w-2xl gap-3 sm:grid-cols-2">
       <Label>Nom<Input value={user.nomComplet} onChange={(event) => setUser({ ...user, nomComplet: event.target.value })} /></Label>
       <Label>E-mail<Input type="email" value={user.email} onChange={(event) => setUser({ ...user, email: event.target.value })} /></Label>

@@ -24,14 +24,14 @@ export function ActivitiesSummarySection({ stats }: { stats: ActivitiesDashboard
     <TableCell className="text-right tabular-nums">{number.format(item.nonRenseignees)}</TableCell>
   </>
 
-  return <section aria-labelledby="activities-title" className="space-y-4">
+  return <section aria-labelledby="activities-title" className="space-y-4 border-t border-border pt-6">
     <div className="space-y-2">
-      <h2 id="activities-title" className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.16em] text-primary/80 before:h-0.5 before:w-8 before:bg-primary/80">Activités</h2>
+      <h2 id="activities-title" className="text-lg font-semibold">Activités</h2>
       <p className="text-sm text-muted-foreground">Répartition des activités par type et par statut</p>
     </div>
-    <div className="overflow-x-auto rounded-xl border border-border/70 bg-card/80 shadow-[0_10px_28px_rgba(7,25,54,.04)]">
+    <div className="overflow-x-auto rounded-lg border">
       <Table>
-        <TableHeader><TableRow className="bg-secondary/80 hover:bg-secondary/80"><TableHead>Type d’activité</TableHead><TableHead className="text-right">Total</TableHead><TableHead className="text-right">Planifiées</TableHead><TableHead className="text-right">En cours</TableHead><TableHead className="text-right">Réalisées</TableHead><TableHead className="text-right">Reportées</TableHead><TableHead className="text-right">Annulées</TableHead><TableHead className="text-right">Non renseignées</TableHead></TableRow></TableHeader>
+        <TableHeader><TableRow><TableHead>Type d’activité</TableHead><TableHead className="text-right">Total</TableHead><TableHead className="text-right">Planifiées</TableHead><TableHead className="text-right">En cours</TableHead><TableHead className="text-right">Réalisées</TableHead><TableHead className="text-right">Reportées</TableHead><TableHead className="text-right">Annulées</TableHead><TableHead className="text-right">Non renseignées</TableHead></TableRow></TableHeader>
         <TableBody>
           {stats.types.map((item) => <TableRow key={item.key}><TableCell className="font-medium">{item.label}</TableCell>{cells(item)}</TableRow>)}
           {!stats.types.length && <TableRow><TableCell colSpan={8} className="h-24 text-center text-muted-foreground">Aucune activité enregistrée.</TableCell></TableRow>}

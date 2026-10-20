@@ -40,6 +40,7 @@ export default async function AthleteDetailPage({ params }: { params: Promise<{ 
     telephone: row.telephone || "",
     email: row.email || "",
     adresse: row.adresse || "",
+    observations: row.observations || "",
     statut: row.statut?.toLowerCase() === "inactif"
       ? "inactif"
       : row.statut

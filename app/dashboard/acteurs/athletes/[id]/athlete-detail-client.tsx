@@ -2,14 +2,14 @@
 
 import { apiFetch } from "@/lib/api/client"
 
-import { FileText, ImageIcon, Mail, MapPin, Pencil, Phone } from "lucide-react"
+import { Contact, FileText, Fingerprint, ImageIcon, Info, User } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
-import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
+import { ActorInfoCard, ActorPassportCard, ActorRecordLayout } from "@/components/dashboard/actor-record-layout"
+import { getAthleteAge } from "@/lib/athletes/presentation"
 import { AthleteNationalTeams, AthleteSelections, useAthleteSportHistory } from "@/components/dashboard/athlete-sport-history"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -44,6 +44,7 @@ export type AthleteDetail = {
   telephone: string
   email: string
   adresse: string
+  observations?: string
   statut?: "actif" | "inactif"
   avatarUrl: string | null
   urlPasseport: string | null
@@ -71,27 +72,6 @@ type EditForm = {
 
 function sexId(value: string) {
   return ["f", "femme", "féminin", "feminin"].includes(value.trim().toLowerCase()) ? "F" : "M"
-}
-
-function getAgeFromDateString(dateString: string) {
-  if (!dateString) return null
-  const isoMatch = dateString.match(/^(\d{4})-(\d{2})-(\d{2})$/)
-  const frenchMatch = dateString.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)
-  const parts = isoMatch
-    ? [Number(isoMatch[1]), Number(isoMatch[2]), Number(isoMatch[3])]
-    : frenchMatch
-      ? [Number(frenchMatch[3]), Number(frenchMatch[2]), Number(frenchMatch[1])]
-      : null
-  if (!parts) return null
-  const birthDate = new Date(parts[0], parts[1] - 1, parts[2])
-  if (Number.isNaN(birthDate.getTime())) return null
-  const today = new Date()
-  let age = today.getFullYear() - birthDate.getFullYear()
-  if (
-    today.getMonth() < birthDate.getMonth() ||
-    (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())
-  ) age -= 1
-  return age
 }
 
 function initials(name: string) {
@@ -130,24 +110,14 @@ export function AthleteDetailClient({
     statut: athlete.statut === "inactif" ? "INACTIF" : "ACTIF",
   })
 
-  const age = getAgeFromDateString(athlete.dateNaissance)
+  const age = getAthleteAge(athlete.dateNaissance)
   const federationReference = federations.find((item) => item.id === athlete.idFederation)
   const federationLabel = federationReference?.sigle || federationReference?.nom || athlete.federation || athlete.idFederation
-  const mainInfo = [
-    { label: "ID national", value: athlete.idNational || "—" },
-    { label: "ID fédéral", value: athlete.idFederal || "—" },
-    { label: "ID international", value: athlete.idInternational || "—" },
-    { label: "Nom complet", value: athlete.nomComplet || "—" },
-    { label: "Sexe", value: sexId(athlete.sexe) === "F" ? "Femme" : "Homme" },
-    { label: "Date de naissance", value: athlete.dateNaissance ? `${athlete.dateNaissance}${age === null ? "" : ` (${age} ans)`}` : "—" },
-    { label: "Lieu de naissance", value: athlete.lieuNaissance || "—" },
-    { label: "Fédération", value: federationLabel ? <Badge variant="outline">{federationLabel}</Badge> : "—" },
+  const identityFields = [
+    { label: "Nom", value: athlete.nomComplet || "—" },
+    { label: "Date de naissance", value: athlete.dateNaissance || "—" },
+    { label: "Sexe", value: athlete.sexe || "—" },
   ]
-  const contactInfo = [
-    athlete.telephone ? { label: "Téléphone", value: athlete.telephone, icon: <Phone className="h-4 w-4" /> } : null,
-    athlete.email ? { label: "E-mail", value: athlete.email, icon: <Mail className="h-4 w-4" /> } : null,
-    athlete.adresse ? { label: "Adresse", value: athlete.adresse, icon: <MapPin className="h-4 w-4" /> } : null,
-  ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
   function update(key: keyof EditForm, value: string) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -234,37 +204,37 @@ export function AthleteDetailClient({
 
   return (
     <>
-      <ActorDetailLayout
-        backHref="/dashboard/acteurs/athletes"
-        backLabel="Retour aux athlètes"
-        title={athlete.nomComplet}
-        subtitle={federationLabel || undefined}
-        avatarInitials={initials(athlete.nomComplet)}
-        avatarColorClass="bg-primary/10 text-primary"
-        avatarUrl={athlete.avatarUrl}
-        urlPasseport={athlete.urlPasseport}
-        passportInfo={[
-          { label: "N° Passeport", value: athlete.numeroPasseport || "—" },
-          { label: "Délivré le", value: athlete.dateDelivrancePasseport || "—" },
-          { label: "Expire le", value: athlete.dateExpirationPasseport || "—" },
-        ]}
-        actorType="athletes"
-        actorId={athlete.id}
-        showActorId={false}
-        actorDateNaissance={athlete.dateNaissance}
-        actorSexe={athlete.sexe}
-        status={athlete.statut}
-        mainInfo={mainInfo}
-        contactInfo={contactInfo}
+      <ActorRecordLayout
+        backHref="/dashboard/acteurs/athletes" backLabel="Retour aux athlètes"
+        title={athlete.nomComplet} subtitle={federationLabel || undefined}
+        avatarUrl={athlete.avatarUrl} avatarInitials={initials(athlete.nomComplet)} status={athlete.statut}
+        onEdit={() => setOpen(true)}
+        generalContent={<div className="grid gap-6 md:grid-cols-2">
+                <ActorInfoCard title="Identité" icon={User} fields={[
+                  { label: "Nom complet", value: athlete.nomComplet },
+                  { label: "Sexe", value: athlete.sexe || "—" },
+                  { label: "Date de naissance", value: athlete.dateNaissance },
+                  { label: "Âge", value: age === null ? "—" : `${age} ans` },
+                  { label: "Lieu de naissance", value: athlete.lieuNaissance },
+                ]} />
+                <ActorInfoCard title="Contact" icon={Contact} fields={[
+                  { label: "Téléphone", value: athlete.telephone },
+                  { label: "E-mail", value: athlete.email },
+                  { label: "Adresse", value: athlete.adresse },
+                ]} />
+                <ActorInfoCard title="Identifiants" icon={Fingerprint} fields={[
+                  { label: "ID national", value: athlete.idNational },
+                  { label: "ID fédéral", value: athlete.idFederal },
+                  { label: "ID international", value: athlete.idInternational },
+                  { label: "Fédération", value: federationLabel },
+                ]} />
+                <ActorInfoCard title="Observations" icon={Info} fields={[{ label: "Remarques", value: athlete.observations || "Aucune observation enregistrée." }]} />
+              </div>}
+        documents={<ActorPassportCard actorType="athletes" actorId={athlete.id} number={athlete.numeroPasseport} issued={athlete.dateDelivrancePasseport} expires={athlete.dateExpirationPasseport} url={athlete.urlPasseport} identityFields={identityFields} onUploaded={(url) => { setAthlete(current => ({ ...current, urlPasseport: url })); router.refresh() }} />}
         additionalSections={[
           { id: "equipes-nationales", label: "Équipes nationales", content: <AthleteNationalTeams state={sportHistory} /> },
-          {
-            id: "selections",
-            label: "Sélections",
-            content: <AthleteSelections state={sportHistory} />,
-          },
+          { id: "selections", label: "Sélections", content: <AthleteSelections state={sportHistory} /> },
         ]}
-        profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>}
       />
 
       <Sheet open={open} onOpenChange={setOpen}>
@@ -298,7 +268,7 @@ export function AthleteDetailClient({
               <div className="space-y-2"><Label>Expire le</Label><Input type="date" value={form["date_expiration passeport"]} onChange={(e) => update("date_expiration passeport", e.target.value)} /></div>
             </div></section>
             <section className="space-y-4"><div><h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Fichiers</h3><p className="mt-1 text-xs text-muted-foreground">Sélectionnez uniquement les fichiers à remplacer.</p></div><div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2 rounded-lg border border-border p-4"><div className="flex items-center gap-2"><ImageIcon className="h-4 w-4 text-primary" /><Label>Remplacer l’avatar</Label></div><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /><p className="text-xs text-muted-foreground">{avatarFile?.name || "PNG, JPG ou WebP — 4 Mo maximum"}</p></div>
+              <div className="space-y-2 rounded-lg border border-border p-4"><div className="flex items-center gap-2"><ImageIcon className="h-4 w-4 text-primary" /><Label htmlFor="athlete-avatar-file">{athlete.avatarUrl ? "Remplacer la photo" : "Ajouter une photo"}</Label></div><Input id="athlete-avatar-file" type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /><p className="text-xs text-muted-foreground">{avatarFile?.name || "PNG, JPG ou WebP — 4 Mo maximum"}</p></div>
               <div className="space-y-2 rounded-lg border border-border p-4"><div className="flex items-center gap-2"><FileText className="h-4 w-4 text-primary" /><Label>Remplacer le passeport</Label></div><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /><p className="text-xs text-muted-foreground">{passportFile?.name || "PDF — 4 Mo maximum"}</p></div>
             </div></section>
           </div>

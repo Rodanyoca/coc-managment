@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation"
 import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
+import { ActorSexAge } from "@/components/dashboard/actor-record-layout"
 import { Header } from "@/components/dashboard/header"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -72,13 +73,6 @@ const emptyForm: OfficielForm = {
 
 function initials(name: string) {
   return name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase()
-}
-
-function displaySexe(value: string) {
-  const normalized = value.trim().toLowerCase()
-  if (["m", "h", "homme", "masculin"].includes(normalized)) return "H"
-  if (["f", "femme", "féminin", "feminin"].includes(normalized)) return "F"
-  return value || "—"
 }
 
 export function OfficielsClient({ officiels, organisations }: { officiels: OfficielListItem[]; organisations: OrganisationOption[] }) {
@@ -207,9 +201,9 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
 
         <Card className="border-border/50"><CardContent className="p-0"><div className="overflow-x-auto">
           <Table>
-            <TableHeader><TableRow className="bg-muted/30">
+            <TableHeader><TableRow className="bg-muted/70 hover:bg-muted/70">
               <TableHead>ID national</TableHead><TableHead>ID fédéral</TableHead><TableHead>Avatar</TableHead>
-              <TableHead>Nom</TableHead><TableHead>Sexe</TableHead><TableHead>Date de naissance</TableHead>
+              <TableHead>Nom</TableHead><TableHead className="text-center">Sexe / âge</TableHead>
               <TableHead>Organisation</TableHead><TableHead>Statut</TableHead><TableHead className="text-right">Actions</TableHead>
             </TableRow></TableHeader>
             <TableBody>
@@ -228,12 +222,12 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
                     </AvatarFallback>
                   </Avatar>
                 </TableCell>
-                <TableCell className="font-medium">{officiel.nomComplet || "—"}</TableCell><TableCell>{displaySexe(officiel.sexe)}</TableCell>
-                <TableCell>{officiel.dateNaissance || "—"}</TableCell><TableCell>{officiel.organisation ? <Badge variant="outline">{officiel.organisation}</Badge> : "—"}</TableCell>
+                <TableCell className="font-medium">{officiel.nomComplet || "—"}</TableCell><TableCell className="text-center"><ActorSexAge sex={officiel.sexe} date={officiel.dateNaissance} /></TableCell>
+                <TableCell className="text-sm font-medium">{officiel.organisation || "—"}</TableCell>
                 <TableCell>{officiel.statut ? <Badge variant="secondary">{officiel.statut}</Badge> : "—"}</TableCell>
                 <TableCell className="text-right"><Link href={`/dashboard/acteurs/officiels/${officiel.id}`} prefetch={false}><Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Voir l’officiel"><Eye className="h-4 w-4" /></Button></Link></TableCell>
               </TableRow>)}
-              {filteredOfficiels.length === 0 && <TableRow><TableCell colSpan={9} className="h-32 text-center text-muted-foreground">Aucun officiel trouvé.</TableCell></TableRow>}
+              {filteredOfficiels.length === 0 && <TableRow><TableCell colSpan={8} className="h-32 text-center text-muted-foreground">Aucun officiel trouvé.</TableCell></TableRow>}
             </TableBody>
           </Table>
         </div></CardContent></Card>

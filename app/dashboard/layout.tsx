@@ -11,7 +11,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex h-screen bg-background overflow-hidden">
       <Sidebar initialAccess={access} initialIsSuperAdmin={session?.estSuperAdmin === true} />
-      <main className="flex-1 overflow-y-auto no-scrollbar">
+      <main className="min-w-0 flex-1 overflow-y-auto no-scrollbar">
         {children}
       </main>
     </div>

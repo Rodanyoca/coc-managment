@@ -6,12 +6,14 @@ const listPath = new URL("../../app/dashboard/federations/federations-client.tsx
 const detailPath = new URL("../../app/dashboard/federations/[id]/page.tsx", import.meta.url)
 const structurePath = new URL("../../components/dashboard/federation-structure-section.tsx", import.meta.url)
 
-test("la liste fédérations utilise une grille responsive sans conteneur horizontal", async () => {
+test("la liste fédérations utilise le format tableau des ligues sans colonne identifiant", async () => {
   const source = await readFile(listPath, "utf8")
-  assert.doesNotMatch(source, /overflow-x-auto/)
-  assert.match(source, /lg:grid-cols-/)
+  assert.match(source, /<Table>/)
+  assert.match(source, /bg-muted\/70 hover:bg-muted\/70/)
+  assert.doesNotMatch(source, /<TableHead[^>]*>(?:ID|Identifiant)/)
+  assert.match(source, /\[10, 25, 50, 100\]/)
   assert.match(source, /break-(all|words)/)
-  assert.match(source, /className="overflow-hidden"/)
+  assert.match(source, /overflow-hidden rounded-xl border border-border\/80/)
 })
 
 test("la liste fédérations propose un filtre de catégorie combiné à la recherche", async () => {
@@ -29,15 +31,13 @@ test("l’action de détail est une icône accessible avec infobulle", async () 
   assert.doesNotMatch(source, />Détails<\/Link>/)
 })
 
-test("la fiche reprend la grille Acteurs avec les deux onglets demandés", async () => {
+test("la fiche présente quatre blocs deux par deux puis les tableaux territoriaux sans onglets", async () => {
   const source = await readFile(detailPath, "utf8")
-  assert.match(source, /lg:grid-cols-3/)
-  assert.match(source, /lg:col-span-1/)
-  assert.match(source, /lg:col-span-2/)
-  assert.equal((source.match(/<TabsTrigger/g) || []).length, 2)
-  assert.match(source, /value="identification">Identification/)
-  assert.match(source, /value="structure">Structure/)
-  assert.doesNotMatch(source, /id_entite_continentale.*<Field/)
+  assert.match(source, /lg:grid-cols-2/)
+  assert.equal((source.match(/<FederationInfoBlock id=/g) || []).length, 4)
+  assert.doesNotMatch(source, /<Tabs|components\/ui\/tabs/)
+  assert.doesNotMatch(source, />Identifiant</)
+  assert.ok(source.indexOf("<FederationStructureTables") > source.lastIndexOf("</FederationInfoBlock>"))
 })
 
 test("chaque tableau de structure propose recherche et pagination 10, 20 ou 50", async () => {

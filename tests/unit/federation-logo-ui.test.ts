@@ -25,9 +25,10 @@ test("propose une modale compacte avec aperçu et confirmation explicite", async
   assert.match(source, /role="alert"/)
 })
 
-test("place la colonne Logo immédiatement après Identifiant dans la liste", async () => {
+test("place la colonne Logo en premier sans colonne Identifiant dans la liste", async () => {
   const source = await readFile(listPath, "utf8")
-  assert.match(source, /<span>Identifiant<\/span><span>Logo<\/span><span>Nom et sigle<\/span>/)
+  assert.match(source, /<TableHeader><TableRow[^>]*><TableHead[^>]*>Logo<\/TableHead><TableHead[^>]*>Fédérations?<\/TableHead>/)
+  assert.doesNotMatch(source, /<TableHead[^>]*>(?:ID|Identifiant)/)
   assert.match(source, /logo_drive_url/)
 })
 

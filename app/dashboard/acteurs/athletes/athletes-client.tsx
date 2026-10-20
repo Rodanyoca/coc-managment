@@ -9,6 +9,7 @@ import { useMemo, useState } from "react"
 import { toast } from "sonner"
 
 import { Header } from "@/components/dashboard/header"
+import { ActorSexAge } from "@/components/dashboard/actor-record-layout"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -266,13 +267,12 @@ export function AthletesClient({
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-muted/30">
+                  <TableRow className="bg-muted/70 hover:bg-muted/70">
                     <TableHead>ID national</TableHead>
                     <TableHead>ID fédéral</TableHead>
                     <TableHead>Avatar</TableHead>
                     <TableHead>Nom</TableHead>
-                    <TableHead>Sexe</TableHead>
-                    <TableHead>Date de naissance</TableHead>
+                    <TableHead className="text-center">Sexe / âge</TableHead>
                     <TableHead>Fédération</TableHead>
                     <TableHead>Statut</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
@@ -292,11 +292,8 @@ export function AthletesClient({
                         </Avatar>
                       </TableCell>
                       <TableCell className="font-medium">{athlete.nomComplet || "—"}</TableCell>
-                      <TableCell>{displaySexe(athlete.sexe)}</TableCell>
-                      <TableCell>{athlete.dateNaissance || "—"}</TableCell>
-                      <TableCell>
-                        {athlete.federation ? <Badge variant="outline">{athlete.federation}</Badge> : "—"}
-                      </TableCell>
+                      <TableCell className="text-center"><ActorSexAge sex={athlete.sexe} date={athlete.dateNaissance} /></TableCell>
+                      <TableCell className="text-sm font-medium">{athlete.federation || "—"}</TableCell>
                       <TableCell>
                         {athlete.statut ? <Badge variant="secondary">{athlete.statut}</Badge> : "—"}
                       </TableCell>
@@ -311,7 +308,7 @@ export function AthletesClient({
                   ))}
                   {filteredAthletes.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={9} className="h-32 text-center text-muted-foreground">
+                      <TableCell colSpan={8} className="h-32 text-center text-muted-foreground">
                         Aucun athlète trouvé.
                       </TableCell>
                     </TableRow>
@@ -453,7 +450,7 @@ export function AthletesClient({
                 <div className="space-y-2 rounded-lg border border-border p-4">
                   <div className="flex items-center gap-2">
                     <ImageIcon className="h-4 w-4 text-primary" />
-                    <Label htmlFor="avatar_file">Avatar</Label>
+                    <Label htmlFor="avatar_file">Photo de l’athlète</Label>
                   </div>
                   <Input
                     id="avatar_file"

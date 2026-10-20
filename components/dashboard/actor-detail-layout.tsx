@@ -134,7 +134,7 @@ export function ActorDetailLayout({
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Card - Profile */}
-          <Card className="lg:col-span-1 border-border/70 bg-card/85 shadow-[0_18px_32px_rgba(7,25,54,.06)]">
+          <Card className="lg:col-span-1">
             <CardContent className="pt-6">
               <div className="flex flex-col items-center text-center">
                 <Avatar className="mb-4 h-24 w-24 border-4 border-primary/15 bg-background/70 shadow-[0_12px_28px_rgba(7,25,54,.12)]">
@@ -218,7 +218,7 @@ export function ActorDetailLayout({
           </Card>
 
           {/* Details Tabs */}
-          <Card className="lg:col-span-2 border-border/70 bg-card/85 shadow-[0_18px_32px_rgba(7,25,54,.06)]">
+          <Card className="lg:col-span-2">
             <Tabs defaultValue="infos" className="w-full">
               <CardHeader className="pb-0">
                 <TabsList

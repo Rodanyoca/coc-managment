@@ -3,124 +3,110 @@
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Calendar, ChevronDown, FileText, Globe2, Landmark, LayoutDashboard, Shield, Trophy, Users } from "lucide-react"
+import { Activity, BadgeCheck, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, FileText, Flag, Globe2, Landmark, LayoutDashboard, Stethoscope, Trophy, UserCog, Users, type LucideIcon } from "lucide-react"
 import { useState } from "react"
 import { dashboardNavigation, visibleDashboardNavigation } from "@/lib/navigation/dashboard-navigation"
 import { cn } from "@/lib/utils"
 
-const icons = {
-  dashboard: LayoutDashboard,
-  landmark: Landmark,
-  users: Users,
-  trophy: Trophy,
-  shield: Shield,
-  calendar: Calendar,
-  file: FileText,
-  globe: Globe2,
+const icons = { dashboard: LayoutDashboard, landmark: Landmark, users: Users, trophy: Trophy, shield: Flag, calendar: Activity, file: FileText, globe: Globe2 }
+const actorIcons: Record<string, LucideIcon> = { athletes: Users, entraineurs: UserCog, arbitres: Flag, officiels: BadgeCheck, medecins: Stethoscope, autres: Users }
+type NavigationItem = { name: string; href: string; icon: LucideIcon }
+
+function NavigationLink({ item, collapsed, pathname }: { item: NavigationItem; collapsed: boolean; pathname: string }) {
+  const exact = item.href === "/dashboard" || item.href === "/dashboard/acteurs"
+  const active = exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`)
+  return <Link
+    href={item.href}
+    className={cn(
+      "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+      active ? "bg-sidebar-primary text-sidebar-primary-foreground" : "text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground",
+    )}
+    title={collapsed ? item.name : undefined}
+    aria-label={collapsed ? item.name : undefined}
+    aria-current={active ? "page" : undefined}
+  >
+    <item.icon className="h-5 w-5 flex-shrink-0" />
+    {!collapsed && <span>{item.name}</span>}
+  </Link>
 }
+
+function NavigationGroup({ title, href, items, open, onToggle, collapsed, pathname }: {
+  title: string; href?: string; items: NavigationItem[]; open: boolean
+  onToggle: () => void; collapsed: boolean; pathname: string
+}) {
+  if (collapsed) return <>
+    {href && <NavigationLink item={{ name: title, href, icon: Users }} collapsed pathname={pathname} />}
+    {items.map(item => <NavigationLink key={item.href} item={item} collapsed pathname={pathname} />)}
+  </>
+
+  return <div className="space-y-1">
+    {href ? <div className="flex w-full items-center justify-between rounded-lg text-xs font-semibold text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground">
+      <Link href={href} className="min-w-0 flex-1 rounded-lg px-3 py-2 uppercase tracking-wide" aria-current={pathname === href ? "page" : undefined}>{title}</Link>
+      <button type="button" onClick={onToggle} className="rounded-lg px-3 py-2" aria-label={`${open ? "Réduire" : "Développer"} ${title}`} aria-expanded={open}>
+        {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+      </button>
+    </div> : <button
+      type="button"
+      onClick={onToggle}
+      className="w-full flex items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground"
+      aria-expanded={open}
+    >
+      <span className="uppercase tracking-wide">{title}</span>
+      {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+    </button>}
+    {open && <div className="pl-2 space-y-1">
+      {items.map(item => <NavigationLink key={item.href} item={item} collapsed={false} pathname={pathname} />)}
+    </div>}
+  </div>
+}
+
 export function Sidebar({ initialAccess, initialIsSuperAdmin }: { initialAccess: Record<string, boolean>; initialIsSuperAdmin: boolean }) {
   const pathname = usePathname()
-  const [expanded, setExpanded] = useState<string[]>(["Acteurs", "Structure territoriale", "Compétitions"])
-
-  const readableBlocks = ["AUT-ADM", "AUT-SPT", "AUT-COM"].filter((block) => initialAccess[`${block}:READ`] === true)
+  const [collapsed, setCollapsed] = useState(false)
+  const [closedGroups, setClosedGroups] = useState<string[]>([])
+  const readableBlocks = ["AUT-ADM", "AUT-SPT", "AUT-COM"].filter(block => initialAccess[`${block}:READ`] === true)
   const visible = visibleDashboardNavigation(dashboardNavigation, { isSuperAdmin: initialIsSuperAdmin, readableBlocks })
+  const linksFor = (...routes: string[]): NavigationItem[] => visible
+    .filter(item => item.href && routes.includes(item.href))
+    .map(item => ({ name: item.name, href: item.href!, icon: icons[item.icon] }))
+  const actors = visible.find(item => item.href === "/dashboard/acteurs")
+  const groups = [
+    { title: "Structure territoriale", items: linksFor("/dashboard/federations") },
+    { title: "Acteurs", href: actors?.href, items: (actors?.children ?? []).map(item => ({ ...item, icon: actorIcons[item.href.split("/").pop()!] ?? Users })) },
+    { title: "Compétitions", items: linksFor("/dashboard/competitions") },
+    { title: "Équipes nationales", items: linksFor("/dashboard/equipes-nationales") },
+    { title: "Administration", items: linksFor("/dashboard/activites", "/dashboard/documents", "/dashboard/site-web", "/dashboard/utilisateurs") },
+  ].filter(group => group.items.length > 0)
+  const toggle = (title: string) => setClosedGroups(current => current.includes(title) ? current.filter(item => item !== title) : [...current, title])
 
-  const toggle = (name: string) => {
-    setExpanded((current) => current.includes(name) ? current.filter((item) => item !== name) : [...current, name])
-  }
-
-  return (
-    <aside className="relative h-screen w-64 shrink-0 overflow-hidden bg-sidebar text-sidebar-foreground shadow-[8px_0_30px_rgba(4,18,42,.12)] after:absolute after:inset-y-0 after:right-0 after:w-px after:bg-gradient-to-b after:from-primary/70 after:via-sidebar-border after:to-transparent">
-      <div className="flex h-full flex-col">
-        <div className="flex h-24 shrink-0 items-center border-b border-sidebar-border/80 px-5">
-          <Link href="/dashboard" className="flex items-center gap-3">
-            <span className="grid h-14 w-14 place-items-center rounded-xl bg-white/95 shadow-sm ring-1 ring-primary/25">
-              <Image src="/images/logo-coc.png" alt="Logo COC" width={45} height={52} className="h-12 w-auto object-contain" />
-            </span>
-            <div className="flex flex-col leading-none">
-              <span className="text-[10px] font-bold uppercase tracking-[.14em] text-sidebar-primary">Comité Olympique</span>
-              <span className="mt-1 text-sm font-semibold text-white">Congolais</span>
-            </div>
-          </Link>
-        </div>
-
-        <nav className="no-scrollbar flex-1 overflow-y-auto px-3 py-5">
-          <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-sidebar-foreground/40">Navigation</p>
-          <div className="space-y-1">
-            {visible.map((item) => {
-              const active = item.children
-                ? item.children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`))
-                : item.href === "/dashboard"
-                  ? pathname === item.href
-                  : pathname === item.href || pathname.startsWith(`${item.href}/`)
-
-              const opened = expanded.includes(item.name)
-              const Icon = icons[item.icon]
-
-              return (
-                <div key={item.name}>
-                  {item.children ? (
-                    <div className={cn("rounded-lg", active ? "bg-sidebar-accent text-sidebar-primary" : "text-sidebar-foreground/80 hover:bg-sidebar-accent") }>
-                      {item.href ? (
-                        <div className="flex items-center">
-                          <Link href={item.href} className="flex min-w-0 flex-1 items-center gap-3 px-3 py-2.5 text-sm font-medium">
-                            <Icon className="h-5 w-5" />
-                            <span>{item.name}</span>
-                          </Link>
-                          <button type="button" onClick={() => toggle(item.name)} className="p-2.5 text-current" aria-label={`${opened ? "Réduire" : "Développer"} ${item.name}`} aria-expanded={opened}>
-                            <ChevronDown className={cn("h-4 w-4 transition-transform", opened && "rotate-180")} />
-                          </button>
-                        </div>
-                      ) : (
-                        <button type="button" onClick={() => toggle(item.name)} className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium" aria-expanded={opened}>
-                          <Icon className="h-5 w-5" />
-                          <span className="min-w-0 flex-1">{item.name}</span>
-                          <ChevronDown className={cn("h-4 w-4 transition-transform", opened && "rotate-180")} />
-                        </button>
-                      )}
-
-                      {opened && item.children && (
-                        <div className="ml-4 mt-1 space-y-1 border-l border-sidebar-border pl-4 pb-1">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              className={cn(
-                                "block rounded-lg px-3 py-2 text-sm transition-colors",
-                                pathname === child.href ? "font-medium text-sidebar-primary" : "text-sidebar-foreground/70 hover:text-sidebar-foreground"
-                              )}
-                            >
-                              {child.name}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  ) : (
-                    <Link
-                      href={item.href!}
-                      className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                        active ? "bg-sidebar-accent text-sidebar-primary" : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground"
-                      )}
-                    >
-                      <Icon className="h-5 w-5" />
-                      <span>{item.name}</span>
-                    </Link>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </nav>
-
-        <div className="shrink-0 border-t border-sidebar-border/80 px-4 py-3">
-          <p className="text-center text-[10px] tracking-[0.18em] text-sidebar-foreground/45 uppercase">
-            DS <span className="font-semibold text-sidebar-foreground/70">Concept</span>
-          </p>
-        </div>
+  return <aside className={cn(
+    "relative z-40 h-screen shrink-0 border-r border-sidebar-border bg-sidebar shadow-[16px_0_40px_rgba(1,10,20,0.22)] transition-all duration-300",
+    collapsed ? "w-16" : "w-64",
+  )}>
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="relative flex h-16 shrink-0 items-center justify-between border-b border-sidebar-border px-4 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-gradient-to-r after:from-[#1188c7] after:via-[#f6c515] after:to-[#e23b52]">
+        <Link href="/dashboard" aria-label="Comité Olympique Congolais" title="Comité Olympique Congolais" className={cn("flex items-center gap-3", collapsed && "mx-auto")}>
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+            <Image src="/images/logo-coc.png" alt="Logo COC" width={45} height={52} className="h-full w-full object-contain" />
+          </span>
+          {!collapsed && <span className="text-lg font-black tracking-[0.12em] text-sidebar-foreground">COC</span>}
+        </Link>
       </div>
-    </aside>
-  )
-}
 
+      <button
+        type="button"
+        onClick={() => setCollapsed(current => !current)}
+        className="absolute -right-3 top-20 flex h-6 w-6 items-center justify-center rounded-full border border-sidebar-border bg-sidebar text-sidebar-muted shadow-md transition-colors hover:border-primary/60 hover:bg-sidebar-accent hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring"
+        aria-label={collapsed ? "Déployer la navigation" : "Réduire la navigation"}
+        aria-expanded={!collapsed}
+      >
+        {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+      </button>
+
+      <nav aria-label="Navigation principale" className="min-h-0 flex-1 space-y-1 overflow-y-auto overflow-x-hidden px-2 py-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [&_:focus-visible]:outline-2 [&_:focus-visible]:outline-offset-2 [&_:focus-visible]:outline-sidebar-ring">
+        {linksFor("/dashboard").map(item => <NavigationLink key={item.href} item={item} collapsed={collapsed} pathname={pathname} />)}
+        {groups.map(group => <NavigationGroup key={group.title} {...group} open={!closedGroups.includes(group.title)} onToggle={() => toggle(group.title)} collapsed={collapsed} pathname={pathname} />)}
+      </nav>
+    </div>
+  </aside>
+}

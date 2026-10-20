@@ -11,11 +11,13 @@ export type DashboardNavigationItem = {
 
 export const dashboardNavigation: readonly DashboardNavigationItem[] = [
   { name: "Tableau de bord", href: "/dashboard", icon: "dashboard", blocks: ["AUT-ADM", "AUT-SPT", "AUT-COM"] },
-  { name: "Entités", href: "/dashboard/federations", icon: "landmark", blocks: ["AUT-SPT"] },
+  { name: "Fédérations", href: "/dashboard/federations", icon: "landmark", blocks: ["AUT-SPT"] },
   { name: "Acteurs", href: "/dashboard/acteurs", icon: "users", blocks: ["AUT-SPT"], children: [
-    { name: "Athlètes", href: "/dashboard/acteurs/athletes" }, { name: "Officiels", href: "/dashboard/acteurs/officiels" },
-    { name: "Entraîneurs", href: "/dashboard/acteurs/entraineurs" }, { name: "Médecins", href: "/dashboard/acteurs/medecins" },
+    { name: "Athlètes", href: "/dashboard/acteurs/athletes" },
+    { name: "Entraîneurs", href: "/dashboard/acteurs/entraineurs" },
     { name: "Arbitres", href: "/dashboard/acteurs/arbitres" },
+    { name: "Officiels", href: "/dashboard/acteurs/officiels" },
+    { name: "Médecins", href: "/dashboard/acteurs/medecins" },
     { name: "Autres", href: "/dashboard/acteurs/autres" },
   ] },
   { name: "Compétitions", href: "/dashboard/competitions", icon: "trophy", blocks: ["AUT-SPT"] },

@@ -2,13 +2,13 @@
 
 import { apiFetch } from "@/lib/api/client"
 
-import { Mail, MapPin, Pencil, Phone } from "lucide-react"
+import { Contact, Fingerprint, Info, User } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
-import { ActorDetailLayout } from "@/components/dashboard/actor-detail-layout"
-import { Badge } from "@/components/ui/badge"
+import { ActorInfoCard, ActorPassportCard, ActorRecordLayout } from "@/components/dashboard/actor-record-layout"
+import { getAthleteAge as getActorAge } from "@/lib/athletes/presentation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -36,6 +36,7 @@ export type OfficielDetail = {
   telephone: string
   email: string
   adresse: string
+  observations?: string
   statut: "actif" | "inactif"
   avatarUrl: string | null
   urlPasseport: string | null
@@ -185,48 +186,43 @@ export function OfficielDetailClient({
     }
   }
 
-  const mainInfo = [
-    { label: "ID national", value: officiel.idNational || "—" },
-    { label: "ID fédéral", value: officiel.idFederal || "—" },
-    { label: "ID international", value: officiel.idInternational || "—" },
-    { label: "Nom complet", value: officiel.nomComplet || "—" },
-    { label: "Sexe", value: sexId(officiel.sexe) === "F" ? "Femme" : "Homme" },
+  const age = getActorAge(officiel.dateNaissance)
+  const identityFields = [
+    { label: "Nom", value: officiel.nomComplet || "—" },
     { label: "Date de naissance", value: officiel.dateNaissance || "—" },
-    { label: "Lieu de naissance", value: officiel.lieuNaissance || "—" },
-    { label: "Nationalité", value: officiel.nationalite || "—" },
-    { label: "Organisation", value: initialOfficiel.organisation ? <Badge variant="outline">{initialOfficiel.organisation}</Badge> : "—" },
+    { label: "Sexe", value: officiel.sexe || "—" },
   ]
-  const contactInfo = [
-    officiel.telephone ? { label: "Téléphone", value: officiel.telephone, icon: <Phone className="h-4 w-4" /> } : null,
-    officiel.email ? { label: "E-mail", value: officiel.email, icon: <Mail className="h-4 w-4" /> } : null,
-    officiel.adresse ? { label: "Adresse", value: officiel.adresse, icon: <MapPin className="h-4 w-4" /> } : null,
-  ].filter(Boolean) as { label: string; value: string; icon: React.JSX.Element }[]
 
   return <>
-    <ActorDetailLayout
-      backHref="/dashboard/acteurs/officiels"
-      backLabel="Retour aux officiels"
-      title={officiel.nomComplet}
-      subtitle={initialOfficiel.organisation || undefined}
-      avatarInitials={initials(officiel.nomComplet)}
-      avatarColorClass="bg-primary/10 text-primary"
-      avatarUrl={officiel.avatarUrl}
-      urlPasseport={officiel.urlPasseport}
-      passportInfo={[
-        { label: "N° Passeport", value: officiel.numeroPasseport || "—" },
-        { label: "Délivré le", value: officiel.dateDelivrancePasseport || "—" },
-        { label: "Expire le", value: officiel.dateExpirationPasseport || "—" },
-      ]}
-      actorType="officiels"
-      actorId={officiel.id}
-      showActorId={false}
-      actorDateNaissance={officiel.dateNaissance}
-      actorSexe={officiel.sexe}
-      status={officiel.statut}
-      mainInfo={mainInfo}
-      contactInfo={contactInfo}
+    <ActorRecordLayout
+      backHref="/dashboard/acteurs/officiels" backLabel="Retour aux officiels"
+      title={officiel.nomComplet} subtitle={initialOfficiel.organisation || undefined}
+      avatarUrl={officiel.avatarUrl} avatarInitials={initials(officiel.nomComplet)} status={officiel.statut}
+      onEdit={() => setOpen(true)}
+      generalContent={<div className="grid gap-6 md:grid-cols-2">
+        <ActorInfoCard title="Identité" icon={User} fields={[
+          { label: "Nom complet", value: officiel.nomComplet },
+          { label: "Sexe", value: officiel.sexe },
+          { label: "Date de naissance", value: officiel.dateNaissance },
+          { label: "Âge", value: age === null ? "—" : `${age} ans` },
+          { label: "Lieu de naissance", value: officiel.lieuNaissance },
+          { label: "Nationalité", value: officiel.nationalite },
+        ]} />
+        <ActorInfoCard title="Contact" icon={Contact} fields={[
+          { label: "Téléphone", value: officiel.telephone },
+          { label: "E-mail", value: officiel.email },
+          { label: "Adresse", value: officiel.adresse },
+        ]} />
+        <ActorInfoCard title="Identifiants" icon={Fingerprint} fields={[
+          { label: "ID national", value: officiel.idNational },
+          { label: "ID fédéral", value: officiel.idFederal },
+          { label: "ID international", value: officiel.idInternational },
+          { label: "Organisation", value: initialOfficiel.organisation },
+        ]} />
+        <ActorInfoCard title="Observations" icon={Info} fields={[{ label: "Remarques", value: officiel.observations || "Aucune observation enregistrée." }]} />
+      </div>}
+      documents={<ActorPassportCard actorType="officiels" actorId={officiel.id} number={officiel.numeroPasseport} issued={officiel.dateDelivrancePasseport} expires={officiel.dateExpirationPasseport} url={officiel.urlPasseport} identityFields={identityFields} onUploaded={(url) => { setOfficiel(current => ({ ...current, urlPasseport: url })); router.refresh() }} />}
       additionalSections={[{ id: "parcours", label: "Parcours", content: <OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} /> }, ...activitySections(officiel.id)]}
-      profileActions={<Button onClick={() => setOpen(true)}><Pencil className="mr-2 h-4 w-4" />Modifier</Button>}
     />
 
     <Sheet open={open} onOpenChange={setOpen}>
@@ -248,7 +244,7 @@ export function OfficielDetailClient({
           <div className="space-y-2"><Label>N° passeport</Label><Input value={form.numéro_passeport} onChange={(e) => update("numéro_passeport", e.target.value)} /></div>
           <div className="space-y-2"><Label>Délivré le</Label><Input type="date" value={form.date_de_delivrance_passeport} onChange={(e) => update("date_de_delivrance_passeport", e.target.value)} /></div>
           <div className="space-y-2"><Label>Expire le</Label><Input type="date" value={form["date_expiration passeport"]} onChange={(e) => update("date_expiration passeport", e.target.value)} /></div>
-          <div className="space-y-2"><Label>Remplacer l’avatar</Label><Input type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /></div>
+          <div className="space-y-2"><Label htmlFor="official-avatar-file">{officiel.avatarUrl ? "Remplacer la photo" : "Ajouter une photo"}</Label><Input id="official-avatar-file" type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /></div>
           <div className="space-y-2"><Label>Remplacer le passeport</Label><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /></div>
         </div>
         <div className="border-t px-4 pt-5"><OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} compact canEdit /></div>

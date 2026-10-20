@@ -10,14 +10,14 @@ const items = [
 ] as const
 
 export function MedalsSummarySection({ stats }: { stats: MedalDashboardStats }) {
-  return <section aria-labelledby="medals-dashboard-title" className="min-w-0 space-y-4">
+  return <section aria-labelledby="medals-dashboard-title" className="min-w-0 space-y-4 border-t border-border pt-6">
     <div className="space-y-2">
-      <h2 id="medals-dashboard-title" className="flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.16em] text-primary/80 before:h-0.5 before:w-8 before:bg-primary/80"><Medal className="h-4 w-4" />Médailles</h2>
+      <h2 id="medals-dashboard-title" className="flex items-center gap-3 text-lg font-semibold"><Medal className="h-4 w-4" />Médailles</h2>
       <p className="text-sm text-muted-foreground">Récompenses obtenues dans les compétitions</p>
     </div>
-    <div className="min-w-0 overflow-hidden rounded-xl border border-border/70 bg-card/80 shadow-[0_10px_28px_rgba(7,25,54,.04)]">
+    <div className="min-w-0 overflow-hidden rounded-lg border">
       <Table>
-        <TableHeader><TableRow className="bg-secondary/80 hover:bg-secondary/80"><TableHead>Distinction</TableHead><TableHead className="text-right">Effectif</TableHead><TableHead className="text-right">Part du total</TableHead></TableRow></TableHeader>
+        <TableHeader><TableRow><TableHead>Distinction</TableHead><TableHead className="text-right">Effectif</TableHead><TableHead className="text-right">Part du total</TableHead></TableRow></TableHeader>
         <TableBody>
           {items.map((item) => {
             const count = stats[item.key]
