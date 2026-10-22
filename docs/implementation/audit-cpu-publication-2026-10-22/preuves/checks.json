@@ -1,0 +1,132 @@
+[
+  {
+    "name": "build",
+    "args": [
+      "node_modules/next/dist/bin/next",
+      "build"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-10-22T21:39:04.823Z",
+    "finishedAt": "2026-10-22T21:47:14.587Z",
+    "elapsedMs": 489764
+  },
+  {
+    "name": "suite",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "tests/unit/*.test.ts",
+      "tests/integration/*.test.ts"
+    ],
+    "exitCode": 1,
+    "startedAt": "2026-10-22T21:47:14.856Z",
+    "finishedAt": "2026-10-22T21:48:43.289Z",
+    "elapsedMs": 88433,
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  },
+  {
+    "name": "cpu",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/cpu/*.test.mjs"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-10-22T21:48:43.304Z",
+    "finishedAt": "2026-10-22T21:48:46.755Z",
+    "elapsedMs": 3451,
+    "tests": 19,
+    "pass": 19,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "name": "permissions",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/post-login-route.test.ts",
+      "tests/unit/authorization-matrix.test.ts"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-10-22T21:48:46.759Z",
+    "finishedAt": "2026-10-22T21:48:48.688Z",
+    "elapsedMs": 1929,
+    "tests": 23,
+    "pass": 23,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "name": "typescript",
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-10-22T21:48:48.689Z",
+    "finishedAt": "2026-10-22T21:50:40.561Z",
+    "elapsedMs": 111872
+  },
+  {
+    "name": "lint",
+    "args": [
+      "node_modules/eslint/bin/eslint.js",
+      "components/dashboard/access-context.tsx",
+      "lib/users/create-user-client.ts",
+      "app/dashboard/acteurs/arbitres/[id]/arbitre-detail-client.tsx",
+      "app/dashboard/acteurs/arbitres/arbitres-client.tsx",
+      "app/dashboard/acteurs/athletes/[id]/athlete-detail-client.tsx",
+      "app/dashboard/acteurs/athletes/athletes-client.tsx",
+      "app/dashboard/acteurs/autres/[id]/other-actor-detail-client.tsx",
+      "app/dashboard/acteurs/entraineurs/[id]/entraineur-detail-client.tsx",
+      "app/dashboard/acteurs/entraineurs/entraineurs-client.tsx",
+      "app/dashboard/acteurs/medecins/[id]/medecin-detail-client.tsx",
+      "app/dashboard/acteurs/medecins/medecins-client.tsx",
+      "app/dashboard/acteurs/officiels/[id]/officiel-detail-client.tsx",
+      "app/dashboard/acteurs/officiels/officiels-client.tsx",
+      "app/dashboard/activites/activites-client.tsx",
+      "app/dashboard/competitions/competitions-client.tsx",
+      "app/dashboard/layout.tsx",
+      "app/dashboard/site-web/page.tsx",
+      "app/dashboard/site-web/sliders/sliders-client.tsx",
+      "app/dashboard/utilisateurs/nouveau/new-user-client.tsx",
+      "components/dashboard/actor-record-layout.tsx",
+      "components/dashboard/actors-summary-section.tsx",
+      "components/dashboard/competition-form.tsx",
+      "components/dashboard/dashboard-refresh-button.tsx",
+      "components/dashboard/detail-card.tsx",
+      "components/dashboard/general-summary-section.tsx",
+      "components/dashboard/sidebar.tsx",
+      "lib/acteurs/dashboard.ts",
+      "lib/athletes/presentation.ts",
+      "lib/auth.ts",
+      "lib/auth/authorization.ts",
+      "lib/auth/post-login-route.ts",
+      "lib/auth/route-policy.ts",
+      "lib/competitions/data.ts",
+      "lib/competitions/format.ts",
+      "lib/documents/data.ts",
+      "lib/google/sheets.ts"
+    ],
+    "exitCode": 0,
+    "startedAt": "2026-10-22T21:51:25.605Z",
+    "finishedAt": "2026-10-22T21:53:52.673Z",
+    "elapsedMs": 147068
+  }
+]

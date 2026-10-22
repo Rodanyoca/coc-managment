@@ -12,9 +12,6 @@ export function GeneralSummarySection({ federations, territorial, actors, activi
   activities?: ActivitiesDashboardStats; competitions?: CompetitionsDashboardStats
   nationalTeams?: NationalTeamsDashboardStats; documents?: DocumentsDashboardStats
 }) {
-  const completeness = actors?.totalActors
-    ? Math.round(actors.types.reduce((sum, item) => sum + item.completude * item.total, 0) / actors.totalActors)
-    : 0
   return <section aria-labelledby="summary-title" className="space-y-4 border-t border-border pt-6">
     <h2 id="summary-title" className="text-lg font-semibold">Synthèse générale</h2>
     <div className="grid gap-px overflow-hidden rounded-xl border border-border/80 bg-border shadow-[0_12px_30px_rgba(1,10,20,0.12)] sm:grid-cols-2 lg:grid-cols-3">
@@ -26,7 +23,6 @@ export function GeneralSummarySection({ federations, territorial, actors, activi
       {nationalTeams && <div className="relative min-h-32 space-y-3 bg-card p-5 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary/70"><p className="text-sm font-medium text-muted-foreground">Équipes nationales</p><p className="text-3xl font-bold tracking-[-0.04em] tabular-nums">{number.format(nationalTeams.totalTeams)}</p><p className="max-w-xs text-xs text-muted-foreground">{number.format(nationalTeams.activeTeams)} actives · {number.format(nationalTeams.totalMembers)} membres</p></div>}
       {documents && <div className="relative min-h-32 space-y-3 bg-card p-5 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary/70"><p className="text-sm font-medium text-muted-foreground">Documents</p><p className="text-3xl font-bold tracking-[-0.04em] tabular-nums">{number.format(documents.totalDocuments)}</p><p className="max-w-xs text-xs text-muted-foreground">{number.format(documents.avecFichier)} avec fichier · {number.format(documents.sansFichier)} sans fichier</p></div>}
       {competitions && <div className="relative min-h-32 space-y-3 bg-card p-5 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary/70"><p className="text-sm font-medium text-muted-foreground">Résultats</p><p className="text-3xl font-bold tracking-[-0.04em] tabular-nums">{number.format(competitions.totalResults)}</p><p className="max-w-xs text-xs text-muted-foreground">Résultats de compétitions, versions courantes</p></div>}
-      {actors && <div className="relative min-h-32 space-y-3 bg-card p-5 before:absolute before:inset-y-5 before:left-0 before:w-0.5 before:rounded-full before:bg-primary/70"><p className="text-sm font-medium text-muted-foreground">Complétude</p><p className="text-3xl font-bold tracking-[-0.04em] tabular-nums">{number.format(completeness)} %</p><p className="max-w-xs text-xs text-muted-foreground">Taux moyen de complétude des fiches d’acteurs</p></div>}
     </div>
   </section>
 }

@@ -1,0 +1,161 @@
+--- a/lib/documents/data.ts
++++ b/lib/documents/data.ts
+@@ -21,23 +21,34 @@
+   if (missing.length) throw new Error(`Colonnes Documents manquantes : ${missing.join(", ")}`)
+ }
+
+-export async function getDocuments(options: { fresh?: boolean } = {}) {
++async function getDocumentRecords(options: { fresh?: boolean } = {}, matches?: (row: Record<string, string>) => boolean) {
+   const rows = await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), bypassCache: options.fresh })
+   await assertDocumentHeaders()
+-  const documents = rows.map(mapDocument).filter((document) => document.id_document)
++  if (matches) return rows.filter((row) => clean(row.id_document) && matches(row)).map(mapDocument)
++  return rows.map(mapDocument).filter((document) => document.id_document)
++}
++
++async function withDocumentSizes(documents: DocumentRecord[]) {
+   const sizes = await Promise.all(documents.map((document) => document.drive_document_id ? getDriveFileSize(document.drive_document_id).catch(() => "") : Promise.resolve("")))
+   return documents.map((document, index) => ({ ...document, taille: sizes[index] }))
++}
++
++export async function getDocuments(options: { fresh?: boolean } = {}) {
++  return withDocumentSizes(await getDocumentRecords(options))
+ }
+
+ export async function getDocument(id: string) {
+   // Une fiche est souvent ouverte immédiatement après sa création. Cette
+   // lecture doit éviter un cache d'une autre instance serveur encore ancien.
+-  return (await getDocuments({ fresh: true })).find((document) => document.id_document === clean(id))
++  const documentId = clean(id)
++  const documents = await getDocumentRecords({ fresh: true }, (row) => clean(row.id_document) === documentId)
++  return (await withDocumentSizes(documents.slice(0, 1)))[0]
+ }
+
+ export async function getDocumentsForEntity(type: string, id: string) {
+   const normalizedType = clean(type).toUpperCase()
+-  return (await getDocuments()).filter((document) => document.type_entite_liee === normalizedType && document.id_entite_liee === clean(id))
++  const entityId = clean(id)
++  return withDocumentSizes(await getDocumentRecords({}, (row) => clean(row.type_objet_lie) === normalizedType && clean(row.id_objet_lie) === entityId))
+ }
+
+ async function getDocumentTypes(): Promise<{ options: DocumentOption[]; available: boolean }> {
+@@ -100,7 +111,7 @@
+   const row = validateDocumentInput(input)
+   await validateReferences(row)
+   // La génération du prochain ID doit toujours partir de la feuille à jour.
+-  const existing = await getDocuments({ fresh: true })
++  const existing = await getDocumentRecords({ fresh: true })
+   const id = nextDocumentId(existing)
+   if (existing.some((document) => document.id_document === id)) throw new Error("Impossible de générer un identifiant document unique.")
+   let uploaded: { fileId: string; url: string } | undefined
+--- /dev/null
++++ b/tests/cpu/documents.test.mjs
+@@ -0,0 +1,56 @@
++import assert from 'node:assert/strict'
++import test from 'node:test'
++import { documentsModule, documentRows } from '../../scripts/cpu-audit/fixtures.mjs'
++
++const root = process.env.CPU_TEST_ROOT || process.cwd()
++test('detail preserves full document output but reads size only for the selected file', async () => {
++  const { namespace: data, state } = await documentsModule(root, documentRows(200))
++  const result = await data.getDocument(' DOC123 ')
++  assert.equal(result.id_document, 'DOC123')
++  assert.equal(result.taille, '1123')
++  assert.equal(result.drive_document_url, 'https://drive.google.com/file/d/FILE123/view')
++  assert.deepEqual(state.sizeCalls, ['FILE123'])
++  assert.equal(state.sheetCalls[0].bypassCache, true)
++})
++test('missing detail never enriches unrelated files', async () => {
++  const { namespace: data, state } = await documentsModule(root, documentRows(200))
++  assert.equal(await data.getDocument('missing'), undefined)
++  assert.equal(state.sizeCalls.length, 0)
++})
++test('entity selection normalizes fields before enrichment and preserves order', async () => {
++  const rows = documentRows(40)
++  rows[0] = { ...rows[0], id_document: ' DOC0 ', type_objet_lie: ' COMPETITION ', id_objet_lie: ' C0 ' }
++  const { namespace: data, state } = await documentsModule(root, rows)
++  const result = await data.getDocumentsForEntity(' competition ', ' C0 ')
++  assert.equal(JSON.stringify(result.map(row => row.id_document)), JSON.stringify(['DOC0', 'DOC20']))
++  assert.deepEqual(state.sizeCalls, ['FILE0', 'FILE20'])
++  assert.equal(state.sheetCalls[0].bypassCache, undefined)
++})
++test('list keeps all sizes, missing file and Drive failure semantics', async () => {
++  const rows = documentRows(3)
++  rows[1].drive_document_id = ''
++  rows.push({ ...rows[0], id_document: '' })
++  const { namespace: data, state } = await documentsModule(root, rows)
++  let result = await data.getDocuments()
++  assert.equal(result.length, 3)
++  assert.equal(result[1].taille, '')
++  assert.deepEqual(state.sizeCalls, ['FILE0', 'FILE2'])
++  state.failSize = true
++  result = await data.getDocument('DOC0')
++  assert.equal(result.taille, '')
++  state.failHeaders = true
++  await assert.rejects(data.getDocument('DOC0'), /Colonnes Documents manquantes/)
++  state.failSheet = true
++  await assert.rejects(data.getDocuments(), /Sheets offline/)
++})
++
++test('creation scans fresh document identifiers without reading unrelated Drive sizes', async () => {
++  const { namespace:data,state }=await documentsModule(root,documentRows(200))
++  state.allowWrites=true
++  const created=await data.createDocument({nom_document:'Synthetic new document',id_type_document:'PDF'})
++  assert.equal(created.id_document,'DOC0200')
++  assert.equal(state.sizeCalls.length,0)
++  assert.equal(state.sheetCalls.find(call=>call.sheetName==='DOCUMENTS').bypassCache,true)
++  assert.equal(state.writes.length,1)
++  assert.equal(state.writes[0].row.id_document,'DOC0200')
++})
+--- /dev/null
++++ b/tests/cpu/private-documents.test.mjs
+@@ -0,0 +1,49 @@
++import assert from 'node:assert/strict'
++import test from 'node:test'
++import { loadServerModule } from '../../scripts/cpu-audit/module-harness.mjs'
++import { documentsModule, documentRows } from '../../scripts/cpu-audit/fixtures.mjs'
++const root=process.env.CPU_TEST_ROOT || process.cwd()
++
++for(const endpoint of ['preview','download'])test(`private ${endpoint}: assigned VIEWER only, missing files, size and binary cache headers`,async()=>{
++  const user={idUser:'OFFLINE-VIEWER',typeUser:'VIEWER',estSuperAdmin:false,doitChangerMotDePasse:false}
++  let grants=[],sourceFailure=false,documentLoads=0,downloads=0,driveFailure=false
++  const auth=await loadServerModule(root,'lib/auth.ts',{
++    'next/headers':{cookies:async()=>({get:()=>({value:'offline-token'})})},
++    '@/lib/users/data':{getUserById:async()=>user,getAuthorizationsForUser:async()=>{if(sourceFailure)throw new Error('offline');return grants}},
++    '@/lib/auth/session-cookie':{SESSION_COOKIE_NAME:'offline',sessionCookieOptions:()=>({})},
++    '@/lib/auth/session-resolution':{resolveSession:async()=>({ok:true,user,payload:{session_version:1},requiresActivation:false})},
++    '@/lib/auth/session-token':{createSessionToken:async()=>''},
++  })
++  const rows=documentRows(30)
++  rows[11].drive_document_id=''
++  const {namespace:data,state}=await documentsModule(root,rows)
++  const route=await loadServerModule(root,`app/api/documents/[id]/${endpoint}/route.ts`,{
++    'next/server':{NextResponse:{json:(body,options)=>Response.json(body,options)}},
++    '@/lib/documents/auth':{canReadDocuments:()=>auth.canAccess('AUT-ADM','READ')},
++    '@/lib/documents/data':{getDocument:async id=>{documentLoads++;return data.getDocument(id)}},
++    '@/lib/google/drive':{downloadDriveFile:async()=>{downloads++;if(driveFailure)throw new Error('Synthetic Drive failure');return{buffer:Buffer.from('%PDF-1.4\nsynthetic'),mimeType:'application/pdf',name:'test\r\n".pdf'}}},
++  })
++  const request=()=>route.GET(new Request('https://offline.invalid/documents'),{params:Promise.resolve({id:'DOC10'})})
++  const grant={idUser:user.idUser,idBlocAutorisation:'AUT-ADM',statut:'ACTIF',dateDebut:'2020-01-01',dateFin:null}
++  for(const invalid of [[],[{...grant,idBlocAutorisation:'AUT-SPT'}],[{...grant,statut:'INACTIF'}],[{...grant,dateFin:'2020-01-02'}],[{...grant,dateDebut:'2099-01-01'}]]){
++    grants=invalid
++    assert.equal((await request()).status,403)
++  }
++  grants=[grant];sourceFailure=true
++  assert.equal((await request()).status,403)
++  assert.equal(documentLoads,0);assert.equal(downloads,0);assert.equal(state.sizeCalls.length,0)
++  sourceFailure=false
++  const result=await request()
++  assert.equal(result.status,200)
++  assert.equal(result.headers.get('cache-control'),'private, no-store')
++  assert.equal(result.headers.get('content-type'),'application/pdf')
++  assert.match(result.headers.get('content-disposition'),endpoint==='preview'?/^inline$/:/^attachment; filename="test___\.pdf"$/)
++  assert.equal(await result.text(),'%PDF-1.4\nsynthetic')
++  assert.deepEqual(state.sizeCalls,['FILE10']);assert.equal(downloads,1)
++  const missing=await route.GET(new Request('https://offline.invalid/documents'),{params:Promise.resolve({id:'missing'})})
++  assert.equal(missing.status,404);assert.equal(downloads,1)
++  const withoutFile=await route.GET(new Request('https://offline.invalid/documents'),{params:Promise.resolve({id:'DOC11'})})
++  assert.equal(withoutFile.status,404);assert.equal(downloads,1)
++  driveFailure=true
++  assert.equal((await request()).status,503)
++})

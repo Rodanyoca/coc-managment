@@ -30,3 +30,10 @@ test("ne renvoie pas vers le dashboard un utilisateur sans bloc métier", () => 
 test("redirige un super-administrateur sans bloc vers le tableau de bord", () => {
   assert.equal(postLoginRoute({ ...user, estSuperAdmin: true }, [], "2026-09-01"), "/dashboard")
 })
+
+
+test("VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation", () => {
+  assert.equal(postLoginRoute({ ...user, typeUser: "VIEWER" }, []), "/mon-compte")
+  assert.equal(postLoginRoute({ ...user, typeUser: "VIEWER" }, [authorization], "2026-09-01"), "/dashboard")
+  assert.equal(postLoginRoute({ ...user, typeUser: "VIEWER", doitChangerMotDePasse: true }, []), "/activation")
+})

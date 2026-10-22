@@ -1,0 +1,20 @@
+{
+  "baseBeforePerformanceLots": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+  "filesReverted": [
+    "lib/documents/data.ts",
+    "lib/google/sheets.ts"
+  ],
+  "s1FilesExcludedFromPatch": [
+    "lib/auth.ts",
+    "lib/auth/authorization.ts",
+    "lib/auth/post-login-route.ts"
+  ],
+  "s1Sha256": {
+    "lib/auth.ts": "d1145ece760ebdb05aefbb50c8ee0891386793ba8b5551cb1d9897bd07847fe7",
+    "lib/auth/authorization.ts": "f618c1ab915a81fd1939cf9ea97e7b6170bfc4e6c3688f6f8295c20bc45a7763",
+    "lib/auth/post-login-route.ts": "bd3fb4edebde678afafd89fa25dd9752c63d1b917789fb0433e07ad7ade4b37b"
+  },
+  "applyCheck": "passed; patch not applied to release checkout",
+  "deployed": false,
+  "limit": "Before executing rollback, rebuild and rerun authorization and functional checks. CPU tests asserting optimized call counts intentionally describe the D1/C1 variant and need baseline expectations on a reverted version."
+}

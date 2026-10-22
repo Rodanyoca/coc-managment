@@ -1,0 +1,51 @@
+{
+  "createdAt": "2026-10-22T20:54:48.591Z",
+  "baseline": "C:\\Users\\HP\\AppData\\Local\\Temp\\coc-cpu-4YEiJp",
+  "candidate": "C:\\Users\\HP\\AppData\\Local\\Temp\\coc-cpu-vYjMAQ",
+  "baselineTests": {
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  },
+  "candidateTests": {
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  },
+  "targetedCpuTests": {
+    "tests": 15,
+    "pass": 15,
+    "fail": 0,
+    "failures": []
+  },
+  "lint": "exit 0; targeted five application modules and two TypeScript tests; no output",
+  "typescript": {
+    "baseline": "exit 0; empty log",
+    "candidate": "exit 0; empty log"
+  },
+  "build": {
+    "baselineDefault": "failed: Turbopack external node_modules junction",
+    "baselineWebpack": "failed: Google Fonts network EACCES",
+    "baselineOfflineWebpack": "exit 0; synthetic font fixture; never deploy",
+    "candidateDefault": "failed: same Turbopack junction restriction",
+    "candidateOfflineWebpack": "NOT VALIDATED: earlier attempts interrupted without completed compilation; final retry using baseline compilation cache exceeded 180 seconds (exit 124), own build process explicitly stopped; no application compiler error established"
+  },
+  "browser": "Inventory returned no browser or app sessions; no connected journey executed",
+  "deployment": "Not pushed, not deployed, production SHA and usage unavailable (403)"
+}

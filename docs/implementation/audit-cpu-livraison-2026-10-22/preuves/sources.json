@@ -1,0 +1,41 @@
+{
+  "createdAt": "2026-10-22T21:30:33.301Z",
+  "head": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+  "branch": "design/coc-febaco-visual-20261019",
+  "dependencyMode": "physical copy, dereferenced, no external node_modules junction",
+  "reference": "C:\\Users\\HP\\AppData\\Local\\Temp\\coc-validation-GwKqAs\\reference",
+  "variant": "C:\\Users\\HP\\AppData\\Local\\Temp\\coc-validation-GwKqAs\\variant",
+  "referenceDefinition": "HEAD plus preexisting local functional changes, before D1/C1/S1",
+  "runtime": [
+    {
+      "file": "lib/auth.ts",
+      "sha256": "d1145ece760ebdb05aefbb50c8ee0891386793ba8b5551cb1d9897bd07847fe7",
+      "unchangedSinceFreeze": true
+    },
+    {
+      "file": "lib/auth/authorization.ts",
+      "sha256": "f618c1ab915a81fd1939cf9ea97e7b6170bfc4e6c3688f6f8295c20bc45a7763",
+      "unchangedSinceFreeze": true
+    },
+    {
+      "file": "lib/auth/post-login-route.ts",
+      "sha256": "bd3fb4edebde678afafd89fa25dd9752c63d1b917789fb0433e07ad7ade4b37b",
+      "unchangedSinceFreeze": true
+    },
+    {
+      "file": "lib/documents/data.ts",
+      "sha256": "930d20a7e7c3db5311a39982724c5102c7b6247ac40f0afeb93aab4dac809fd7",
+      "unchangedSinceFreeze": true
+    },
+    {
+      "file": "lib/google/sheets.ts",
+      "sha256": "b174bbb62b5f2c0e92c1b92e23b96eda1f5cd1fe1577314b380d2cb8fd76d225",
+      "unchangedSinceFreeze": true
+    }
+  ],
+  "checksComposition": "full frozen local workspace, including parallel functional changes; not HEAD plus only release patches",
+  "browser": "No enabled browser or app in inventory; no authenticated journey performed",
+  "productionWrites": 0,
+  "pushed": false,
+  "deployed": false
+}

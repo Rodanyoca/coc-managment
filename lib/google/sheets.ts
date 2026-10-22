@@ -16,12 +16,14 @@ const sheetsGlobal = globalThis as typeof globalThis & {
   __cocGoogleSheetsCache?: SheetCache
   __cocGoogleSheetsHeaderCache?: HeaderCache
   __cocGoogleSheetsPendingReads?: PendingSheetReads
+  __cocGoogleSheetsGeneration?: { value: number }
   __cocGoogleAuthClients?: Map<string, GoogleAuthClient>
   __cocSheetsReadGate?: { active:number; queue:Array<()=>void>; total:number; maxActive:number }
 }
 const cache = sheetsGlobal.__cocGoogleSheetsCache ??= new Map()
 const headerCache = sheetsGlobal.__cocGoogleSheetsHeaderCache ??= new Map()
 const pendingReads = sheetsGlobal.__cocGoogleSheetsPendingReads ??= new Map()
+const generation = sheetsGlobal.__cocGoogleSheetsGeneration ??= { value: 0 }
 const authClients = sheetsGlobal.__cocGoogleAuthClients ??= new Map()
 const readGate = sheetsGlobal.__cocSheetsReadGate ??= {active:0,queue:[],total:0,maxActive:0}
 const MAX_CONCURRENT_SHEETS_READS=6
@@ -51,6 +53,9 @@ function setCache(key: string, data: Record<string, string>[]) {
 }
 
 export function clearSheetCache() {
+  // Reads already in flight can finish for their callers, but cannot repopulate
+  // caches after a write or an explicit refresh has invalidated their snapshot.
+  generation.value += 1
   cache.clear()
   headerCache.clear()
   pendingReads.clear()
@@ -125,6 +130,7 @@ export async function getSheetRows(params: {
   }
 
   const request = (async () => {
+  const startedGeneration = generation.value
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
 
   const sheets = google.sheets({ version: "v4", auth })
@@ -138,7 +144,7 @@ export async function getSheetRows(params: {
   } catch (err) {
     // En cas de quota temporairement dépassé, une ancienne valeur vaut mieux
     // qu'une page entièrement indisponible.
-    const stale = !params.bypassCache ? cache.get(cacheKey)?.data : undefined
+    const stale = !params.bypassCache && startedGeneration === generation.value ? cache.get(cacheKey)?.data : undefined
     if (stale) return stale
     const message = err instanceof Error ? err.message : String(err)
     throw new Error(
@@ -150,7 +156,7 @@ export async function getSheetRows(params: {
   const result = valuesToRecords(values)
 
   // Les lectures explicitement fraîches ne doivent ni lire ni alimenter le cache.
-  if (!params.bypassCache) {
+  if (!params.bypassCache && startedGeneration === generation.value) {
     setCache(cacheKey, result)
     if (!params.range) {
       const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
@@ -182,15 +188,16 @@ export async function getSheetHeaders(params: {
   const cacheKey = `${spreadsheetId}:'${safeSheetName}'!1:1`
   const cached = params.bypassCache ? undefined : headerCache.get(cacheKey)
   if (cached && Date.now() - cached.ts <= (params.cacheTtlMs ?? CACHE_TTL_MS)) return cached.data
+  const startedGeneration = generation.value
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   try {
     const result = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })))
     const headers = (result.data.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim()).filter(Boolean)
-    if (!params.bypassCache) headerCache.set(cacheKey, { data: headers, ts: Date.now() })
+    if (!params.bypassCache && startedGeneration === generation.value) headerCache.set(cacheKey, { data: headers, ts: Date.now() })
     return headers
   } catch (error) {
-    if (cached) return cached.data
+    if (cached && startedGeneration === generation.value) return cached.data
     throw error
   }
 }
@@ -202,39 +209,72 @@ export async function getSheetsRows(params: {
   bypassCache?: boolean
 }): Promise<Record<string, Record<string, string>[]>> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
+  const sheetNames = [...new Set(params.sheetNames)]
+  const keyFor = (name: string) => `${spreadsheetId}:'${name.replace(/'/g, "''")}'!A:Z`
   const cachedResult: Record<string, Record<string, string>[]> = {}
-  const allCached = !params.bypassCache && params.sheetNames.every((sheetName) => {
-    const rows = getCached(`${spreadsheetId}:'${sheetName.replace(/'/g, "''")}'!A:Z`, params.cacheTtlMs)
+  for (const sheetName of sheetNames) {
+    const rows = params.bypassCache ? null : getCached(keyFor(sheetName), params.cacheTtlMs)
     if (rows) cachedResult[sheetName] = rows
-    return Boolean(rows)
-  })
-  if (allCached) return cachedResult
-  const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
-  const sheets = google.sheets({ version: "v4", auth })
-  const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
-  let response
-  try {
-    response = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
-  } catch (error) {
-    const staleResult: Record<string, Record<string, string>[]> = {}
-    const hasCompleteStaleSnapshot = params.sheetNames.every((sheetName, index) => {
-      const stale = cache.get(`${spreadsheetId}:${ranges[index]}`)?.data
-      if (stale) staleResult[sheetName] = stale
-      return Boolean(stale)
-    })
-    if (hasCompleteStaleSnapshot) return staleResult
-    const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`Failed to read Google Sheets batch (spreadsheetId=${spreadsheetId}): ${message}`)
   }
-  const result: Record<string, Record<string, string>[]> = {}
-  params.sheetNames.forEach((sheetName, index) => {
-    const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
-    result[sheetName] = valuesToRecords(values)
-    if (!params.bypassCache) setCache(`${spreadsheetId}:${ranges[index]}`, result[sheetName])
-    const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
-    if (!params.bypassCache) headerCache.set(`${spreadsheetId}:'${sheetName.replace(/'/g, "''")}'!1:1`, { data: headers, ts: Date.now() })
-  })
-  return result
+  const allCached = sheetNames.every((name) => cachedResult[name])
+  if (allCached) return cachedResult
+
+  const waiting = new Map<string, Promise<Record<string, string>[]>>()
+  const missing: string[] = []
+  for (const name of sheetNames) {
+    if (cachedResult[name]) continue
+    const pending = params.bypassCache ? undefined : pendingReads.get(keyFor(name))
+    if (pending) waiting.set(name, pending)
+    else missing.push(name)
+  }
+  if (missing.length) {
+    const startedGeneration = generation.value
+    const request = (async () => {
+      const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
+      const sheets = google.sheets({ version: "v4", auth })
+      const ranges = missing.map((name) => `'${name.replace(/'/g, "''")}'!A:Z`)
+      let response
+      try {
+        response = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
+      } catch (error) {
+        const staleResult: Record<string, Record<string, string>[]> = {}
+        const hasCompleteStaleSnapshot = !params.bypassCache && startedGeneration === generation.value && missing.every((name) => {
+          const stale = cache.get(keyFor(name))?.data
+          if (stale) staleResult[name] = stale
+          return Boolean(stale)
+        })
+        if (hasCompleteStaleSnapshot) return staleResult
+        const message = error instanceof Error ? error.message : String(error)
+        throw new Error(`Failed to read Google Sheets batch (spreadsheetId=${spreadsheetId}): ${message}`)
+      }
+      const result: Record<string, Record<string, string>[]> = {}
+      missing.forEach((name, index) => {
+        const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
+        result[name] = valuesToRecords(values)
+        if (!params.bypassCache && startedGeneration === generation.value) {
+          setCache(keyFor(name), result[name])
+          const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
+          headerCache.set(`${spreadsheetId}:'${name.replace(/'/g, "''")}'!1:1`, { data: headers, ts: Date.now() })
+        }
+      })
+      return result
+    })()
+    for (const name of missing) {
+      const read = request.then((result) => result[name])
+      waiting.set(name, read)
+      if (!params.bypassCache) {
+        const key = keyFor(name)
+        pendingReads.set(key, read)
+        void read.finally(() => {
+          if (pendingReads.get(key) === read) pendingReads.delete(key)
+        }).catch(() => undefined)
+      }
+    }
+  }
+  const entries = await Promise.all(sheetNames.map(async (name) => {
+    return [name, cachedResult[name] ?? await waiting.get(name)!] as const
+  }))
+  return Object.fromEntries(entries)
 }
 
 export async function getSheetsTables(params: { sheetNames: string[]; spreadsheetId: string }) {

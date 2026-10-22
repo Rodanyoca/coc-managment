@@ -21,23 +21,34 @@ async function assertDocumentHeaders() {
   if (missing.length) throw new Error(`Colonnes Documents manquantes : ${missing.join(", ")}`)
 }
 
-export async function getDocuments(options: { fresh?: boolean } = {}) {
+async function getDocumentRecords(options: { fresh?: boolean } = {}, matches?: (row: Record<string, string>) => boolean) {
   const rows = await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), bypassCache: options.fresh })
   await assertDocumentHeaders()
-  const documents = rows.map(mapDocument).filter((document) => document.id_document)
+  if (matches) return rows.filter((row) => clean(row.id_document) && matches(row)).map(mapDocument)
+  return rows.map(mapDocument).filter((document) => document.id_document)
+}
+
+async function withDocumentSizes(documents: DocumentRecord[]) {
   const sizes = await Promise.all(documents.map((document) => document.drive_document_id ? getDriveFileSize(document.drive_document_id).catch(() => "") : Promise.resolve("")))
   return documents.map((document, index) => ({ ...document, taille: sizes[index] }))
+}
+
+export async function getDocuments(options: { fresh?: boolean } = {}) {
+  return withDocumentSizes(await getDocumentRecords(options))
 }
 
 export async function getDocument(id: string) {
   // Une fiche est souvent ouverte immédiatement après sa création. Cette
   // lecture doit éviter un cache d'une autre instance serveur encore ancien.
-  return (await getDocuments({ fresh: true })).find((document) => document.id_document === clean(id))
+  const documentId = clean(id)
+  const documents = await getDocumentRecords({ fresh: true }, (row) => clean(row.id_document) === documentId)
+  return (await withDocumentSizes(documents.slice(0, 1)))[0]
 }
 
 export async function getDocumentsForEntity(type: string, id: string) {
   const normalizedType = clean(type).toUpperCase()
-  return (await getDocuments()).filter((document) => document.type_entite_liee === normalizedType && document.id_entite_liee === clean(id))
+  const entityId = clean(id)
+  return withDocumentSizes(await getDocumentRecords({}, (row) => clean(row.type_objet_lie) === normalizedType && clean(row.id_objet_lie) === entityId))
 }
 
 async function getDocumentTypes(): Promise<{ options: DocumentOption[]; available: boolean }> {
@@ -100,7 +111,7 @@ export async function createDocument(input: Record<string, unknown>, pdf?: Buffe
   const row = validateDocumentInput(input)
   await validateReferences(row)
   // La génération du prochain ID doit toujours partir de la feuille à jour.
-  const existing = await getDocuments({ fresh: true })
+  const existing = await getDocumentRecords({ fresh: true })
   const id = nextDocumentId(existing)
   if (existing.some((document) => document.id_document === id)) throw new Error("Impossible de générer un identifiant document unique.")
   let uploaded: { fileId: string; url: string } | undefined

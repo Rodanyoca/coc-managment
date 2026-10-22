@@ -1,5 +1,7 @@
 "use client"
 
+import { useCanWrite } from "@/components/dashboard/access-context"
+
 import { apiFetch } from "@/lib/api/client"
 
 import Link from "next/link"
@@ -76,6 +78,7 @@ function initials(name: string) {
 }
 
 export function OfficielsClient({ officiels, organisations }: { officiels: OfficielListItem[]; organisations: OrganisationOption[] }) {
+  const canWrite = useCanWrite("AUT-SPT")
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [organisationFilter, setOrganisationFilter] = useState("TOUTES")
@@ -196,7 +199,7 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={() => setEditorOpen(true)}><Plus className="mr-2 h-4 w-4" />Ajouter un officiel</Button>
+          {canWrite && <Button onClick={() => setEditorOpen(true)}><Plus className="mr-2 h-4 w-4" />Ajouter un officiel</Button>}
         </div>
 
         <Card className="border-border/50"><CardContent className="p-0"><div className="overflow-x-auto">
@@ -234,7 +237,7 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
         <p className="text-sm text-muted-foreground">Affichage de {filteredOfficiels.length} sur {officiels.length} officiels</p>
       </div>
 
-      <Sheet open={editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>
+      <Sheet open={canWrite && editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>
         <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
           <SheetHeader><SheetTitle>Ajouter un officiel</SheetTitle><SheetDescription>Renseignez l’identité et les informations personnelles. L’organisation sera ajoutée ensuite dans le parcours.</SheetDescription></SheetHeader>
           <div className="space-y-6 px-4">

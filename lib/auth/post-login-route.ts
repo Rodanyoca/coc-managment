@@ -4,7 +4,7 @@ import type { User, UserAuthorization } from "../users/types.ts"
 
 export function postLoginRoute(user: User, authorizations: readonly UserAuthorization[], date?: string): LoginRedirect {
   if (user.doitChangerMotDePasse) return "/activation"
-  if (user.estSuperAdmin) return "/dashboard"
+  if (user.estSuperAdmin && user.typeUser !== "VIEWER") return "/dashboard"
   if (authorizations.some((authorization) =>
     authorization.idUser === user.idUser && isAuthorizationActive(authorization, date),
   )) return "/dashboard"

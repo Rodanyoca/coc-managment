@@ -1,0 +1,135 @@
+--- a/lib/auth.ts
++++ b/lib/auth.ts
+@@ -2,7 +2,7 @@
+
+ import { cookies } from "next/headers"
+ import { getAuthorizationsForUser, getUserById } from "@/lib/users/data"
+-import { authorize, type AuthorizationAction } from "@/lib/auth/authorization"
++import { authorize, authorizeWithSource, type AuthorizationAction } from "@/lib/auth/authorization"
+ import type { AuthorizationBlock } from "@/lib/users/types"
+ import { SESSION_COOKIE_NAME, sessionCookieOptions } from "@/lib/auth/session-cookie"
+ import { resolveSession } from "@/lib/auth/session-resolution"
+@@ -57,19 +57,14 @@
+   if (!token) return false
+   const resolution = await resolveSession({ token, secret: getSecret(), loadUser: getUserById })
+   if (!resolution.ok || resolution.requiresActivation) return false
+-  try {
+-    const authorizations = await getAuthorizationsForUser(resolution.user.idUser)
+-    return authorize({ user: resolution.user, authorizations, requirement: { scope: "BUSINESS", blocks: [block] }, action }).allowed
+-  } catch {
+-    return false
+-  }
++  return (await authorizeWithSource({ user: resolution.user, requirement: { scope: "BUSINESS", blocks: [block] }, action, loadAuthorizations: () => getAuthorizationsForUser(resolution.user.idUser) })).allowed
+ }
+
+ export async function getNavigationAccess(currentSession?: ResolvedSession) {
+   const session = currentSession ?? await getSession()
+   const blocks = ["AUT-ADM", "AUT-SPT", "AUT-COM"] as const
+   const actions = ["READ", "WRITE"] as const
+-  if (session?.estSuperAdmin) {
++  if (session?.estSuperAdmin && session.typeUser !== "VIEWER") {
+     return Object.fromEntries((blocks.flatMap((block) =>
+       actions.map((action) => [`${block}:${action}`, true] as const)
+     ))) as Record<`${AuthorizationBlock}:${AuthorizationAction}`, boolean>
+--- a/lib/auth/authorization.ts
++++ b/lib/auth/authorization.ts
+@@ -17,7 +17,7 @@
+   loadAuthorizations: () => Promise<readonly UserAuthorization[]>
+   date?: string
+ }): Promise<AuthorizationDecision> {
+-  if (input.user.estSuperAdmin || input.requirement.scope === "SUPER_ADMIN") return authorize({ ...input, authorizations: [] })
++  if ((input.user.estSuperAdmin && input.user.typeUser !== "VIEWER") || input.requirement.scope === "SUPER_ADMIN" || (input.user.typeUser === "VIEWER" && input.action === "WRITE")) return authorize({ ...input, authorizations: [] })
+   try {
+     return authorize({ ...input, authorizations: await input.loadAuthorizations() })
+   } catch {
+@@ -44,7 +44,8 @@
+   action: AuthorizationAction
+   date?: string
+ }): AuthorizationDecision {
+-  if (input.user.estSuperAdmin) return { allowed: true, reason: "ALLOWED" }
++  if (input.user.typeUser === "VIEWER" && input.action === "WRITE") return { allowed: false, reason: "READ_ONLY_PROFILE" }
++  if (input.user.estSuperAdmin && input.user.typeUser !== "VIEWER") return { allowed: true, reason: "ALLOWED" }
+   if (input.requirement.scope === "SUPER_ADMIN") {
+     return { allowed: false, reason: "SUPER_ADMIN_REQUIRED" }
+   }
+--- a/lib/auth/post-login-route.ts
++++ b/lib/auth/post-login-route.ts
+@@ -4,7 +4,7 @@
+
+ export function postLoginRoute(user: User, authorizations: readonly UserAuthorization[], date?: string): LoginRedirect {
+   if (user.doitChangerMotDePasse) return "/activation"
+-  if (user.estSuperAdmin) return "/dashboard"
++  if (user.estSuperAdmin && user.typeUser !== "VIEWER") return "/dashboard"
+   if (authorizations.some((authorization) =>
+     authorization.idUser === user.idUser && isAuthorizationActive(authorization, date),
+   )) return "/dashboard"
+--- a/tests/unit/authorization.test.ts
++++ b/tests/unit/authorization.test.ts
+@@ -49,3 +49,21 @@
+   assert.throws(() => assertLastActiveSuperAdminProtected({ target: only, users: [only], willRemainActiveSuperAdmin: false }), /dernier super-administrateur actif/)
+   assert.doesNotThrow(() => assertLastActiveSuperAdminProtected({ target: only, users: [only, { ...only, idUser: "USR-2" }], willRemainActiveSuperAdmin: false }))
+ })
++
++
++test("VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible", async () => {
++  const viewer = { ...user, typeUser: "VIEWER" as const }
++  for (const block of ["AUT-ADM", "AUT-SPT", "AUT-COM"] as const) {
++    const requirement = { scope: "BUSINESS" as const, blocks: [block] }
++    const loadAuthorizations = async () => { throw new Error("Sheets") }
++    assert.deepEqual(await authorizeWithSource({ user: viewer, requirement, action: "READ", loadAuthorizations }), { allowed: false, reason: "SOURCE_UNAVAILABLE" })
++    assert.equal(authorize({ user: viewer, requirement, action: "READ", authorizations: [] }).allowed, false)
++    for (const invalid of [{ ...grant, idBlocAutorisation: block, statut: "INACTIF" as const }, { ...grant, idBlocAutorisation: block, dateDebut: "2026-09-01" }, { ...grant, idBlocAutorisation: block, dateFin: "2026-08-01" }, { ...grant, idBlocAutorisation: block, idUser: "OTHER" }]) {
++      assert.equal(authorize({ user: viewer, requirement, action: "READ", authorizations: [invalid], date: "2026-08-15" }).allowed, false)
++    }
++    assert.equal((await authorizeWithSource({ user: viewer, requirement, action: "READ", date: "2026-08-15", loadAuthorizations: async () => [{ ...grant, idBlocAutorisation: block }] })).allowed, true)
++    assert.equal((await authorizeWithSource({ user: viewer, requirement, action: "WRITE", loadAuthorizations })).allowed, false)
++    assert.equal(authorize({ user: { ...viewer, estSuperAdmin: true }, requirement, action: "WRITE", authorizations: [] }).allowed, false)
++  }
++  assert.equal(authorize({ user: viewer, requirement: { scope: "SUPER_ADMIN" }, action: "READ", authorizations: [] }).allowed, false)
++})
+--- a/tests/unit/post-login-route.test.ts
++++ b/tests/unit/post-login-route.test.ts
+@@ -30,3 +30,10 @@
+ test("redirige un super-administrateur sans bloc vers le tableau de bord", () => {
+   assert.equal(postLoginRoute({ ...user, estSuperAdmin: true }, [], "2026-09-01"), "/dashboard")
+ })
++
++
++test("VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation", () => {
++  assert.equal(postLoginRoute({ ...user, typeUser: "VIEWER" }, []), "/mon-compte")
++  assert.equal(postLoginRoute({ ...user, typeUser: "VIEWER" }, [authorization], "2026-09-01"), "/dashboard")
++  assert.equal(postLoginRoute({ ...user, typeUser: "VIEWER", doitChangerMotDePasse: true }, []), "/activation")
++})
+--- /dev/null
++++ b/tests/cpu/navigation-access.test.mjs
+@@ -0,0 +1,30 @@
++import assert from 'node:assert/strict'
++import test from 'node:test'
++import { loadServerModule } from '../../scripts/cpu-audit/module-harness.mjs'
++
++test('server navigation and canAccess enforce assigned VIEWER blocks and fail closed',async()=>{
++  const user={idUser:'SYNTHETIC',typeUser:'VIEWER',estSuperAdmin:false,doitChangerMotDePasse:false}
++  let grants=[],fail=false,loads=0
++  const auth=await loadServerModule(process.env.CPU_TEST_ROOT || process.cwd(),'lib/auth.ts',{
++    'next/headers':{cookies:async()=>({get:()=>({value:'synthetic-token'})})},
++    '@/lib/users/data':{getUserById:async()=>user,getAuthorizationsForUser:async()=>{loads++;if(fail)throw new Error('offline');return grants}},
++    '@/lib/auth/session-cookie':{SESSION_COOKIE_NAME:'test',sessionCookieOptions:()=>({})},
++    '@/lib/auth/session-resolution':{resolveSession:async()=>({ok:true,user,payload:{session_version:1},requiresActivation:false})},
++    '@/lib/auth/session-token':{createSessionToken:async()=>''},
++  })
++  let access=await auth.getNavigationAccess(user)
++  assert.equal(Object.values(access).some(Boolean),false)
++  grants=[{idUser:user.idUser,idBlocAutorisation:'AUT-SPT',statut:'ACTIF',dateDebut:'2020-01-01',dateFin:null}]
++  access=await auth.getNavigationAccess(user)
++  assert.equal(access['AUT-SPT:READ'],true)
++  assert.equal(access['AUT-ADM:READ'],false)
++  assert.equal(access['AUT-COM:READ'],false)
++  assert.equal(Object.entries(access).filter(([key])=>key.endsWith(':WRITE')).some(([,value])=>value),false)
++  assert.equal(await auth.canAccess('AUT-SPT','READ'),true)
++  assert.equal(await auth.canAccess('AUT-ADM','READ'),false)
++  assert.equal(await auth.canAccess('AUT-SPT','WRITE'),false)
++  fail=true
++  assert.equal(Object.values(await auth.getNavigationAccess(user)).some(Boolean),false)
++  assert.equal(await auth.canAccess('AUT-SPT','READ'),false)
++  assert.ok(loads>=5)
++})

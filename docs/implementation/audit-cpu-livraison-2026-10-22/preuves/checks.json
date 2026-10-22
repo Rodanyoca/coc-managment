@@ -1,0 +1,130 @@
+[
+  {
+    "label": "reference",
+    "name": "suite",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "tests/unit/*.test.ts",
+      "tests/integration/*.test.ts"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 59264,
+    "log": "reference-suite.log",
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  },
+  {
+    "label": "reference",
+    "name": "typescript",
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 104661,
+    "log": "reference-typescript.log"
+  },
+  {
+    "label": "variant",
+    "name": "suite",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "tests/unit/*.test.ts",
+      "tests/integration/*.test.ts"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 63373,
+    "log": "variant-suite.log",
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  },
+  {
+    "label": "variant",
+    "name": "typescript",
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 116517,
+    "log": "variant-typescript.log"
+  },
+  {
+    "label": "variant",
+    "name": "cpu",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/cpu/*.test.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 5713,
+    "log": "variant-cpu.log",
+    "tests": 19,
+    "pass": 19,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "label": "variant",
+    "name": "permissions",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/post-login-route.test.ts",
+      "tests/unit/authorization-matrix.test.ts"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 2512,
+    "log": "variant-permissions.log",
+    "tests": 23,
+    "pass": 23,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "label": "variant",
+    "name": "lint",
+    "args": [
+      "node_modules/eslint/bin/eslint.js",
+      "lib/documents/data.ts",
+      "lib/google/sheets.ts",
+      "lib/auth.ts",
+      "lib/auth/authorization.ts",
+      "lib/auth/post-login-route.ts",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/post-login-route.test.ts"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 82010,
+    "log": "variant-lint.log"
+  }
+]

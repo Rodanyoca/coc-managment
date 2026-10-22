@@ -49,3 +49,21 @@ test("le dernier super-administrateur actif ne peut pas être neutralisé", () =
   assert.throws(() => assertLastActiveSuperAdminProtected({ target: only, users: [only], willRemainActiveSuperAdmin: false }), /dernier super-administrateur actif/)
   assert.doesNotThrow(() => assertLastActiveSuperAdminProtected({ target: only, users: [only, { ...only, idUser: "USR-2" }], willRemainActiveSuperAdmin: false }))
 })
+
+
+test("VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible", async () => {
+  const viewer = { ...user, typeUser: "VIEWER" as const }
+  for (const block of ["AUT-ADM", "AUT-SPT", "AUT-COM"] as const) {
+    const requirement = { scope: "BUSINESS" as const, blocks: [block] }
+    const loadAuthorizations = async () => { throw new Error("Sheets") }
+    assert.deepEqual(await authorizeWithSource({ user: viewer, requirement, action: "READ", loadAuthorizations }), { allowed: false, reason: "SOURCE_UNAVAILABLE" })
+    assert.equal(authorize({ user: viewer, requirement, action: "READ", authorizations: [] }).allowed, false)
+    for (const invalid of [{ ...grant, idBlocAutorisation: block, statut: "INACTIF" as const }, { ...grant, idBlocAutorisation: block, dateDebut: "2026-09-01" }, { ...grant, idBlocAutorisation: block, dateFin: "2026-08-01" }, { ...grant, idBlocAutorisation: block, idUser: "OTHER" }]) {
+      assert.equal(authorize({ user: viewer, requirement, action: "READ", authorizations: [invalid], date: "2026-08-15" }).allowed, false)
+    }
+    assert.equal((await authorizeWithSource({ user: viewer, requirement, action: "READ", date: "2026-08-15", loadAuthorizations: async () => [{ ...grant, idBlocAutorisation: block }] })).allowed, true)
+    assert.equal((await authorizeWithSource({ user: viewer, requirement, action: "WRITE", loadAuthorizations })).allowed, false)
+    assert.equal(authorize({ user: { ...viewer, estSuperAdmin: true }, requirement, action: "WRITE", authorizations: [] }).allowed, false)
+  }
+  assert.equal(authorize({ user: viewer, requirement: { scope: "SUPER_ADMIN" }, action: "READ", authorizations: [] }).allowed, false)
+})

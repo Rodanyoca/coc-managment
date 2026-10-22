@@ -17,7 +17,7 @@ export async function authorizeWithSource(input: {
   loadAuthorizations: () => Promise<readonly UserAuthorization[]>
   date?: string
 }): Promise<AuthorizationDecision> {
-  if (input.user.estSuperAdmin || input.requirement.scope === "SUPER_ADMIN") return authorize({ ...input, authorizations: [] })
+  if ((input.user.estSuperAdmin && input.user.typeUser !== "VIEWER") || input.requirement.scope === "SUPER_ADMIN" || (input.user.typeUser === "VIEWER" && input.action === "WRITE")) return authorize({ ...input, authorizations: [] })
   try {
     return authorize({ ...input, authorizations: await input.loadAuthorizations() })
   } catch {
@@ -44,7 +44,8 @@ export function authorize(input: {
   action: AuthorizationAction
   date?: string
 }): AuthorizationDecision {
-  if (input.user.estSuperAdmin) return { allowed: true, reason: "ALLOWED" }
+  if (input.user.typeUser === "VIEWER" && input.action === "WRITE") return { allowed: false, reason: "READ_ONLY_PROFILE" }
+  if (input.user.estSuperAdmin && input.user.typeUser !== "VIEWER") return { allowed: true, reason: "ALLOWED" }
   if (input.requirement.scope === "SUPER_ADMIN") {
     return { allowed: false, reason: "SUPER_ADMIN_REQUIRED" }
   }

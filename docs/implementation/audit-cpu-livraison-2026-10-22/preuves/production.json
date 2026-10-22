@@ -1,0 +1,31 @@
+{
+  "observedAt": "2026-10-22T21:21:38.2884670Z",
+  "source": "Vercel CLI GET /v13/deployments, explicit team",
+  "id": "dpl_ENVvMe52hN8h5PerjuwZ2p34woTw",
+  "projectId": "prj_GfEgDmQ9y6SvELDNuHZyPYNcTYbA",
+  "name": "coc-managment",
+  "url": "coc-managment-lanabc9s7-yoca-souleymane-s-projects.vercel.app",
+  "target": "production",
+  "readyState": "READY",
+  "createdAt": 1792498387265,
+  "alias": [
+    "database.coc-rdc.net",
+    "coc-managment.vercel.app",
+    "coc-managment-yoca-souleymane-s-projects.vercel.app",
+    "coc-managment-git-design-coc-582477-yoca-souleymane-s-projects.vercel.app"
+  ],
+  "gitSource": {
+    "ref": "design/coc-febaco-visual-20261019",
+    "repoId": 1278194032,
+    "sha": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+    "type": "github",
+    "prId": null
+  },
+  "meta": {
+    "githubCommitSha": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+    "githubCommitRef": "design/coc-febaco-visual-20261019",
+    "githubCommitMessage": "Harmonize COC interface with FEBACO reference",
+    "gitCommitSha": null,
+    "gitCommitRef": null
+  }
+}

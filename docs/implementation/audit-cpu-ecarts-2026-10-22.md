@@ -1,0 +1,72 @@
+# Audit CPU — rapport d’écart ciblé du 22 octobre 2026
+
+## Publication complète — état courant
+
+**Validation finale terminée ; publication autorisée, pas encore effectuée.** Build normal avec vraies polices : 489 764 ms ; 19/19 tests CPU/documents, 23/23 autorisations, suite complète 319/325 avec les six mêmes échecs préexistants ; TypeScript et lint des fichiers applicatifs modifiés passent. Les sources complètes, évolutions parallèles comprises, sont préparées dans le checkout propre. Aucun gain CPU Vercel établi.
+
+Voir le [rapport de publication](audit-cpu-publication-2026-10-22.md) et ses preuves. Le déploiement précédent reste `dpl_ENVvMe52hN8h5PerjuwZ2p34woTw` au SHA `c1488d33b6fcd2953d2bf0becc25a83055e13e2f`. Un patch de retour D1/C1 conservant S1 est préparé ; un retour complet pourrait réélargir les droits VIEWER. Invalidations globales et fraîcheur de sécurité restent au backlog distinct.
+
+<!-- fin-statut-publication -->
+
+## État après validation des lots
+
+Voir la [clôture](audit-cpu-cloture-2026-10-22.md) et les [diffs de livraison](audit-cpu-livraison-2026-10-22/README.md). D1, C1 et S1 sont implémentés ; les builds normaux référence/variante réussissent avec vraies polices et dépendances physiques isolées. Aucun correctif applicatif ajouté pendant cette clôture. Tests hors réseau : 19/19 CPU/documents, 23/23 autorisations, suites 319/325 de chaque côté avec les six mêmes échecs ; TypeScript et lint ciblé passent. Les journaux et résultats défavorables sont conservés ; aucun gain CPU Vercel établi.
+
+La production est identifiée par CLI au SHA `c1488d33b6fcd2953d2bf0becc25a83055e13e2f` ; les changements locaux ne sont pas publiés. Les constats initiaux de production inaccessible sont historiques. Les écarts **invalidations globales**, **`fresh:true` ignoré** et **repli périmé de sécurité** restent au backlog distinct : ils ne sont pas résolus par cette livraison. Les tests de panne de politique S1 ne certifient pas la fraîcheur de l'adaptateur utilisateurs en situation réelle. Aucune session navigateur disponible pour une recette authentifiée.
+
+## Rapport initial et hypothèses conservées
+
+Statut : analyse statique du répertoire de travail, propositions à benchmarker. Ni publication ni observation de production. Ce rapport complète le [cadrage](audit-cpu-cadrage-2026-10-22.md) et son [annexe](audit-cpu-sources-2026-10-22.md). Le canevas central porte l’identité Git, les mesures, les décisions finales et les validations ; les lignes citées ci-dessous décrivent le code lu avant les lots de cette intervention et peuvent se décaler ensuite.
+
+Mise à jour : les décisions et statuts finaux sont dans le [canevas central](audit-cpu-suivi-2026-10-22.md). L’utilisateur a ensuite confirmé que VIEWER lit uniquement les blocs attribués ; ce point a donc fait l’objet d’un lot de sécurité distinct, sans objectif de gain CPU.
+
+## Périmètre et garanties
+
+Lecture exclusive de `coc-cible`, sans lecture de secrets ni appel à Sheets/Drive ou à la production. Aucun AGENTS.md trouvé à la racine du dépôt. Références relues : `CONTEXT.md`, `docs/contexte-projet.md`, ADR 0001/0002, lot 2 utilisateurs et cadrage/annexe CPU. Les exigences PDF sont rapportées dans l’annexe antérieure, pas réextraites ici. Les constats ci-dessous sont des **CODE**, les règles documentées des **DOC** ; les scénarios explicatifs sont des **HYP** et ne prouvent pas une contribution au CPU Vercel. Les volumes et fréquences réels restent **MANQUANTS**.
+
+Préserver : contrôles serveur, secrets hachés, traçabilité, refus sécurisé et délai de révocation. Une équipe nationale permanente, une campagne et une participation effective restent des objets distincts. Une absence de données ne devient pas un zéro certain. Les modifications fonctionnelles parallèles, dont la suppression de complétude des acteurs, sont la référence locale à préserver.
+
+## Connexion puis dashboard
+
+1. **CODE** `app/api/auth/login/route.ts:16,32-65` : empreinte scrypt factice initialisée au chargement du module ; snapshot authentification frais ; vérification du secret ; création du cookie ; trois travaux différés `after()` (tentative, audit, dernière connexion) en `Promise.allSettled`. La réponse peut précéder la fin du travail serveur. Pas de scrypt à chaque navigation de session.
+2. **CODE** `lib/users/data.ts:55-68` : snapshot par `getSheetsTables` des trois feuilles USERS, AUTH_TENTATIVES et USER_AUTORISATIONS ; mapping de toutes les lignes, vérification doublons et chevauchements avant sélection utilisateur. Le volume administratif peut croître indépendamment du volume sportif. **HYP** falsifiable : profiler ces étapes à volumes de tentatives distincts, sans supprimer l’audit ou limiter arbitrairement l’historique consulté.
+3. **CODE** `proxy.ts:35-46`, `app/dashboard/layout.tsx:10-11`, `lib/auth.ts:30-60`, `app/dashboard/page.tsx:23` : résolution/signature et lecture utilisateur dans proxy, layout puis chacune des deux décisions dashboard. Dans le code lu, aucune mémorisation à portée requête de ces transformations. **HYP** : répétition de parsing USERS et autorisations même avec cache brut chaud. Ne pas confondre nombre d’appels aux helpers avec nombre de requêtes Google.
+4. **CODE** `app/dashboard/page.tsx:24-32`, `lib/dashboard/fresh-load.ts:1` : six chargeurs conditionnels selon autorisations, agrégats recalculés ; pas de purge dans le chargement normal. Les sections utilisent `allSettled` pour une dégradation partielle. Cette résilience est utile à préserver.
+5. **CODE** `lib/google/sheets.ts:359-399` (append) et `:356` (update), `:53-57` : les écritures de traces et dernière connexion purgent toutes les feuilles du processus. **HYP** : le travail différé de connexion peut refroidir les lectures du dashboard pendant son chargement. Une purge affecte potentiellement d’autres utilisateurs du même processus, pas toutes les instances. Démonstration attendue sur adaptateur simulé avec ordonnancement contrôlé, sans nouvelles connexions de production.
+
+## Écarts et ordre de travail proposé
+
+L’ordre exprime facilité de preuve et risque, pas un classement de CPU consommé en production. Aucun gain chiffré n’est prédit.
+
+| Priorité / statut | Preuve et écart | Impact possible | Risque / effort | Expérience ou décision requise |
+| --- | --- | --- | --- | --- |
+| P1 proposé | `lib/federations/data.ts:22` ajoute CERCLES/EQUIPES déjà présents dans `TERRITORIAL_RESOURCES` (`schema.ts:16,18`). `getSheetsRows` convertit chaque position du lot (`sheets.ts:230-235`). | Plages et conversions répétées, même résultat final écrasé sous la même clé. | Faible / faible : dédupliquer sans modifier ordre des données ni mapping. | Compter ranges et conversions sur fixture ; comparer profondément résultat ; benchmark froid/chaud avec doublons. |
+| P1 proposé | `lib/documents/data.ts:24-40` : toutes tailles Drive enrichies avant `find(id)` ou filtre entité. | Travail sans rapport avec nombre de documents de la fiche ; requêtes externes à cache froid. | Faible à moyen / faible à moyen : préserver champ taille, fraîcheur de fiche et erreurs actuelles. | Séparer mapping/métadonnées/enrichissement ; filtrer avant tailles pour détail et entité. Fixtures incluant absent, id nettoyé, fichier manquant, erreur Drive ; compter appels et comparer résultats. |
+| P1 proposé | `sheets.ts:53-57,152-160,230-235` : purge vide pendingReads mais les promesses déjà lancées peuvent ensuite repeupler le cache de données antérieures à l’écriture. | Cohérence et répétitions après purge ; non seulement CPU. | Moyen / moyen : correctif de génération à tester avec ordonnancement contrôlé. | Lecture suspendue → invalidation → nouvelle lecture → résolution ancienne ; l’ancienne ne doit pas alimenter le nouveau cache ni remplacer son attente. Couvrir lignes, lots et en-têtes. |
+| P2 proposé | `sheets.ts:205-235` : lot complet relu dès qu’une plage manque ; aucune déduplication de lots en vol. | Relire/convertir des données déjà chaudes ; duplication sous simultanéité locale. | Moyen / moyen : snapshot mixte et sémantique d’erreur à définir. | Comparer appels, conversions, résultats et erreurs à cache partiel ; définir partage par plage, bypass, TTL et course écriture avant d’implémenter. |
+| P2 proposé | `sheets.ts:356,377,399,427` : purge globale après différentes écritures, y compris audit. | Refroidissement des feuilles métier sans relation avec écriture ; effet possible sur utilisateurs partageant processus. | Moyen à élevé / moyen : dépendances et fraîcheur à cartographier. | Invalidation ciblée par classeur/feuille et génération ; conserver purge globale explicite de refresh. Tester ressources distinctes et références communes. Vérifier absence de garantie distribuée. |
+| P2 proposé | `lib/acteurs/dashboard.ts:24-36`, `lib/documents/dashboard.ts:34-58` : passages filter/reduce répétés sur données déjà mappées. | Allocations et normalisations répétées sur cache chaud. | Faible à moyen / faible : attention aux définitions et champs vides. | Benchmark synthétique des agrégats avec égalité stricte ; conserver retrait fonctionnel de la complétude, pas le réintroduire pour comparer. |
+| P2 proposé, sécurité sensible | `lib/users/repository.ts:43-46,67-68,101-102` : parsing global à chaque getUserById/getAuthorizationsForUser. | Coût de base de chaque consultation. | Élevé / moyen : aucune prolongation de fraîcheur admise. | Profiler sans toucher accès ; toute déduplication ne peut être qu’à portée requête explicite, sans partager décision ni token entre utilisateurs/instances. Ne pas dédupliquer des vérifications séparées par une mutation sensible. |
+| P3 proposé | Fiche compétition `app/dashboard/competitions/[id]/page.tsx:25-36` : onze branches ; équipe `app/dashboard/equipes-nationales/[id]/page.tsx:20-22` : dix branches. | Chargements et références éventuellement répétés, avant interaction utilisateur. | Moyen à élevé / élevé : options et historique restent utiles. | Graphe de dépendances et octets sur fixtures ; charger à la demande uniquement ce qui conserve fonctions, contrôles et erreurs ; priorité selon trafic prouvé. |
+
+## Cache : contrat actuel et décisions à ne pas confondre
+
+**CODE** `lib/google/sheets.ts:8-27,41-50` : cache brut `globalThis`, clé classeur + plage, TTL par défaut 5 minutes modulé par appelant ; partage entre utilisateurs du processus, sans diffusion inter-instance. Rien ne prouve sa persistance entre invocations ni son taux de hit. Les agrégats ne sont pas mis en cache. Le TTL ne transforme pas une lecture en snapshot transactionnel.
+
+**CODE** `sheets.ts:119-170` : déduplication en vol seulement pour getSheetRows sans bypass ; bypass ne lit ni ne remplit le cache et ne partage pas la promesse. Les en-têtes n’ont pas de déduplication en vol. Les lots n’en ont pas non plus. Un échec de lecture simple ordinaire peut retourner stale ; le lot retourne un snapshot stale complet même avec bypass (`:219-225`). Corriger cette différence doit être évalué séparément d’une optimisation CPU : elle change la gestion des erreurs.
+
+**CODE** `lib/google/drive.ts:39-53` : tailles par fileId, cinq minutes, cache local ; aucune promesse partagée en vol ; tailles vides non mémorisées. Les fichiers privés doivent rester contrôlés et les réponses binaires privées. Réduire le nombre de tailles demandées sur une fiche est indépendant d’un changement de confidentialité ou d’un cache public.
+
+Contrat attendu pour toute variante : clé exacte documentée, portée processus seulement, TTL identique ou plus frais, invalidation par ressource avec purge globale disponible, ancienne lecture incapable de réchauffer après écriture, bypass sans stale nouvellement introduit, erreur sans promesse bloquée. Une lecture déjà délivrée au demandeur avant l’écriture ne devient pas rétroactivement fraîche ; une génération empêche uniquement sa conservation future. Aucune garantie transactionnelle ou révocation multi-instance ne doit être annoncée.
+
+## Écarts de sécurité à isoler et préserver durant cet audit
+
+- **DOC** ADR 0002 et lot 2 §session (`docs/lot-2-utilisateurs-authentification-autorisations.md:117`) exigent source compte/autorisations sans cache. **CODE** le repository demande `fresh: true`, mais `lib/users/google-adapter.ts:11-15` ignore l’option et lit avec TTL 60 secondes. L’état actuel ne démontre donc pas une révocation immédiate inter-instance. Cela constitue un écart existant, pas une marge autorisée pour augmenter le TTL. Le résoudre peut augmenter les appels Google et exige des tests de révocation/refus ; ne pas le masquer dans une baisse d’appels.
+- **DOC** ADR 0002 : toute activité métier exige attribution explicite sauf super-administrateur. **CODE** `lib/auth/authorization.ts:20,51-56` et `lib/auth.ts:67-69` donnent à VIEWER toutes lectures BUSINESS sans charger ses attributions. Divergence déjà signalée, à clarifier avec décideur métier ; maintenir le comportement local pendant les optimisations et conserver WRITE refusé. Aucune autorisation de modifier la politique par ce rapport.
+- Les contrôles proxy et route/page constituent des barrières utiles ; leur répétition ne justifie pas leur suppression. Compter transformations redondantes avant de proposer une portée de déduplication.
+
+## Mesure discriminante et limites
+
+Sur fixtures synthétiques : N lignes/colonnes documentées, nombre F de fichiers et R retenus, formats vides/accentués et erreurs ; compter séparément requêtes Google simulées, conversions et octets du résultat. CPU local par `process.cpuUsage` en processus isolé séquentiel ; durée murale séparée ; aucune attente réseau simulée ne doit être présentée comme CPU Google. Échauffement puis passages alternés référence/variante sur mêmes fixtures, plusieurs volumes, égalité profonde des résultats et échecs publiés. Le parent porte protocole exécutable et résultats, pas ce rapport statique.
+
+**MANQUE** : fréquence des routes, volume réel de journaux, tailles des documents, état cache des instances, CPU actif par parcours, SHA servi et compteur quota effectivement dépassé. Le nombre d’utilisateurs ne prouve aucun de ces éléments. Le premier lot à faible risque peut cibler les ranges territoriaux dupliqués et le filtrage documentaire avant enrichissement, indépendamment des divergences d’autorisation. La cohérence des invalidations doit précéder une réduction de leur portée. La priorité production restera à réviser selon les métriques accessibles.

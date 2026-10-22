@@ -1,5 +1,7 @@
 "use client"
 
+import { useCanWrite } from "@/components/dashboard/access-context"
+
 import { apiFetch } from "@/lib/api/client"
 
 import { Contact, FileText, Fingerprint, ImageIcon, Info, User } from "lucide-react"
@@ -85,6 +87,7 @@ export function AthleteDetailClient({
   athlete: AthleteDetail
   federations: FederationOption[]
 }) {
+  const canWrite = useCanWrite("AUT-SPT")
   const router = useRouter()
   const [athlete, setAthlete] = useState(initialAthlete)
   const [open, setOpen] = useState(false)
@@ -237,7 +240,7 @@ export function AthleteDetailClient({
         ]}
       />
 
-      <Sheet open={open} onOpenChange={setOpen}>
+      <Sheet open={canWrite && open} onOpenChange={setOpen}>
         <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
           <SheetHeader>
             <SheetTitle>Modifier l’athlète</SheetTitle>

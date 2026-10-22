@@ -1,0 +1,41 @@
+{
+  "method": "Only line-ending/trailing-whitespace normalization for readable logs; exact original bytes preserved in gzip archives.",
+  "files": [
+    {
+      "readable": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\build-reference-normal.log",
+      "rawArchive": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\build-reference-normal.log.gz",
+      "rawSha256": "94c174b4f09a8b6e8b11164ee002f68e4bd6df3c81d831e2fcff157e74fa4848",
+      "readableSha256": "5e60431c4d5a82350a93b24d58fddb310d08c31957ed5643ce8d578da042a6c6"
+    },
+    {
+      "readable": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\build-variant-normal.log",
+      "rawArchive": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\build-variant-normal.log.gz",
+      "rawSha256": "c9aee52b8901368a7c6263fc7bd7f686dee90ee8f1003e6ebe0b886bf165eeb4",
+      "readableSha256": "6485dcb481260bd173fe34da3fbbeb9fa0f7c1bd40ba906f05348a5c6babf312"
+    },
+    {
+      "readable": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\reference-suite.log",
+      "rawArchive": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\reference-suite.log.gz",
+      "rawSha256": "5d4de6ad7fda394276bd7c40acbce9cb6d7ad91b372d25efc1b217f00772cf39",
+      "readableSha256": "70407810d2d1a52370955cd15981d5f264a017664ebf28f567744d8a4af80bd9"
+    },
+    {
+      "readable": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\variant-suite.log",
+      "rawArchive": "docs\\implementation\\audit-cpu-livraison-2026-10-22\\preuves\\variant-suite.log.gz",
+      "rawSha256": "6bd3c9a4ec7095131d244dc5b4d3532f4553cf99f771a4d7b8c3d46f5b5417e4",
+      "readableSha256": "1c2f1c876f7eb945bd1d4a0048be3a29041c873a319abb8322ee0a61194764b4"
+    },
+    {
+      "readable": "docs\\implementation\\audit-cpu-publication-2026-10-22\\preuves\\build.log",
+      "rawArchive": "docs\\implementation\\audit-cpu-publication-2026-10-22\\preuves\\build.log.gz",
+      "rawSha256": "b095fd70e856d553cda836a3c15e523d6b20c8f40bc16a50ca3065bd94027a2f",
+      "readableSha256": "6fdc71a57c7be1e97d41a0507f040764b0e57d851dbdbc6a7e2fd5c4977df76c"
+    },
+    {
+      "readable": "docs\\implementation\\audit-cpu-publication-2026-10-22\\preuves\\suite.log",
+      "rawArchive": "docs\\implementation\\audit-cpu-publication-2026-10-22\\preuves\\suite.log.gz",
+      "rawSha256": "e53e44694fda6c7a4e5cf9f53ed7816a5ce99c887b0c61c4fbc0065e009f3a82",
+      "readableSha256": "f45d582fc37a20d71c6eda923ca0eef1dc193c1446d08e9358df1b762d7310b5"
+    }
+  ]
+}

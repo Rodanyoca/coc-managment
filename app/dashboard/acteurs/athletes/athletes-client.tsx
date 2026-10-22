@@ -1,5 +1,7 @@
 "use client"
 
+import { useCanWrite } from "@/components/dashboard/access-context"
+
 import { apiFetch } from "@/lib/api/client"
 
 import Link from "next/link"
@@ -119,6 +121,7 @@ export function AthletesClient({
   athletes: AthleteListItem[]
   federations: FederationOption[]
 }) {
+  const canWrite = useCanWrite("AUT-SPT")
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [federationFilter, setFederationFilter] = useState("TOUTES")
@@ -256,10 +259,10 @@ export function AthletesClient({
               className="pl-9"
             />
           </div><Select value={federationFilter} onValueChange={setFederationFilter}><SelectTrigger className="w-full" aria-label="Filtrer par fédération"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUTES">Toutes les fédérations</SelectItem>{federations.map((item) => <SelectItem key={item.id} value={item.id}>{item.sigle || item.nom}</SelectItem>)}</SelectContent></Select><Select value={sexFilter} onValueChange={setSexFilter}><SelectTrigger className="w-full" aria-label="Filtrer par sexe"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les sexes</SelectItem><SelectItem value="H">Hommes</SelectItem><SelectItem value="F">Femmes</SelectItem></SelectContent></Select><Select value={statusFilter} onValueChange={setStatusFilter}><SelectTrigger className="w-full" aria-label="Filtrer par statut"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les statuts</SelectItem><SelectItem value="ACTIF">Actifs</SelectItem><SelectItem value="INACTIF">Inactifs</SelectItem></SelectContent></Select></div>
-          <Button onClick={() => setEditorOpen(true)}>
+          {canWrite && <Button onClick={() => setEditorOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Ajouter un athlète
-          </Button>
+          </Button>}
         </div>
 
         <Card className="border-border/50">
@@ -324,7 +327,7 @@ export function AthletesClient({
         </p>
       </div>
 
-      <Sheet open={editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>
+      <Sheet open={canWrite && editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>
         <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
           <SheetHeader>
             <SheetTitle>Ajouter un athlète</SheetTitle>

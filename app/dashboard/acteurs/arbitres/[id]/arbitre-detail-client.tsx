@@ -1,5 +1,7 @@
 "use client"
 
+import { useCanWrite } from "@/components/dashboard/access-context"
+
 import { apiFetch } from "@/lib/api/client"
 
 import { Contact, Fingerprint, Info, User } from "lucide-react"
@@ -20,6 +22,7 @@ const initials = (name: string) => name.trim().split(/\s+/).slice(0, 2).map((par
 const sexId = (value: string) => ["f", "femme", "féminin", "feminin"].includes(value.trim().toLowerCase()) ? "F" : "M"
 
 export function ArbitreDetailClient({ arbitre: initial, federations, grades }: { arbitre: ArbitreDetail; federations: FederationOption[]; grades: GradeOption[] }) {
+  const canWrite = useCanWrite("AUT-SPT")
   const router = useRouter()
   const [arbitre, setArbitre] = useState(initial)
   const [open, setOpen] = useState(false)
@@ -80,7 +83,7 @@ export function ArbitreDetailClient({ arbitre: initial, federations, grades }: {
     documents={<ActorPassportCard actorType="arbitres" actorId={arbitre.id} number={arbitre.numeroPasseport} issued={arbitre.dateDelivrancePasseport} expires={arbitre.dateExpirationPasseport} url={arbitre.urlPasseport} identityFields={identityFields} onUploaded={(url) => { setArbitre(current => ({ ...current, urlPasseport: url })); router.refresh() }} />}
     additionalSections={activitySections(arbitre.id)}
   />
-    <Sheet open={open} onOpenChange={setOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier l’arbitre</SheetTitle><SheetDescription>Le grade est alimenté par le référentiel GRADES_ARBITRE.</SheetDescription></SheetHeader><ArbitreFields form={form} update={update} federations={federations} grades={grades} pick={pick} /><SheetFooter><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button disabled={saving} onClick={save}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet></>
+    <Sheet open={canWrite && open} onOpenChange={setOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier l’arbitre</SheetTitle><SheetDescription>Le grade est alimenté par le référentiel GRADES_ARBITRE.</SheetDescription></SheetHeader><ArbitreFields form={form} update={update} federations={federations} grades={grades} pick={pick} /><SheetFooter><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button disabled={saving} onClick={save}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter></SheetContent></Sheet></>
 }
 
 const activitySections = (actorId: string) => [
