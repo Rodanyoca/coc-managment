@@ -1,0 +1,412 @@
+{
+  "at": "2026-10-23T14:20:12.616Z",
+  "spreadsheet": "1cVIijJBdyhNhMwVIWtMzZHzWPvBqM5W73rYj0Ws8qMM",
+  "title": "10_SITE_WEB_CONTENUS",
+  "timeZone": "Africa/Kinshasa",
+  "sheets": [
+    {
+      "sheetId": 475615387,
+      "title": "SLIDERS_SITE",
+      "index": 0,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 997,
+        "columnCount": 26,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000001,
+      "title": "COMMUNIQUES_SITE",
+      "index": 1,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000002,
+      "title": "ACTUALITES_SITE",
+      "index": 2,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000003,
+      "title": "GALERIES_SITE",
+      "index": 3,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000004,
+      "title": "MEDIAS_GALERIE_SITE",
+      "index": 4,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000005,
+      "title": "PAGES_SITE",
+      "index": 5,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000006,
+      "title": "CHRONOLOGIE_COC",
+      "index": 6,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000007,
+      "title": "ORGANES_GOUVERNANCE",
+      "index": 7,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1810000008,
+      "title": "MEMBRES_GOUVERNANCE",
+      "index": 8,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1688780951,
+      "title": "COMPETITIONS_PUBLIQUES",
+      "index": 9,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 997,
+        "columnCount": 26,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000001,
+      "title": "RESULTATS_PUBLICS",
+      "index": 10,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000002,
+      "title": "MEDAILLES_PUBLIQUES",
+      "index": 11,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000003,
+      "title": "ATHLETES_PUBLICS",
+      "index": 12,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000004,
+      "title": "PARTICIPATIONS_ATHLETES_PUBLIQUES",
+      "index": 13,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000005,
+      "title": "EQUIPES_NATIONALES_PUBLIQUES",
+      "index": 14,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000006,
+      "title": "ENTITES_PUBLIQUES",
+      "index": 15,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000007,
+      "title": "ACTIVITES_PUBLIQUES",
+      "index": 16,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1820000008,
+      "title": "DOCUMENTS_PUBLICS",
+      "index": 17,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 15,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1800000001,
+      "title": "STATUTS_PUBLICATION",
+      "index": 18,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 10,
+        "frozenRowCount": 1
+      }
+    },
+    {
+      "sheetId": 1800000002,
+      "title": "CATEGORIES_ACTUALITES",
+      "index": 19,
+      "sheetType": "GRID",
+      "gridProperties": {
+        "rowCount": 1000,
+        "columnCount": 3,
+        "frozenRowCount": 1
+      }
+    }
+  ],
+  "reads": [
+    {
+      "range": "SLIDERS_SITE!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_slide",
+          "titre",
+          "description",
+          "image_url",
+          "libelle_bouton",
+          "lien_bouton",
+          "ordre_affichage",
+          "id_statut_publication",
+          "date_debut_publication",
+          "date_fin_publication"
+        ]
+      ]
+    },
+    {
+      "range": "ACTIVITES_PUBLIQUES!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_evenement_public",
+          "titre",
+          "type_evenement",
+          "date_debut",
+          "date_fin",
+          "lieu",
+          "description",
+          "image_url",
+          "id_statut_publication",
+          "logo_url",
+          "est_mis_en_avant",
+          "ordre_affichage"
+        ]
+      ]
+    },
+    {
+      "range": "COMMUNIQUES_SITE!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_communique",
+          "date_publication",
+          "titre",
+          "extrait",
+          "contenu",
+          "fichier_url",
+          "image_url",
+          "id_statut_publication",
+          "est_mis_en_avant",
+          "ordre_affichage",
+          "id_document_public"
+        ]
+      ]
+    },
+    {
+      "range": "ACTUALITES_SITE!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_actualite",
+          "id_categorie_actualite",
+          "date_publication",
+          "titre",
+          "extrait",
+          "contenu",
+          "image_url",
+          "auteur",
+          "id_statut_publication",
+          "est_mis_en_avant",
+          "ordre_affichage",
+          "id_galerie"
+        ]
+      ]
+    },
+    {
+      "range": "ATHLETES_PUBLICS!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_athlete_public",
+          "nom_complet",
+          "sexe",
+          "sport",
+          "discipline",
+          "photo_url",
+          "biographie_courte",
+          "est_olympien",
+          "est_mis_en_avant",
+          "ordre_affichage",
+          "id_statut_publication",
+          "distinction"
+        ]
+      ]
+    },
+    {
+      "range": "GALERIES_SITE!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_galerie",
+          "titre",
+          "description",
+          "date_evenement",
+          "image_couverture_url",
+          "id_statut_publication",
+          "est_mis_en_avant",
+          "ordre_affichage"
+        ]
+      ]
+    },
+    {
+      "range": "MEDIAS_GALERIE_SITE!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_media_galerie",
+          "id_galerie",
+          "type_media",
+          "titre_media",
+          "fichier_url",
+          "legende",
+          "credit",
+          "ordre_affichage"
+        ]
+      ]
+    },
+    {
+      "range": "DOCUMENTS_PUBLICS!A1:O1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_document_public",
+          "type_document",
+          "titre",
+          "date_document",
+          "description",
+          "fichier_url",
+          "id_statut_publication"
+        ]
+      ]
+    },
+    {
+      "range": "CATEGORIES_ACTUALITES!A1:C1",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_categorie_actualite",
+          "nom_categorie_actualite",
+          "observation"
+        ]
+      ]
+    },
+    {
+      "range": "STATUTS_PUBLICATION!A1:D4",
+      "majorDimension": "ROWS",
+      "values": [
+        [
+          "id_statut_publication",
+          "nom_statut_publication",
+          "observation"
+        ],
+        [
+          "PUB001",
+          "Brouillon",
+          "Contenu en préparation, non affiché au public."
+        ],
+        [
+          "PUB002",
+          "Publié",
+          "Contenu autorisé à apparaître sur le site, sous réserve de ses dates de publication."
+        ],
+        [
+          "PUB003",
+          "Archivé",
+          "Contenu retiré de la publication courante, conservé dans l’administration."
+        ]
+      ]
+    }
+  ],
+  "readOnly": true
+}

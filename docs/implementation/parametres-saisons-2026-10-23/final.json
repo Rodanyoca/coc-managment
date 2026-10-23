@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-23T14:11:27.158Z",
+  "applicationFiles": 358,
+  "sourceUnchanged": true,
+  "rootMatches": true,
+  "realFonts": [
+    "4fa387ec64143e14-s.2tuy5pz7dlieh.woff2",
+    "53b9e256198e5412-s.390ncx5urfkfu.woff2",
+    "5ce348bf30bf5439-s.31988l_ccedte.woff2",
+    "6306c77e7c8268e4-s.2dbetqa9o8jxf.woff2",
+    "7178b3e590c64307-s.21jp631_3pja2.woff2",
+    "797e433ab948586e-s.p.0r6juujl39pe6.woff2",
+    "7d817b4c03b0c5f1-s.1uyisp29ctx0d.woff2",
+    "8a480f0b521d4e75-s.1qq4vpdcun5oj.woff2",
+    "bbc41e54d2fcbd21-s.1rgnod-3esatf.woff2",
+    "caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2",
+    "fef07dbb0973bf53-s.3p2_lha1f2xer.woff2"
+  ],
+  "normalBuild": true,
+  "ignoreBuildErrors": false,
+  "productionWrites": false,
+  "pushed": false
+}

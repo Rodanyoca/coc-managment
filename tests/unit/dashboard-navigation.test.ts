@@ -6,7 +6,7 @@ test("le super-administrateur voit immédiatement toutes les sections disponible
   const visible = visibleDashboardNavigation(dashboardNavigation, { isSuperAdmin: true, readableBlocks: [] })
   assert.deepEqual(visible.map((item) => item.href), [
     "/dashboard", "/dashboard/federations", "/dashboard/acteurs", "/dashboard/competitions",
-    "/dashboard/equipes-nationales", "/dashboard/activites", "/dashboard/documents", "/dashboard/site-web", "/dashboard/utilisateurs",
+    "/dashboard/equipes-nationales", "/dashboard/activites", "/dashboard/documents", "/dashboard/site-web", "/dashboard/utilisateurs", "/dashboard/parametres",
   ])
 })
 

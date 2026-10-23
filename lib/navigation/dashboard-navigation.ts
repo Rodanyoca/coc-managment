@@ -26,6 +26,7 @@ export const dashboardNavigation: readonly DashboardNavigationItem[] = [
   { name: "Documents", href: "/dashboard/documents", icon: "file", blocks: ["AUT-ADM"] },
   { name: "Site web", href: "/dashboard/site-web", icon: "globe", blocks: ["AUT-COM"] },
   { name: "Utilisateurs", href: "/dashboard/utilisateurs", icon: "users", blocks: [], superOnly: true },
+  { name: "Paramètres", href: "/dashboard/parametres", icon: "calendar", blocks: [], superOnly: true },
 ]
 
 export function visibleDashboardNavigation(

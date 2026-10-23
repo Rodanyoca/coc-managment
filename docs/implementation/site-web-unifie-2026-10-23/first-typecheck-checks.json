@@ -1,0 +1,48 @@
+[
+  {
+    "name": "lint",
+    "args": [
+      "node_modules/eslint/bin/eslint.js",
+      "lib/site-web",
+      "components/site-web",
+      "app/api/site-web",
+      "app/dashboard/site-web",
+      "lib/google/drive.ts",
+      "proxy.ts",
+      "lib/auth/route-policy.ts",
+      "tests/site-web"
+    ],
+    "code": 0,
+    "elapsedMs": 6510
+  },
+  {
+    "name": "tests",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/site-web/*.test.mjs",
+      "tests/settings/*.test.mjs",
+      "tests/cpu/*.test.mjs",
+      "tests/delivery/*.test.mjs",
+      "tests/users-ui/*.test.mjs",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/authorization-matrix.test.ts",
+      "tests/unit/route-policy.test.ts"
+    ],
+    "code": 0,
+    "elapsedMs": 1342,
+    "tests": 98,
+    "pass": 98,
+    "failures": []
+  },
+  {
+    "name": "build",
+    "args": [
+      "node_modules/next/dist/bin/next",
+      "build"
+    ],
+    "code": 1,
+    "elapsedMs": 94588
+  }
+]

@@ -1,0 +1,265 @@
+{
+  "at": "2026-10-23T14:49:55.202Z",
+  "syntheticOnly": true,
+  "authenticated": false,
+  "productionWrites": false,
+  "screens": [
+    {
+      "name": "sliders-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "sliders-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "evenements-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "evenements-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "communiques-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "communiques-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "actualites-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "actualites-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "athletes-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "athletes-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "galeries-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "galeries-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "documents-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "documents-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "categories-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "categories-panel-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "sliders-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "sliders-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "evenements-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "evenements-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "communiques-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "communiques-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "actualites-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "actualites-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "athletes-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "athletes-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "galeries-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "galeries-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "documents-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "documents-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "categories-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "categories-panel-mobile",
+      "viewport": 390,
+      "width": 390
+    },
+    {
+      "name": "empty-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "error-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "photos-partial-success",
+      "viewport": 1440,
+      "width": 1440
+    }
+  ],
+  "commands": [
+    {
+      "method": "GET",
+      "path": "/api/site-web/communiques"
+    },
+    {
+      "method": "GET",
+      "path": "/api/site-web/actualites"
+    },
+    {
+      "method": "GET",
+      "path": "/api/site-web/communiques"
+    },
+    {
+      "method": "GET",
+      "path": "/api/site-web/actualites"
+    },
+    {
+      "method": "GET",
+      "path": "/api/site-web/actualites"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/site-web/actualites/FIXTURE-1"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/site-web/actualites/FIXTURE-1"
+    },
+    {
+      "method": "GET",
+      "path": "/api/site-web/actualites"
+    },
+    {
+      "method": "GET",
+      "path": "/api/site-web/photos"
+    },
+    {
+      "method": "GET",
+      "path": "/api/site-web/photos"
+    },
+    {
+      "method": "POST",
+      "path": "/api/site-web/uploads"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/site-web/uploads"
+    },
+    {
+      "method": "POST",
+      "path": "/api/site-web/photos"
+    },
+    {
+      "method": "POST",
+      "path": "/api/site-web/uploads"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/site-web/uploads"
+    },
+    {
+      "method": "POST",
+      "path": "/api/site-web/photos"
+    },
+    {
+      "method": "POST",
+      "path": "/api/site-web/photos"
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "8 modules desktop/mobile",
+    "right panels",
+    "dirty close confirmation",
+    "input preserved on 503",
+    "successful local update",
+    "viewer UI read-only",
+    "escaped content",
+    "lazy photos",
+    "partial batch success and retry"
+  ]
+}

@@ -1,0 +1,598 @@
+TAP version 13
+# (node:17580) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:17580) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: activity dashboard loads only the displayed reference, preserving all statuses and unknown types
+ok 1 - activity dashboard loads only the displayed reference, preserving all statuses and unknown types
+  ---
+  duration_ms: 593.2583
+  type: 'test'
+  ...
+# Subtest: independent unused reference failure does not break the activity dashboard
+ok 2 - independent unused reference failure does not break the activity dashboard
+  ---
+  duration_ms: 119.9523
+  type: 'test'
+  ...
+# Subtest: required activity source error propagates without an aggregate fallback
+ok 3 - required activity source error propagates without an aggregate fallback
+  ---
+  duration_ms: 82.1224
+  type: 'test'
+  ...
+# Subtest: narrow activity types retain the exact options returned to editing forms
+ok 4 - narrow activity types retain the exact options returned to editing forms
+  ---
+  duration_ms: 88.9931
+  type: 'test'
+  ...
+# Subtest: concurrent dashboards share raw reads, never memoize aggregates across mutations
+ok 5 - concurrent dashboards share raw reads, never memoize aggregates across mutations
+  ---
+  duration_ms: 72.6437
+  type: 'test'
+  ...
+# Subtest: a two-workbook mutation fences each old read and preserves an independent workbook
+ok 6 - a two-workbook mutation fences each old read and preserves an independent workbook
+  ---
+  duration_ms: 54.6986
+  type: 'test'
+  ...
+# Subtest: partial failure across workbooks invalidates both attempted writes, not an independent cache
+ok 7 - partial failure across workbooks invalidates both attempted writes, not an independent cache
+  ---
+  duration_ms: 44.6641
+  type: 'test'
+  ...
+# (node:25668) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:25668) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: detail preserves full document output but reads size only for the selected file
+ok 8 - detail preserves full document output but reads size only for the selected file
+  ---
+  duration_ms: 439.6104
+  type: 'test'
+  ...
+# Subtest: missing detail never enriches unrelated files
+ok 9 - missing detail never enriches unrelated files
+  ---
+  duration_ms: 66.9234
+  type: 'test'
+  ...
+# Subtest: entity selection normalizes fields before enrichment and preserves order
+ok 10 - entity selection normalizes fields before enrichment and preserves order
+  ---
+  duration_ms: 76.9083
+  type: 'test'
+  ...
+# Subtest: list keeps all sizes, missing file and Drive failure semantics
+ok 11 - list keeps all sizes, missing file and Drive failure semantics
+  ---
+  duration_ms: 119.3091
+  type: 'test'
+  ...
+# Subtest: creation scans fresh document identifiers without reading unrelated Drive sizes
+ok 12 - creation scans fresh document identifiers without reading unrelated Drive sizes
+  ---
+  duration_ms: 64.322
+  type: 'test'
+  ...
+# (node:14756) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:14756) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: the fresh table preserves schema validation of headers beyond column Z
+ok 13 - the fresh table preserves schema validation of headers beyond column Z
+  ---
+  duration_ms: 519.4064
+  type: 'test'
+  ...
+# Subtest: an audit write must not reject a fresh account snapshot from another sheet
+ok 14 - an audit write must not reject a fresh account snapshot from another sheet
+  ---
+  duration_ms: 16.4085
+  type: 'test'
+  ...
+# Subtest: fresh rows rejects an old result after a write to its actual source sheet
+ok 15 - fresh rows rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 17.1538
+  type: 'test'
+  ...
+# Subtest: fresh headers rejects an old result after a write to its actual source sheet
+ok 16 - fresh headers rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 15.076
+  type: 'test'
+  ...
+# Subtest: fresh batch rejects an old result after a write to its actual source sheet
+ok 17 - fresh batch rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 15.6556
+  type: 'test'
+  ...
+# Subtest: fresh table rejects an old result after a write to its actual source sheet
+ok 18 - fresh table rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 35.7161
+  type: 'test'
+  ...
+# Subtest: an audit append preserves warm business data and headers, invalidates its own workbook
+ok 19 - an audit append preserves warm business data and headers, invalidates its own workbook
+  ---
+  duration_ms: 15.0319
+  type: 'test'
+  ...
+# Subtest: fresh adapter reads cannot return a cached revoked account or stale fallback
+ok 20 - fresh adapter reads cannot return a cached revoked account or stale fallback
+  ---
+  duration_ms: 43.9515
+  type: 'test'
+  ...
+# Subtest: targeted invalidation fences old reads without cancelling another workbook pending read
+ok 21 - targeted invalidation fences old reads without cancelling another workbook pending read
+  ---
+  duration_ms: 12.5972
+  type: 'test'
+  ...
+# Subtest: fresh read interrupted by local invalidation rejects instead of returning old grants
+ok 22 - fresh read interrupted by local invalidation rejects instead of returning old grants
+  ---
+  duration_ms: 19.4714
+  type: 'test'
+  ...
+# Subtest: appendSheetRow: success fences all ranges of its workbook only
+ok 23 - appendSheetRow: success fences all ranges of its workbook only
+  ---
+  duration_ms: 18.7677
+  type: 'test'
+  ...
+# Subtest: appendSheetRow: uncertain error fences all ranges of its workbook only
+ok 24 - appendSheetRow: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 17.1651
+  type: 'test'
+  ...
+# Subtest: appendSheetRows: success fences all ranges of its workbook only
+ok 25 - appendSheetRows: success fences all ranges of its workbook only
+  ---
+  duration_ms: 20.122
+  type: 'test'
+  ...
+# Subtest: appendSheetRows: uncertain error fences all ranges of its workbook only
+ok 26 - appendSheetRows: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 13.537
+  type: 'test'
+  ...
+# Subtest: updateSheetCell: success fences all ranges of its workbook only
+ok 27 - updateSheetCell: success fences all ranges of its workbook only
+  ---
+  duration_ms: 14.5072
+  type: 'test'
+  ...
+# Subtest: updateSheetCell: uncertain error fences all ranges of its workbook only
+ok 28 - updateSheetCell: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 18.3974
+  type: 'test'
+  ...
+# Subtest: updateSheetCells: success fences all ranges of its workbook only
+ok 29 - updateSheetCells: success fences all ranges of its workbook only
+  ---
+  duration_ms: 23.778
+  type: 'test'
+  ...
+# Subtest: updateSheetCells: uncertain error fences all ranges of its workbook only
+ok 30 - updateSheetCells: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 16.5567
+  type: 'test'
+  ...
+# Subtest: deleteSheetRow: success fences all ranges of its workbook only
+ok 31 - deleteSheetRow: success fences all ranges of its workbook only
+  ---
+  duration_ms: 16.8209
+  type: 'test'
+  ...
+# Subtest: deleteSheetRow: uncertain error fences all ranges of its workbook only
+ok 32 - deleteSheetRow: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 15.4169
+  type: 'test'
+  ...
+# Subtest: targeted invalidation fences headers and batch, preserving a different workbook
+ok 33 - targeted invalidation fences headers and batch, preserving a different workbook
+  ---
+  duration_ms: 15.7059
+  type: 'test'
+  ...
+# Subtest: fresh table uses one response for headers and rows, never shares or falls back
+ok 34 - fresh table uses one response for headers and rows, never shares or falls back
+  ---
+  duration_ms: 14.3
+  type: 'test'
+  ...
+# Subtest: repository prefers coherent table snapshots and propagates source errors
+ok 35 - repository prefers coherent table snapshots and propagates source errors
+  ---
+  duration_ms: 25.8118
+  type: 'test'
+  ...
+# Subtest: Google adapter through repository and policy never regrants a revoked VIEWER block on source failure
+ok 36 - Google adapter through repository and policy never regrants a revoked VIEWER block on source failure
+  ---
+  duration_ms: 32.5144
+  type: 'test'
+  ...
+# (node:1456) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:1456) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: server navigation and canAccess enforce assigned VIEWER blocks and fail closed
+ok 37 - server navigation and canAccess enforce assigned VIEWER blocks and fail closed
+  ---
+  duration_ms: 567.3268
+  type: 'test'
+  ...
+# Document preview error Error: Synthetic Drive failure
+#     at downloadDriveFile (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/settings-20261023/checkout/tests/cpu/private-documents.test.mjs:24:89)
+#     at Module.GET (C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\settings-20261023\\checkout\\app\\api\\documents\\[id]\\preview\\route.ts:13:24)
+#     at async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/settings-20261023/checkout/tests/cpu/private-documents.test.mjs:48:17)
+#     at async Test.run (node:internal/test_runner/test:1313:7)
+#     at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+# Document download error Error: Synthetic Drive failure
+#     at downloadDriveFile (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/settings-20261023/checkout/tests/cpu/private-documents.test.mjs:24:89)
+#     at Module.GET (C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\settings-20261023\\checkout\\app\\api\\documents\\[id]\\download\\route.ts:13:24)
+#     at async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/settings-20261023/checkout/tests/cpu/private-documents.test.mjs:48:17)
+#     at async Test.run (node:internal/test_runner/test:1313:7)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+# (node:10112) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:10112) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: private preview: assigned VIEWER only, missing files, size and binary cache headers
+ok 38 - private preview: assigned VIEWER only, missing files, size and binary cache headers
+  ---
+  duration_ms: 485.9684
+  type: 'test'
+  ...
+# Subtest: private download: assigned VIEWER only, missing files, size and binary cache headers
+ok 39 - private download: assigned VIEWER only, missing files, size and binary cache headers
+  ---
+  duration_ms: 87.9566
+  type: 'test'
+  ...
+# (node:20552) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:20552) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: batch reads only missing unique ranges, preserves the complete result
+ok 40 - batch reads only missing unique ranges, preserves the complete result
+  ---
+  duration_ms: 285.1152
+  type: 'test'
+  ...
+# Subtest: overlapping batches and individual readers share in-flight missing ranges
+ok 41 - overlapping batches and individual readers share in-flight missing ranges
+  ---
+  duration_ms: 25.7373
+  type: 'test'
+  ...
+# Subtest: invalidating an in-flight single read prevents stale cache resurrection
+ok 42 - invalidating an in-flight single read prevents stale cache resurrection
+  ---
+  duration_ms: 22.3324
+  type: 'test'
+  ...
+# Subtest: successful write invalidates a batch already in flight, without cancelling its caller
+ok 43 - successful write invalidates a batch already in flight, without cancelling its caller
+  ---
+  duration_ms: 17.689
+  type: 'test'
+  ...
+# Subtest: headers finishing after invalidation do not poison subsequent reads
+ok 44 - headers finishing after invalidation do not poison subsequent reads
+  ---
+  duration_ms: 28.4544
+  type: 'test'
+  ...
+# Subtest: ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+ok 45 - ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+  ---
+  duration_ms: 22.1187
+  type: 'test'
+  ...
+# Subtest: different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+ok 46 - different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+  ---
+  duration_ms: 21.8154
+  type: 'test'
+  ...
+# Subtest: old completion cannot replace a new cache entry or remove its in-flight read
+ok 47 - old completion cannot replace a new cache entry or remove its in-flight read
+  ---
+  duration_ms: 49.0459
+  type: 'test'
+  ...
+# Subtest: failed shared batch cleans its promises so a later request can retry
+ok 48 - failed shared batch cleans its promises so a later request can retry
+  ---
+  duration_ms: 13.7216
+  type: 'test'
+  ...
+# Subtest: hot batches do no I/O, fresh batches do not share promises or populate caches
+ok 49 - hot batches do no I/O, fresh batches do not share promises or populate caches
+  ---
+  duration_ms: 23.1992
+  type: 'test'
+  ...
+# Subtest: separate process contexts do not share cache entries or invalidations
+ok 50 - separate process contexts do not share cache entries or invalidations
+  ---
+  duration_ms: 38.9566
+  type: 'test'
+  ...
+# (node:9324) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:9324) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: season follows Kinshasa date including year and inclusive boundaries
+ok 51 - season follows Kinshasa date including year and inclusive boundaries
+  ---
+  duration_ms: 157.9734
+  type: 'test'
+  ...
+# Subtest: missing, inactive and overlapping periods never silently choose a season
+ok 52 - missing, inactive and overlapping periods never silently choose a season
+  ---
+  duration_ms: 2.2314
+  type: 'test'
+  ...
+# Subtest: dates, duplicate labels and active overlaps validated; own edit allowed
+ok 53 - dates, duplicate labels and active overlaps validated; own edit allowed
+  ---
+  duration_ms: 13.855
+  type: 'test'
+  ...
+# Subtest: settings routes and navigation stay super-admin only, VIEWER cannot write
+ok 54 - settings routes and navigation stay super-admin only, VIEWER cannot write
+  ---
+  duration_ms: 2.098
+  type: 'test'
+  ...
+# Subtest: route checks session before reads and writes and audits successful saves
+ok 55 - route checks session before reads and writes and audits successful saves
+  ---
+  duration_ms: 86.1994
+  type: 'test'
+  ...
+# Subtest: season persistence validates the source schema and preserves identifiers on update
+ok 56 - season persistence validates the source schema and preserves identifiers on update
+  ---
+  duration_ms: 20.8222
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: VIEWER lit avec attribution mais n'écrit jamais
+ok 57 - AUT-ADM: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 2.6001
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: ADMIN écrit uniquement avec attribution active dans la période
+ok 58 - AUT-ADM: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 0.6446
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: la super-administration accorde un accès métier complet
+ok 59 - AUT-ADM: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.447
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: VIEWER lit avec attribution mais n'écrit jamais
+ok 60 - AUT-SPT: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 0.2296
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: ADMIN écrit uniquement avec attribution active dans la période
+ok 61 - AUT-SPT: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 0.2681
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: la super-administration accorde un accès métier complet
+ok 62 - AUT-SPT: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.1684
+  type: 'test'
+  ...
+# Subtest: AUT-COM: VIEWER lit avec attribution mais n'écrit jamais
+ok 63 - AUT-COM: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 0.1589
+  type: 'test'
+  ...
+# Subtest: AUT-COM: ADMIN écrit uniquement avec attribution active dans la période
+ok 64 - AUT-COM: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 0.1804
+  type: 'test'
+  ...
+# Subtest: AUT-COM: la super-administration accorde un accès métier complet
+ok 65 - AUT-COM: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.3785
+  type: 'test'
+  ...
+# Subtest: seul le super-administrateur accède au périmètre réservé
+ok 66 - seul le super-administrateur accède au périmètre réservé
+  ---
+  duration_ms: 0.5131
+  type: 'test'
+  ...
+# Subtest: VIEWER lit un bloc attribué mais ne peut jamais l'écrire
+ok 67 - VIEWER lit un bloc attribué mais ne peut jamais l'écrire
+  ---
+  duration_ms: 2.2903
+  type: 'test'
+  ...
+# Subtest: ADMIN écrit seulement dans un bloc explicitement attribué et actif
+ok 68 - ADMIN écrit seulement dans un bloc explicitement attribué et actif
+  ---
+  duration_ms: 0.3201
+  type: 'test'
+  ...
+# Subtest: les bornes sont inclusives selon la date civile Africa/Kinshasa
+ok 69 - les bornes sont inclusives selon la date civile Africa/Kinshasa
+  ---
+  duration_ms: 191.101
+  type: 'test'
+  ...
+# Subtest: le super-administrateur accède à tous les blocs métier
+ok 70 - le super-administrateur accède à tous les blocs métier
+  ---
+  duration_ms: 0.4659
+  type: 'test'
+  ...
+# Subtest: le super-administrateur reste autorisé si la source des blocs est indisponible
+ok 71 - le super-administrateur reste autorisé si la source des blocs est indisponible
+  ---
+  duration_ms: 2.1953
+  type: 'test'
+  ...
+# Subtest: une panne de la source d'autorisation produit un refus fermé
+ok 72 - une panne de la source d'autorisation produit un refus fermé
+  ---
+  duration_ms: 0.9351
+  type: 'test'
+  ...
+# Subtest: le dernier super-administrateur actif ne peut pas être neutralisé
+ok 73 - le dernier super-administrateur actif ne peut pas être neutralisé
+  ---
+  duration_ms: 1.3139
+  type: 'test'
+  ...
+# Subtest: VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible
+ok 74 - VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible
+  ---
+  duration_ms: 3.7229
+  type: 'test'
+  ...
+# Subtest: le super-administrateur voit immédiatement toutes les sections disponibles
+ok 75 - le super-administrateur voit immédiatement toutes les sections disponibles
+  ---
+  duration_ms: 4.0737
+  type: 'test'
+  ...
+# Subtest: la section Site web ouvre une administration unique sans sous-menu
+ok 76 - la section Site web ouvre une administration unique sans sous-menu
+  ---
+  duration_ms: 0.7984
+  type: 'test'
+  ...
+# Subtest: AUT-COM contrôle la visibilité de Site web pour les comptes ordinaires
+ok 77 - AUT-COM contrôle la visibilité de Site web pour les comptes ordinaires
+  ---
+  duration_ms: 0.4883
+  type: 'test'
+  ...
+# Subtest: chaque section principale, y compris Acteurs, possède une destination cliquable
+ok 78 - chaque section principale, y compris Acteurs, possède une destination cliquable
+  ---
+  duration_ms: 0.8999
+  type: 'test'
+  ...
+# Subtest: les options de référentiel ont une clé React unique
+ok 79 - les options de référentiel ont une clé React unique
+  ---
+  duration_ms: 6.4995
+  type: 'test'
+  ...
+# Subtest: redirige une activation obligatoire vers l'activation
+ok 80 - redirige une activation obligatoire vers l'activation
+  ---
+  duration_ms: 2.5924
+  type: 'test'
+  ...
+# Subtest: redirige un utilisateur avec un bloc métier vers le dashboard
+ok 81 - redirige un utilisateur avec un bloc métier vers le dashboard
+  ---
+  duration_ms: 0.7261
+  type: 'test'
+  ...
+# Subtest: ne renvoie pas vers le dashboard un utilisateur sans bloc métier
+ok 82 - ne renvoie pas vers le dashboard un utilisateur sans bloc métier
+  ---
+  duration_ms: 0.3072
+  type: 'test'
+  ...
+# Subtest: redirige un super-administrateur sans bloc vers le tableau de bord
+ok 83 - redirige un super-administrateur sans bloc vers le tableau de bord
+  ---
+  duration_ms: 0.2624
+  type: 'test'
+  ...
+# Subtest: VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation
+ok 84 - VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation
+  ---
+  duration_ms: 0.3413
+  type: 'test'
+  ...
+# Subtest: la matrice couvre explicitement les familles de pages et API
+ok 85 - la matrice couvre explicitement les familles de pages et API
+  ---
+  duration_ms: 2.8181
+  type: 'test'
+  ...
+# Subtest: les routes inconnues et contournements par URL sont refusés par défaut
+ok 86 - les routes inconnues et contournements par URL sont refusés par défaut
+  ---
+  duration_ms: 1.2421
+  type: 'test'
+  ...
+# Subtest: chaque mutation métier exige WRITE et chaque lecture exige READ
+ok 87 - chaque mutation métier exige WRITE et chaque lecture exige READ
+  ---
+  duration_ms: 0.6519
+  type: 'test'
+  ...
+# Subtest: les périmètres officiels utilisent exactement le bon bloc
+ok 88 - les périmètres officiels utilisent exactement le bon bloc
+  ---
+  duration_ms: 2.1044
+  type: 'test'
+  ...
+# Subtest: toutes les routes protégées actuellement exposées appartiennent à la matrice
+ok 89 - toutes les routes protégées actuellement exposées appartiennent à la matrice
+  ---
+  duration_ms: 0.4674
+  type: 'test'
+  ...
+# (node:2436) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:2436) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: GET user detail reads only user and blocks, never audit, and excludes credentials
+ok 90 - GET user detail reads only user and blocks, never audit, and excludes credentials
+  ---
+  duration_ms: 57.7108
+  type: 'test'
+  ...
+# Subtest: page/client have no history load or payload; shared audit writes and idempotency remain
+ok 91 - page/client have no history load or payload; shared audit writes and idempotency remain
+  ---
+  duration_ms: 6.2539
+  type: 'test'
+  ...
+# Subtest: each account command refuses non-super-admin before loading data; S1 proxy denies VIEWER even with inconsistent super-admin flag
+ok 92 - each account command refuses non-super-admin before loading data; S1 proxy denies VIEWER even with inconsistent super-admin flag
+  ---
+  duration_ms: 30.8619
+  type: 'test'
+  ...
+1..92
+# tests 92
+# suites 0
+# pass 92
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1260.9198

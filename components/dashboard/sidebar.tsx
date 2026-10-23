@@ -75,7 +75,7 @@ export function Sidebar({ initialAccess, initialIsSuperAdmin }: { initialAccess:
     { title: "Acteurs", href: actors?.href, items: (actors?.children ?? []).map(item => ({ ...item, icon: actorIcons[item.href.split("/").pop()!] ?? Users })) },
     { title: "Compétitions", items: linksFor("/dashboard/competitions") },
     { title: "Équipes nationales", items: linksFor("/dashboard/equipes-nationales") },
-    { title: "Administration", items: linksFor("/dashboard/activites", "/dashboard/documents", "/dashboard/site-web", "/dashboard/utilisateurs") },
+    { title: "Administration", items: linksFor("/dashboard/activites", "/dashboard/documents", "/dashboard/site-web", "/dashboard/utilisateurs", "/dashboard/parametres") },
   ].filter(group => group.items.length > 0)
   const toggle = (title: string) => setClosedGroups(current => current.includes(title) ? current.filter(item => item !== title) : [...current, title])
 

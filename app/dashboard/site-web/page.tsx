@@ -6,17 +6,18 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
 const sections: readonly { name: string; description: string; href: string; icon: LucideIcon; available?: boolean }[] = [
+  { name: "Catégories d’actualités", description: "Gérer les catégories utilisées par les actualités.", href: "/dashboard/site-web/categories", icon: Newspaper, available: true },
   { name: "Sliders", description: "Gérer les visuels, les messages et leur ordre d’affichage sur la page d’accueil.", href: "/dashboard/site-web/sliders", icon: GalleryHorizontalEnd, available: true },
-  { name: "Communiqués", description: "Publier les annonces et les communications officielles du COC.", href: "/dashboard/site-web/communiques", icon: Megaphone },
-  { name: "Actualités", description: "Créer et organiser les articles d’actualité destinés au public.", href: "/dashboard/site-web/actualites", icon: Newspaper },
-  { name: "Galeries", description: "Administrer les albums photos et les contenus visuels du site.", href: "/dashboard/site-web/galeries", icon: Images },
+  { name: "Communiqués", description: "Publier les annonces et les communications officielles du COC.", href: "/dashboard/site-web/communiques", icon: Megaphone, available: true },
+  { name: "Actualités", description: "Créer et organiser les articles d’actualité destinés au public.", href: "/dashboard/site-web/actualites", icon: Newspaper, available: true },
+  { name: "Galeries", description: "Administrer les albums photos et les contenus visuels du site.", href: "/dashboard/site-web/galeries", icon: Images, available: true },
   { name: "Historique", description: "Mettre en valeur l’histoire, les dates clés et la mémoire du COC.", href: "/dashboard/site-web/historique", icon: History },
   { name: "Gouvernance", description: "Présenter les instances, les responsables et l’organisation institutionnelle.", href: "/dashboard/site-web/gouvernance", icon: Landmark },
   { name: "Jeux", description: "Gérer les contenus consacrés aux Jeux et aux grandes compétitions.", href: "/dashboard/site-web/jeux", icon: Trophy },
-  { name: "Athlètes", description: "Sélectionner et présenter les profils d’athlètes mis en avant.", href: "/dashboard/site-web/athletes", icon: Users },
+  { name: "Athlètes", description: "Sélectionner et présenter les profils d’athlètes mis en avant.", href: "/dashboard/site-web/athletes", icon: Users, available: true },
   { name: "Entités", description: "Administrer les contenus publics des fédérations et entités partenaires.", href: "/dashboard/site-web/entites", icon: Building2 },
-  { name: "Événements", description: "Planifier et publier les rendez-vous visibles sur le site web.", href: "/dashboard/site-web/evenements", icon: CalendarDays },
-  { name: "Documents", description: "Mettre à disposition les documents et ressources destinés au public.", href: "/dashboard/site-web/documents", icon: FileText },
+  { name: "Événements", description: "Planifier et publier les rendez-vous visibles sur le site web.", href: "/dashboard/site-web/evenements", icon: CalendarDays, available: true },
+  { name: "Documents", description: "Mettre à disposition les documents et ressources destinés au public.", href: "/dashboard/site-web/documents", icon: FileText, available: true },
 ] as const
 
 export default function SiteWebAdministrationPage() {

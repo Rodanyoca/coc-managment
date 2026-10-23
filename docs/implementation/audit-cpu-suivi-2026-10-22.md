@@ -1,5 +1,21 @@
 # Audit CPU COC — canevas central d’intervention
 
+## Site Web unifié — chantier local du 23 octobre 2026
+
+Huit rubriques administratives implémentées et vérifiées localement, sans publication. Le nouveau mapping unique est explicitement confirmé par la demande utilisateur et lisible par l’identité applicative. Les statuts ne proviennent plus du Référentiel. La validation Site Web reprend le profil de purges globales conservateur : **C2 reste différé**, son brouillon dans le workspace est préservé. F1/S1, Utilisateurs, saisons et neuf KPI conservés. Aucun gain CPU Vercel mesuré. Voir [rapport Site Web](site-web-unifie-2026-10-23.md), preuves, configuration PDF restante et contrat du lecteur public. Les constats antérieurs sur l’ancien classeur restent historiques ; ils ne décrivent pas le nouveau branchement non publié.
+
+
+## Première vague publiée — clôture
+
+**Publié et READY** : SHA `cd9f29fbdfba9d35a60af358041dd8ad852c1173`, déploiement `dpl_EGA6j7Qwf4euUNywAXRj8KehA4z3`, alias `database.coc-rdc.net` confirmé à 2026-10-23T11:18:24.5590906Z. READY à **2026-10-23T11:17:12.4740000Z**. F1, A1, Utilisateurs et neuf KPI livrés ; D1/C1/S1 conservés. **C2 reste différé ; purges globales conservées.**
+
+Un seul push main, aucun déploiement redondant. Sources applicatives inchangées depuis les validations : build normal/vraies polices, TypeScript et lint réussis ; 53/53 CPU rejoués depuis le checkout ; 3/3 UI, 23/23 permissions ; suite 319/325 avec les six mêmes échecs préexistants. Retour ciblé A1 préservant F1/S1 vérifié, référence locale `release/f1-a1-users-20261023` dans le checkout de publication.
+
+Après publication : **11/11 contrôles anonymes conformes**, fenêtre 2026-10-23T11:17:59.148Z — 2026-10-23T11:18:06.640Z. Journaux runtime consultés de 2026-10-23T11:17:12Z à 2026-10-23T11:18:30Z : 0 enregistrement, aucune page suivante. Cela ne prouve pas l’absence d’erreurs sur des parcours non exercés. Aucune session navigateur autorisée : recette authentifiée VIEWER/blocs, refus d’écriture, révocations et documents privés restante. Aucun gain CPU Vercel mesuré ou revendiqué.
+
+Les preuves après publication et cette clôture restent documentées dans le workspace, sans second push documentaire déclenchant un build. Le workspace principal conserve les travaux parallèles C2 ; il ne doit pas être poussé en bloc. Voir le [rapport de publication](audit-publication-f1-a1-2026-10-23.md).
+
+
 ## Composition de livraison — décision du 23 octobre
 
 **Retenus : F1 + A1 + évolutions Utilisateurs et KPI Médailles, avec purge brute globale conservatrice. C2 différé.** La copie `.cache/cpu-delivery/candidate` est la composition à valider/livrer ; le workspace principal conserve C2 et ne doit pas être publié en bloc pour cette décision.

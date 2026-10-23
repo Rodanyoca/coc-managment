@@ -1,0 +1,23 @@
+
+C:\Projets\SNDS-HARMONISATION\coc-cible\.cache\site-web-20261023\checkout\components\site-web\content-page.tsx
+  15:12  warning  Error: Avoid constructing JSX within try/catch
+
+React does not immediately render components when JSX is rendered, so any errors from this component will not be caught by the try/catch. To catch errors in rendering a given component, wrap that component in an error boundary. (https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary).
+
+C:\Projets\SNDS-HARMONISATION\coc-cible\.cache\site-web-20261023\checkout\components\site-web\content-page.tsx:15:12
+  13 |   try {
+  14 |     const [rows, statuses] = await Promise.all([readContent(name), name === "categories" ? Promise.resolve([]) : publicationStatuses()])
+> 15 |     return <ContentManager resource={name} initialRows={rows} initialStatuses={statuses} canEdit={canEdit} />
+     |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Avoid constructing JSX within try/catch
+  16 |   } catch { return <ContentManager resource={name} initialRows={[]} initialStatuses={[]} canEdit={canEdit} initialError /> }
+  17 | }
+  18 |  react-hooks/error-boundaries
+
+C:\Projets\SNDS-HARMONISATION\coc-cible\.cache\site-web-20261023\checkout\lib\site-web\http.ts
+  58:72  error  'files' is never reassigned. Use 'const' instead  prefer-const
+
+C:\Projets\SNDS-HARMONISATION\coc-cible\.cache\site-web-20261023\checkout\tests\site-web\http-media.test.mjs
+  3:10  warning  'createHash' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 3 problems (1 error, 2 warnings)
+

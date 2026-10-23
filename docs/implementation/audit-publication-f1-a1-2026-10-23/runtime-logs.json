@@ -1,0 +1,28 @@
+{
+    "since":  "2026-10-23T11:17:12Z",
+    "until":  "2026-10-23T11:18:30Z",
+    "exitCode":  0,
+    "limit":  100,
+    "deploymentId":  "dpl_EGA6j7Qwf4euUNywAXRj8KehA4z3",
+    "recordsReturned":  0,
+    "summary":  {
+                    "type":  "summary",
+                    "recordsReturned":  0,
+                    "timeRange":  {
+                                      "start":  "2026-10-23T11:17:12.000Z",
+                                      "end":  "2026-10-23T11:18:30.000Z"
+                                  },
+                    "pagination":  {
+                                       "hasMore":  false,
+                                       "next":  null
+                                   },
+                    "excludedIntervals":  [
+
+                                          ]
+                },
+    "source":  "Vercel CLI runtime logs; no metrics",
+    "recordsMetadata":  [
+
+                        ],
+    "limitation":  "Bounded console logs only; no authenticated journey or proof of no errors outside observed routes"
+}

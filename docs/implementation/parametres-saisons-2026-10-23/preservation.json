@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-23T14:12:02.074Z",
+  "base": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+  "comparedFiles": 741,
+  "changedExisting": [
+    "docs/implementation/audit-cpu-suivi-2026-10-22.md",
+    "docs/implementation/audit-dashboard-2026-10-23.md",
+    "scripts/cpu-audit/prepare-delivery.mjs",
+    "app/dashboard/equipes-nationales/teams-client.tsx",
+    "components/dashboard/sidebar.tsx",
+    "docs/mappings/google-sheets-workbooks.md",
+    "lib/auth/route-policy.ts",
+    "lib/equipes-nationales/data.ts",
+    "lib/equipes-nationales/types.ts",
+    "lib/navigation/dashboard-navigation.ts",
+    "tests/unit/dashboard-navigation.test.ts"
+  ],
+  "unexpected": [],
+  "parallelUserCpuWorkPreserved": true
+}

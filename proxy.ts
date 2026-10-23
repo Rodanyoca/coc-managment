@@ -7,8 +7,8 @@ import { routePolicy } from "@/lib/auth/route-policy"
 import { getAuthorizationsForUser, getUserById } from "@/lib/users/data"
 import { authenticationFailurePath } from "@/lib/auth/failure-navigation"
 
-function isPublicRoute(pathname: string) {
-  return pathname === "/login" || pathname === "/service-indisponible" || pathname === "/api/auth/login"
+function isPublicRoute(pathname: string, method = "GET") {
+  return pathname === "/login" || pathname === "/service-indisponible" || pathname === "/api/auth/login" || (["GET", "HEAD"].includes(method) && /^\/api\/site-web\/media\/[a-z]+\/[^/]+\/[a-z_]+$/.test(pathname))
 }
 
 function isMinimalSessionRoute(pathname: string) {
@@ -27,7 +27,7 @@ function deny(request: NextRequest, status = 401) {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
-  if (isPublicRoute(pathname)) return NextResponse.next()
+  if (isPublicRoute(pathname, request.method)) return NextResponse.next()
   const secret = process.env.AUTH_SECRET
   const token = request.cookies.get(SESSION_COOKIE_NAME)?.value
   if (!secret || !token) return deny(request)
