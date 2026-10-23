@@ -13,3 +13,5 @@ Ne pas revenir globalement à e6fa5b2 : il ne contient pas F1. Pour retirer A1, 
 ## Publication et contrôles
 
 Un seul push main via l’intégration Git habituelle ; aucun déploiement CLI redondant. Les preuves après publication seront ajoutées localement à ce rapport et au canevas pour éviter un second build documentaire. Aucun navigateur ni session autorisée disponible : recette authentifiée des attributions VIEWER, refus d’écriture, révocations et documents privés restante. Aucune écriture métier de test ni test de charge en production. C2 reste séparé, invalidation mémoire non distribuée. Aucun gain CPU Vercel revendiqué.
+
+Contrôle pré-push : index Git conforme aux sources validées, seules 433 conversions CRLF/LF sans changement de contenu ; 53/53 tests CPU rejoués dans le checkout. Le patch de retour se vérifie avec `git apply --ignore-space-change --check` ; utiliser la même option pour son application (contexte CRLF/LF). Aucun changement applicatif depuis le build validé.
