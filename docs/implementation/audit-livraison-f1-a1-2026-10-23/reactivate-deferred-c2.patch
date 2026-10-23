@@ -1,0 +1,110 @@
+--- a/lib/google/sheets.ts
++++ b/lib/google/sheets.ts
+@@ -56,12 +56,10 @@
+   cache.set(key, { data, ts: Date.now() })
+ }
+ 
+-// Mutations conservatively fence all raw workbooks; fresh reads use source fences.
++// A global refresh remains available; writes fence only their workbook.
+ // No derived/authorization results are stored here, only raw ranges and headers.
+ function cacheGeneration(spreadsheetId: string) {
+-  const version = workbookGenerations.get(spreadsheetId) ?? 0
+-  workbookGenerations.set(spreadsheetId, version)
+-  return `${generation.value}:${version}`
++  return `${generation.value}:${workbookGenerations.get(spreadsheetId) ?? 0}`
+ }
+ 
+ function freshGeneration(spreadsheetId: string, sheetNames: string[]) {
+@@ -114,13 +112,6 @@
+     return await runGoogleRequest(task, { idempotent: false })
+   } finally {
+     clearSheetCache(spreadsheetId, sheetName)
+-    // Restore global raw-cache invalidation without broadening fresh source fences.
+-    for (const [book, version] of workbookGenerations) {
+-      if (book !== spreadsheetId) workbookGenerations.set(book, version + 1)
+-    }
+-    cache.clear()
+-    headerCache.clear()
+-    pendingReads.clear()
+   }
+ }
+ 
+--- a/tests/cpu/freshness-invalidation.test.mjs
++++ b/tests/cpu/freshness-invalidation.test.mjs
+@@ -50,16 +50,16 @@
+   assert.match(String((await outcome).error), /invalid/)
+ })
+ 
+-test('an audit append conservatively invalidates all raw workbook caches', async () => {
++test('an audit append preserves warm business data and headers, invalidates its own workbook', async () => {
+   const { namespace: data, state } = await sheetsModule(root)
+   await data.getSheetRows(params())
+   await data.getSheetRows(params('USERS'))
+   await data.appendSheetRow({ ...params('USERS'), row: { id: '2', value: 'audit' } })
+   const before = state.calls.length
+   await data.getSheetRows(params()); await data.getSheetHeaders(params())
+-  assert.equal(state.calls.length, before + 1, 'conservative policy refreshes the other workbook')
++  assert.equal(state.calls.length, before, 'unrelated workbook must remain warm')
+   await data.getSheetRows(params('USERS'))
+-  assert.equal(state.calls.length, before + 2)
++  assert.equal(state.calls.length, before + 1)
+ })
+ 
+ test('fresh adapter reads cannot return a cached revoked account or stale fallback', async () => {
+@@ -99,7 +99,7 @@
+ })
+ 
+ for (const method of ['appendSheetRow', 'appendSheetRows', 'updateSheetCell', 'updateSheetCells', 'deleteSheetRow']) {
+-  for (const fails of [false, true]) test(`${method}: ${fails ? 'uncertain error' : 'success'} fences all raw workbook ranges`, async () => {
++  for (const fails of [false, true]) test(`${method}: ${fails ? 'uncertain error' : 'success'} fences all ranges of its workbook only`, async () => {
+     const { namespace: data, state } = await sheetsModule(root)
+     await data.getSheetRows(params()); await data.getSheetRows(params('USERS'))
+     await data.getSheetRows({ ...params('USERS'), range: "'A'!A:B" })
+@@ -110,10 +110,10 @@
+     else await data[method](input)
+     const before = state.calls.length
+     await data.getSheetRows(params()); await data.getSheetRows(params('USERS-OTHER'))
+-    assert.equal(state.calls.length, before + 2)
++    assert.equal(state.calls.length, before)
+     await data.getSheetRows(params('USERS')); await data.getSheetRows({ ...params('USERS'), range: "'A'!A:B" })
+     await data.getSheetHeaders({ ...params('USERS'), sheetName: 'B' })
+-    assert.equal(state.calls.length, before + 5)
++    assert.equal(state.calls.length, before + 3)
+   })
+ }
+ 
+--- a/tests/cpu/dashboard.test.mjs
++++ b/tests/cpu/dashboard.test.mjs
+@@ -47,7 +47,7 @@
+   assert.equal((await f.load()).types.find(t => t.key === 'T1').label, 'Changed label')
+ })
+ 
+-test('a two-workbook mutation fences old reads and conservatively refreshes all raw workbooks', async () => {
++test('a two-workbook mutation fences each old read and preserves an independent workbook', async () => {
+   const f = await activityDashboardFixture(root), gate = deferred()
+   const ordinary = { spreadsheetId: 'OTHER', sheetName: 'A' }
+   await f.raw.namespace.getSheetRows(ordinary)
+@@ -65,11 +65,11 @@
+   f.raw.state.get = null
+   const before = f.raw.state.calls.length
+   await f.raw.namespace.getSheetRows(ordinary)
+-  assert.equal(f.raw.state.calls.length, before + 1)
++  assert.equal(f.raw.state.calls.length, before)
+   assert.equal((await f.load()).types.find(t => t.key === 'T1').label, 'After mutation')
+ })
+ 
+-test('partial failure across workbooks invalidates all raw caches on either attempted write', async () => {
++test('partial failure across workbooks invalidates both attempted writes, not an independent cache', async () => {
+   const f = await activityDashboardFixture(root)
+   await f.load()
+   await f.raw.namespace.getSheetRows({ spreadsheetId: 'OTHER', sheetName: 'A' })
+@@ -78,7 +78,7 @@
+   await assert.rejects(f.raw.namespace.appendSheetRow({ spreadsheetId: 'ACTIVITIES', sheetName: 'ACTIVITES', row: { id_activite: 'NEW' } }), /lost acknowledgement/)
+   const before = f.raw.state.calls.length
+   await f.raw.namespace.getSheetRows({ spreadsheetId: 'OTHER', sheetName: 'A' })
+-  assert.equal(f.raw.state.calls.length, before + 1)
++  assert.equal(f.raw.state.calls.length, before)
+   await f.load()
+-  assert.equal(f.raw.state.calls.length - before, 3)
++  assert.equal(f.raw.state.calls.length - before, 2)
+ })

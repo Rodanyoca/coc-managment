@@ -1,0 +1,295 @@
+TAP version 13
+# (node:13096) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:13096) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: detail preserves full document output but reads size only for the selected file
+ok 1 - detail preserves full document output but reads size only for the selected file
+  ---
+  duration_ms: 6331.2136
+  type: 'test'
+  ...
+# Subtest: missing detail never enriches unrelated files
+ok 2 - missing detail never enriches unrelated files
+  ---
+  duration_ms: 491.1856
+  type: 'test'
+  ...
+# Subtest: entity selection normalizes fields before enrichment and preserves order
+ok 3 - entity selection normalizes fields before enrichment and preserves order
+  ---
+  duration_ms: 840.5829
+  type: 'test'
+  ...
+# Subtest: list keeps all sizes, missing file and Drive failure semantics
+ok 4 - list keeps all sizes, missing file and Drive failure semantics
+  ---
+  duration_ms: 282.2227
+  type: 'test'
+  ...
+# Subtest: creation scans fresh document identifiers without reading unrelated Drive sizes
+ok 5 - creation scans fresh document identifiers without reading unrelated Drive sizes
+  ---
+  duration_ms: 911.5294
+  type: 'test'
+  ...
+# (node:7460) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:7460) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: the fresh table preserves schema validation of headers beyond column Z
+ok 6 - the fresh table preserves schema validation of headers beyond column Z
+  ---
+  duration_ms: 7793.724
+  type: 'test'
+  ...
+# Subtest: an audit write must not reject a fresh account snapshot from another sheet
+ok 7 - an audit write must not reject a fresh account snapshot from another sheet
+  ---
+  duration_ms: 410.4056
+  type: 'test'
+  ...
+# Subtest: fresh rows rejects an old result after a write to its actual source sheet
+ok 8 - fresh rows rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 576.7048
+  type: 'test'
+  ...
+# Subtest: fresh headers rejects an old result after a write to its actual source sheet
+ok 9 - fresh headers rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 436.9403
+  type: 'test'
+  ...
+# Subtest: fresh batch rejects an old result after a write to its actual source sheet
+ok 10 - fresh batch rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 357.7156
+  type: 'test'
+  ...
+# Subtest: fresh table rejects an old result after a write to its actual source sheet
+ok 11 - fresh table rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 339.1008
+  type: 'test'
+  ...
+# Subtest: an audit append preserves warm business data and headers, invalidates its own workbook
+ok 12 - an audit append preserves warm business data and headers, invalidates its own workbook
+  ---
+  duration_ms: 385.0759
+  type: 'test'
+  ...
+# Subtest: fresh adapter reads cannot return a cached revoked account or stale fallback
+ok 13 - fresh adapter reads cannot return a cached revoked account or stale fallback
+  ---
+  duration_ms: 379.5111
+  type: 'test'
+  ...
+# Subtest: targeted invalidation fences old reads without cancelling another workbook pending read
+ok 14 - targeted invalidation fences old reads without cancelling another workbook pending read
+  ---
+  duration_ms: 215.0089
+  type: 'test'
+  ...
+# Subtest: fresh read interrupted by local invalidation rejects instead of returning old grants
+ok 15 - fresh read interrupted by local invalidation rejects instead of returning old grants
+  ---
+  duration_ms: 184.4519
+  type: 'test'
+  ...
+# Subtest: appendSheetRow: success fences all ranges of its workbook only
+ok 16 - appendSheetRow: success fences all ranges of its workbook only
+  ---
+  duration_ms: 146.8184
+  type: 'test'
+  ...
+# Subtest: appendSheetRow: uncertain error fences all ranges of its workbook only
+ok 17 - appendSheetRow: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 138.8447
+  type: 'test'
+  ...
+# Subtest: appendSheetRows: success fences all ranges of its workbook only
+ok 18 - appendSheetRows: success fences all ranges of its workbook only
+  ---
+  duration_ms: 226.195
+  type: 'test'
+  ...
+# Subtest: appendSheetRows: uncertain error fences all ranges of its workbook only
+ok 19 - appendSheetRows: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 212.6969
+  type: 'test'
+  ...
+# Subtest: updateSheetCell: success fences all ranges of its workbook only
+ok 20 - updateSheetCell: success fences all ranges of its workbook only
+  ---
+  duration_ms: 215.9166
+  type: 'test'
+  ...
+# Subtest: updateSheetCell: uncertain error fences all ranges of its workbook only
+ok 21 - updateSheetCell: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 191.295
+  type: 'test'
+  ...
+# Subtest: updateSheetCells: success fences all ranges of its workbook only
+ok 22 - updateSheetCells: success fences all ranges of its workbook only
+  ---
+  duration_ms: 137.2798
+  type: 'test'
+  ...
+# Subtest: updateSheetCells: uncertain error fences all ranges of its workbook only
+ok 23 - updateSheetCells: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 177.1369
+  type: 'test'
+  ...
+# Subtest: deleteSheetRow: success fences all ranges of its workbook only
+ok 24 - deleteSheetRow: success fences all ranges of its workbook only
+  ---
+  duration_ms: 209.5743
+  type: 'test'
+  ...
+# Subtest: deleteSheetRow: uncertain error fences all ranges of its workbook only
+ok 25 - deleteSheetRow: uncertain error fences all ranges of its workbook only
+  ---
+  duration_ms: 286.6902
+  type: 'test'
+  ...
+# Subtest: targeted invalidation fences headers and batch, preserving a different workbook
+ok 26 - targeted invalidation fences headers and batch, preserving a different workbook
+  ---
+  duration_ms: 162.9373
+  type: 'test'
+  ...
+# Subtest: fresh table uses one response for headers and rows, never shares or falls back
+ok 27 - fresh table uses one response for headers and rows, never shares or falls back
+  ---
+  duration_ms: 206.6192
+  type: 'test'
+  ...
+# Subtest: repository prefers coherent table snapshots and propagates source errors
+ok 28 - repository prefers coherent table snapshots and propagates source errors
+  ---
+  duration_ms: 196.7804
+  type: 'test'
+  ...
+# Subtest: Google adapter through repository and policy never regrants a revoked VIEWER block on source failure
+ok 29 - Google adapter through repository and policy never regrants a revoked VIEWER block on source failure
+  ---
+  duration_ms: 655.6094
+  type: 'test'
+  ...
+# (node:5624) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:5624) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: server navigation and canAccess enforce assigned VIEWER blocks and fail closed
+ok 30 - server navigation and canAccess enforce assigned VIEWER blocks and fail closed
+  ---
+  duration_ms: 7546.7361
+  type: 'test'
+  ...
+# Document preview error Error: Synthetic Drive failure
+#     at downloadDriveFile (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/private-documents.test.mjs:24:89)
+#     at Module.GET (C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\app\\api\\documents\\[id]\\preview\\route.ts:13:24)
+#     at async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/private-documents.test.mjs:48:17)
+#     at async Test.run (node:internal/test_runner/test:1313:7)
+#     at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+# Document download error Error: Synthetic Drive failure
+#     at downloadDriveFile (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/private-documents.test.mjs:24:89)
+#     at Module.GET (C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\app\\api\\documents\\[id]\\download\\route.ts:13:24)
+#     at async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/private-documents.test.mjs:48:17)
+#     at async Test.run (node:internal/test_runner/test:1313:7)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+# (node:6028) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:6028) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: private preview: assigned VIEWER only, missing files, size and binary cache headers
+ok 31 - private preview: assigned VIEWER only, missing files, size and binary cache headers
+  ---
+  duration_ms: 9301.7417
+  type: 'test'
+  ...
+# Subtest: private download: assigned VIEWER only, missing files, size and binary cache headers
+ok 32 - private download: assigned VIEWER only, missing files, size and binary cache headers
+  ---
+  duration_ms: 747.8546
+  type: 'test'
+  ...
+# (node:26416) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:26416) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: batch reads only missing unique ranges, preserves the complete result
+ok 33 - batch reads only missing unique ranges, preserves the complete result
+  ---
+  duration_ms: 5010.6059
+  type: 'test'
+  ...
+# Subtest: overlapping batches and individual readers share in-flight missing ranges
+ok 34 - overlapping batches and individual readers share in-flight missing ranges
+  ---
+  duration_ms: 413.8819
+  type: 'test'
+  ...
+# Subtest: invalidating an in-flight single read prevents stale cache resurrection
+ok 35 - invalidating an in-flight single read prevents stale cache resurrection
+  ---
+  duration_ms: 651.851
+  type: 'test'
+  ...
+# Subtest: successful write invalidates a batch already in flight, without cancelling its caller
+ok 36 - successful write invalidates a batch already in flight, without cancelling its caller
+  ---
+  duration_ms: 547.0948
+  type: 'test'
+  ...
+# Subtest: headers finishing after invalidation do not poison subsequent reads
+ok 37 - headers finishing after invalidation do not poison subsequent reads
+  ---
+  duration_ms: 465.5733
+  type: 'test'
+  ...
+# Subtest: ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+ok 38 - ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+  ---
+  duration_ms: 588.3667
+  type: 'test'
+  ...
+# Subtest: different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+ok 39 - different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+  ---
+  duration_ms: 545.1673
+  type: 'test'
+  ...
+# Subtest: old completion cannot replace a new cache entry or remove its in-flight read
+ok 40 - old completion cannot replace a new cache entry or remove its in-flight read
+  ---
+  duration_ms: 266.1415
+  type: 'test'
+  ...
+# Subtest: failed shared batch cleans its promises so a later request can retry
+ok 41 - failed shared batch cleans its promises so a later request can retry
+  ---
+  duration_ms: 340.3493
+  type: 'test'
+  ...
+# Subtest: hot batches do no I/O, fresh batches do not share promises or populate caches
+ok 42 - hot batches do no I/O, fresh batches do not share promises or populate caches
+  ---
+  duration_ms: 265.7231
+  type: 'test'
+  ...
+# Subtest: separate process contexts do not share cache entries or invalidations
+ok 43 - separate process contexts do not share cache entries or invalidations
+  ---
+  duration_ms: 447.9538
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 21032.8442

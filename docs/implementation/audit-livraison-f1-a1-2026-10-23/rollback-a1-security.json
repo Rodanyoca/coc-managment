@@ -1,0 +1,7 @@
+{
+  "scope": "A1 runtime rollback applied to isolated source; Sheets, D1, F1 and conservative cache tests, not A1-specific optimization expectations",
+  "exitCode": 0,
+  "tests": 43,
+  "pass": 43,
+  "fail": 0
+}

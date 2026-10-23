@@ -17,6 +17,8 @@ const sheetsGlobal = globalThis as typeof globalThis & {
   __cocGoogleSheetsHeaderCache?: HeaderCache
   __cocGoogleSheetsPendingReads?: PendingSheetReads
   __cocGoogleSheetsGeneration?: { value: number }
+  __cocGoogleSheetsWorkbookGenerations?: Map<string, number>
+  __cocGoogleSheetsFreshGenerations?: Map<string, number>
   __cocGoogleAuthClients?: Map<string, GoogleAuthClient>
   __cocSheetsReadGate?: { active:number; queue:Array<()=>void>; total:number; maxActive:number }
 }
@@ -24,6 +26,8 @@ const cache = sheetsGlobal.__cocGoogleSheetsCache ??= new Map()
 const headerCache = sheetsGlobal.__cocGoogleSheetsHeaderCache ??= new Map()
 const pendingReads = sheetsGlobal.__cocGoogleSheetsPendingReads ??= new Map()
 const generation = sheetsGlobal.__cocGoogleSheetsGeneration ??= { value: 0 }
+const workbookGenerations = sheetsGlobal.__cocGoogleSheetsWorkbookGenerations ??= new Map()
+const freshGenerations = sheetsGlobal.__cocGoogleSheetsFreshGenerations ??= new Map()
 const authClients = sheetsGlobal.__cocGoogleAuthClients ??= new Map()
 const readGate = sheetsGlobal.__cocSheetsReadGate ??= {active:0,queue:[],total:0,maxActive:0}
 const MAX_CONCURRENT_SHEETS_READS=6
@@ -52,13 +56,72 @@ function setCache(key: string, data: Record<string, string>[]) {
   cache.set(key, { data, ts: Date.now() })
 }
 
-export function clearSheetCache() {
-  // Reads already in flight can finish for their callers, but cannot repopulate
-  // caches after a write or an explicit refresh has invalidated their snapshot.
-  generation.value += 1
-  cache.clear()
-  headerCache.clear()
-  pendingReads.clear()
+// Mutations conservatively fence all raw workbooks; fresh reads use source fences.
+// No derived/authorization results are stored here, only raw ranges and headers.
+function cacheGeneration(spreadsheetId: string) {
+  const version = workbookGenerations.get(spreadsheetId) ?? 0
+  workbookGenerations.set(spreadsheetId, version)
+  return `${generation.value}:${version}`
+}
+
+function freshGeneration(spreadsheetId: string, sheetNames: string[]) {
+  const versions = sheetNames.map((name) => {
+    const key = `${spreadsheetId}:${JSON.stringify(name)}`
+    const version = freshGenerations.get(key) ?? 0
+    // Register active dependencies so an explicit workbook refresh fences them.
+    freshGenerations.set(key, version)
+    return version
+  })
+  return `${generation.value}:${versions.join(",")}`
+}
+
+export function clearSheetCache(spreadsheetId?: string, sheetName?: string) {
+  if (spreadsheetId === undefined) {
+    generation.value += 1
+    workbookGenerations.clear()
+    freshGenerations.clear()
+    cache.clear()
+    headerCache.clear()
+    pendingReads.clear()
+    return
+  }
+  if (!spreadsheetId.trim()) throw new Error("Identifiant du classeur manquant pour invalidation.")
+  workbookGenerations.set(spreadsheetId, (workbookGenerations.get(spreadsheetId) ?? 0) + 1)
+  const prefix = `${spreadsheetId}:`
+  if (sheetName === undefined) {
+    for (const [key, version] of freshGenerations) {
+      if (key.startsWith(prefix)) freshGenerations.set(key, version + 1)
+    }
+  } else {
+    const key = `${prefix}${JSON.stringify(sheetName)}`
+    freshGenerations.set(key, (freshGenerations.get(key) ?? 0) + 1)
+  }
+  for (const entries of [cache, headerCache, pendingReads]) {
+    for (const key of entries.keys()) if (key.startsWith(prefix)) entries.delete(key)
+  }
+}
+
+function assertFreshGeneration(startedGeneration: string, currentGeneration: string) {
+  if (startedGeneration !== currentGeneration) {
+    throw new Error("Lecture fraîche invalidée par une écriture concurrente. Réessayez.")
+  }
+}
+
+// Even a rejected response can follow a committed write (lost acknowledgement).
+// Fence local readers on either outcome once the mutation has been attempted.
+async function runSheetMutation<T>(spreadsheetId: string, sheetName: string, task: () => Promise<T>): Promise<T> {
+  try {
+    return await runGoogleRequest(task, { idempotent: false })
+  } finally {
+    clearSheetCache(spreadsheetId, sheetName)
+    // Restore global raw-cache invalidation without broadening fresh source fences.
+    for (const [book, version] of workbookGenerations) {
+      if (book !== spreadsheetId) workbookGenerations.set(book, version + 1)
+    }
+    cache.clear()
+    headerCache.clear()
+    pendingReads.clear()
+  }
 }
 
 function getPrivateKey() {
@@ -103,6 +166,10 @@ function getGoogleAuth(scopes: string[]) {
 function valuesToRecords(values: unknown[][]): Record<string, string>[] {
   if (values.length === 0) return []
   const [headers, ...rows] = values
+  return rowsToRecords(headers ?? [], rows)
+}
+
+function rowsToRecords(headers: unknown[], rows: unknown[][]): Record<string, string>[] {
   const normalizedHeaders = (headers ?? []).map((header) => String(header ?? "").trim())
   return rows.map((row) => Object.fromEntries(
     normalizedHeaders.map((header, index) => [header, row?.[index] === undefined ? "" : String(row[index])])
@@ -130,7 +197,8 @@ export async function getSheetRows(params: {
   }
 
   const request = (async () => {
-  const startedGeneration = generation.value
+  const startedGeneration = cacheGeneration(spreadsheetId)
+  const startedFreshGeneration = params.bypassCache && !params.range ? freshGeneration(spreadsheetId, [params.sheetName]) : startedGeneration
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
 
   const sheets = google.sheets({ version: "v4", auth })
@@ -144,7 +212,7 @@ export async function getSheetRows(params: {
   } catch (err) {
     // En cas de quota temporairement dépassé, une ancienne valeur vaut mieux
     // qu'une page entièrement indisponible.
-    const stale = !params.bypassCache && startedGeneration === generation.value ? cache.get(cacheKey)?.data : undefined
+    const stale = !params.bypassCache && startedGeneration === cacheGeneration(spreadsheetId) ? cache.get(cacheKey)?.data : undefined
     if (stale) return stale
     const message = err instanceof Error ? err.message : String(err)
     throw new Error(
@@ -153,10 +221,11 @@ export async function getSheetRows(params: {
   }
 
   const values: unknown[][] = (res?.data?.values ?? []) as unknown[][]
+  if (params.bypassCache) assertFreshGeneration(startedFreshGeneration, params.range ? cacheGeneration(spreadsheetId) : freshGeneration(spreadsheetId, [params.sheetName]))
   const result = valuesToRecords(values)
 
   // Les lectures explicitement fraîches ne doivent ni lire ni alimenter le cache.
-  if (!params.bypassCache && startedGeneration === generation.value) {
+  if (!params.bypassCache && startedGeneration === cacheGeneration(spreadsheetId)) {
     setCache(cacheKey, result)
     if (!params.range) {
       const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
@@ -188,16 +257,18 @@ export async function getSheetHeaders(params: {
   const cacheKey = `${spreadsheetId}:'${safeSheetName}'!1:1`
   const cached = params.bypassCache ? undefined : headerCache.get(cacheKey)
   if (cached && Date.now() - cached.ts <= (params.cacheTtlMs ?? CACHE_TTL_MS)) return cached.data
-  const startedGeneration = generation.value
+  const startedGeneration = cacheGeneration(spreadsheetId)
+  const startedFreshGeneration = params.bypassCache ? freshGeneration(spreadsheetId, [params.sheetName]) : startedGeneration
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
   try {
     const result = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.get({ spreadsheetId, range: `'${safeSheetName}'!1:1` })))
+    if (params.bypassCache) assertFreshGeneration(startedFreshGeneration, freshGeneration(spreadsheetId, [params.sheetName]))
     const headers = (result.data.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim()).filter(Boolean)
-    if (!params.bypassCache && startedGeneration === generation.value) headerCache.set(cacheKey, { data: headers, ts: Date.now() })
+    if (!params.bypassCache && startedGeneration === cacheGeneration(spreadsheetId)) headerCache.set(cacheKey, { data: headers, ts: Date.now() })
     return headers
   } catch (error) {
-    if (cached && startedGeneration === generation.value) return cached.data
+    if (cached && startedGeneration === cacheGeneration(spreadsheetId)) return cached.data
     throw error
   }
 }
@@ -228,7 +299,8 @@ export async function getSheetsRows(params: {
     else missing.push(name)
   }
   if (missing.length) {
-    const startedGeneration = generation.value
+    const startedGeneration = cacheGeneration(spreadsheetId)
+    const startedFreshGeneration = params.bypassCache ? freshGeneration(spreadsheetId, missing) : startedGeneration
     const request = (async () => {
       const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
       const sheets = google.sheets({ version: "v4", auth })
@@ -238,7 +310,7 @@ export async function getSheetsRows(params: {
         response = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
       } catch (error) {
         const staleResult: Record<string, Record<string, string>[]> = {}
-        const hasCompleteStaleSnapshot = !params.bypassCache && startedGeneration === generation.value && missing.every((name) => {
+        const hasCompleteStaleSnapshot = !params.bypassCache && startedGeneration === cacheGeneration(spreadsheetId) && missing.every((name) => {
           const stale = cache.get(keyFor(name))?.data
           if (stale) staleResult[name] = stale
           return Boolean(stale)
@@ -247,11 +319,12 @@ export async function getSheetsRows(params: {
         const message = error instanceof Error ? error.message : String(error)
         throw new Error(`Failed to read Google Sheets batch (spreadsheetId=${spreadsheetId}): ${message}`)
       }
+      if (params.bypassCache) assertFreshGeneration(startedFreshGeneration, freshGeneration(spreadsheetId, missing))
       const result: Record<string, Record<string, string>[]> = {}
       missing.forEach((name, index) => {
         const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
         result[name] = valuesToRecords(values)
-        if (!params.bypassCache && startedGeneration === generation.value) {
+        if (!params.bypassCache && startedGeneration === cacheGeneration(spreadsheetId)) {
           setCache(keyFor(name), result[name])
           const headers = (values[0] ?? []).map((header) => String(header ?? "").trim()).filter(Boolean)
           headerCache.set(`${spreadsheetId}:'${name.replace(/'/g, "''")}'!1:1`, { data: headers, ts: Date.now() })
@@ -278,15 +351,22 @@ export async function getSheetsRows(params: {
 }
 
 export async function getSheetsTables(params: { sheetNames: string[]; spreadsheetId: string }) {
+  const startedGeneration = freshGeneration(params.spreadsheetId, params.sheetNames)
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets.readonly"])
   const sheets = google.sheets({ version: "v4", auth })
-  const ranges = params.sheetNames.map((sheetName) => `'${sheetName.replace(/'/g, "''")}'!A:Z`)
+  // Keep complete schema validation without reading unused columns of data or
+  // fetching the header twice. Both disjoint ranges use one batch response.
+  const ranges = params.sheetNames.flatMap((sheetName) => {
+    const sheet = `'${sheetName.replace(/'/g, "''")}'`
+    return [`${sheet}!1:1`, `${sheet}!A2:Z`]
+  })
   const response = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.batchGet({ spreadsheetId, ranges })))
+  assertFreshGeneration(startedGeneration, freshGeneration(spreadsheetId, params.sheetNames))
   return Object.fromEntries(params.sheetNames.map((sheetName, index) => {
-    const values = (response.data.valueRanges?.[index]?.values ?? []) as unknown[][]
-    const headers = (values[0] ?? []).map((header) => String(header ?? "").trim())
-    return [sheetName, { headers, rows: valuesToRecords(values) }]
+    const values = (response.data.valueRanges?.[index * 2 + 1]?.values ?? []) as unknown[][]
+    const headers = (response.data.valueRanges?.[index * 2]?.values?.[0] ?? []).map((header: unknown) => String(header ?? "").trim())
+    return [sheetName, { headers, rows: rowsToRecords(headers, values) }]
   })) as Record<string, { headers: string[]; rows: Record<string, string>[] }>
 }
 
@@ -331,12 +411,12 @@ export async function updateSheetCell(params: {
   const colLetter = String.fromCharCode(65 + targetColIdx)
   const cellRange = `'${safeSheetName}'!${colLetter}${rowIndex + 1}`
 
-  await runGoogleRequest(() => sheets.spreadsheets.values.update({
+  await runSheetMutation(spreadsheetId, params.sheetName, () => sheets.spreadsheets.values.update({
     spreadsheetId,
     range: cellRange,
     valueInputOption: "RAW",
     requestBody: { values: [[params.value]] },
-  }), { idempotent: false })
+  }))
 }
 
 function columnToLetter(colIdx: number): string {
@@ -386,14 +466,13 @@ export async function updateSheetCells(params: {
     values: [[value]],
   }))
 
-  await runGoogleRequest(() => sheets.spreadsheets.values.batchUpdate({
+  await runSheetMutation(spreadsheetId, params.sheetName, () => sheets.spreadsheets.values.batchUpdate({
     spreadsheetId,
     requestBody: {
       valueInputOption: "RAW",
       data,
     },
-  }), { idempotent: false })
-  clearSheetCache()
+  }))
 }
 
 export async function appendSheetRow(params: {
@@ -407,14 +486,13 @@ export async function appendSheetRow(params: {
   const safeSheetName = params.sheetName.replace(/'/g, "''")
   const headers = await getSheetHeaders({ sheetName: params.sheetName, spreadsheetId })
   if (headers.length === 0) throw new Error(`La feuille "${params.sheetName}" ne contient pas d'en-têtes`)
-  await runGoogleRequest(() => sheets.spreadsheets.values.append({
+  await runSheetMutation(spreadsheetId, params.sheetName, () => sheets.spreadsheets.values.append({
     spreadsheetId,
     range: `'${safeSheetName}'!A:Z`,
     valueInputOption: "RAW",
     insertDataOption: "INSERT_ROWS",
     requestBody: { values: [headers.map((header) => params.row[header] ?? "")] },
-  }), { idempotent: false })
-  clearSheetCache()
+  }))
 }
 
 export async function appendSheetRows(params: {
@@ -429,14 +507,13 @@ export async function appendSheetRows(params: {
   const safeSheetName = params.sheetName.replace(/'/g, "''")
   const headers = await getSheetHeaders({ sheetName: params.sheetName, spreadsheetId })
   if (headers.length === 0) throw new Error(`La feuille "${params.sheetName}" ne contient pas d'en-têtes`)
-  await runGoogleRequest(() => sheets.spreadsheets.values.append({
+  await runSheetMutation(spreadsheetId, params.sheetName, () => sheets.spreadsheets.values.append({
     spreadsheetId,
     range: `'${safeSheetName}'!A:Z`,
     valueInputOption: "RAW",
     insertDataOption: "INSERT_ROWS",
     requestBody: { values: params.rows.map((row) => headers.map((header) => row[header] ?? "")) },
-  }), { idempotent: false })
-  clearSheetCache()
+  }))
 }
 
 export async function deleteSheetRow(params: {
@@ -460,9 +537,8 @@ export async function deleteSheetRow(params: {
   if (idIndex < 0) throw new Error(`Colonne "${params.idColumn}" introuvable`)
   const rowIndex = values.findIndex((row, index) => index > 0 && String(row[idIndex] ?? "").trim() === params.idValue)
   if (rowIndex < 1) throw new Error("Enregistrement introuvable")
-  await runGoogleRequest(() => sheets.spreadsheets.batchUpdate({
+  await runSheetMutation(spreadsheetId, params.sheetName, () => sheets.spreadsheets.batchUpdate({
     spreadsheetId,
     requestBody: { requests: [{ deleteDimension: { range: { sheetId, dimension: "ROWS", startIndex: rowIndex, endIndex: rowIndex + 1 } } }] },
-  }), { idempotent: false })
-  clearSheetCache()
+  }))
 }

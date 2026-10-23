@@ -1,8 +1,54 @@
 # Audit CPU COC — canevas central d’intervention
 
+## Composition de livraison — décision du 23 octobre
+
+**Retenus : F1 + A1 + évolutions Utilisateurs et KPI Médailles, avec purge brute globale conservatrice. C2 différé.** La copie `.cache/cpu-delivery/candidate` est la composition à valider/livrer ; le workspace principal conserve C2 et ne doit pas être publié en bloc pour cette décision.
+
+| Sujet | Décision / preuve |
+| --- | --- |
+| Deux classeurs métier du Site Web | Contenus `SLIDERS_SITE` et référentiel `STATUTS_PUBLICATION`, rôles distincts confirmés dans le code. L’utilisateur confirme l’ID de contenus actuellement codé ; aucun mapping changé. |
+| Homonyme accessible | Autre ID, neuf onglets inspectés sans formule ; pas référencé par le code. Ne prouve rien sur le fichier faisant autorité, toujours inaccessible. |
+| Synchronisations | Pas de synchroniseur planifié trouvé dans les sources accessibles ; scripts d’administration directs distincts d’un calcul/copie. Absence de preuve externe : Apps Script liés, déclencheurs et outils tiers non inventoriés. |
+| C2 | Différé sans suppression de son travail. Patches de sélection et de réactivation conservés ; aucune revendication d’invalidation distribuée. |
+| F1 | Maintenu avec bypass frais, refus du périmé, barrières par source, et purge globale des données brutes après les cinq helpers de mutation, y compris erreur incertaine. |
+| A1 / interfaces | Conservés, ainsi que D1/C1/S1, la journalisation et les neuf KPI ; contrôles A1 déterministes sur la politique conservatrice, sans refaire les benchmarks. |
+| Validation exacte | **Terminée** : 53 CPU, 3 Utilisateurs, 23 permissions, rendu KPI, compteurs de dépendances et lint réussis ; build normal avec onze vraies polices réussi en 315 746 ms, TypeScript explicite en 212 775 ms. Suite 319/325 avec exactement les six mêmes échecs. Manifeste du candidat et paquet source préparés ; applications du workspace inchangées. |
+| Publication | Aucune. Recette authentifiée et observation post-publication distinctes ; aucune session fabriquée, métrique Plus ou promesse CPU Vercel. |
+
+Voir le [rapport de livraison F1/A1, mapping Site Web, limites et retours arrière](audit-livraison-f1-a1-2026-10-23.md). Les sections suivantes restent les états historiques des lots.
+
+## Complément du 23 octobre — dépendances C2/F1 et dashboard A1
+
+| Tâche | État et preuve |
+| --- | --- |
+| Référence | Snapshot de 714 fichiers, `.cache/cpu-dashboard/reference` ; mêmes 348 sources de compilation que le build C2/F1 normal réussi, preuve de réutilisation séparée. |
+| Dépendances C2 | Cartographie des écritures, lignes brutes, jointures enrichies et agrégats. Neuf classeurs configurés : 73 lectures de formules bornées, zéro formule observée. Aucune correction de dépendance démontrée nécessaire. Site Web statique inaccessible (404), scripts/synchroniseurs externes et concordance des variables de production restent non vérifiés. |
+| Concurrence et F1 | Tests complémentaires de mutations sur deux classeurs, lecture en cours et échec partiel ; troisième cache indépendant conservé. Garanties F1 et S1 inchangées, pas d’invalidation distribuée revendiquée. |
+| A1 — Activités | Deux fichiers runtime modifiés : lire seulement TYPES_ACTIVITE au lieu des quatre référentiels de formulaire. Aucun cache d’agrégats ni mutualisation des droits. Formulaires et indicateurs préservés. |
+| Benchmark | Deux séries de 15 scénarios équivalents, 20/200/2 000 lignes, chacune avec 9 passages alternés. Section seule à froid : 5 → 2 GET ; chaud : 0 → 0 ; CPU concurrent légèrement défavorable dans la première série et durée après mutation légèrement défavorable dans la seconde conservés. Forte dispersion des temps absolus ; aucun gain Vercel mesuré. |
+| Validation finale | Vérifié localement : lint global (0 erreur, même avertissement préexistant), CPU 50/50, Utilisateurs 3/3, permissions 23/23, TypeScript et build normal avec 11 vraies polices ; suite 319/325 et six mêmes échecs de référence. 710 fichiers existants hors périmètre inchangés. Build 365 606 ms contre résultat de référence réutilisé 115 630 ms, sans attribution causale ni déduction sur le CPU runtime. |
+| Publication | Non publié, aucun push/déploiement. Limite Site Web et recette authentifiée à résoudre avant livraison. Retour A1 sur deux fichiers, indépendant du rollback C2 conservant F1/S1. |
+
+Voir le [rapport dépendances/dashboard et les preuves](audit-dashboard-2026-10-23.md). Les sections suivantes restent les états historiques de C2/F1 et D1/C1/S1.
+
+## Reprise du 23 octobre — lots locaux C2/F1
+
+La production reste `e6fa5b24a0a3da6491aec19f8bdd9b1ebe8e8964`, READY, alias `database.coc-rdc.net` revérifié par CLI en lecture seule. Les évolutions Utilisateurs sont présentes localement et non publiées : harmonisation et retrait du chargement de l’historique, journalisation conservée. HEAD du workspace toujours `c1488d3` : la référence de comparaison est la composition locale complète figée, pas ce HEAD.
+
+| Tâche | Priorité et état |
+| --- | --- |
+| Référence complète et préservation des travaux parallèles | P0 : snapshot de 657 fichiers avant modification, deux copies isolées, empreintes contrôlées : 649 fichiers existants hors périmètre inchangés, y compris Utilisateurs, D1 et S1. |
+| F1 — sécurité fraîche | P0 : implémenté localement ; bypass effectif, table cohérente lignes/en-têtes en une réponse, absence de repli périmé, refus si invalidation locale de l’onglet source pendant lecture, sans rejet causé par un journal indépendant. En-têtes complets et données en deux plages disjointes dans un batch. TTL et règles S1 inchangés. |
+| C2 — purges | P1 : implémenté localement ; classeur physique entier, pas d’invalidation par onglet ; protection C1 conservée, erreurs d’écriture incertaines couvertes. |
+| Tests, benchmark, TypeScript, lint et builds normaux | Vérifié localement : lint ciblé et global (un avertissement préexistant identique), TypeScript et build normal/vraies polices ; CPU 43/43, Utilisateurs 3/3, permissions 23/23, suite 319/325 avec exactement les six échecs de référence. Benchmark alterné 18 scénarios, réponses équivalentes ; résultats défavorables conservés. Aucun gain Vercel mesuré. |
+| Dashboard et calculs répétés | Backlog séparé : aucun cache d’agrégats ou de décision ajouté ; première investigation suivante sur fixtures. |
+| Limites de publication | Non publié ; absence de recette authentifiée, inventaire des formules inter-classeurs non établi. Ne pas promettre de cohérence distribuée du cache mémoire. |
+
+Voir le [rapport d’écart, décisions, contrats, mesures et livraison C2/F1](audit-cpu-suite-2026-10-23.md). Les statuts ci-dessous décrivent la publication D1/C1/S1 et ses étapes historiques. Aucun gain CPU Vercel démontré ; aucune métrique Plus retentée.
+
 ## Publication complète — état courant
 
-**Validation finale terminée ; publication autorisée, pas encore effectuée.** Build normal avec vraies polices : 489 764 ms ; 19/19 tests CPU/documents, 23/23 autorisations, suite complète 319/325 avec les six mêmes échecs préexistants ; TypeScript et lint des fichiers applicatifs modifiés passent. Les sources complètes, évolutions parallèles comprises, sont préparées dans le checkout propre. Aucun gain CPU Vercel établi.
+**Publié et READY** : SHA `e6fa5b24a0a3da6491aec19f8bdd9b1ebe8e8964`, déploiement `dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx`, alias `database.coc-rdc.net`, vérifié à `2026-10-22T21:59:28.878Z` (UTC). Composition complète avec les évolutions fonctionnelles locales et D1/C1/S1 ; résultats finaux locaux : build normal/vraies polices, TypeScript et lint réussis, 19/19 CPU/documents, 23/23 autorisations et 319/325 avec les six échecs préexistants. Contrôles HTTP anonymes : 11/11 conformes, fenêtre 2026-10-22T21:59:32.332Z — 2026-10-22T21:59:41.151Z. Aucune recette authentifiée faute de session disponible, aucun gain CPU Vercel démontré. Les preuves après publication sont conservées dans le workspace documentaire ; aucun second push documentaire déclenchant un build redondant.
 
 Voir le [rapport de publication](audit-cpu-publication-2026-10-22.md) et ses preuves. Le déploiement précédent reste `dpl_ENVvMe52hN8h5PerjuwZ2p34woTw` au SHA `c1488d33b6fcd2953d2bf0becc25a83055e13e2f`. Un patch de retour D1/C1 conservant S1 est préparé ; un retour complet pourrait réélargir les droits VIEWER. Invalidations globales et fraîcheur de sécurité restent au backlog distinct.
 
@@ -12,7 +58,7 @@ Date : 22 octobre 2026. Dépôt exclusif : `coc-cible`. Phase initiale sans publ
 
 Ce document poursuit le [cadrage](audit-cpu-cadrage-2026-10-22.md), son [annexe](audit-cpu-sources-2026-10-22.md) et le [rapport d’écart](audit-cpu-ecarts-2026-10-22.md). Les constats du cadrage décrivent l’état lu avant le retrait de la complétude : cette fonctionnalité a été retirée à la demande de l’utilisateur et fait partie de la nouvelle référence locale.
 
-## Clôture de validation — état prioritaire
+## Clôture locale antérieure à la publication
 
 La [clôture détaillée](audit-cpu-cloture-2026-10-22.md) et le [dossier de livraison](audit-cpu-livraison-2026-10-22/README.md) remplacent les anciens blocages ci-dessous : **les deux builds normaux avec vraies polices réussissent**, dans des copies à dépendances physiques et sans changement de configuration. Référence 133 500 ms, variante 749 199 ms ; cet écart défavorable de durée reste inexpliqué et n'est pas une mesure CPU de requêtes. Les anciens essais sont conservés comme historique.
 
@@ -30,11 +76,11 @@ Les invalidations globales, `fresh:true` ignoré et le repli périmé de sécuri
 | --- | --- | --- | --- |
 | R0 — référence et accès | Références physiques isolées ; SHA de production identifié par CLI malgré connecteur 403 | Faible / faible | SHA local, état sale, hashes, absence de secrets et journaux de référence |
 | R1 — référence tests/types/build | Suites comparées : 319/325 des deux côtés, mêmes six échecs ; TypeScript passe des deux côtés ; builds normaux avec vraies polices réussis ; voir clôture | Faible / moyen | Même procédure dans les deux copies, erreurs comparées précisément |
-| D1 — documents | Implémenté, vérifié localement et benchmarké ; non publié | Moyen / faible | Même résultat, enrichissement limité aux documents sélectionnés, liste/stockage maintenus |
-| C1 — lectures Sheets | Implémenté, vérifié localement et benchmarké ; non publié | Moyen / moyen | Plages uniques/manquantes, partage en vol, erreurs et génération d’invalidation |
-| S1 — politique VIEWER | Règle clarifiée par l’utilisateur : uniquement blocs attribués ; implémenté, 23 tests ciblés verts | Élevé / moyen | Aucune lecture sans attribution valide, refus source indisponible, aucune écriture VIEWER |
+| D1 — documents | Publié au SHA e6fa5b2 ; vérifié localement ; recette authentifiée restante | Moyen / faible | Même résultat, enrichissement limité aux documents sélectionnés, liste/stockage maintenus |
+| C1 — lectures Sheets | Publié au SHA e6fa5b2 ; vérifié localement ; recette authentifiée restante | Moyen / moyen | Plages uniques/manquantes, partage en vol, erreurs et génération d’invalidation |
+| S1 — politique VIEWER | Règle clarifiée par l’utilisateur : uniquement blocs attribués ; publié ; 23 tests ciblés verts ; recette authentifiée restante | Élevé / moyen | Aucune lecture sans attribution valide, refus source indisponible, aucune écriture VIEWER |
 | C2 — invalidation ciblée et cache d’agrégats | Proposé, différé | Élevé / élevé | Dépendances croisées, sécurité, réchauffement et multi-instance à prouver avant modification |
-| P0 — observation production | Lots non publiés/non observés ; SHA connu | Métriques de parcours manquantes | Déploiement exact, compteur dépassé, fenêtre, usage et journaux autorisés |
+| P0 — observation production | Publié ; READY, alias et refus anonymes vérifiés ; CPU des parcours manquant | Métriques de parcours manquantes | Déploiement exact, compteur dépassé, fenêtre, usage et journaux autorisés |
 
 ## Référence locale et production
 

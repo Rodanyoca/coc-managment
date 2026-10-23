@@ -1,0 +1,48 @@
+TAP version 13
+# (node:15196) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:15196) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: an audit write must not reject a fresh account snapshot from another sheet
+not ok 1 - an audit write must not reject a fresh account snapshot from another sheet
+  ---
+  duration_ms: 2387.5662
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\tests\\cpu\\freshness-invalidation.test.mjs:9:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    unrelated audit must not invalidate account freshness
+    + actual - expected
+    
+    + Error: Lecture fraîche invalidée par une écriture concurrente. Réessayez.
+    +     at assertFreshGeneration (C:\Projets\SNDS-HARMONISATION\coc-cible\lib\google\sheets.ts:82:11)
+    +     at Module.getSheetsTables (C:\Projets\SNDS-HARMONISATION\coc-cible\lib\google\sheets.ts:322:3)
+    +     at async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/freshness-invalidation.test.mjs:17:18)
+    +     at async Test.run (node:internal/test_runner/test:1313:7)
+    +     at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+    - undefined
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  actual:
+  error: 'Lecture fraîche invalidée par une écriture concurrente. Réessayez.'
+  stack: |-
+    assertFreshGeneration (C:\Projets\SNDS-HARMONISATION\coc-cible\lib\google\sheets.ts:82:11)
+    Module.getSheetsTables (C:\Projets\SNDS-HARMONISATION\coc-cible\lib\google\sheets.ts:322:3)
+    async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/freshness-invalidation.test.mjs:17:18)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/freshness-invalidation.test.mjs:18:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7081.299

@@ -1,0 +1,107 @@
+[
+  {
+    "label": "lint",
+    "args": [
+      "node_modules/eslint/bin/eslint.js",
+      "app",
+      "components",
+      "lib",
+      "proxy.ts",
+      "scripts/cpu-audit/dashboard-fixture.mjs",
+      "scripts/cpu-audit/benchmark-dashboard.mjs",
+      "scripts/cpu-audit/validate-dashboard.mjs",
+      "tests/cpu/dashboard.test.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 85651
+  },
+  {
+    "label": "cpu",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/cpu/*.test.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 2309,
+    "tests": 50,
+    "pass": 50,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "label": "users",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/users-ui/*.test.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 530,
+    "tests": 3,
+    "pass": 3,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "label": "permissions",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/post-login-route.test.ts",
+      "tests/unit/authorization-matrix.test.ts"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 573,
+    "tests": 23,
+    "pass": 23,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "label": "build",
+    "args": [
+      "node_modules/next/dist/bin/next",
+      "build"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 365606
+  },
+  {
+    "label": "typescript",
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 188780
+  },
+  {
+    "label": "suite",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "tests/unit/*.test.ts",
+      "tests/integration/*.test.ts"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 68508,
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  }
+]

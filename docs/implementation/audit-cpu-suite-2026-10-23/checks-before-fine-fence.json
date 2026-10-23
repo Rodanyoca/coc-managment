@@ -1,0 +1,45 @@
+[
+  {
+    "label": "reference-build",
+    "args": [
+      "node_modules/next/dist/bin/next",
+      "build"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 1546109
+  },
+  {
+    "label": "reference-typescript",
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 361361
+  },
+  {
+    "label": "reference-suite",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "tests/unit/*.test.ts",
+      "tests/integration/*.test.ts"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 233337,
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  }
+]

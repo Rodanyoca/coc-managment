@@ -1,0 +1,82 @@
+{
+  "at": "2026-10-23T10:25:18.441Z",
+  "url": "https://docs.google.com/spreadsheets/d/1cVIijJBdyhNhMwVIWtMzZHzWPvBqM5W73rYj0Ws8qMM/edit",
+  "scope": "Accessible namesake, NOT established as application source; code mapping unchanged",
+  "sheets": [
+    {
+      "sheet": "SLIDERS_SITE",
+      "sheetId": 475615387,
+      "rows": 997,
+      "columns": 26,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "COMMUNIQUES_SITE",
+      "sheetId": 1810000001,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "ACTUALITES_SITE",
+      "sheetId": 1810000002,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "GALERIES_SITE",
+      "sheetId": 1810000003,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "MEDIAS_GALERIE_SITE",
+      "sheetId": 1810000004,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "PAGES_SITE",
+      "sheetId": 1810000005,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "CHRONOLOGIE_COC",
+      "sheetId": 1810000006,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "ORGANES_GOUVERNANCE",
+      "sheetId": 1810000007,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    },
+    {
+      "sheet": "MEMBRES_GOUVERNANCE",
+      "sheetId": 1810000008,
+      "rows": 1000,
+      "columns": 15,
+      "formulas": 0,
+      "complete": true
+    }
+  ],
+  "scriptsSearchLimit": "Search of accessible COC-titled Apps Script files does not enumerate container-bound triggers or external services",
+  "userConfirmation": "Code workbook remains authoritative; mapping unchanged",
+  "externalScriptsSearch": "No accessible COC-titled Apps Script result; not an exhaustive external inventory"
+}

@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-23T09:35:57.437Z",
+  "node": "v24.16.0",
+  "freeGiB": 0.90966796875,
+  "totalGiB": 7.651950836181641,
+  "availableCpus": 2,
+  "variant": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-next\\variant",
+  "reference": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-dashboard\\reference",
+  "normalBuild": true,
+  "mockedFonts": false
+}

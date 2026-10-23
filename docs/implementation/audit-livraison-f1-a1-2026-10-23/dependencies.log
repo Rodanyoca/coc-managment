@@ -1,0 +1,4 @@
+Selected composition: A1 outputs equal and dependency counters verified on all five scenarios.
+(node:17776) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:17776) ExperimentalWarning: VM Modules is an experimental feature and might change at any time

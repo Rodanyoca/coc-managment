@@ -1,0 +1,22 @@
+(node:9408) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ the fresh table preserves schema validation of headers beyond column Z (133.9095ms)
+(node:9408) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+✔ an audit write must not reject a fresh account snapshot from another sheet (12.4848ms)
+✔ fresh rows rejects an old result after a write to its actual source sheet (7.6777ms)
+✔ fresh headers rejects an old result after a write to its actual source sheet (12.6912ms)
+✔ fresh batch rejects an old result after a write to its actual source sheet (13.9062ms)
+✔ fresh table rejects an old result after a write to its actual source sheet (12.9298ms)
+✔ fresh adapter reads cannot return a cached revoked account or stale fallback (13.9061ms)
+✔ fresh read interrupted by local invalidation rejects instead of returning old grants (10.8202ms)
+✔ fresh table uses one response for headers and rows, never shares or falls back (14.8885ms)
+✔ repository prefers coherent table snapshots and propagates source errors (17.6039ms)
+✔ Google adapter through repository and policy never regrants a revoked VIEWER block on source failure (31.7468ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 401.8378

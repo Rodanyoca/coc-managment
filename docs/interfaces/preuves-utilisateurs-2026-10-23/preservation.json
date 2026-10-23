@@ -1,0 +1,55 @@
+{
+  "preserved": 610,
+  "intentionalExistingChanges": [
+    "app/api/users/[id]/route.ts",
+    "app/dashboard/utilisateurs/[id]/page.tsx",
+    "app/dashboard/utilisateurs/[id]/user-detail-client.tsx",
+    "app/dashboard/utilisateurs/users-client.tsx",
+    "docs/lot-2-utilisateurs-authentification-autorisations.md"
+  ],
+  "unexpected": [],
+  "coreLotsPreserved": [
+    "lib/documents/data.ts",
+    "lib/google/sheets.ts",
+    "lib/auth.ts",
+    "lib/auth/authorization.ts",
+    "lib/auth/post-login-route.ts"
+  ],
+  "application": [
+    {
+      "file": "app/dashboard/utilisateurs/users-client.tsx",
+      "sha256": "b144573df1cf2d13b28d798b268573726557de0d6fdc99b3cfa9ca3952f96f9e"
+    },
+    {
+      "file": "app/dashboard/utilisateurs/[id]/user-detail-client.tsx",
+      "sha256": "f09792d83e7f60ca805758a40a6cdbfabec41aa57115e4f434a609d0bf0a81d5"
+    },
+    {
+      "file": "app/dashboard/utilisateurs/[id]/page.tsx",
+      "sha256": "a862d40e2aeec464f71d6c14d09aa42242b4c868caa7458a192c538811352762"
+    },
+    {
+      "file": "app/api/users/[id]/route.ts",
+      "sha256": "497374ea5080d45a360f71fe8c372e70f2a6f7613b52a8226f6eb2eb64cde263"
+    },
+    {
+      "file": "components/dashboard/user-account-ui.tsx",
+      "sha256": "1c08a6b76af64bed257549422f957ddf2947ffeb1778dc72e6333c7f172750e2"
+    },
+    {
+      "file": "app/dashboard/utilisateurs/loading.tsx",
+      "sha256": "554aa714db24ff1065bc0131f0c54050646265bb33c44a156dcad7888c8bd011"
+    },
+    {
+      "file": "app/dashboard/utilisateurs/[id]/loading.tsx",
+      "sha256": "0f0802f1c8a39e779535ffd254b82e00c0ac38ce25f90c8c96cdb351324a6dad"
+    },
+    {
+      "file": "app/dashboard/utilisateurs/error.tsx",
+      "sha256": "bee4410f853c1bb27e227ca165d01a92ed3aefbc999808ac468d80c04848c9fd"
+    }
+  ],
+  "noPush": true,
+  "noDeployment": true,
+  "browserPreviewInOriginal": false
+}

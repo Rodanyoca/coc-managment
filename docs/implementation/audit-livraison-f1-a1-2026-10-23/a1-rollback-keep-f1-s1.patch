@@ -1,0 +1,96 @@
+--- a/lib/activites/data.ts
++++ b/lib/activites/data.ts
+@@ -18,11 +18,6 @@
+ async function assertHeaders(sheetName:string,expected:readonly string[]){const headers=await getSheetHeaders({sheetName,spreadsheetId:getActivitesSpreadsheetId()});const missing=expected.filter(key=>!headers.includes(key));if(missing.length)throw new Error(`En-têtes manquants dans ${sheetName} : ${missing.join(", ")}`)}
+ export async function getActivities(){const rows=await getSheetRows({sheetName:"ACTIVITES",spreadsheetId:getActivitesSpreadsheetId()});await assertHeaders("ACTIVITES",ACTIVITY_SHEET_HEADERS);return rows.map(activity)}
+ export async function getActivity(id:string){return(await getActivities()).find(x=>x.id_activite===id)}
+-// Dashboard summaries need only this reference; editing forms still load all references.
+-export async function getActivityTypes(): Promise<ActivityReferences["types"]> {
+-  const rows = await getSheetRows({ sheetName: "TYPES_ACTIVITE", spreadsheetId: getReferentialSpreadsheetId() })
+-  return rows.filter((row) => row.id_type_activite).map((row) => ({ id: row.id_type_activite, label: row.nom_type_activite || row.id_type_activite }))
+-}
+ export async function getActivityEntities(activityId?:string){await assertHeaders("ACTIVITES_ENTITES",ENTITY_SHEET_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_ENTITES",spreadsheetId:getActivitesSpreadsheetId()})).map(entity).filter(x=>!activityId||x.id_activite===activityId)}
+ export async function getParticipants(activityId?:string,actorId?:string){await assertHeaders("ACTIVITES_PARTICIPANTS",PARTICIPANT_SHEET_HEADERS);return(await getSheetRows({sheetName:"ACTIVITES_PARTICIPANTS",spreadsheetId:getActivitesSpreadsheetId()})).map(participant).filter(x=>(!activityId||x.id_activite===activityId)&&(!actorId||x.id_acteur_coc===actorId))}
+ export async function getActivityReferences():Promise<ActivityReferences>{const id=getReferentialSpreadsheetId();const[entites,types,entityRoles,actorTypes]=await Promise.all(["ENTITES","TYPES_ACTIVITE","ROLES_ENTITE_ACTIVITE","TYPES_ACTEURS"].map(sheetName=>getSheetRows({sheetName,spreadsheetId:id})));return{entites:entites.filter(r=>r.id_entite).map(r=>({id:r.id_entite,label:r.nom_officiel||r.sigle||r.id_entite,secondary:r.sigle})),types:types.filter(r=>r.id_type_activite).map(r=>({id:r.id_type_activite,label:r.nom_type_activite||r.id_type_activite})),entityRoles:entityRoles.filter(r=>r.id_role_entite_activite).map(r=>({id:r.id_role_entite_activite,label:r.nom_role_entite_activite||r.id_role_entite_activite})),actorTypes:actorTypes.filter(r=>r.id_type_acteur&&r.statut!=="INACTIF").map(r=>({id:r.id_type_acteur,label:r.nom_type_acteur||r.id_type_acteur}))}}
+--- a/lib/activites/dashboard.ts
++++ b/lib/activites/dashboard.ts
+@@ -1,4 +1,4 @@
+-import { getActivities, getActivityTypes } from "./data"
++import { getActivities, getActivityReferences } from "./data"
+ import type { ActivityStatus } from "./types"
+ 
+ export const ACTIVITIES_DASHBOARD_CACHE_TAG = "activities-dashboard"
+@@ -33,8 +33,8 @@
+ }
+ 
+ async function aggregateActivitiesDashboardStats(): Promise<ActivitiesDashboardStats> {
+-  const [activities, activityTypes] = await Promise.all([getActivities(), getActivityTypes()])
+-  const knownTypes = activityTypes.map((type) => ({ key: type.id, label: type.label || type.id }))
++  const [activities, references] = await Promise.all([getActivities(), getActivityReferences()])
++  const knownTypes = references.types.map((type) => ({ key: type.id, label: type.label || type.id }))
+   const unknownIds = [...new Set(activities.map((activity) => activity.id_type_activite).filter((id) => id && !knownTypes.some((type) => type.key === id)))]
+   const typeOptions = [...knownTypes, ...unknownIds.map((id) => ({ key: id, label: id }))]
+ 
+--- a/tests/cpu/dashboard.test.mjs
++++ b/tests/cpu/dashboard.test.mjs
+@@ -5,7 +5,7 @@
+ const root = process.env.CPU_TEST_ROOT || process.cwd()
+ const deferred = () => { let resolve; const promise = new Promise(done => { resolve = done }); return { promise, resolve } }
+ 
+-test('activity dashboard loads only the displayed reference, preserving all statuses and unknown types', async () => {
++test('A1 rollback preserves full references, all statuses and unknown types', async () => {
+   const f = await activityDashboardFixture(root, 210)
+   const stats = await f.load()
+   assert.equal(stats.totalActivities, 210)
+@@ -13,16 +13,16 @@
+   assert(stats.types.some(t => t.key === 'UNKNOWN'))
+   assert(stats.types.some(t => t.key === 'NON_RENSEIGNE'))
+   for (const t of stats.types) assert.equal(t.planifiees + t.enCours + t.realisees + t.reportees + t.annulees + t.nonRenseignees, t.total)
+-  assert.deepEqual(f.logicalReads.map(x => x.sheetName).sort(), ['ACTIVITES', 'TYPES_ACTIVITE'])
++  assert.deepEqual(f.logicalReads.map(x => x.sheetName).sort(), ['ACTIVITES', 'ENTITES', 'ROLES_ENTITE_ACTIVITE', 'TYPES_ACTEURS', 'TYPES_ACTIVITE'])
+ })
+ 
+-test('independent unused reference failure does not break the activity dashboard', async () => {
++test('A1 rollback restores propagation of a full reference failure', async () => {
+   const f = await activityDashboardFixture(root)
+   f.raw.state.get = async input => {
+     if (input.range.includes('ENTITES')) throw Error('unused reference offline')
+     return { data: { values: fixtureSheetValues(f.raw.state, input.spreadsheetId, input.range) } }
+   }
+-  assert.equal((await f.load()).totalActivities, 200)
++  await assert.rejects(f.load(), /unused reference offline/)
+ })
+ 
+ test('required activity source error propagates without an aggregate fallback', async () => {
+@@ -31,17 +31,21 @@
+   await assert.rejects(f.load(), /offline/)
+ })
+ 
+-test('narrow activity types retain the exact options returned to editing forms', async () => {
++test('A1 rollback preserves form type filtering, fallback and duplicate options', async () => {
+   const f = await activityDashboardFixture(root)
+   f.setTypes([...f.typeRows, ['', 'ignored'], ['T1', 'Duplicate label']])
+-  assert.deepEqual(await f.data.getActivityTypes(), (await f.data.getActivityReferences()).types)
++  const types = (await f.data.getActivityReferences()).types
++  assert.equal(types.length, f.typeRows.length + 1)
++  assert.equal(types[0].label, 'T0')
++  assert.equal(types.at(-1).label, 'Duplicate label')
++  assert(types.every(t => t.id))
+ })
+ 
+ test('concurrent dashboards share raw reads, never memoize aggregates across mutations', async () => {
+   const f = await activityDashboardFixture(root)
+   const snapshots = await Promise.all(Array.from({ length: 8 }, () => f.load()))
+   for (const s of snapshots) assert.deepEqual(s, snapshots[0])
+-  assert.equal(f.raw.state.calls.filter(c => c.range.endsWith('!A:Z')).length, 2)
++  assert.equal(f.raw.state.calls.filter(c => c.range.endsWith('!A:Z')).length, 5)
+   f.setTypes(f.typeRows.map(([id, label]) => [id, id === 'T1' ? 'Changed label' : label]))
+   await f.raw.namespace.appendSheetRow({ spreadsheetId: 'REF', sheetName: 'TYPES_ACTIVITE', row: { id_type_activite: 'NEW', nom_type_activite: 'New' } })
+   assert.equal((await f.load()).types.find(t => t.key === 'T1').label, 'Changed label')
+@@ -80,5 +84,5 @@
+   await f.raw.namespace.getSheetRows({ spreadsheetId: 'OTHER', sheetName: 'A' })
+   assert.equal(f.raw.state.calls.length, before + 1)
+   await f.load()
+-  assert.equal(f.raw.state.calls.length - before, 3)
++  assert.equal(f.raw.state.calls.length - before, 6)
+ })

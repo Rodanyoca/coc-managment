@@ -1,0 +1,615 @@
+{
+  "checkedAt": "2026-10-23T09:28:49.056Z",
+  "scope": "Configured local COC workbook IDs; no assumption that production environment IDs are identical",
+  "method": "Google Drive connector metadata, then bounded CellData reads selecting only userEnteredValue(formulaValue); no values or raw formulas stored",
+  "writes": 0,
+  "books": [
+    {
+      "key": "GOOGLE_SHEETS_ACTEURS_AFFILIATIONS_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/1q1ZeT3ueQtoAyCnsLXJcBbe3Zakmkqu_3Vy-6IlUpQw/edit",
+      "sheets": [
+        {
+          "title": "OFFICIELS_AFFILIATIONS",
+          "sheetId": 702981554,
+          "rowCount": 1026,
+          "columnCount": 22,
+          "frozenRowCount": 1,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        }
+      ],
+      "reads": 1,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_ACTEURS_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/14nI4fsj3cmZpece2ckW0ULT9EFOSdOkWFQACQk5aHsg/edit",
+      "sheets": [
+        {
+          "title": "ATHLETES",
+          "sheetId": 0,
+          "rowCount": 1090,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "COACHS",
+          "sheetId": 875642438,
+          "rowCount": 1025,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "OFFICIELS",
+          "sheetId": 1541515358,
+          "rowCount": 1036,
+          "columnCount": 23,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "MEDECINS",
+          "sheetId": 265539330,
+          "rowCount": 1009,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "ARBITRES",
+          "sheetId": 1366381336,
+          "rowCount": 1005,
+          "columnCount": 24,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "AUTRES",
+          "sheetId": 1573606311,
+          "rowCount": 1009,
+          "columnCount": 24,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 6,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_ACTIVITES_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/13mCDJcLDKoXJOSG72QrXCJ6npP3yQ0g5T5B5VW41cAA/edit",
+      "sheets": [
+        {
+          "title": "ACTIVITES",
+          "sheetId": 0,
+          "rowCount": 1011,
+          "columnCount": 24
+        },
+        {
+          "title": "ACTIVITES_ENTITES",
+          "sheetId": 542879126,
+          "rowCount": 1021,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "ACTIVITES_PARTICIPANTS",
+          "sheetId": 342044747,
+          "rowCount": 1008,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "ACTIVITES_QUALIFICATIONS",
+          "sheetId": 330370685,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 4,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_COMPETITIONS_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/1S5H_D9Zo4qdg20aCEYJfcf5yiYwg-DKvSKkubecGVtQ/edit",
+      "sheets": [
+        {
+          "title": "COMPETITIONS",
+          "sheetId": 0,
+          "rowCount": 1009,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "PROGRAMMES_COMPETITION",
+          "sheetId": 836581029,
+          "rowCount": 1015,
+          "columnCount": 24,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "ENGAGEMENTS_CAMPAGNES_PROGRAMMES",
+          "sheetId": 1039258966,
+          "rowCount": 1011,
+          "columnCount": 23,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "PARTICIPATIONS_ACTEURS_COMPETITION",
+          "sheetId": 1035995058,
+          "rowCount": 1019,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "RESULTATS",
+          "sheetId": 1246289078,
+          "rowCount": 1013,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "UNITES_PARTICIPANTES",
+          "sheetId": 828842078,
+          "rowCount": 1010,
+          "columnCount": 20,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "MEMBRES_UNITES_PARTICIPANTES",
+          "sheetId": 2005551458,
+          "rowCount": 1009,
+          "columnCount": 20,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "MEDAILLES",
+          "sheetId": 1909042026,
+          "rowCount": 1003,
+          "columnCount": 20,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 8,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_DOCUMENTS_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/1Hu9_X-3D0Rt30TrgeohXsUM4I9ooxM-A6yAfmlXVRrw/edit",
+      "sheets": [
+        {
+          "title": "DOCUMENTS",
+          "sheetId": 0,
+          "rowCount": 1008,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 1,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_EQUIPES_NATIONALES_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/1vxdYFz8B6-IZSGIuFZm4x7PQ9awd41m6i46s_jqL2fo/edit",
+      "sheets": [
+        {
+          "title": "EQUIPES_NATIONALES",
+          "sheetId": 0,
+          "rowCount": 1015,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "CAMPAGNES_EQUIPES_NATIONALES",
+          "sheetId": 1968408011,
+          "rowCount": 1018,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "SELECTIONS_ATHLETES",
+          "sheetId": 1353114118,
+          "rowCount": 1029,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "AFFECTATIONS_STAFF",
+          "sheetId": 893469541,
+          "rowCount": 1005,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 4,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_REFERENTIEL_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/17hm4n4QSWq_IrSANyF4pJIZ_9Jg9pD85ycMV7SCb7XQ/edit",
+      "sheets": [
+        {
+          "title": "SPORTS",
+          "sheetId": 37010388,
+          "rowCount": 994,
+          "columnCount": 22,
+          "frozenRowCount": 1,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        },
+        {
+          "title": "DISCIPLINES",
+          "sheetId": 1328934567,
+          "rowCount": 996,
+          "columnCount": 24,
+          "frozenRowCount": 1,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        },
+        {
+          "title": "ENTITES",
+          "sheetId": 45707328,
+          "rowCount": 1004,
+          "columnCount": 24,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "FEDERATIONS",
+          "sheetId": 1233740276,
+          "rowCount": 993,
+          "columnCount": 23,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "PROVINCES",
+          "sheetId": 1552612068,
+          "rowCount": 998,
+          "columnCount": 23,
+          "frozenRowCount": 1,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        },
+        {
+          "title": "VILLES",
+          "sheetId": 1114747238,
+          "rowCount": 1000,
+          "columnCount": 24,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "CATEGORIES_ENTITES",
+          "sheetId": 1810133953,
+          "rowCount": 1002,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "TYPES_STRUCTURE",
+          "sheetId": 1937171611,
+          "rowCount": 997,
+          "columnCount": 22,
+          "frozenRowCount": 1,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        },
+        {
+          "title": "CATEGORIES_CLUB",
+          "sheetId": 2111834179,
+          "rowCount": 1000,
+          "columnCount": 19,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "SEXES",
+          "sheetId": 900071804,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "TYPES_ACTEURS",
+          "sheetId": 1420380645,
+          "rowCount": 1000,
+          "columnCount": 26
+        },
+        {
+          "title": "CATEGORIES_AGE",
+          "sheetId": 2073007025,
+          "rowCount": 998,
+          "columnCount": 17,
+          "frozenRowCount": 1,
+          "rowGroupControlAfter": true,
+          "columnGroupControlAfter": true
+        },
+        {
+          "title": "SPECIALITES_MEDECIN",
+          "sheetId": 1916089259,
+          "rowCount": 1000,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "GRADES_ARBITRE",
+          "sheetId": 358812010,
+          "rowCount": 1000,
+          "columnCount": 24,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "FONCTIONS_OFFICIEL",
+          "sheetId": 901020475,
+          "rowCount": 1000,
+          "columnCount": 23,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "TYPES_ACTIVITE",
+          "sheetId": 99547278,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "ROLES_ENTITE_ACTIVITE",
+          "sheetId": 762448967,
+          "rowCount": 1000,
+          "columnCount": 22,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "TYPES_DOCUMENT",
+          "sheetId": 1527338036,
+          "rowCount": 997,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "SAISONS",
+          "sheetId": 1632772162,
+          "rowCount": 1003,
+          "columnCount": 20,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "ROLES_STAFF_EQUIPE_NATIONALE",
+          "sheetId": 150340829,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_CAMPAGNE",
+          "sheetId": 898785819,
+          "rowCount": 1000,
+          "columnCount": 20,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "TYPES_COMPETITION",
+          "sheetId": 335624597,
+          "rowCount": 1000,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "FORMATS_PARTICIPATION",
+          "sheetId": 906932179,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "UNITES_MESURE",
+          "sheetId": 2089188518,
+          "rowCount": 1000,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "TYPES_RESULTAT",
+          "sheetId": 1069728384,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "EPREUVES",
+          "sheetId": 2091871624,
+          "rowCount": 1000,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "RESULTATS_SYNTHETIQUES",
+          "sheetId": 821576668,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "DECISIONS_RESULTATS",
+          "sheetId": 347409387,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "NIVEAUX_COMPETITION",
+          "sheetId": 506861378,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_COMPETITION",
+          "sheetId": 1591664216,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_PARTICIPATION_ATHLETE",
+          "sheetId": 269415546,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_SELECTION",
+          "sheetId": 2081656962,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_ENGAGEMENT_PROGRAMME",
+          "sheetId": 1054376315,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_VALIDATION_RESULTAT",
+          "sheetId": 196568739,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "DISTINCTIONS_SPORTIVES",
+          "sheetId": 1615676838,
+          "rowCount": 1000,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_RESULTAT",
+          "sheetId": 453013073,
+          "rowCount": 1000,
+          "columnCount": 20,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "TYPES_ADVERSAIRES",
+          "sheetId": 2140297937,
+          "rowCount": 1000,
+          "columnCount": 20,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "STATUTS_PUBLICATION",
+          "sheetId": 1800000001,
+          "rowCount": 1000,
+          "columnCount": 10,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 38,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_STRUCTURE_TERRITORIALE_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/1ZJMAVMb3QbuSxwMg2iW1exkkFl-38dBf_PXEjy4PPWs/edit",
+      "sheets": [
+        {
+          "title": "HIERARCHIE",
+          "sheetId": 1014583150,
+          "rowCount": 1042,
+          "columnCount": 29
+        },
+        {
+          "title": "LIGUES",
+          "sheetId": 1877893214,
+          "rowCount": 1011,
+          "columnCount": 30,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "ENTENTES",
+          "sheetId": 1825264447,
+          "rowCount": 1007,
+          "columnCount": 29,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "CERCLES",
+          "sheetId": 731603810,
+          "rowCount": 1000,
+          "columnCount": 24,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "CLUBS",
+          "sheetId": 2068299959,
+          "rowCount": 1003,
+          "columnCount": 28,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "EQUIPES",
+          "sheetId": 974472188,
+          "rowCount": 1000,
+          "columnCount": 25,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "PERSONNES_CONTACT_ENTITES",
+          "sheetId": 2109450001,
+          "rowCount": 1003,
+          "columnCount": 8,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 7,
+      "complete": true,
+      "formulaCount": 0
+    },
+    {
+      "key": "GOOGLE_SHEETS_USERS_SPREADSHEET_ID",
+      "url": "https://docs.google.com/spreadsheets/d/1Tip01SUzauQmVX__Z1xYCzSmankAxi1LbUpDgqF5jO8/edit",
+      "sheets": [
+        {
+          "title": "USERS",
+          "sheetId": 0,
+          "rowCount": 1011,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "USER_AUTORISATIONS",
+          "sheetId": 460942713,
+          "rowCount": 1024,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "AUTH_TENTATIVES",
+          "sheetId": 203746581,
+          "rowCount": 1221,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        },
+        {
+          "title": "JOURNAL_OPERATIONS",
+          "sheetId": 129539155,
+          "rowCount": 1434,
+          "columnCount": 26,
+          "frozenRowCount": 1
+        }
+      ],
+      "reads": 4,
+      "complete": true,
+      "formulaCount": 0
+    }
+  ],
+  "readCount": 73,
+  "maxCellsPerRead": 37284,
+  "limits": [
+    "Point-in-time observation, not monitoring of later formula additions",
+    "Apps Script, triggers, external integrations and production environment equivalence not established"
+  ]
+}

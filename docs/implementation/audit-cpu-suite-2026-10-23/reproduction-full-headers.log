@@ -1,0 +1,37 @@
+TAP version 13
+# (node:6164) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:6164) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: the fresh table preserves schema validation of headers beyond column Z
+not ok 1 - the fresh table preserves schema validation of headers beyond column Z
+  ---
+  duration_ms: 1291.847
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\tests\\cpu\\freshness-invalidation.test.mjs:9:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + ''
+    - 'UNEXPECTED_AA'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'UNEXPECTED_AA'
+  actual: ''
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/freshness-invalidation.test.mjs:20:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2610.6881

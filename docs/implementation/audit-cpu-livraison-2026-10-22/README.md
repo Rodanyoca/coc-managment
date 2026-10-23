@@ -2,7 +2,7 @@
 
 ## Publication complète — état courant
 
-**Validation finale terminée ; publication autorisée, pas encore effectuée.** Build normal avec vraies polices : 489 764 ms ; 19/19 tests CPU/documents, 23/23 autorisations, suite complète 319/325 avec les six mêmes échecs préexistants ; TypeScript et lint des fichiers applicatifs modifiés passent. Les sources complètes, évolutions parallèles comprises, sont préparées dans le checkout propre. Aucun gain CPU Vercel établi.
+**Publié et READY** : SHA `e6fa5b24a0a3da6491aec19f8bdd9b1ebe8e8964`, déploiement `dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx`, alias `database.coc-rdc.net`, vérifié à `2026-10-22T21:59:28.878Z` (UTC). Composition complète avec les évolutions fonctionnelles locales et D1/C1/S1 ; résultats finaux locaux : build normal/vraies polices, TypeScript et lint réussis, 19/19 CPU/documents, 23/23 autorisations et 319/325 avec les six échecs préexistants. Contrôles HTTP anonymes : 11/11 conformes, fenêtre 2026-10-22T21:59:32.332Z — 2026-10-22T21:59:41.151Z. Aucune recette authentifiée faute de session disponible, aucun gain CPU Vercel démontré. Les preuves après publication sont conservées dans le workspace documentaire ; aucun second push documentaire déclenchant un build redondant.
 
 Voir le [rapport de publication](../audit-cpu-publication-2026-10-22.md) et ses preuves. Le déploiement précédent reste `dpl_ENVvMe52hN8h5PerjuwZ2p34woTw` au SHA `c1488d33b6fcd2953d2bf0becc25a83055e13e2f`. Un patch de retour D1/C1 conservant S1 est préparé ; un retour complet pourrait réélargir les droits VIEWER. Invalidations globales et fraîcheur de sécurité restent au backlog distinct.
 

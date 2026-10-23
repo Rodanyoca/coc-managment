@@ -1,0 +1,104 @@
+[
+  {
+    "name": "build",
+    "args": [
+      "node_modules/next/dist/bin/next",
+      "build"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 91016
+  },
+  {
+    "name": "typescript",
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 21013
+  },
+  {
+    "name": "lint",
+    "args": [
+      "node_modules/eslint/bin/eslint.js",
+      "app/dashboard/utilisateurs",
+      "app/api/users/[id]/route.ts",
+      "components/dashboard/user-account-ui.tsx",
+      "tests/users-ui",
+      "scripts/users-ui"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 72617
+  },
+  {
+    "name": "suite",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "tests/unit/*.test.ts",
+      "tests/integration/*.test.ts"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 14130,
+    "tests": 325,
+    "pass": 319,
+    "fail": 6,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  },
+  {
+    "name": "cpu",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/cpu/*.test.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 480,
+    "tests": 19,
+    "pass": 19,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "name": "users",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/users-ui/*.test.mjs"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 293,
+    "tests": 3,
+    "pass": 3,
+    "fail": 0,
+    "failures": []
+  },
+  {
+    "name": "permissions",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/post-login-route.test.ts",
+      "tests/unit/authorization-matrix.test.ts"
+    ],
+    "exitCode": 0,
+    "elapsedMs": 283,
+    "tests": 23,
+    "pass": 23,
+    "fail": 0,
+    "failures": []
+  }
+]

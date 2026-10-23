@@ -28,8 +28,8 @@ export async function GET(_: Request, { params }: Context) {
   if (!session?.estSuperAdmin) return NextResponse.json({ error: "Accès refusé." }, { status: 403 })
   const repository = new UsersRepository(createGoogleUsersSheetsAdapter()), id = (await params).id
   try {
-    const user = await repository.requireUserById(id), [authorizations, audit] = await Promise.all([repository.getAuthorizationsForUser(id), repository.getAuditLog()])
-    return NextResponse.json({ user: { id_user: user.idUser, nom_complet: user.nomComplet, email: user.email, type_user: user.typeUser, statut: user.statut, est_super_admin: user.estSuperAdmin, doit_changer_mot_de_passe: user.doitChangerMotDePasse, date_creation: user.dateCreation, derniere_connexion: user.derniereConnexion, session_version: user.sessionVersion }, authorizations, audit: audit.filter((entry) => entry.idObjet === id || entry.idUser === id).slice(-50) })
+    const user = await repository.requireUserById(id), authorizations = await repository.getAuthorizationsForUser(id)
+    return NextResponse.json({ user: { id_user: user.idUser, nom_complet: user.nomComplet, email: user.email, type_user: user.typeUser, statut: user.statut, est_super_admin: user.estSuperAdmin, doit_changer_mot_de_passe: user.doitChangerMotDePasse, date_creation: user.dateCreation, derniere_connexion: user.derniereConnexion, session_version: user.sessionVersion }, authorizations })
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Lecture impossible." }, { status: 404 }) }
 }
 

@@ -1,0 +1,17 @@
+{
+  "normalization": "Readable logs: line endings/trailing whitespace only. Exact raw bytes retained in gzip archives. No failure removed.",
+  "files": [
+    {
+      "readable": "build.log",
+      "rawArchive": "build.log.gz",
+      "rawSha256": "e60b736ae516e1f8eb8f6206e27e9f4ac66e3208960573c85bd62a8ace944b0b",
+      "readableSha256": "cdc17b4d5fd0b08c1a73bc98e97d41b93c79b2cc2cb94e77b6a49159f238aac3"
+    },
+    {
+      "readable": "suite.log",
+      "rawArchive": "suite.log.gz",
+      "rawSha256": "f0c218c32e0b1895b95921ddfc99a624071cccf2ac79afa4f681096959048afb",
+      "readableSha256": "c3d276c91f2fef90a7500c4f31f95cf98c89eef48bf9878d04b630bf9e1f5bb5"
+    }
+  ]
+}

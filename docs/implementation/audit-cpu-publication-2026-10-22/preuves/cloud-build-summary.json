@@ -1,0 +1,25 @@
+{
+  "source": "vercel inspect production deployment --logs",
+  "deploymentId": "dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx",
+  "sha": "e6fa5b24a0a3da6491aec19f8bdd9b1ebe8e8964",
+  "normalCommand": "pnpm run build -> next build",
+  "vercelCli": "65.1.0",
+  "pnpm": "10.28.0",
+  "next": "16.3.4",
+  "region": "iad1",
+  "machine": {
+    "cores": 2,
+    "memoryGB": 8
+  },
+  "restoredCache": "dpl_ENVvMe52hN8h5PerjuwZ2p34woTw",
+  "compiledSeconds": 45,
+  "typescriptSeconds": 18.8,
+  "pageWorkers": 1,
+  "staticPages": 40,
+  "buildCompletedAtUtc": "2026-10-22T21:58:16.499Z",
+  "deploymentCompletedLogUtc": "2026-10-22T21:58:24.824Z",
+  "warnings": [
+    "pnpm ignored unrs-resolver build script, also present in previous deployment; unchanged"
+  ],
+  "metric": "Build elapsed phases; not runtime active CPU"
+}

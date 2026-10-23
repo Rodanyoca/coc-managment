@@ -1,0 +1,3846 @@
+{
+  "at": "2026-10-23T08:57:26.504Z",
+  "node": "v24.16.0",
+  "reference": ".cache/cpu-next/reference",
+  "variant": ".",
+  "sourceHashes": {
+    "reference": {
+      "lib/google/sheets.ts": "b174bbb62b5f2c0e92c1b92e23b96eda1f5cd1fe1577314b380d2cb8fd76d225",
+      "lib/users/google-adapter.ts": "4348d62fcad20c336fd96f10ed86b5a05aeebbd0d2d3b0ad025d623ee0759b17",
+      "lib/users/repository.ts": "64b831d1b13dc245feeb7c043fdb9257f10aa9e3977301ff602b73f528603f99",
+      "lib/users/types.ts": "75934de3a9557530ba3a7916de074af2a6c64df19e66bf2edd150432cdbb4188"
+    },
+    "variant": {
+      "lib/google/sheets.ts": "a56cf1b69e97d3f9e1a5336232ee0bf07b827496626c996dc947c8529d1590c0",
+      "lib/users/google-adapter.ts": "1671fafcc3b0c78f29e3d96f8531d65fb6bedc6bc3898178e5a4f6e9051f6d39",
+      "lib/users/repository.ts": "ffeb6a436ddfe7ed3cf391ad0f0dd95355d2933d09b327379c6f8804a55ff3d1",
+      "lib/users/types.ts": "07020557132501dd92de19ee800d020bcc9a66e733899a6a5c03751864b03e68"
+    }
+  },
+  "availableCpus": 12,
+  "freeGiB": 1.0239639282226562,
+  "network": "offline fixtures, no Google or Vercel measurements; invocations are local helper invocations",
+  "warmup": 5,
+  "rounds": 9,
+  "minimumIterations": 20,
+  "minimumElapsedMs": 150,
+  "order": "AB/BA alternating",
+  "scenarios": [
+    {
+      "scenario": "cold",
+      "rows": 20,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.027313544524819156,
+        "elapsedMs": 0.018257125471583296,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 0,
+        "dependencyCellJsonBytes": 436
+      },
+      "variant": {
+        "cpuMs": 0.025647472969575057,
+        "elapsedMs": 0.018860435001257215,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 0,
+        "dependencyCellJsonBytes": 436
+      },
+      "samples": [
+        [
+          {
+            "iterations": 8639,
+            "cpuMs": 0.01817339969903924,
+            "elapsedMs": 0.017365158004398657,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8012,
+            "cpuMs": 0.03507239141288068,
+            "elapsedMs": 0.018722778332501244,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8217,
+            "cpuMs": 0.018985031033223805,
+            "elapsedMs": 0.018257125471583296,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7677,
+            "cpuMs": 0.022274325908558032,
+            "elapsedMs": 0.019540067734792235,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8874,
+            "cpuMs": 0.01757944557133198,
+            "elapsedMs": 0.017763736759071457,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8569,
+            "cpuMs": 0.029174932897654337,
+            "elapsedMs": 0.017505461547438473,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8900,
+            "cpuMs": 0.028089887640449437,
+            "elapsedMs": 0.01685501123595504,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7880,
+            "cpuMs": 0.02779187817258883,
+            "elapsedMs": 0.019039961928933966,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8018,
+            "cpuMs": 0.027313544524819156,
+            "elapsedMs": 0.018708805188326266,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          }
+        ],
+        [
+          {
+            "iterations": 5524,
+            "cpuMs": 0.031136857349746562,
+            "elapsedMs": 0.027154724837074585,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7650,
+            "cpuMs": 0.022483660130718956,
+            "elapsedMs": 0.019608980392156868,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7479,
+            "cpuMs": 0.020858403529883673,
+            "elapsedMs": 0.020058991843829376,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 5683,
+            "cpuMs": 0.04117543550941404,
+            "elapsedMs": 0.02639484427239134,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7954,
+            "cpuMs": 0.025647472969575057,
+            "elapsedMs": 0.018860435001257215,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 9056,
+            "cpuMs": 0.015569787985865724,
+            "elapsedMs": 0.016569026060070668,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8629,
+            "cpuMs": 0.023525321589987252,
+            "elapsedMs": 0.017383323675976364,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8231,
+            "cpuMs": 0.03790547928562751,
+            "elapsedMs": 0.01822525817033172,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 8432,
+            "cpuMs": 0.03154648956356736,
+            "elapsedMs": 0.017790061669829212,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 436
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "warm",
+      "rows": 20,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.0008460191297319143,
+        "elapsedMs": 0.0008507793091713459,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.0009300116746146388,
+        "elapsedMs": 0.000909257990798381,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 146794,
+            "cpuMs": 0.0014918865893701378,
+            "elapsedMs": 0.0010218510293336213,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 155994,
+            "cpuMs": 0.0011987640550277575,
+            "elapsedMs": 0.0009615812146621024,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 185575,
+            "cpuMs": 0.0008460191297319143,
+            "elapsedMs": 0.0008083033813821905,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 181012,
+            "cpuMs": 0.0008618213157138753,
+            "elapsedMs": 0.0008286798665281871,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 180654,
+            "cpuMs": 0.0007804975256567804,
+            "elapsedMs": 0.0008303253733656632,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 176310,
+            "cpuMs": 0.0007997277522545517,
+            "elapsedMs": 0.0008507793091713459,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 184825,
+            "cpuMs": 0.0008440416610307047,
+            "elapsedMs": 0.0008115850128499965,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 172479,
+            "cpuMs": 0.0009102557412786484,
+            "elapsedMs": 0.0008696745690779764,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 167113,
+            "cpuMs": 0.0008377564881248018,
+            "elapsedMs": 0.0008976010244565042,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 151611,
+            "cpuMs": 0.0009300116746146388,
+            "elapsedMs": 0.0009893846752544345,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 155509,
+            "cpuMs": 0.0010031573735282203,
+            "elapsedMs": 0.0009645788989704779,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 164971,
+            "cpuMs": 0.0009456207454643543,
+            "elapsedMs": 0.000909257990798381,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 180390,
+            "cpuMs": 0.0006929430677975497,
+            "elapsedMs": 0.0008315399966738724,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 185206,
+            "cpuMs": 0.0008423053248814833,
+            "elapsedMs": 0.0008099149055646118,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 185220,
+            "cpuMs": 0.0008422416585681892,
+            "elapsedMs": 0.0008098531476082507,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 182760,
+            "cpuMs": 0.0007715036112934996,
+            "elapsedMs": 0.0008207572773035653,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 146551,
+            "cpuMs": 0.0009552988379471993,
+            "elapsedMs": 0.0010235460692864587,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 159059,
+            "cpuMs": 0.000980768142638895,
+            "elapsedMs": 0.0009430500631841034,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-consult",
+      "rows": 20,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.024524445841848767,
+        "elapsedMs": 0.022628299894403334,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "readRanges": 2,
+        "writes": 1,
+        "dependencyCellJsonBytes": 452
+      },
+      "variant": {
+        "cpuMs": 0.007559308403699236,
+        "elapsedMs": 0.006031845597104934,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 16
+      },
+      "samples": [
+        [
+          {
+            "iterations": 7339,
+            "cpuMs": 0.023436435481673252,
+            "elapsedMs": 0.020439174274424297,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 6629,
+            "cpuMs": 0.03529944184643234,
+            "elapsedMs": 0.022628299894403334,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 6703,
+            "cpuMs": 0.03729673280620618,
+            "elapsedMs": 0.02238214232433241,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 6755,
+            "cpuMs": 0.03005181347150259,
+            "elapsedMs": 0.022858948926720912,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 6361,
+            "cpuMs": 0.024524445841848767,
+            "elapsedMs": 0.023581402295236583,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 6580,
+            "cpuMs": 0.02370820668693009,
+            "elapsedMs": 0.02279674772036471,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 6994,
+            "cpuMs": 0.02902487846725765,
+            "elapsedMs": 0.021448484415213014,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 6416,
+            "cpuMs": 0.021820448877805487,
+            "elapsedMs": 0.02338209164588534,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 7344,
+            "cpuMs": 0.021377995642701524,
+            "elapsedMs": 0.020425585511982723,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          }
+        ],
+        [
+          {
+            "iterations": 25749,
+            "cpuMs": 0.007883801312672337,
+            "elapsedMs": 0.005825550506815787,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 27596,
+            "cpuMs": 0.005652993187418466,
+            "elapsedMs": 0.005435755181910433,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 21749,
+            "cpuMs": 0.015081153156466964,
+            "elapsedMs": 0.006897034346406731,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 23532,
+            "cpuMs": 0.005949345571987082,
+            "elapsedMs": 0.006374400815910263,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 24232,
+            "cpuMs": 0.005818752063387256,
+            "elapsedMs": 0.006190566193463219,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 24870,
+            "cpuMs": 0.007559308403699236,
+            "elapsedMs": 0.006031845597104934,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 26249,
+            "cpuMs": 0.008343174978094404,
+            "elapsedMs": 0.005714648177073428,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 22560,
+            "cpuMs": 0.007579787234042553,
+            "elapsedMs": 0.006649126773049628,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 27418,
+            "cpuMs": 0.005689692902472828,
+            "elapsedMs": 0.005471113866802816,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-8-consults",
+      "rows": 20,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 5457,
+      "reference": {
+        "cpuMs": 0.03598086124401914,
+        "elapsedMs": 0.028626393129771013,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "readRanges": 2,
+        "writes": 1,
+        "dependencyCellJsonBytes": 452
+      },
+      "variant": {
+        "cpuMs": 0.014163372859025032,
+        "elapsedMs": 0.012612940385100455,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 16
+      },
+      "samples": [
+        [
+          {
+            "iterations": 5797,
+            "cpuMs": 0.02691047093324133,
+            "elapsedMs": 0.02587816111781955,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 5240,
+            "cpuMs": 0.026717557251908396,
+            "elapsedMs": 0.028626393129771013,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 5277,
+            "cpuMs": 0.05324995262459731,
+            "elapsedMs": 0.02842550691680864,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 5225,
+            "cpuMs": 0.03598086124401914,
+            "elapsedMs": 0.028713014354066934,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 4971,
+            "cpuMs": 0.05652786159726413,
+            "elapsedMs": 0.030176785355059264,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 5486,
+            "cpuMs": 0.025701786365293473,
+            "elapsedMs": 0.027345661684287228,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 5065,
+            "cpuMs": 0.06475814412635736,
+            "elapsedMs": 0.02961830207305037,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 5317,
+            "cpuMs": 0.0411886402106451,
+            "elapsedMs": 0.028213748354335287,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          },
+          {
+            "iterations": 5154,
+            "cpuMs": 0.02716336825766395,
+            "elapsedMs": 0.02910616996507591,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 452
+          }
+        ],
+        [
+          {
+            "iterations": 11893,
+            "cpuMs": 0.017068864037669218,
+            "elapsedMs": 0.012612940385100455,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 6919,
+            "cpuMs": 0.020378667437490967,
+            "elapsedMs": 0.0216797369562075,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12513,
+            "cpuMs": 0.012467034284344283,
+            "elapsedMs": 0.011988332134580055,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12000,
+            "cpuMs": 0.010416666666666666,
+            "elapsedMs": 0.012524441666666613,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11670,
+            "cpuMs": 0.013367609254498715,
+            "elapsedMs": 0.01285421593830337,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12144,
+            "cpuMs": 0.014163372859025032,
+            "elapsedMs": 0.012352602108036908,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12579,
+            "cpuMs": 0.019874393830988154,
+            "elapsedMs": 0.0119254630733762,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 9503,
+            "cpuMs": 0.014732189834789014,
+            "elapsedMs": 0.015784689045564675,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11869,
+            "cpuMs": 0.010531637037661135,
+            "elapsedMs": 0.012638832252085256,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "same-workbook-write",
+      "rows": 20,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.021786214804433685,
+        "elapsedMs": 0.02032868952432579,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 436
+      },
+      "variant": {
+        "cpuMs": 0.023882113821138213,
+        "elapsedMs": 0.020467662709783015,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 436
+      },
+      "samples": [
+        [
+          {
+            "iterations": 7849,
+            "cpuMs": 0.021786214804433685,
+            "elapsedMs": 0.019111504650273895,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7869,
+            "cpuMs": 0.025797432964798576,
+            "elapsedMs": 0.0190626382005337,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 6787,
+            "cpuMs": 0.022985118609105643,
+            "elapsedMs": 0.022102401650213647,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7114,
+            "cpuMs": 0.035141973573235875,
+            "elapsedMs": 0.021088276637616088,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7543,
+            "cpuMs": 0.020681426488134695,
+            "elapsedMs": 0.019888585443457462,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 6646,
+            "cpuMs": 0.02121576888353897,
+            "elapsedMs": 0.022571862774601267,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7428,
+            "cpuMs": 0.025309639203015617,
+            "elapsedMs": 0.020194116855142608,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7379,
+            "cpuMs": 0.01910828025477707,
+            "elapsedMs": 0.02032868952432579,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 6787,
+            "cpuMs": 0.01841756298806542,
+            "elapsedMs": 0.022103933991454137,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          }
+        ],
+        [
+          {
+            "iterations": 7872,
+            "cpuMs": 0.023882113821138213,
+            "elapsedMs": 0.01905644054878053,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 6637,
+            "cpuMs": 0.028175380442971222,
+            "elapsedMs": 0.02260304354376984,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7249,
+            "cpuMs": 0.0281418126638157,
+            "elapsedMs": 0.02069377845220036,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7620,
+            "cpuMs": 0.018503937007874015,
+            "elapsedMs": 0.019686115485564332,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7941,
+            "cpuMs": 0.019644880997355497,
+            "elapsedMs": 0.018925362045082453,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7996,
+            "cpuMs": 0.017508754377188594,
+            "elapsedMs": 0.018761018009004517,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 7329,
+            "cpuMs": 0.019102196752626553,
+            "elapsedMs": 0.020467662709783015,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 6263,
+            "cpuMs": 0.02490819096279738,
+            "elapsedMs": 0.023954925754430936,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          },
+          {
+            "iterations": 6703,
+            "cpuMs": 0.03252275100701178,
+            "elapsedMs": 0.02237975533343287,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 436
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "fresh-security",
+      "rows": 20,
+      "columns": 13,
+      "operation": "UsersRepository.getUserById, including full validation and uniqueness checks",
+      "equal": true,
+      "responseBytes": 374,
+      "reference": {
+        "cpuMs": 0.05821635012386457,
+        "elapsedMs": 0.057794607087827916,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.12048192771084337,
+        "elapsedMs": 0.1256637353433832,
+        "getCalls": 0,
+        "batchCalls": 1,
+        "readRanges": 2,
+        "writes": 0,
+        "dependencyCellJsonBytes": 3352
+      },
+      "samples": [
+        [
+          {
+            "iterations": 2658,
+            "cpuMs": 0.08239277652370203,
+            "elapsedMs": 0.05645007524454529,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2596,
+            "cpuMs": 0.060092449922958396,
+            "elapsedMs": 0.057794607087827916,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2752,
+            "cpuMs": 0.05123546511627907,
+            "elapsedMs": 0.05452249273255783,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2600,
+            "cpuMs": 0.05384615384615385,
+            "elapsedMs": 0.05770323076923117,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2553,
+            "cpuMs": 0.06149627888758324,
+            "elapsedMs": 0.05877837837837842,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2517,
+            "cpuMs": 0.06833531982518871,
+            "elapsedMs": 0.05960778704807272,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2661,
+            "cpuMs": 0.05261180007515971,
+            "elapsedMs": 0.056372266065389184,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2577,
+            "cpuMs": 0.05471478463329453,
+            "elapsedMs": 0.05823387660069841,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 2422,
+            "cpuMs": 0.05821635012386457,
+            "elapsedMs": 0.0619914533443434,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 1281,
+            "cpuMs": 0.0975800156128025,
+            "elapsedMs": 0.1171315378610462,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1191,
+            "cpuMs": 0.13182199832073888,
+            "elapsedMs": 0.13030386230058758,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1240,
+            "cpuMs": 0.12580645161290321,
+            "elapsedMs": 0.12097411290322622,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1183,
+            "cpuMs": 0.11918850380388842,
+            "elapsedMs": 0.12682958579881629,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1162,
+            "cpuMs": 0.12048192771084337,
+            "elapsedMs": 0.12912986230636814,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1194,
+            "cpuMs": 0.11809045226130653,
+            "elapsedMs": 0.1256637353433832,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1298,
+            "cpuMs": 0.12095531587057011,
+            "elapsedMs": 0.11559144838212414,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1238,
+            "cpuMs": 0.11389337641357028,
+            "elapsedMs": 0.1212473344103376,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          },
+          {
+            "iterations": 1138,
+            "cpuMs": 0.12302284710017575,
+            "elapsedMs": 0.13191968365553533,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 3352
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "cold",
+      "rows": 200,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.13725490196078433,
+        "elapsedMs": 0.12826759868420967,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 0,
+        "dependencyCellJsonBytes": 4596
+      },
+      "variant": {
+        "cpuMs": 0.15544472152950956,
+        "elapsedMs": 0.13429176365264073,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 0,
+        "dependencyCellJsonBytes": 4596
+      },
+      "samples": [
+        [
+          {
+            "iterations": 1268,
+            "cpuMs": 0.12381703470031545,
+            "elapsedMs": 0.1183594637223971,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1155,
+            "cpuMs": 0.13506493506493505,
+            "elapsedMs": 0.1299036363636372,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1031,
+            "cpuMs": 0.19786614936954414,
+            "elapsedMs": 0.14558593598448055,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1210,
+            "cpuMs": 0.16859504132231404,
+            "elapsedMs": 0.12403479338842945,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1164,
+            "cpuMs": 0.281786941580756,
+            "elapsedMs": 0.1289101374570449,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1213,
+            "cpuMs": 0.12778235779060182,
+            "elapsedMs": 0.12367122835944043,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1216,
+            "cpuMs": 0.12828947368421054,
+            "elapsedMs": 0.12826759868420967,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1215,
+            "cpuMs": 0.16707818930041152,
+            "elapsedMs": 0.12363473251028718,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1020,
+            "cpuMs": 0.13725490196078433,
+            "elapsedMs": 0.14714058823529366,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          }
+        ],
+        [
+          {
+            "iterations": 1117,
+            "cpuMs": 0.153088630259624,
+            "elapsedMs": 0.13429176365264073,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1065,
+            "cpuMs": 0.29389671361502345,
+            "elapsedMs": 0.14093962441314806,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 980,
+            "cpuMs": 0.22346938775510203,
+            "elapsedMs": 0.153160306122448,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1138,
+            "cpuMs": 0.10984182776801406,
+            "elapsedMs": 0.13185667838312723,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1199,
+            "cpuMs": 0.13010842368640535,
+            "elapsedMs": 0.12513477898248798,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1110,
+            "cpuMs": 0.12702702702702703,
+            "elapsedMs": 0.13516135135135113,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1203,
+            "cpuMs": 0.15544472152950956,
+            "elapsedMs": 0.12470332502078232,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1029,
+            "cpuMs": 0.2585034013605442,
+            "elapsedMs": 0.14579922254616393,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1153,
+            "cpuMs": 0.1899392888117953,
+            "elapsedMs": 0.13014882914137113,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 4596
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "warm",
+      "rows": 200,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.0008861695462473259,
+        "elapsedMs": 0.000918570230068767,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.0009267124874507684,
+        "elapsedMs": 0.0009472164688052462,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 150763,
+            "cpuMs": 0.0014526110517832625,
+            "elapsedMs": 0.0009949450461983317,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 166033,
+            "cpuMs": 0.0008492287677750809,
+            "elapsedMs": 0.0009034457005535154,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 149959,
+            "cpuMs": 0.0010402843443874659,
+            "elapsedMs": 0.0010002800765542596,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 177167,
+            "cpuMs": 0.0008861695462473259,
+            "elapsedMs": 0.0008466650109783499,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 186589,
+            "cpuMs": 0.0007503121834620476,
+            "elapsedMs": 0.0008039107342876541,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 152239,
+            "cpuMs": 0.0008210773849013722,
+            "elapsedMs": 0.0009853027148102793,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 154122,
+            "cpuMs": 0.0009148596566356523,
+            "elapsedMs": 0.0009732633887439814,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 163387,
+            "cpuMs": 0.0009609087626310539,
+            "elapsedMs": 0.0009180736533506554,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 163299,
+            "cpuMs": 0.0008573230699514387,
+            "elapsedMs": 0.000918570230068767,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 157710,
+            "cpuMs": 0.0008940460338596158,
+            "elapsedMs": 0.0009511235812567415,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 139458,
+            "cpuMs": 0.0012261756227681454,
+            "elapsedMs": 0.001075601973353984,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 158360,
+            "cpuMs": 0.000991411972720384,
+            "elapsedMs": 0.0009472164688052462,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 157469,
+            "cpuMs": 0.0008890638792397234,
+            "elapsedMs": 0.0009525728873619602,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 177003,
+            "cpuMs": 0.0008869906159782603,
+            "elapsedMs": 0.0008474517381061252,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 166545,
+            "cpuMs": 0.0009366837791587859,
+            "elapsedMs": 0.0009006628839052672,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 176725,
+            "cpuMs": 0.0007921912576036214,
+            "elapsedMs": 0.0008487820059414356,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 168337,
+            "cpuMs": 0.0009267124874507684,
+            "elapsedMs": 0.0008910774220759542,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 155456,
+            "cpuMs": 0.0010099320708110333,
+            "elapsedMs": 0.0009649090417867377,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-consult",
+      "rows": 200,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.19183673469387755,
+        "elapsedMs": 0.15311612244898112,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "readRanges": 2,
+        "writes": 1,
+        "dependencyCellJsonBytes": 4612
+      },
+      "variant": {
+        "cpuMs": 0.006742447162553486,
+        "elapsedMs": 0.0058918614242507205,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 16
+      },
+      "samples": [
+        [
+          {
+            "iterations": 1204,
+            "cpuMs": 0.1420265780730897,
+            "elapsedMs": 0.12475614617940428,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 980,
+            "cpuMs": 0.19183673469387755,
+            "elapsedMs": 0.15311612244898112,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1085,
+            "cpuMs": 0.20092165898617512,
+            "elapsedMs": 0.13838193548386857,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1059,
+            "cpuMs": 0.17658168083097261,
+            "elapsedMs": 0.1417398489140707,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 944,
+            "cpuMs": 0.1483050847457627,
+            "elapsedMs": 0.1589073093220338,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1044,
+            "cpuMs": 0.16475095785440613,
+            "elapsedMs": 0.1437086206896558,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 908,
+            "cpuMs": 0.2918502202643172,
+            "elapsedMs": 0.16525892070484735,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 884,
+            "cpuMs": 0.24660633484162897,
+            "elapsedMs": 0.16972726244344252,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 843,
+            "cpuMs": 0.22301304863582444,
+            "elapsedMs": 0.17797461447212606,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          }
+        ],
+        [
+          {
+            "iterations": 26519,
+            "cpuMs": 0.00708925675930465,
+            "elapsedMs": 0.005656363362117639,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 23137,
+            "cpuMs": 0.006742447162553486,
+            "elapsedMs": 0.006483269222457597,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 25552,
+            "cpuMs": 0.005479023168440827,
+            "elapsedMs": 0.0058705580776456925,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 23910,
+            "cpuMs": 0.005897114178168131,
+            "elapsedMs": 0.006273663739021343,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 22281,
+            "cpuMs": 0.0070014810825366905,
+            "elapsedMs": 0.006732363897491236,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 27038,
+            "cpuMs": 0.005177897773503958,
+            "elapsedMs": 0.005547832679931952,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 25953,
+            "cpuMs": 0.005432897930875044,
+            "elapsedMs": 0.005779817362154664,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 25459,
+            "cpuMs": 0.00738442201186221,
+            "elapsedMs": 0.0058918614242507205,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 22072,
+            "cpuMs": 0.009242479159115621,
+            "elapsedMs": 0.0067960945994924695,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-8-consults",
+      "rows": 200,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 57457,
+      "reference": {
+        "cpuMs": 0.1513671875,
+        "elapsedMs": 0.14118682972718846,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "readRanges": 2,
+        "writes": 1,
+        "dependencyCellJsonBytes": 4612
+      },
+      "variant": {
+        "cpuMs": 0.01324166030048383,
+        "elapsedMs": 0.012605579831932943,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 16
+      },
+      "samples": [
+        [
+          {
+            "iterations": 1091,
+            "cpuMs": 0.1145737855178735,
+            "elapsedMs": 0.13754601283226267,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 922,
+            "cpuMs": 0.15292841648590022,
+            "elapsedMs": 0.16283199566160775,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1063,
+            "cpuMs": 0.1317027281279398,
+            "elapsedMs": 0.14118682972718846,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 846,
+            "cpuMs": 0.18439716312056736,
+            "elapsedMs": 0.17731111111111064,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1048,
+            "cpuMs": 0.14885496183206107,
+            "elapsedMs": 0.14316020992366235,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1090,
+            "cpuMs": 0.11467889908256881,
+            "elapsedMs": 0.13766165137614836,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1126,
+            "cpuMs": 0.20870337477797513,
+            "elapsedMs": 0.13329458259325083,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1127,
+            "cpuMs": 0.18012422360248448,
+            "elapsedMs": 0.13309733806565827,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          },
+          {
+            "iterations": 1024,
+            "cpuMs": 0.1513671875,
+            "elapsedMs": 0.1465531250000005,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4612
+          }
+        ],
+        [
+          {
+            "iterations": 11971,
+            "cpuMs": 0.015621084287026982,
+            "elapsedMs": 0.012532269651658396,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12190,
+            "cpuMs": 0.01542247744052502,
+            "elapsedMs": 0.012305635767022274,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11900,
+            "cpuMs": 0.01319327731092437,
+            "elapsedMs": 0.012605579831932943,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 9599,
+            "cpuMs": 0.016251692884675487,
+            "elapsedMs": 0.015627169496822545,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11674,
+            "cpuMs": 0.011992461881103306,
+            "elapsedMs": 0.012849374678773343,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11781,
+            "cpuMs": 0.01324166030048383,
+            "elapsedMs": 0.012886138697903482,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12020,
+            "cpuMs": 0.011647254575707155,
+            "elapsedMs": 0.012479450915141481,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12058,
+            "cpuMs": 0.011693481506054072,
+            "elapsedMs": 0.012440288605075251,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11699,
+            "cpuMs": 0.021454825198734935,
+            "elapsedMs": 0.012823181468501341,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "same-workbook-write",
+      "rows": 200,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.1692169216921692,
+        "elapsedMs": 0.13501602160215875,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 4596
+      },
+      "variant": {
+        "cpuMs": 0.13019390581717452,
+        "elapsedMs": 0.13425885509838958,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 4596
+      },
+      "samples": [
+        [
+          {
+            "iterations": 1219,
+            "cpuMs": 0.15340442986054142,
+            "elapsedMs": 0.12311246923708091,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1123,
+            "cpuMs": 0.11130899376669635,
+            "elapsedMs": 0.13360463045414112,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1164,
+            "cpuMs": 0.21477663230240548,
+            "elapsedMs": 0.12894699312714833,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1111,
+            "cpuMs": 0.1692169216921692,
+            "elapsedMs": 0.13501602160215875,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 957,
+            "cpuMs": 0.2445141065830721,
+            "elapsedMs": 0.1568570532915356,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1043,
+            "cpuMs": 0.13518696069031638,
+            "elapsedMs": 0.14390268456375688,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1053,
+            "cpuMs": 0.19278252611585944,
+            "elapsedMs": 0.1424509971509963,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1208,
+            "cpuMs": 0.1291390728476821,
+            "elapsedMs": 0.124180215231787,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1028,
+            "cpuMs": 0.2587548638132296,
+            "elapsedMs": 0.14834552529183076,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          }
+        ],
+        [
+          {
+            "iterations": 1198,
+            "cpuMs": 0.14357262103505844,
+            "elapsedMs": 0.12523013355592819,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1244,
+            "cpuMs": 0.12620578778135047,
+            "elapsedMs": 0.12058135048231447,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1079,
+            "cpuMs": 0.14457831325301204,
+            "elapsedMs": 0.13910046339203036,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1177,
+            "cpuMs": 0.13254035683942225,
+            "elapsedMs": 0.12751461342395873,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1118,
+            "cpuMs": 0.1252236135957066,
+            "elapsedMs": 0.13425885509838958,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1083,
+            "cpuMs": 0.13019390581717452,
+            "elapsedMs": 0.13856075715604912,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1246,
+            "cpuMs": 0.1260032102728732,
+            "elapsedMs": 0.12045128410915076,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 980,
+            "cpuMs": 0.14387755102040817,
+            "elapsedMs": 0.15319214285714317,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          },
+          {
+            "iterations": 1076,
+            "cpuMs": 0.13011152416356878,
+            "elapsedMs": 0.13943903345724987,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 4596
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "fresh-security",
+      "rows": 200,
+      "columns": 13,
+      "operation": "UsersRepository.getUserById, including full validation and uniqueness checks",
+      "equal": true,
+      "responseBytes": 377,
+      "reference": {
+        "cpuMs": 0.5571428571428572,
+        "elapsedMs": 0.5468759999999946,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "variant": {
+        "cpuMs": 1.1376811594202898,
+        "elapsedMs": 1.1575553846153734,
+        "getCalls": 0,
+        "batchCalls": 1,
+        "readRanges": 2,
+        "writes": 0,
+        "dependencyCellJsonBytes": 31912
+      },
+      "samples": [
+        [
+          {
+            "iterations": 280,
+            "cpuMs": 0.5571428571428572,
+            "elapsedMs": 0.5363985714285653,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 278,
+            "cpuMs": 0.564748201438849,
+            "elapsedMs": 0.5415730215827352,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 280,
+            "cpuMs": 0.5571428571428572,
+            "elapsedMs": 0.5372360714285735,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 254,
+            "cpuMs": 0.5551181102362205,
+            "elapsedMs": 0.5907574803149626,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 245,
+            "cpuMs": 0.636734693877551,
+            "elapsedMs": 0.6124208163265115,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 275,
+            "cpuMs": 0.5672727272727273,
+            "elapsedMs": 0.5468759999999946,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 271,
+            "cpuMs": 0.4612546125461255,
+            "elapsedMs": 0.5559269372693908,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 264,
+            "cpuMs": 0.5340909090909091,
+            "elapsedMs": 0.5682231060606103,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 289,
+            "cpuMs": 0.5397923875432526,
+            "elapsedMs": 0.5196480968858117,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 123,
+            "cpuMs": 1.2682926829268293,
+            "elapsedMs": 1.2200260162601668,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 134,
+            "cpuMs": 1.164179104477612,
+            "elapsedMs": 1.1257395522388018,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 129,
+            "cpuMs": 1.0930232558139534,
+            "elapsedMs": 1.1696689922480785,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 130,
+            "cpuMs": 1.0846153846153845,
+            "elapsedMs": 1.1575553846153734,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 138,
+            "cpuMs": 1.1376811594202898,
+            "elapsedMs": 1.0928731884057503,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 125,
+            "cpuMs": 1.248,
+            "elapsedMs": 1.200127199999988,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 123,
+            "cpuMs": 1.2682926829268293,
+            "elapsedMs": 1.222766666666676,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 143,
+            "cpuMs": 0.986013986013986,
+            "elapsedMs": 1.0547902097902038,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          },
+          {
+            "iterations": 140,
+            "cpuMs": 1.0071428571428571,
+            "elapsedMs": 1.07249285714284,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 31912
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "cold",
+      "rows": 2000,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 1.5779816513761469,
+        "elapsedMs": 1.3906212962963225,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 0,
+        "dependencyCellJsonBytes": 49796
+      },
+      "variant": {
+        "cpuMs": 1.4956521739130435,
+        "elapsedMs": 1.403900925925983,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 0,
+        "dependencyCellJsonBytes": 49796
+      },
+      "samples": [
+        [
+          {
+            "iterations": 126,
+            "cpuMs": 1.1111111111111112,
+            "elapsedMs": 1.1905634920634809,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 95,
+            "cpuMs": 1.8,
+            "elapsedMs": 1.5867926315789718,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 117,
+            "cpuMs": 2.4017094017094016,
+            "elapsedMs": 1.289454700854673,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 105,
+            "cpuMs": 2.380952380952381,
+            "elapsedMs": 1.4852019047618905,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 113,
+            "cpuMs": 1.3805309734513274,
+            "elapsedMs": 1.3387106194690672,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 109,
+            "cpuMs": 1.5779816513761469,
+            "elapsedMs": 1.4413174311926806,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 108,
+            "cpuMs": 1.4444444444444444,
+            "elapsedMs": 1.3906212962963225,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 107,
+            "cpuMs": 1.897196261682243,
+            "elapsedMs": 1.4127392523364293,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 117,
+            "cpuMs": 1.3418803418803418,
+            "elapsedMs": 1.2863410256410508,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          }
+        ],
+        [
+          {
+            "iterations": 115,
+            "cpuMs": 1.4956521739130435,
+            "elapsedMs": 1.306061739130414,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 102,
+            "cpuMs": 1.6862745098039216,
+            "elapsedMs": 1.4730901960784275,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 104,
+            "cpuMs": 1.5096153846153846,
+            "elapsedMs": 1.452985576923101,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 82,
+            "cpuMs": 2.097560975609756,
+            "elapsedMs": 1.8319914634146965,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 107,
+            "cpuMs": 1.3177570093457944,
+            "elapsedMs": 1.4124009345794666,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 110,
+            "cpuMs": 1.4181818181818182,
+            "elapsedMs": 1.376506363636343,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 115,
+            "cpuMs": 1.4956521739130435,
+            "elapsedMs": 1.3101330434782026,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 108,
+            "cpuMs": 1.5925925925925926,
+            "elapsedMs": 1.403900925925983,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 115,
+            "cpuMs": 1.4956521739130435,
+            "elapsedMs": 1.3131008695652227,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 0,
+            "dependencyCellJsonBytes": 49796
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "warm",
+      "rows": 2000,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 0.0009623459173853613,
+        "elapsedMs": 0.0009194455171230229,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.0009114886354821193,
+        "elapsedMs": 0.0009510359869138418,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 142728,
+            "cpuMs": 0.0010929880612073313,
+            "elapsedMs": 0.0010509591670870206,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 163500,
+            "cpuMs": 0.001051987767584098,
+            "elapsedMs": 0.000917437308868525,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 174393,
+            "cpuMs": 0.0006250250870161073,
+            "elapsedMs": 0.0008601331475460529,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 154189,
+            "cpuMs": 0.0009079765742043855,
+            "elapsedMs": 0.0009728443663296534,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 159611,
+            "cpuMs": 0.0009773762459980829,
+            "elapsedMs": 0.0009397955028161808,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 155430,
+            "cpuMs": 0.00101010101010101,
+            "elapsedMs": 0.0009650749533551821,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 175297,
+            "cpuMs": 0.0007986445860453973,
+            "elapsedMs": 0.0008556946211286951,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 172007,
+            "cpuMs": 0.0009069398338439715,
+            "elapsedMs": 0.0008720662531175969,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 163143,
+            "cpuMs": 0.0009623459173853613,
+            "elapsedMs": 0.0009194455171230229,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 157337,
+            "cpuMs": 0.0010931948619841486,
+            "elapsedMs": 0.0009533771458715908,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 152584,
+            "cpuMs": 0.0008192208881665181,
+            "elapsedMs": 0.0009830696534368227,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 168360,
+            "cpuMs": 0.0009265858873841767,
+            "elapsedMs": 0.0008909562841529682,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 154080,
+            "cpuMs": 0.0010189511941848391,
+            "elapsedMs": 0.0009735338785046592,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 154692,
+            "cpuMs": 0.0009114886354821193,
+            "elapsedMs": 0.0009696765185012721,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 169390,
+            "cpuMs": 0.000920951650038373,
+            "elapsedMs": 0.0008855375169726595,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 185257,
+            "cpuMs": 0.0008420734439184484,
+            "elapsedMs": 0.0008096941006278076,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 169414,
+            "cpuMs": 0.0008322806851854038,
+            "elapsedMs": 0.0008854144285595993,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 157724,
+            "cpuMs": 0.0007925236489056834,
+            "elapsedMs": 0.0009510359869138418,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-consult",
+      "rows": 2000,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 1.5798319327731092,
+        "elapsedMs": 1.3948842592592512,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "readRanges": 2,
+        "writes": 1,
+        "dependencyCellJsonBytes": 49812
+      },
+      "variant": {
+        "cpuMs": 0.0068846815834767644,
+        "elapsedMs": 0.005824703917990279,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 16
+      },
+      "samples": [
+        [
+          {
+            "iterations": 128,
+            "cpuMs": 1.1015625,
+            "elapsedMs": 1.1766624999999635,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 119,
+            "cpuMs": 1.7058823529411764,
+            "elapsedMs": 1.2658941176470624,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 107,
+            "cpuMs": 1.897196261682243,
+            "elapsedMs": 1.420295327102777,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 119,
+            "cpuMs": 1.5798319327731092,
+            "elapsedMs": 1.2618865546218399,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 105,
+            "cpuMs": 1.3428571428571427,
+            "elapsedMs": 1.4383495238095445,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 108,
+            "cpuMs": 1.1574074074074074,
+            "elapsedMs": 1.3948842592592512,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 90,
+            "cpuMs": 2.088888888888889,
+            "elapsedMs": 1.6673511111111212,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 104,
+            "cpuMs": 2.0961538461538463,
+            "elapsedMs": 1.4431567307692603,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 115,
+            "cpuMs": 1.2260869565217392,
+            "elapsedMs": 1.3052530434782332,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          }
+        ],
+        [
+          {
+            "iterations": 25694,
+            "cpuMs": 0.007277963726940142,
+            "elapsedMs": 0.005838125632443467,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 25769,
+            "cpuMs": 0.005471690791260818,
+            "elapsedMs": 0.005821075711125642,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 26537,
+            "cpuMs": 0.005878584617703584,
+            "elapsedMs": 0.005652534197535376,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 24140,
+            "cpuMs": 0.007125103562551781,
+            "elapsedMs": 0.006213806959403325,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 27808,
+            "cpuMs": 0.008450805523590333,
+            "elapsedMs": 0.005394257048331376,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 25753,
+            "cpuMs": 0.004853803440375878,
+            "elapsedMs": 0.005824703917990279,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 24319,
+            "cpuMs": 0.005140013980838028,
+            "elapsedMs": 0.0061681236892964265,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 26975,
+            "cpuMs": 0.008118628359592215,
+            "elapsedMs": 0.005560874884152,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 22659,
+            "cpuMs": 0.0068846815834767644,
+            "elapsedMs": 0.006620980625799869,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-8-consults",
+      "rows": 2000,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 606257,
+      "reference": {
+        "cpuMs": 1.4579439252336448,
+        "elapsedMs": 1.4289918918918891,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "readRanges": 2,
+        "writes": 1,
+        "dependencyCellJsonBytes": 49812
+      },
+      "variant": {
+        "cpuMs": 0.013687812582258489,
+        "elapsedMs": 0.013223254583921033,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 16
+      },
+      "samples": [
+        [
+          {
+            "iterations": 115,
+            "cpuMs": 1.3565217391304347,
+            "elapsedMs": 1.3125591304348072,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 107,
+            "cpuMs": 1.4579439252336448,
+            "elapsedMs": 1.4057644859813676,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 97,
+            "cpuMs": 1.6082474226804124,
+            "elapsedMs": 1.5517958762886581,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 102,
+            "cpuMs": 1.5294117647058822,
+            "elapsedMs": 1.4755921568628088,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 100,
+            "cpuMs": 1.56,
+            "elapsedMs": 1.5013729999999486,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 111,
+            "cpuMs": 1.4054054054054055,
+            "elapsedMs": 1.4289918918918891,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 100,
+            "cpuMs": 1.41,
+            "elapsedMs": 1.502728999999963,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 114,
+            "cpuMs": 1.368421052631579,
+            "elapsedMs": 1.3197254385964985,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          },
+          {
+            "iterations": 114,
+            "cpuMs": 1.9210526315789473,
+            "elapsedMs": 1.322958771929846,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "readRanges": 2,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49812
+          }
+        ],
+        [
+          {
+            "iterations": 11344,
+            "cpuMs": 0.01234132581100141,
+            "elapsedMs": 0.013223254583921033,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12134,
+            "cpuMs": 0.01285643645953519,
+            "elapsedMs": 0.012362905884292116,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11216,
+            "cpuMs": 0.016761768901569187,
+            "elapsedMs": 0.013374001426533704,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11397,
+            "cpuMs": 0.013687812582258489,
+            "elapsedMs": 0.013161840835307475,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12567,
+            "cpuMs": 0.014880241903397788,
+            "elapsedMs": 0.011936627675658826,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 12518,
+            "cpuMs": 0.012541939606965969,
+            "elapsedMs": 0.011983104329764776,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 10914,
+            "cpuMs": 0.01291918636613524,
+            "elapsedMs": 0.01374453912406122,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 11169,
+            "cpuMs": 0.013967230727907601,
+            "elapsedMs": 0.013431077088369188,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          },
+          {
+            "iterations": 10596,
+            "cpuMs": 0.020573801434503585,
+            "elapsedMs": 0.014282370705927045,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 16
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "same-workbook-write",
+      "rows": 2000,
+      "columns": 2,
+      "operation": "raw Sheets reads and recorded synthetic append; no domain aggregation",
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 1.4054054054054055,
+        "elapsedMs": 1.3849825688073472,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 49796
+      },
+      "variant": {
+        "cpuMs": 1.3652173913043477,
+        "elapsedMs": 1.340300884955798,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "readRanges": 1,
+        "writes": 1,
+        "dependencyCellJsonBytes": 49796
+      },
+      "samples": [
+        [
+          {
+            "iterations": 120,
+            "cpuMs": 1.3,
+            "elapsedMs": 1.2618125000000266,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 88,
+            "cpuMs": 1.7840909090909092,
+            "elapsedMs": 1.705382954545464,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 80,
+            "cpuMs": 2.925,
+            "elapsedMs": 1.8809324999999262,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 111,
+            "cpuMs": 1.4054054054054055,
+            "elapsedMs": 1.3583549549549463,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 76,
+            "cpuMs": 2.0526315789473686,
+            "elapsedMs": 1.974739473684167,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 109,
+            "cpuMs": 1.4311926605504588,
+            "elapsedMs": 1.3849825688073472,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 104,
+            "cpuMs": 1.3557692307692308,
+            "elapsedMs": 1.4567240384615685,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 112,
+            "cpuMs": 1.25,
+            "elapsedMs": 1.34222142857139,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 116,
+            "cpuMs": 1.3448275862068966,
+            "elapsedMs": 1.3026206896551669,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          }
+        ],
+        [
+          {
+            "iterations": 124,
+            "cpuMs": 1.1290322580645162,
+            "elapsedMs": 1.215725806451613,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 113,
+            "cpuMs": 1.5221238938053097,
+            "elapsedMs": 1.340300884955798,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 122,
+            "cpuMs": 1.278688524590164,
+            "elapsedMs": 1.2331622950819185,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 112,
+            "cpuMs": 1.2589285714285714,
+            "elapsedMs": 1.340933928571433,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 103,
+            "cpuMs": 1.825242718446602,
+            "elapsedMs": 1.4667135922330627,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 115,
+            "cpuMs": 1.3652173913043477,
+            "elapsedMs": 1.3046686956521665,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 101,
+            "cpuMs": 1.5445544554455446,
+            "elapsedMs": 1.4880999999999998,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 114,
+            "cpuMs": 1.2280701754385965,
+            "elapsedMs": 1.3194570175438185,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          },
+          {
+            "iterations": 100,
+            "cpuMs": 1.72,
+            "elapsedMs": 1.5068379999999888,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "readRanges": 1,
+            "writes": 1,
+            "dependencyCellJsonBytes": 49796
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "fresh-security",
+      "rows": 2000,
+      "columns": 13,
+      "operation": "UsersRepository.getUserById, including full validation and uniqueness checks",
+      "equal": true,
+      "responseBytes": 380,
+      "reference": {
+        "cpuMs": 5.571428571428571,
+        "elapsedMs": 5.56629642857141,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "readRanges": 0,
+        "writes": 0,
+        "dependencyCellJsonBytes": 0
+      },
+      "variant": {
+        "cpuMs": 11.7,
+        "elapsedMs": 11.481580000000031,
+        "getCalls": 0,
+        "batchCalls": 1,
+        "readRanges": 2,
+        "writes": 0,
+        "dependencyCellJsonBytes": 322912
+      },
+      "samples": [
+        [
+          {
+            "iterations": 27,
+            "cpuMs": 5.777777777777778,
+            "elapsedMs": 5.595151851851875,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 27,
+            "cpuMs": 5.777777777777778,
+            "elapsedMs": 5.745292592592402,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 5.607142857142857,
+            "elapsedMs": 5.466717857142742,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 5.571428571428571,
+            "elapsedMs": 5.56629642857141,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 27,
+            "cpuMs": 5.777777777777778,
+            "elapsedMs": 5.783477777777955,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 5.571428571428571,
+            "elapsedMs": 5.365821428571508,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 27,
+            "cpuMs": 5.222222222222222,
+            "elapsedMs": 5.60844444444444,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 5,
+            "elapsedMs": 5.379682142857097,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 5.571428571428571,
+            "elapsedMs": 5.5011964285713475,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "readRanges": 0,
+            "writes": 0,
+            "dependencyCellJsonBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 13.3,
+            "elapsedMs": 11.856145000000106,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 10.15,
+            "elapsedMs": 11.103550000000178,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 10.9,
+            "elapsedMs": 11.481580000000031,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 12.5,
+            "elapsedMs": 12.735589999999865,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 14.05,
+            "elapsedMs": 13.776324999999996,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 11.7,
+            "elapsedMs": 12.065720000000146,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 11.7,
+            "elapsedMs": 11.27185500000014,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 10.15,
+            "elapsedMs": 11.140815000000293,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 11.75,
+            "elapsedMs": 11.444855000000098,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "readRanges": 2,
+            "writes": 0,
+            "dependencyCellJsonBytes": 322912
+          }
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+TAP version 13
+# (node:19412) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:19412) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: detail preserves full document output but reads size only for the selected file
+ok 1 - detail preserves full document output but reads size only for the selected file
+  ---
+  duration_ms: 225.9417
+  type: 'test'
+  ...
+# Subtest: missing detail never enriches unrelated files
+ok 2 - missing detail never enriches unrelated files
+  ---
+  duration_ms: 55.5805
+  type: 'test'
+  ...
+# Subtest: entity selection normalizes fields before enrichment and preserves order
+ok 3 - entity selection normalizes fields before enrichment and preserves order
+  ---
+  duration_ms: 42.7869
+  type: 'test'
+  ...
+# Subtest: list keeps all sizes, missing file and Drive failure semantics
+ok 4 - list keeps all sizes, missing file and Drive failure semantics
+  ---
+  duration_ms: 78.2291
+  type: 'test'
+  ...
+# Subtest: creation scans fresh document identifiers without reading unrelated Drive sizes
+ok 5 - creation scans fresh document identifiers without reading unrelated Drive sizes
+  ---
+  duration_ms: 100.9377
+  type: 'test'
+  ...
+# (node:20876) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:20876) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: the fresh table preserves schema validation of headers beyond column Z
+ok 6 - the fresh table preserves schema validation of headers beyond column Z
+  ---
+  duration_ms: 356.5834
+  type: 'test'
+  ...
+# Subtest: an audit write must not reject a fresh account snapshot from another sheet
+ok 7 - an audit write must not reject a fresh account snapshot from another sheet
+  ---
+  duration_ms: 46.2873
+  type: 'test'
+  ...
+# Subtest: fresh rows rejects an old result after a write to its actual source sheet
+ok 8 - fresh rows rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 45.4322
+  type: 'test'
+  ...
+# Subtest: fresh headers rejects an old result after a write to its actual source sheet
+ok 9 - fresh headers rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 60.0376
+  type: 'test'
+  ...
+# Subtest: fresh batch rejects an old result after a write to its actual source sheet
+ok 10 - fresh batch rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 72.7533
+  type: 'test'
+  ...
+# Subtest: fresh table rejects an old result after a write to its actual source sheet
+ok 11 - fresh table rejects an old result after a write to its actual source sheet
+  ---
+  duration_ms: 78.8173
+  type: 'test'
+  ...
+# Subtest: an audit append conservatively invalidates all raw workbook caches
+ok 12 - an audit append conservatively invalidates all raw workbook caches
+  ---
+  duration_ms: 346.3334
+  type: 'test'
+  ...
+# Subtest: fresh adapter reads cannot return a cached revoked account or stale fallback
+ok 13 - fresh adapter reads cannot return a cached revoked account or stale fallback
+  ---
+  duration_ms: 305.4717
+  type: 'test'
+  ...
+# Subtest: targeted invalidation fences old reads without cancelling another workbook pending read
+ok 14 - targeted invalidation fences old reads without cancelling another workbook pending read
+  ---
+  duration_ms: 139.451
+  type: 'test'
+  ...
+# Subtest: fresh read interrupted by local invalidation rejects instead of returning old grants
+ok 15 - fresh read interrupted by local invalidation rejects instead of returning old grants
+  ---
+  duration_ms: 89.8114
+  type: 'test'
+  ...
+# Subtest: appendSheetRow: success fences all raw workbook ranges
+ok 16 - appendSheetRow: success fences all raw workbook ranges
+  ---
+  duration_ms: 105.3972
+  type: 'test'
+  ...
+# Subtest: appendSheetRow: uncertain error fences all raw workbook ranges
+ok 17 - appendSheetRow: uncertain error fences all raw workbook ranges
+  ---
+  duration_ms: 73.5959
+  type: 'test'
+  ...
+# Subtest: appendSheetRows: success fences all raw workbook ranges
+ok 18 - appendSheetRows: success fences all raw workbook ranges
+  ---
+  duration_ms: 84.934
+  type: 'test'
+  ...
+# Subtest: appendSheetRows: uncertain error fences all raw workbook ranges
+ok 19 - appendSheetRows: uncertain error fences all raw workbook ranges
+  ---
+  duration_ms: 73.0052
+  type: 'test'
+  ...
+# Subtest: updateSheetCell: success fences all raw workbook ranges
+ok 20 - updateSheetCell: success fences all raw workbook ranges
+  ---
+  duration_ms: 66.9171
+  type: 'test'
+  ...
+# Subtest: updateSheetCell: uncertain error fences all raw workbook ranges
+ok 21 - updateSheetCell: uncertain error fences all raw workbook ranges
+  ---
+  duration_ms: 59.643
+  type: 'test'
+  ...
+# Subtest: updateSheetCells: success fences all raw workbook ranges
+ok 22 - updateSheetCells: success fences all raw workbook ranges
+  ---
+  duration_ms: 70.1585
+  type: 'test'
+  ...
+# Subtest: updateSheetCells: uncertain error fences all raw workbook ranges
+ok 23 - updateSheetCells: uncertain error fences all raw workbook ranges
+  ---
+  duration_ms: 71.497
+  type: 'test'
+  ...
+# Subtest: deleteSheetRow: success fences all raw workbook ranges
+ok 24 - deleteSheetRow: success fences all raw workbook ranges
+  ---
+  duration_ms: 57.4293
+  type: 'test'
+  ...
+# Subtest: deleteSheetRow: uncertain error fences all raw workbook ranges
+ok 25 - deleteSheetRow: uncertain error fences all raw workbook ranges
+  ---
+  duration_ms: 81.2158
+  type: 'test'
+  ...
+# Subtest: targeted invalidation fences headers and batch, preserving a different workbook
+ok 26 - targeted invalidation fences headers and batch, preserving a different workbook
+  ---
+  duration_ms: 50.104
+  type: 'test'
+  ...
+# Subtest: fresh table uses one response for headers and rows, never shares or falls back
+ok 27 - fresh table uses one response for headers and rows, never shares or falls back
+  ---
+  duration_ms: 66.4769
+  type: 'test'
+  ...
+# Subtest: repository prefers coherent table snapshots and propagates source errors
+ok 28 - repository prefers coherent table snapshots and propagates source errors
+  ---
+  duration_ms: 86.5249
+  type: 'test'
+  ...
+# Subtest: Google adapter through repository and policy never regrants a revoked VIEWER block on source failure
+ok 29 - Google adapter through repository and policy never regrants a revoked VIEWER block on source failure
+  ---
+  duration_ms: 143.5233
+  type: 'test'
+  ...
+# (node:11916) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:11916) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: batch reads only missing unique ranges, preserves the complete result
+ok 30 - batch reads only missing unique ranges, preserves the complete result
+  ---
+  duration_ms: 286.2047
+  type: 'test'
+  ...
+# Subtest: overlapping batches and individual readers share in-flight missing ranges
+ok 31 - overlapping batches and individual readers share in-flight missing ranges
+  ---
+  duration_ms: 37.0271
+  type: 'test'
+  ...
+# Subtest: invalidating an in-flight single read prevents stale cache resurrection
+ok 32 - invalidating an in-flight single read prevents stale cache resurrection
+  ---
+  duration_ms: 35.9949
+  type: 'test'
+  ...
+# Subtest: successful write invalidates a batch already in flight, without cancelling its caller
+ok 33 - successful write invalidates a batch already in flight, without cancelling its caller
+  ---
+  duration_ms: 47.1431
+  type: 'test'
+  ...
+# Subtest: headers finishing after invalidation do not poison subsequent reads
+ok 34 - headers finishing after invalidation do not poison subsequent reads
+  ---
+  duration_ms: 45.5022
+  type: 'test'
+  ...
+# Subtest: ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+ok 35 - ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+  ---
+  duration_ms: 51.3954
+  type: 'test'
+  ...
+# Subtest: different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+ok 36 - different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+  ---
+  duration_ms: 70.2464
+  type: 'test'
+  ...
+# Subtest: old completion cannot replace a new cache entry or remove its in-flight read
+ok 37 - old completion cannot replace a new cache entry or remove its in-flight read
+  ---
+  duration_ms: 104.6055
+  type: 'test'
+  ...
+# Subtest: failed shared batch cleans its promises so a later request can retry
+ok 38 - failed shared batch cleans its promises so a later request can retry
+  ---
+  duration_ms: 229.9504
+  type: 'test'
+  ...
+# Subtest: hot batches do no I/O, fresh batches do not share promises or populate caches
+ok 39 - hot batches do no I/O, fresh batches do not share promises or populate caches
+  ---
+  duration_ms: 186.3726
+  type: 'test'
+  ...
+# Subtest: separate process contexts do not share cache entries or invalidations
+ok 40 - separate process contexts do not share cache entries or invalidations
+  ---
+  duration_ms: 232.3527
+  type: 'test'
+  ...
+# (node:20180) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:20180) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: conservative delivery refreshes a computed copy in another workbook after a source write
+ok 41 - conservative delivery refreshes a computed copy in another workbook after a source write
+  ---
+  duration_ms: 231.1785
+  type: 'test'
+  ...
+# Subtest: old cross-workbook batch and header reads cannot refill caches after an unrelated mutation
+ok 42 - old cross-workbook batch and header reads cannot refill caches after an unrelated mutation
+  ---
+  duration_ms: 43.3446
+  type: 'test'
+  ...
+# Subtest: out-of-process source updates do not invoke local invalidation, while fresh reads see the source
+ok 43 - out-of-process source updates do not invoke local invalidation, while fresh reads see the source
+  ---
+  duration_ms: 32.5393
+  type: 'test'
+  ...
+1..43
+# tests 43
+# suites 0
+# pass 43
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3222.6018

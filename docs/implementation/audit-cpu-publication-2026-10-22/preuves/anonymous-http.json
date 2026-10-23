@@ -1,0 +1,131 @@
+{
+  "startedAt": "2026-10-22T21:59:32.332Z",
+  "finishedAt": "2026-10-22T21:59:41.151Z",
+  "deploymentId": "dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx",
+  "sha": "e6fa5b24a0a3da6491aec19f8bdd9b1ebe8e8964",
+  "method": "GET only; no Cookie or Authorization; manual redirects; sequential, no load test",
+  "metric": "elapsed HTTP, not active CPU",
+  "results": [
+    {
+      "route": "/login",
+      "expected": 200,
+      "status": 200,
+      "elapsedHttpMs": 3217,
+      "location": null,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 19079,
+      "vercelRequestId": "cpt1::shbkp-1792706373344-8ded077c1618",
+      "ok": true
+    },
+    {
+      "route": "/service-indisponible",
+      "expected": 200,
+      "status": 200,
+      "elapsedHttpMs": 892,
+      "location": null,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 14452,
+      "vercelRequestId": "cpt1::9t9ct-1792706375824-6d2dc124c7c7",
+      "ok": true
+    },
+    {
+      "route": "/dashboard",
+      "expected": 307,
+      "status": 307,
+      "elapsedHttpMs": 611,
+      "location": "/login",
+      "contentType": "text/plain",
+      "bytes": 15,
+      "vercelRequestId": "cpt1::2s645-1792706376713-97b6cfe4ab22",
+      "ok": true
+    },
+    {
+      "route": "/dashboard/documents",
+      "expected": 307,
+      "status": 307,
+      "elapsedHttpMs": 821,
+      "location": "/login",
+      "contentType": "text/plain",
+      "bytes": 15,
+      "vercelRequestId": "cpt1::r2wjx-1792706377548-c0dfc19e0791",
+      "ok": true
+    },
+    {
+      "route": "/activation",
+      "expected": 307,
+      "status": 307,
+      "elapsedHttpMs": 306,
+      "location": "/login",
+      "contentType": "text/plain",
+      "bytes": 15,
+      "vercelRequestId": "cpt1::swdk6-1792706378148-223b88533403",
+      "ok": true
+    },
+    {
+      "route": "/api/auth/session",
+      "expected": 401,
+      "status": 401,
+      "elapsedHttpMs": 614,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "vercelRequestId": "cpt1::twg9l-1792706378451-c6681c83261e",
+      "ok": true
+    },
+    {
+      "route": "/api/documents",
+      "expected": 401,
+      "status": 401,
+      "elapsedHttpMs": 307,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "vercelRequestId": "cpt1::twg9l-1792706379064-b42335a16146",
+      "ok": true
+    },
+    {
+      "route": "/api/documents/AUDIT-ANONYME/preview",
+      "expected": 401,
+      "status": 401,
+      "elapsedHttpMs": 512,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "vercelRequestId": "cpt1::4w6dd-1792706379374-112468d5f257",
+      "ok": true
+    },
+    {
+      "route": "/api/documents/AUDIT-ANONYME/download",
+      "expected": 401,
+      "status": 401,
+      "elapsedHttpMs": 307,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "vercelRequestId": "cpt1::ssswf-1792706379886-315112e596b5",
+      "ok": true
+    },
+    {
+      "route": "/api/users",
+      "expected": 401,
+      "status": 401,
+      "elapsedHttpMs": 309,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "vercelRequestId": "cpt1::shbkp-1792706380196-e632df4c0e48",
+      "ok": true
+    },
+    {
+      "route": "https://coc-managment.vercel.app/login",
+      "expected": 200,
+      "status": 200,
+      "elapsedHttpMs": 922,
+      "location": null,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 19079,
+      "vercelRequestId": "cpt1::4w6dd-1792706380917-226be7a8bde9",
+      "ok": true
+    }
+  ]
+}

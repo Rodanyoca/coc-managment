@@ -22,17 +22,30 @@ export async function documentsModule(root, rows) {
   return { namespace, state }
 }
 
+export function fixtureSheetValues(state, spreadsheetId, range) {
+  const exact = state.values.get(`${spreadsheetId}:${range}`)
+  if (exact) return exact
+  const fallback = [['id', 'value'], ['1', 'before']]
+  for (const suffix of ['!1:1', '!A2:Z']) if (range.endsWith(suffix)) {
+    const sheet = range.slice(0, -suffix.length)
+    const full = state.values.get(`${spreadsheetId}:${sheet}!A:Z`) || fallback
+    return suffix === '!1:1' ? full.slice(0, 1) : full.slice(1)
+  }
+  return fallback
+}
+
 export async function sheetsModule(root) {
-  const state = { calls: [], batchCalls: [], writes: [], values: new Map(), get: null, batchGet: null }
+  const state = { calls: [], batchCalls: [], writes: [], values: new Map(), get: null, batchGet: null, write: null }
+  const write = async input => { state.writes.push(input); if (state.write) return state.write(input); return {} }
   const values = {
-    get: async input => { state.calls.push(input); if (state.get) return state.get(input); return { data: { values: state.values.get(`${input.spreadsheetId}:${input.range}`) || [['id', 'value'], ['1', 'before']] } } },
-    batchGet: async input => { state.batchCalls.push(input); if (state.batchGet) return state.batchGet(input); return { data: { valueRanges: input.ranges.map(range => ({ values: state.values.get(`${input.spreadsheetId}:${range}`) || [['id', 'value'], ['1', 'before']] })) } } },
-    append: async input => { state.writes.push(input); return {} },
-    batchUpdate: async input => { state.writes.push(input); return {} },
-    update: async input => { state.writes.push(input); return {} },
+    get: async input => { state.calls.push(input); if (state.get) return state.get(input); return { data: { values: fixtureSheetValues(state, input.spreadsheetId, input.range) } } },
+    batchGet: async input => { state.batchCalls.push(input); if (state.batchGet) return state.batchGet(input); return { data: { valueRanges: input.ranges.map(range => ({ values: fixtureSheetValues(state, input.spreadsheetId, range) })) } } },
+    append: write,
+    batchUpdate: write,
+    update: write,
   }
   const namespace = await loadServerModule(root, 'lib/google/sheets.ts', {
-    googleapis: { google: { auth: { JWT: class {}, OAuth2: class { setCredentials() {} } }, sheets: () => ({ spreadsheets: { values } }) } },
+    googleapis: { google: { auth: { JWT: class {}, OAuth2: class { setCredentials() {} } }, sheets: () => ({ spreadsheets: { values, get: async () => ({ data: { sheets: [{ properties: { title: 'A', sheetId: 1 } }] } }), batchUpdate: write } }) } },
     './request': { runGoogleRequest: async task => task() },
   })
   return { namespace, state }

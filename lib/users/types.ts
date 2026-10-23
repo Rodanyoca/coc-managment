@@ -111,6 +111,7 @@ export interface AuditLogEntry {
 }
 
 export interface UsersSheetsAdapter {
+  readTable?(sheetName: string, options: { fresh: true }): Promise<{ headers: string[]; rows: SheetRow[] }>
   readHeaders(sheetName: string, options: { fresh: true }): Promise<string[]>
   readRows(sheetName: string, options: { fresh: true }): Promise<SheetRow[]>
   appendRow(sheetName: string, row: SheetRow): Promise<void>

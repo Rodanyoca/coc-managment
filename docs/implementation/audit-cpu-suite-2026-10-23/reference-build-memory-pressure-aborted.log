@@ -1,0 +1,7 @@
+▲ Next.js 16.3.4 (Turbopack)
+⚠ Warning: Next.js ignored pnpm-lock.yaml in C:\Projets\SNDS-HARMONISATION\coc-cible because it is outside the current Git repository (C:\Projets\SNDS-HARMONISATION\coc-cible\.cache\cpu-next\reference).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.mjs took 211ms
+
+  Creating an optimized production build ...

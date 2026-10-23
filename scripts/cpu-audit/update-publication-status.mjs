@@ -21,6 +21,12 @@ for(const name of ['audit-cpu-suivi-2026-10-22.md','audit-cpu-cloture-2026-10-22
  content=content.replace('Aucun push ni déploiement autorisé pour cette livraison.','Phase initiale sans publication ; autorisation de publication complète reçue ensuite (voir état courant).')
  content=content.replace('Publication en préparation ; aucun succès de production ne doit être déduit de ce statut.','État initial de cette phase : publication en préparation ; l’état courant et les preuves ci-dessus prévalent.')
  content=content.replace('## Verdict\n','## Verdict de clôture locale avant publication\n')
+ if(deployment){
+  content=content.replace('## Clôture de validation — état prioritaire','## Clôture locale antérieure à la publication')
+  content=content.replaceAll('Implémenté, vérifié localement et benchmarké ; non publié',`Publié au SHA ${deployment.sha.slice(0,7)} ; vérifié localement ; recette authentifiée restante`)
+  content=content.replace('implémenté, 23 tests ciblés verts','publié ; 23 tests ciblés verts ; recette authentifiée restante')
+  content=content.replace('Lots non publiés/non observés ; SHA connu','Publié ; READY, alias et refus anonymes vérifiés ; CPU des parcours manquant')
+ }
  content=content.replace(/## Publication complète — état courant\n[\s\S]*?<!-- fin-statut-publication -->\n\n/,'')
  const split=content.indexOf('\n')
  content=content.slice(0,split+1)+'\n'+text+'<!-- fin-statut-publication -->\n\n'+content.slice(split+1).replace(/^\n/,'')

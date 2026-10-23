@@ -1,0 +1,28 @@
+{
+  "sameVersions": true,
+  "physical": true,
+  "movedFromPreviousStoppedValidation": true,
+  "preparation": "reference copied physically; interrupted partial variant dependency copy kept outside compilation roots; variant physical node_modules moved from .cache/users-ui/validation",
+  "roots": [
+    {
+      "root": ".cache/cpu-next/reference",
+      "lockSha256": "62f165b44e304cda323d843a7f396fb32d0c83723d0f721b639c23fa919497d0",
+      "packages": {
+        "next": "16.3.4",
+        "react": "19.2.4",
+        "typescript": "5.7.3",
+        "googleapis": "174.0.1"
+      }
+    },
+    {
+      "root": ".cache/cpu-next/variant",
+      "lockSha256": "62f165b44e304cda323d843a7f396fb32d0c83723d0f721b639c23fa919497d0",
+      "packages": {
+        "next": "16.3.4",
+        "react": "19.2.4",
+        "typescript": "5.7.3",
+        "googleapis": "174.0.1"
+      }
+    }
+  ]
+}
