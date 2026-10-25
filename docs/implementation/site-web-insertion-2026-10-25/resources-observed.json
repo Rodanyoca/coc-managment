@@ -1,0 +1,85 @@
+[
+  {
+    "sheet": "SLIDERS_SITE",
+    "rowCount": 997,
+    "idColumn": "id_slide",
+    "checkboxDefaults": [],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "COMMUNIQUES_SITE",
+    "rowCount": 1000,
+    "idColumn": "id_communique",
+    "checkboxDefaults": [
+      "est_mis_en_avant"
+    ],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "ACTUALITES_SITE",
+    "rowCount": 1001,
+    "idColumn": "id_actualite",
+    "checkboxDefaults": [
+      "est_mis_en_avant"
+    ],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "GALERIES_SITE",
+    "rowCount": 1000,
+    "idColumn": "id_galerie",
+    "checkboxDefaults": [
+      "est_mis_en_avant"
+    ],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "MEDIAS_GALERIE_SITE",
+    "rowCount": 1000,
+    "idColumn": "id_media_galerie",
+    "checkboxDefaults": [],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "ATHLETES_PUBLICS",
+    "rowCount": 1000,
+    "idColumn": "id_athlete_public",
+    "checkboxDefaults": [
+      "est_olympien",
+      "est_mis_en_avant"
+    ],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "ACTIVITES_PUBLIQUES",
+    "rowCount": 1000,
+    "idColumn": "id_evenement_public",
+    "checkboxDefaults": [
+      "est_mis_en_avant"
+    ],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "DOCUMENTS_PUBLICS",
+    "rowCount": 1000,
+    "idColumn": "id_document_public",
+    "checkboxDefaults": [],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  },
+  {
+    "sheet": "CATEGORIES_ACTUALITES",
+    "rowCount": 1001,
+    "idColumn": "id_categorie_actualite",
+    "checkboxDefaults": [],
+    "rangeSample": "rows 1:3",
+    "readOnly": true
+  }
+]

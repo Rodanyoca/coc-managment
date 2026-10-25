@@ -1,0 +1,65 @@
+{
+  "started": "2026-10-25T16:40:14.544Z",
+  "ended": "2026-10-25T16:40:21.383Z",
+  "readyUtc": "2026-10-23T23:33:02.905Z",
+  "sha": "21822f51acf51667d27acee3107716e3c5b06210",
+  "deployment": "dpl_3SfWTtJqZJfDtcM7AkQQV7fXcxWk",
+  "results": [
+    {
+      "path": "/login",
+      "status": 200,
+      "expected": 200,
+      "pass": true,
+      "location": null
+    },
+    {
+      "path": "/dashboard/parametres",
+      "status": 307,
+      "expected": 307,
+      "pass": true,
+      "location": "/login"
+    },
+    {
+      "path": "/dashboard/site-web/actualites",
+      "status": 307,
+      "expected": 307,
+      "pass": true,
+      "location": "/login"
+    },
+    {
+      "path": "/api/parametres/saisons",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "location": null
+    },
+    {
+      "path": "/api/site-web/actualites",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "location": null
+    },
+    {
+      "path": "/api/site-web/uploads",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "location": null
+    },
+    {
+      "path": "/api/users",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "location": null
+    },
+    {
+      "path": "/api/documents",
+      "status": 401,
+      "expected": 401,
+      "pass": true,
+      "location": null
+    }
+  ]
+}

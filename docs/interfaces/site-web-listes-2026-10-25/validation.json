@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-25T16:47:41.672Z",
+  "file": "components/site-web/content-manager.tsx",
+  "sha256": "37334c32e1befd1e52634b63855f9da06137c6a3186c029c552093706fbbbc06",
+  "lintExit": 0,
+  "tests": 15,
+  "pass": 15,
+  "buildExit": 0,
+  "typescriptExit": 0,
+  "browserScreens": 35,
+  "browserErrors": 0,
+  "normalBuild": true,
+  "simulatedFonts": false,
+  "buildWarning": "Parent lockfile outside isolated Git checkout ignored; configuration unchanged",
+  "productionWrites": false,
+  "pushed": false
+}

@@ -433,6 +433,7 @@ export async function updateSheetCells(params: {
   idValue: string
   updates: { column: string; value: string }[]
   spreadsheetId: string
+  fresh?: boolean
 }): Promise<void> {
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
 
@@ -440,7 +441,12 @@ export async function updateSheetCells(params: {
 
   const sheets = google.sheets({ version: "v4", auth })
   const safeSheetName = String(params.sheetName ?? "").replace(/'/g, "''")
-  const [headers, rows] = await Promise.all([
+  // Editorial row insertion can shift physical indices in another instance.
+  // Opt-in fresh lookup avoids addressing an old cached row number by ID.
+  const table = params.fresh
+    ? (await getSheetsTables({ sheetNames: [params.sheetName], spreadsheetId }))[params.sheetName]
+    : null
+  const [headers, rows] = table ? [table.headers, table.rows] : await Promise.all([
     getSheetHeaders({ sheetName: params.sheetName, spreadsheetId }),
     getSheetRows({ sheetName: params.sheetName, spreadsheetId }),
   ])
@@ -475,11 +481,97 @@ export async function updateSheetCells(params: {
   }))
 }
 
+// Opt-in placement for editorial templates. Other SaaS append callers keep
+// Google's existing append semantics. Queue scope is one Node process only.
+type FirstAvailablePlacement = { idColumn: string; falseColumns: string[] }
+async function insertFirstAvailableRow(params: {
+  sheetName: string; spreadsheetId: string; row: Record<string, string>; placement: FirstAvailablePlacement
+}): Promise<void> {
+  const state = globalThis as typeof globalThis & { __cocSheetPlacementQueues?: Map<string, Promise<void>> }
+  const queues = state.__cocSheetPlacementQueues ??= new Map()
+  const key = JSON.stringify([params.spreadsheetId, params.sheetName])
+  const operation = async () => {
+    const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
+    const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets"])
+    const sheets = google.sheets({ version: "v4", auth })
+    const sheet = `'${params.sheetName.replace(/'/g, "''")}'`
+    const id = String(params.row[params.placement.idColumn] ?? "").trim()
+    if (!id) throw new Error("Identifiant métier requis pour l’insertion.")
+    const read = async (range: string) => {
+      const response = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.values.get({
+        spreadsheetId, range, valueRenderOption: "FORMULA",
+      })))
+      return (response.data.values ?? []) as unknown[][]
+    }
+    for (let attempt = 0; attempt < 3; attempt++) {
+      // Raw physical rows, including holes and all columns. FORMULA preserves
+      // formulas returning empty/FALSE, which must never be treated as defaults.
+      const values = await read(sheet)
+      const headers = (values[0] ?? []).map(value => String(value ?? "").trim())
+      const idIndex = headers.indexOf(params.placement.idColumn)
+      if (idIndex < 0 || headers.filter(h => h === params.placement.idColumn).length !== 1) throw new Error("Colonne d’identifiant absente ou ambiguë.")
+      for (const column of Object.keys(params.row)) {
+        if (headers.filter(h => h === column).length !== 1) throw new Error(`Colonne "${column}" absente ou ambiguë.`)
+      }
+      const matches = values.slice(1).filter(row => String(row[idIndex] ?? "").trim() === id)
+      if (matches.length > 1) throw new Error("Identifiant métier dupliqué.")
+      if (matches.length === 1) return // Retry after a committed but unacknowledged write.
+      const available = (row: unknown[]) => !row.some((value, index) => {
+        const text = String(value ?? "").trim()
+        if (!text) return false
+        // Ignore only FALSE in explicitly declared checkbox columns. TRUE,
+        // unknown columns, zero, status, partial text and formulas reserve a row.
+        return !(index !== idIndex && params.placement.falseColumns.includes(headers[index]) && /^false$/i.test(text))
+      })
+      const index = values.findIndex((row, index) => index > 0 && available(row))
+      if (index < 0) {
+        // No reusable physical row: Google's atomic append expands a full grid.
+        await runSheetMutation(spreadsheetId, params.sheetName, () => sheets.spreadsheets.values.append({
+          spreadsheetId, range: sheet, valueInputOption: "RAW", insertDataOption: "INSERT_ROWS",
+          requestBody: { values: [headers.map(header => params.row[header] ?? "")] },
+        }))
+        return
+      }
+      const rowNumber = index + 1
+      const target = await read(`${sheet}!${rowNumber}:${rowNumber}`)
+      if (!available(target[0] ?? [])) continue
+      const metadata = await withSheetsReadPermit(() => withSheetsTimeout(() => sheets.spreadsheets.get({
+        spreadsheetId, fields: "sheets(properties(sheetId,title))",
+      })))
+      const sheetId = metadata.data.sheets?.find(item => item.properties?.title === params.sheetName)?.properties?.sheetId
+      if (sheetId === undefined || sheetId === null) throw new Error("Feuille introuvable pour l’insertion.")
+      const destination = { sheetId, startRowIndex: index, endRowIndex: index + 1 }
+      const source = { sheetId, startRowIndex: index + 1, endRowIndex: index + 2 }
+      // One atomic batch inserts a NEW row and fills only its declared fields.
+      // A concurrent writer's cells are shifted, never overwritten by our snapshot.
+      // Copy formatting/validation, never values, from the displaced template row.
+      await runSheetMutation(spreadsheetId, params.sheetName, () => sheets.spreadsheets.batchUpdate({
+        spreadsheetId, requestBody: { requests: [
+          { insertDimension: { range: { sheetId, dimension: "ROWS", startIndex: index, endIndex: index + 1 }, inheritFromBefore: false } },
+          { copyPaste: { source, destination, pasteType: "PASTE_FORMAT" } },
+          { copyPaste: { source, destination, pasteType: "PASTE_DATA_VALIDATION" } },
+          ...Object.entries(params.row).map(([column, value]) => ({ updateCells: {
+            range: { ...destination, startColumnIndex: headers.indexOf(column), endColumnIndex: headers.indexOf(column) + 1 },
+            rows: [{ values: [{ userEnteredValue: { stringValue: value } }] }], fields: "userEnteredValue",
+          } })),
+        ] },
+      }))
+      return
+    }
+    throw new Error("Ligne modifiée par une écriture concurrente. Rechargez avant de réessayer.")
+  }
+  const result = (queues.get(key) ?? Promise.resolve()).then(operation, operation)
+  queues.set(key, result)
+  try { await result } finally { if (queues.get(key) === result) queues.delete(key) }
+}
+
 export async function appendSheetRow(params: {
   sheetName: string
   row: Record<string, string>
   spreadsheetId: string
+  placement?: FirstAvailablePlacement
 }): Promise<void> {
+  if (params.placement) return insertFirstAvailableRow({ ...params, placement: params.placement })
   const { spreadsheetId } = getSheetCredentials(params.spreadsheetId)
   const auth = getGoogleAuth(["https://www.googleapis.com/auth/spreadsheets"])
   const sheets = google.sheets({ version: "v4", auth })

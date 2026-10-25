@@ -68,8 +68,10 @@ export async function saveContent(resource: Resource, input: ContentRow, files: 
     if (managedMedia(row.fichier_url) || /(^|\.)google(?:usercontent)?\.com$/i.test(url.hostname) || url.pathname.startsWith("/api/")) throw new ContentInputError("Sélectionnez un document public ; ne collez pas un lien vers un document privé.", "fichier_url")
   }
   const saved = { ...row, [schema.id]: id }
-  if (update) await updateSheetCells({ spreadsheetId: SITE_WEB_SPREADSHEET_ID, sheetName: schema.sheet, idColumn: schema.id, idValue: id, updates: schema.fields.map(f => ({ column: f.key, value: row[f.key] })) })
-  else await appendSheetRow({ spreadsheetId: SITE_WEB_SPREADSHEET_ID, sheetName: schema.sheet, row: saved })
+  if (update) await updateSheetCells({ spreadsheetId: SITE_WEB_SPREADSHEET_ID, sheetName: schema.sheet, idColumn: schema.id, idValue: id, fresh: true, updates: schema.fields.map(f => ({ column: f.key, value: row[f.key] })) })
+  else await appendSheetRow({ spreadsheetId: SITE_WEB_SPREADSHEET_ID, sheetName: schema.sheet, row: saved, placement: {
+    idColumn: schema.id, falseColumns: schema.fields.filter(field => field.type === "boolean").map(field => field.key),
+  } })
   const confirmed = (await readContent(resource, { fresh: true })).find(record => record[schema.id] === id)
   if (!confirmed || Object.entries(saved).some(([key, value]) => confirmed[key] !== value)) throw new Error("L’écriture ne peut pas être confirmée. Rechargez la liste avant une nouvelle tentative.")
   return confirmed

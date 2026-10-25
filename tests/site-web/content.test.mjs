@@ -59,9 +59,11 @@ test("each block creates and updates only its source; IDs survive retries and de
     const saved = await mod.saveContent(resource, row, files, id, false)
     assert.equal(saved[CONTENT_SCHEMAS[resource].id], id)
     assert.equal(f.writes.length, 1)
+    assert.deepEqual(JSON.parse(JSON.stringify(f.writes[0].placement)), {idColumn: CONTENT_SCHEMAS[resource].id, falseColumns: CONTENT_SCHEMAS[resource].fields.filter(field => field.type === "boolean").map(field => field.key)})
     await mod.saveContent(resource, row, files, id, false); assert.equal(f.writes.length, 1)
     const next = { ...saved, [CONTENT_SCHEMAS[resource].label]: "Modification locale" }
     await mod.saveContent(resource, next, {}, id, true); assert.equal(f.writes.length, 2)
+    assert.equal(f.writes[1].fresh, true)
     assert(f.writes.every(write => write.spreadsheetId === sourceId))
     assert.notEqual(mod.contentId(resource, "actor", "new-request"), id)
   }

@@ -45,7 +45,7 @@ export async function sheetsModule(root) {
     update: write,
   }
   const namespace = await loadServerModule(root, 'lib/google/sheets.ts', {
-    googleapis: { google: { auth: { JWT: class {}, OAuth2: class { setCredentials() {} } }, sheets: () => ({ spreadsheets: { values, get: async () => ({ data: { sheets: [{ properties: { title: 'A', sheetId: 1 } }] } }), batchUpdate: write } }) } },
+    googleapis: { google: { auth: { JWT: class {}, OAuth2: class { setCredentials() {} } }, sheets: () => ({ spreadsheets: { values, get: async () => ({ data: { sheets: state.metadata ?? [{ properties: { title: 'A', sheetId: 1 } }] } }), batchUpdate: write } }) } },
     './request': { runGoogleRequest: async task => task() },
   })
   return { namespace, state }

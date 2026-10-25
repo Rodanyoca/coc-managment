@@ -1,5 +1,8 @@
 # Administration du Site Web COC
 
+**Référence détaillée :** [Cahier des charges de la section Site Web](../cahier-des-charges-section-site-web.md) — périmètre, données, règles, sécurité, médias, API et recette.
+
+
 ## Navigation et écrans
 
 L’entrée **Site Web** conserve les anciennes rubriques. Les huit rubriques implémentées sont Sliders, Événements, Communiqués, Actualités, Athlètes, Galeries/photos, Documents et Catégories d’actualités. Historique, Gouvernance, Jeux et Entités restent dans la navigation, sans nouveau développement de leurs écrans ni modification des feuilles correspondantes.
@@ -55,3 +58,23 @@ La file de mutations est partagée via globalThis dans un processus Node, pas en
 6. Utiliser les URLs des images/PDF (les nouvelles pointent sur les médias contrôlés). Pas de credentials d’administration dans le navigateur public. Les textes sont du texte brut : les échapper, sans injection HTML. Aucun changement au site public n’a été effectué ici.
 
 Voir le [rapport et les preuves de validation](../implementation/site-web-unifie-2026-10-23.md).
+
+
+### Harmonisation des listes — 25 octobre 2026
+
+Les huit listes utilisent désormais les conventions des tableaux Utilisateurs et du référentiel : barre de recherche et Select/Checkbox du système, en-tête bg-muted/70, titre consultable, miniatures 56 × 40 et emplacement discret sans image, badges secondary/outline, actions compactes alignées et pagination dans le pied du tableau. Sur mobile, les filtres occupent la largeur disponible et le tableau défile horizontalement dans sa carte. Les états vides et les erreurs restent accessibles.
+
+Fichier applicatif modifié : components/site-web/content-manager.tsx. Le panneau de fiche, les mutations, les chargements, les droits et la journalisation restent identiques. Aucun changement serveur, aucune lecture supplémentaire, aucun changement de cache ou de source Sheets. Les modifications parallèles sont préservées, C2 demeure différé pour toute livraison.
+
+Validation locale : ESLint réussi ; 15/15 tests Site Web ; 35 captures/parcours sur fixtures (1440 et 390 px), aucune erreur JavaScript ni débordement de page ; consultation, modification, confirmation de fermeture, erreur 503, lecture seule, photos à la demande et reprise des échecs partiels. Captures dans docs/interfaces/site-web-listes-2026-10-25. Aperçu de développement avec police de repli lorsque Google Fonts était inaccessible ; le build normal est vérifié séparément sans police simulée. Aucune recette authentifiée ni écriture de production. Aucun push ou déploiement de cette refonte.
+
+Contrôles finaux : build normal réussi avec les vraies polices et TypeScript séparé réussi (exit 0). Seul avertissement de build : lockfile parent ignoré hors du checkout Git isolé ; aucune configuration modifiée pour le contourner. Preuves build/tests/TypeScript dans le dossier de captures.
+
+### Accueil Site Web — correction du périmètre visuel
+La page /dashboard/site-web elle-même utilise désormais une liste/table des douze rubriques, à la place des grandes cartes : icônes neutres, noms alignés, descriptions, statuts discrets et accès par chevron. Sur mobile, les descriptions sont masquées et le statut figure sous le titre. Aucun changement des destinations ni des droits. Fichier : app/dashboard/site-web/page.tsx. Deux captures du composant réel en aperçu isolé, ordinateur/mobile, sans débordement ni erreur JS (docs/interfaces/site-web-accueil-2026-10-25). Le serveur localhost:3000 répond ; la requête sans session est redirigée vers /login, donc sa vue authentifiée n’est pas prétendue vérifiée. Aucun redémarrage du serveur utilisateur.
+
+### Accueil minimaliste en blocs — 25 octobre 2026
+La variante en tableau est remplacée à la demande utilisateur par des blocs compacts regroupés en « À publier », « Vos ressources » et « Le Comité ». Icônes sans pastille, descriptions courtes, fond discret, accent doré au survol, aucun badge Disponible ni bouton répété. Quatre colonnes sur grand écran et deux sur mobile. Les douze destinations et la mention À configurer sont conservées. Seul app/dashboard/site-web/page.tsx change pour cette itération ; aucun appel serveur ajouté. Deux captures du composant réel dans un aperçu isolé, douze liens vérifiés, aucun débordement ni erreur JavaScript. Preuves : docs/interfaces/site-web-blocs-2026-10-25. Sans session authentifiée, sans push ni déploiement.
+
+### Insertion des lignes — 25 octobre 2026
+Les neuf ressources, photos incluses, demandent un placement par ID dans la première ligne admissible. Seuls les FALSE des colonnes booléennes déclarées sont ignorés ; toute autre donnée ou formule protège une ligne sans ID. L’insertion et le remplissage utilisent un batch atomique avec conservation formats/validations, sans écraser les cellules concurrentes ; les lignes suivantes peuvent être décalées. Les modifications Site Web recherchent désormais leur ID en lecture fraîche. Autres blocs inchangés par défaut, C2 toujours différé. Limites inter-instances et proposition non exécutée de déplacement de l’actualité : [rapport détaillé](../implementation/site-web-insertion-2026-10-25.md). Aucun changement automatique de date.

@@ -1,0 +1,20 @@
+{
+  "observedAt": "2026-10-25T17:33:37.268Z",
+  "readOnly": true,
+  "spreadsheetId": "1cVIijJBdyhNhMwVIWtMzZHzWPvBqM5W73rYj0Ws8qMM",
+  "range": "ACTUALITES_SITE!A1:O1001",
+  "businessRows": [
+    1001
+  ],
+  "rows2Through1000OnlyFalse": true,
+  "source": {
+    "row": 1001,
+    "id": "WEB-ACTUALITES-bb935e5a8fa9467f0a32bd08681aa476",
+    "categoryId": "WEB-CATEGORIES-74fd779becb2edb17f0b59ec16830e59",
+    "publicationDate": "2025-03-21",
+    "textMentions21October2026": true
+  },
+  "proposedDestination": 2,
+  "productionWrites": false,
+  "moved": false
+}
