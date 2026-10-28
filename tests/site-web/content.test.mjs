@@ -27,9 +27,9 @@ function fixture(initial = {}) {
   return { records, reads, writes, uploads, state, module: () => loadServerModule(root, "lib/site-web/content.ts", { "node:crypto": { createHash }, "@/lib/google/sheets": sheets, "./config": config, "./media": { managedMedia: () => null, uploadContentMedia: async (resource, id, field) => { uploads.push({ resource, id, field }); return `https://fixture.invalid/${id}/${field}` } } }) }
 }
 
-test("all nine entity schemas match the observed live headers; unique content source", () => {
+test("entity schemas match historical headers except the explicitly removed communique image", () => {
   const evidence = JSON.parse(readFileSync("docs/implementation/site-web-unifie-2026-10-23/schema-observe.json", "utf8"))
-  for (const resource of Object.keys(CONTENT_SCHEMAS)) assert.deepEqual([...headersFor(resource)].sort(), evidence.reads.find(read => read.range.startsWith(CONTENT_SCHEMAS[resource].sheet + "!")).values[0].sort())
+  for (const resource of Object.keys(CONTENT_SCHEMAS)) assert.deepEqual([...headersFor(resource)].sort(), evidence.reads.find(read => read.range.startsWith(CONTENT_SCHEMAS[resource].sheet + "!")).values[0].filter(key => resource !== "communiques" || key !== "image_url").sort())
   assert(isResource("documents")); assert(!isResource("__proto__")); assert(!isResource("jeux"))
   assert.match(readFileSync("lib/site-web/config.ts", "utf8"), new RegExp(sourceId))
 })
@@ -119,4 +119,21 @@ test("signed upload claims bind actor, resource, record, field, kind and expiry"
   assert.throws(() => mod.verifyUpload(token, "A", "session"))
   assert.throws(() => mod.verifyUpload(token + "x", "A", "asset"))
   assert.throws(() => mod.verifyUpload(mod.signUpload({ ...claim, expires: 0 }), "A", "asset"))
+})
+
+
+test("communique image removed from schema, reads and writes; PDF association preserved", async()=>{
+ assert(!headersFor("communiques").includes("image_url"))
+ assert(!CONTENT_SCHEMAS.communiques.fields.some(f=>f.type==="image"))
+ assert(CONTENT_SCHEMAS.communiques.fields.some(f=>f.key==="id_document_public"&&f.relation==="documents"))
+ for(const r of ["sliders","actualites","evenements"])assert(CONTENT_SCHEMAS[r].fields.some(f=>f.type==="image"))
+ assert.throws(()=>validateContent("communiques",{...base("communiques"),image_url:"https://example.invalid/old.jpg"}),/image|d’image/)
+ const f=fixture({communiques:[{...base("communiques"),id_communique:"COM",image_url:"https://example.invalid/legacy.jpg"}]}),mod=await f.module()
+ assert(!Object.hasOwn((await mod.readContent("communiques"))[0],"image_url"))
+ await mod.saveContent("communiques",base("communiques"),{},"COM",true)
+ assert(!f.writes.at(-1).updates.some(u=>u.column==="image_url"))
+ const count=f.writes.length
+ await assert.rejects(mod.saveContent("communiques",base("communiques"),{image_url:new File(["bytes"],"x.jpg")},"COM",true),/PDF/)
+ await assert.rejects(mod.saveContent("communiques",base("communiques"),{},"COM",true,{image_url:"signed-old-image"}),/PDF/)
+ assert.equal(f.writes.length,count);assert.equal(f.uploads.length,0)
 })

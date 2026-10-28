@@ -47,6 +47,7 @@ async function limitedBody(request: Request) {
 export async function PUT(request: Request) {
   try {
     const session = await communicationSession("WRITE"), claim = verifyUpload(request.headers.get("x-upload-token") || "", session.idUser, "session")
+    if (!CONTENT_SCHEMAS[claim.resource]?.fields.some(field => field.key === claim.field && ["image", "pdf"].includes(field.type))) throw new ContentInputError("Ce champ de fichier n’est plus autorisé.")
     const start = Number(request.headers.get("x-upload-start")), buffer = await limitedBody(request)
     if (!claim.url || !claim.folder || !Number.isSafeInteger(start) || start < 0 || start % (256 * 1024) !== 0 || !buffer.length || start + buffer.length > claim.size || (start + buffer.length < claim.size && buffer.length % (256 * 1024) !== 0)) throw new ContentInputError("Fragment d’envoi invalide.")
     if (start === 0) { if (claim.mime === "application/pdf") assertPdfSignature(buffer); else if (imageMime(buffer) !== claim.mime) throw new ContentInputError("Signature d’image invalide.") }

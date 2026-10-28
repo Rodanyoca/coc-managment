@@ -45,6 +45,7 @@ async function assertUnpublishAllowed(resource: Resource, id: string, row: Conte
 export function contentId(resource: Resource, actorId: string, requestId: string) { return `WEB-${resource.toUpperCase()}-${createHash("sha256").update(`${actorId}:${resource}:${requestId}`).digest("hex").slice(0, 32)}` }
 
 export async function saveContent(resource: Resource, input: ContentRow, files: Record<string, File>, id: string, update: boolean, assets: Record<string, string> = {}) {
+  if (resource === "communiques" && (files.image_url || assets.image_url)) throw new ContentInputError("Un communiqué accepte uniquement son document PDF associé.", "image_url")
   const schema = CONTENT_SCHEMAS[resource], rows = await readContent(resource, { fresh: true }), current = rows.find(row => row[schema.id] === id)
   if (update && !current) throw new ContentInputError("Contenu introuvable.")
   // Deterministic IDs protect a retry whose first Sheets response was lost.

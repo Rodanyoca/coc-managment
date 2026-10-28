@@ -1,0 +1,26 @@
+[
+  {
+    "name": "tests",
+    "exit": 0,
+    "elapsedMs": 2416,
+    "utc": "2026-10-28T11:02:57.058Z"
+  },
+  {
+    "name": "typescript",
+    "exit": 0,
+    "elapsedMs": 79969,
+    "utc": "2026-10-28T11:04:17.040Z"
+  },
+  {
+    "name": "lint",
+    "exit": 0,
+    "elapsedMs": 73016,
+    "utc": "2026-10-28T11:05:30.069Z"
+  },
+  {
+    "name": "build",
+    "exit": 0,
+    "elapsedMs": 378988,
+    "utc": "2026-10-28T11:11:49.060Z"
+  }
+]

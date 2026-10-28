@@ -53,6 +53,7 @@ test("public media is inaccessible for draft/archive/future slider; no private D
   access = false; records.documents[0].id_statut_publication = "PUB002"
   const published = await get(); assert.equal(published.status, 200); assert.equal(published.headers.get("cache-control"), "private, no-store")
   contextResource = "sliders"; contextId = "SLD"; contextField = "image_url"; assert.equal((await get()).status, 404)
+  contextResource = "communiques"; contextId = "COM"; contextField = "image_url"; access = true; const beforeLegacy = downloads; assert.equal((await get()).status, 404); assert.equal(downloads, beforeLegacy); access = false
   contextResource = "photos"; contextId = "PHOTO"; contextField = "fichier_url"; assert.equal((await get()).status, 404)
   records.galeries[0].id_statut_publication = "PUB002"; assert.equal((await get()).status, 200)
   wrongFolder = true; assert.equal((await get()).status, 503)
@@ -96,7 +97,7 @@ test("fragmented upload checks limits, signatures, ownership and completed priva
   assert.equal((await init(declaredSize)).status, 200)
   const put = buffer => mod.PUT(new Request("https://fixture.invalid/api/site-web/uploads", { method: "PUT", headers: { "x-upload-token": "session", "x-upload-start": "0" }, body: buffer }))
   assert.equal((await put(Buffer.from("not-a-pdf"))).status, 400); assert.equal(puts, 0)
-  const response = await put(Buffer.from("%PDF-synthetic")); assert.equal(response.status, 200); assert.equal((await response.json()).asset, "asset"); assert.equal(completedVerified, 1)
+  const response = await put(Buffer.from("%PDF-synthetic")); assert.equal(response.status, 200); assert.equal((await response.json()).asset, "asset"); assert.equal(completedVerified, 1);const beforeLegacy=puts;activeClaim={...activeClaim,resource:"communiques",field:"image_url"};assert.equal((await put(Buffer.from("%PDF-synthetic"))).status,400);assert.equal(puts,beforeLegacy);assert.equal((await mod.POST(request("/api/site-web/uploads",{resource:"communiques",field:"image_url",size:10,mime:"image/jpeg",requestId:"fixture-request"}))).status,400)
 })
 
 test("a permission revoked while a mutation waits in the local queue is checked again", async () => {

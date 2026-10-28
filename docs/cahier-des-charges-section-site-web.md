@@ -194,7 +194,7 @@ Pas de création d’activité métier ni de rattachement implicite à une comp�
 
 ### 7.3 Communiqués
 
-Route `communiques`, feuille `COMMUNIQUES_SITE`. Date de publication, titre et statut requis. Extrait court, texte intégral et image facultative. PDF réutilisé via sélection d’un document par titre, stockant `id_document_public`, sans copie.
+Route `communiques`, feuille `COMMUNIQUES_SITE`. Date de publication, titre et statut requis. Extrait court et texte intégral. Aucune image : le seul média est le document PDF associé. PDF réutilisé via sélection d’un document par titre, stockant `id_document_public`, sans copie.
 
 `fichier_url` assure la compatibilité d’anciens liens directs. Sélectionner le document vide ce lien : pas de double saisie. Nouveau lien direct Google, média géré ou route `/api/` refusé pour éviter le contournement documentaire privé. La validation n’impose pas un PDF à tout communiqué.
 
@@ -286,7 +286,6 @@ Conventions : texte court ≤ 2 000 caractères ; texte long ≤ 100 000 selon l
 | `extrait` | Description courte | Texte long | Non |
 | `contenu` | Texte intégral | Texte long | Non |
 | `fichier_url` | Ancien lien direct (facultatif) | Lien | Non |
-| `image_url` | Image facultative | Image gérée | Non |
 | `id_statut_publication` | Statut de publication | Statut | Oui |
 | `est_mis_en_avant` | À la une | Oui/non | Non |
 | `ordre_affichage` | Ordre d’affichage | Entier | Non |

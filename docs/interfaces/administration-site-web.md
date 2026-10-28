@@ -78,3 +78,8 @@ La variante en tableau est remplacée à la demande utilisateur par des blocs co
 
 ### Insertion des lignes — 25 octobre 2026
 Les neuf ressources, photos incluses, demandent un placement par ID dans la première ligne admissible. Seuls les FALSE des colonnes booléennes déclarées sont ignorés ; toute autre donnée ou formule protège une ligne sans ID. L’insertion et le remplissage utilisent un batch atomique avec conservation formats/validations, sans écraser les cellules concurrentes ; les lignes suivantes peuvent être décalées. Les modifications Site Web recherchent désormais leur ID en lecture fraîche. Autres blocs inchangés par défaut, C2 toujours différé. Limites inter-instances et proposition non exécutée de déplacement de l’actualité : [rapport détaillé](../implementation/site-web-insertion-2026-10-25.md). Aucun changement automatique de date.
+
+
+## Communiqués sans image — 28 octobre 2026
+
+Le champ image est supprimé du contrat applicatif et des vues générées (ajout, modification, détail, miniature/liste). Le seul média est le PDF associé. Les anciens uploads et l’ancienne route image sont refusés côté serveur. Voir [le rapport de validation et la migration coordonnée du classeur](../implementation/communiques-sans-image-2026-10-28.md). La colonne live image_url ne doit être supprimée qu’après publication du code compatible : aucune suppression physique encore effectuée.

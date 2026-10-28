@@ -8,6 +8,7 @@ export function safeLink(value: string, local = false) {
   try { const url = new URL(value); return ["https:", "http:"].includes(url.protocol) && !url.username && !url.password && !/[\u0000-\u001f]/.test(value) } catch { return false }
 }
 export function validateContent(resource: Resource, input: ContentRow): ContentRow {
+  if (resource === "communiques" && input.image_url) throw new ContentInputError("Un communiqué ne peut pas contenir d’image. Sélectionnez son document PDF associé.", "image_url")
   const row: ContentRow = {}
   for (const f of CONTENT_SCHEMAS[resource].fields) {
     const value = String(input[f.key] ?? "").trim()
