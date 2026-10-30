@@ -1,5 +1,5 @@
 import { canAccess } from "@/lib/auth"
-import { getAthleteParticipations, getCampaignEngagements, getCompetitionReferences, getCompetitions, getTeamParticipations } from "@/lib/competitions/data"
+import { getAthleteParticipations, getCampaignEngagements, getCompetitionFormReferences, getCompetitions, getTeamParticipations } from "@/lib/competitions/data"
 import { getCampaignStaff } from "@/lib/equipes-nationales/data"
 import { calculateCompetitionDelegationCounts } from "@/lib/competitions/delegation-counts"
 import CompetitionsClient from "./competitions-client"
@@ -15,7 +15,7 @@ export default async function CompetitionsPage({ searchParams }: { searchParams:
   try {
     const [competitions, references] = await Promise.all([
       getCompetitions(),
-      getCompetitionReferences(),
+      getCompetitionFormReferences(),
     ])
     const [engagementLinksResult, engagementsResult, athletesResult, staffResult] = await Promise.allSettled([
       getTeamParticipations(),

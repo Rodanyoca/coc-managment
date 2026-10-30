@@ -1,0 +1,2189 @@
+{
+  "at": "2026-10-30T11:05:29.437Z",
+  "node": "v24.16.0",
+  "syntheticOnly": true,
+  "networkCalls": 0,
+  "note": "Google adapter invocations, not observed external API requests. Timed runs use plain rows; counters are collected separately with probes. No Vercel CPU attribution.",
+  "equivalence": [
+    "normal:getCompetitions:[]",
+    "normal:getCompetition:[\" comp0000 \",{\"bypassCache\":true}]",
+    "normal:getCompetition:[\"unknown\"]",
+    "normal:getCompetition:[\"\"]",
+    "normal:getCompetitionPrograms:[null,{\"bypassCache\":true}]",
+    "normal:getParticipatingUnits:[null]",
+    "normal:getCampaignEngagements:[{\"fresh\":true}]",
+    "normal:getCompetitionResults:[null,true,{\"bypassCache\":true}]",
+    "normal:getCompetitionResults:[null,false]",
+    "normal:getCompetitionPrograms:[\"\",{\"bypassCache\":true}]",
+    "normal:getParticipatingUnits:[\"\"]",
+    "normal:getCampaignEngagements:[{\"competitionId\":\"\",\"fresh\":true}]",
+    "normal:getCompetitionResults:[\"\",true,{\"bypassCache\":true}]",
+    "normal:getCompetitionResults:[\"\",false]",
+    "normal:getCompetitionPrograms:[\"COMP0000\",{\"bypassCache\":true}]",
+    "normal:getParticipatingUnits:[\"COMP0000\"]",
+    "normal:getCampaignEngagements:[{\"competitionId\":\"COMP0000\",\"fresh\":true}]",
+    "normal:getCompetitionResults:[\"COMP0000\",true,{\"bypassCache\":true}]",
+    "normal:getCompetitionResults:[\"COMP0000\",false]",
+    "normal:getCompetitionPrograms:[\"unknown\",{\"bypassCache\":true}]",
+    "normal:getParticipatingUnits:[\"unknown\"]",
+    "normal:getCampaignEngagements:[{\"competitionId\":\"unknown\",\"fresh\":true}]",
+    "normal:getCompetitionResults:[\"unknown\",true,{\"bypassCache\":true}]",
+    "normal:getCompetitionResults:[\"unknown\",false]",
+    "normal:getCampaignEngagements:[{\"teamId\":\"TEAM0\",\"competitionId\":\"COMP0000\"}]",
+    "normal:getCampaignEngagements:[{\"teamId\":\"unknown\"}]",
+    "normal:getCompetitionMedals:[\"COMP0000\"]",
+    "empty:getCompetitions:[]",
+    "empty:getCompetition:[\" comp0000 \",{\"bypassCache\":true}]",
+    "empty:getCompetition:[\"unknown\"]",
+    "empty:getCompetition:[\"\"]",
+    "empty:getCompetitionPrograms:[null,{\"bypassCache\":true}]",
+    "empty:getParticipatingUnits:[null]",
+    "empty:getCampaignEngagements:[{\"fresh\":true}]",
+    "empty:getCompetitionResults:[null,true,{\"bypassCache\":true}]",
+    "empty:getCompetitionResults:[null,false]",
+    "empty:getCompetitionPrograms:[\"\",{\"bypassCache\":true}]",
+    "empty:getParticipatingUnits:[\"\"]",
+    "empty:getCampaignEngagements:[{\"competitionId\":\"\",\"fresh\":true}]",
+    "empty:getCompetitionResults:[\"\",true,{\"bypassCache\":true}]",
+    "empty:getCompetitionResults:[\"\",false]",
+    "empty:getCompetitionPrograms:[\"COMP0000\",{\"bypassCache\":true}]",
+    "empty:getParticipatingUnits:[\"COMP0000\"]",
+    "empty:getCampaignEngagements:[{\"competitionId\":\"COMP0000\",\"fresh\":true}]",
+    "empty:getCompetitionResults:[\"COMP0000\",true,{\"bypassCache\":true}]",
+    "empty:getCompetitionResults:[\"COMP0000\",false]",
+    "empty:getCompetitionPrograms:[\"unknown\",{\"bypassCache\":true}]",
+    "empty:getParticipatingUnits:[\"unknown\"]",
+    "empty:getCampaignEngagements:[{\"competitionId\":\"unknown\",\"fresh\":true}]",
+    "empty:getCompetitionResults:[\"unknown\",true,{\"bypassCache\":true}]",
+    "empty:getCompetitionResults:[\"unknown\",false]",
+    "empty:getCampaignEngagements:[{\"teamId\":\"TEAM0\",\"competitionId\":\"COMP0000\"}]",
+    "empty:getCampaignEngagements:[{\"teamId\":\"unknown\"}]",
+    "empty:getCompetitionMedals:[\"COMP0000\"]",
+    "incomplete:getCompetitions:[]",
+    "incomplete:getCompetition:[\" comp0000 \",{\"bypassCache\":true}]",
+    "incomplete:getCompetition:[\"unknown\"]",
+    "incomplete:getCompetition:[\"\"]",
+    "incomplete:getCompetitionPrograms:[null,{\"bypassCache\":true}]",
+    "incomplete:getParticipatingUnits:[null]",
+    "incomplete:getCampaignEngagements:[{\"fresh\":true}]",
+    "incomplete:getCompetitionResults:[null,true,{\"bypassCache\":true}]",
+    "incomplete:getCompetitionResults:[null,false]",
+    "incomplete:getCompetitionPrograms:[\"\",{\"bypassCache\":true}]",
+    "incomplete:getParticipatingUnits:[\"\"]",
+    "incomplete:getCampaignEngagements:[{\"competitionId\":\"\",\"fresh\":true}]",
+    "incomplete:getCompetitionResults:[\"\",true,{\"bypassCache\":true}]",
+    "incomplete:getCompetitionResults:[\"\",false]",
+    "incomplete:getCompetitionPrograms:[\"COMP0000\",{\"bypassCache\":true}]",
+    "incomplete:getParticipatingUnits:[\"COMP0000\"]",
+    "incomplete:getCampaignEngagements:[{\"competitionId\":\"COMP0000\",\"fresh\":true}]",
+    "incomplete:getCompetitionResults:[\"COMP0000\",true,{\"bypassCache\":true}]",
+    "incomplete:getCompetitionResults:[\"COMP0000\",false]",
+    "incomplete:getCompetitionPrograms:[\"unknown\",{\"bypassCache\":true}]",
+    "incomplete:getParticipatingUnits:[\"unknown\"]",
+    "incomplete:getCampaignEngagements:[{\"competitionId\":\"unknown\",\"fresh\":true}]",
+    "incomplete:getCompetitionResults:[\"unknown\",true,{\"bypassCache\":true}]",
+    "incomplete:getCompetitionResults:[\"unknown\",false]",
+    "incomplete:getCampaignEngagements:[{\"teamId\":\"TEAM0\",\"competitionId\":\"COMP0000\"}]",
+    "incomplete:getCampaignEngagements:[{\"teamId\":\"unknown\"}]",
+    "incomplete:getCompetitionMedals:[\"COMP0000\"]"
+  ],
+  "workloads": [
+    {
+      "population": 4,
+      "name": "detail",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.061199999999985266,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.07040000000000646,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.05110000000001946,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.05500000000000682,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.061700000000030286,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.12920000000002574,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03370000000001028,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.02600000000001046,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.02780000000001337,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.022000000000048203,
+            "returned": 1,
+            "responseBytes": 320
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03680000000002792,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03260000000000218,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.02780000000001337,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.025300000000015643,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.05119999999999436,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.04950000000002319,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.02240000000000464,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.011899999999968713,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.008800000000007913,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.008199999999987995,
+            "returned": 1,
+            "responseBytes": 320
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.05500000000000682,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 4,
+        "projections": {
+          "COMPETITIONS": 4
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.02780000000001337,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 4,
+        "projections": {
+          "COMPETITIONS": 1
+        }
+      }
+    },
+    {
+      "population": 4,
+      "name": "programs",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.04559999999997899,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.06329999999996971,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.04619999999999891,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.04290000000003147,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03860000000003083,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03950000000003229,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.037800000000004275,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03750000000002274,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03819999999996071,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03809999999998581,
+            "returned": 5,
+            "responseBytes": 966
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.023500000000012733,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.022599999999954434,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.021500000000003183,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.01959999999996853,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.024599999999963984,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.019700000000000273,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.01799999999997226,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.017200000000002547,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03260000000000218,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.058500000000037744,
+            "returned": 5,
+            "responseBytes": 966
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.03950000000003229,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 20,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 20
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.022599999999954434,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 20,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 5
+        }
+      }
+    },
+    {
+      "population": 4,
+      "name": "engagements",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.26539999999999964,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1826000000000363,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.14170000000001437,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.14379999999999882,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.12770000000000437,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.15260000000000673,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.14570000000003347,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.17070000000001073,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.13949999999999818,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.13179999999999836,
+            "returned": 10,
+            "responseBytes": 3011
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2471999999999639,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.46640000000002146,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.0947999999999638,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.09919999999999618,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1139999999999759,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.09660000000002356,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.08969999999999345,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.09200000000004138,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.10930000000001883,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.08099999999996044,
+            "returned": 10,
+            "responseBytes": 3011
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.14570000000003347,
+        "sheetReads": 4,
+        "batchCalls": 0,
+        "rowsRead": 68,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 20,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 40
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.09919999999999618,
+        "sheetReads": 4,
+        "batchCalls": 0,
+        "rowsRead": 68,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 20,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 10
+        }
+      }
+    },
+    {
+      "population": 4,
+      "name": "results-current",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.9769999999999754,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.9553000000000225,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.9255999999999744,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 2.3829000000000065,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.9809999999999945,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.9625000000000341,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.9660000000000082,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.490099999999984,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.279299999999978,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.959699999999998,
+            "returned": 30,
+            "responseBytes": 17701
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.27199999999999136,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.26269999999999527,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.26350000000002183,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.25830000000001974,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.31620000000003756,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.3032000000000039,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2715999999999781,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2786000000000399,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.3048999999999751,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.30869999999998754,
+            "returned": 30,
+            "responseBytes": 17701
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.9769999999999754,
+        "sheetReads": 5,
+        "batchCalls": 0,
+        "rowsRead": 268,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 20,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 40,
+          "RESULTATS": 200
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.2786000000000399,
+        "sheetReads": 5,
+        "batchCalls": 0,
+        "rowsRead": 268,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 20,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 10,
+          "RESULTATS": 30
+        }
+      }
+    },
+    {
+      "population": 4,
+      "name": "units",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.42610000000001946,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.44640000000003965,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 0.4836999999999989,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.4471999999999525,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.4520999999999731,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.4759000000000242,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.41469999999992524,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.41219999999998436,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.45090000000004693,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.41469999999992524,
+            "returned": 40,
+            "responseBytes": 14241
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2737999999999374,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2863999999999578,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2923000000000684,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2908999999999651,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.33969999999999345,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.290300000000002,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2258000000000493,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2296999999999798,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.3181999999999334,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.237700000000018,
+            "returned": 40,
+            "responseBytes": 14241
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.4471999999999525,
+        "sheetReads": 5,
+        "batchCalls": 1,
+        "rowsRead": 1260,
+        "projections": {
+          "memberComparisons": 25600
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.290300000000002,
+        "sheetReads": 5,
+        "batchCalls": 1,
+        "rowsRead": 1260,
+        "projections": {
+          "memberComparisons": 640
+        }
+      }
+    },
+    {
+      "population": 4,
+      "name": "list-form-references",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03499999999996817,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.02549999999996544,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.02470000000005257,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.8582999999999856,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.030099999999947613,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03719999999998436,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.017699999999990723,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.011999999999943611,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.011200000000030741,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.0119000000000824,
+            "returned": 1,
+            "responseBytes": 177
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.011899999999968713,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.010600000000067666,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.008500000000026375,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.013299999999958345,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.014799999999922875,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.018799999999941974,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.006099999999946704,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.004400000000032378,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.00430000000005748,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.0039000000000442014,
+            "returned": 1,
+            "responseBytes": 177
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.02549999999996544,
+        "sheetReads": 9,
+        "batchCalls": 1,
+        "rowsRead": 31,
+        "projections": {}
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.010600000000067666,
+        "sheetReads": 3,
+        "batchCalls": 0,
+        "rowsRead": 3,
+        "projections": {}
+      }
+    },
+    {
+      "population": 4,
+      "name": "list-delegations",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.16899999999998272,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.177599999999984,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1812000000001035,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1874000000000251,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.17609999999990578,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.17479999999989104,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.19489999999996144,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.17289999999991323,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 30,
+            "elapsedMs": 0.39610000000004675,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.11329999999998108,
+            "returned": 1,
+            "responseBytes": 57
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1554999999999609,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1675000000000182,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.282799999999952,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2157999999999447,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.15620000000001255,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.15499999999997272,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1591999999999416,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1530999999999949,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.18290000000001783,
+            "returned": 1,
+            "responseBytes": 57
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.15170000000000528,
+            "returned": 1,
+            "responseBytes": 57
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.177599999999984,
+        "sheetReads": 0,
+        "batchCalls": 0,
+        "rowsRead": 0,
+        "projections": {}
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.1591999999999416,
+        "sheetReads": 0,
+        "batchCalls": 0,
+        "rowsRead": 0,
+        "projections": {}
+      }
+    },
+    {
+      "population": 80,
+      "name": "detail",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.29589999999996053,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.30930000000000746,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.34140000000002146,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.3068999999999278,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 31,
+            "elapsedMs": 0.2744999999999891,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.272199999999998,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2898999999999887,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2636999999999716,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 0.2686999999999671,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.25940000000002783,
+            "returned": 1,
+            "responseBytes": 320
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.011599999999930333,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.01010000000007949,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.016699999999900683,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.010600000000067666,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.022600000000011278,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.022399999999947795,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.012899999999945067,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.007599999999911233,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.00760000000002492,
+            "returned": 1,
+            "responseBytes": 320
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.006799999999998363,
+            "returned": 1,
+            "responseBytes": 320
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.2898999999999887,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 80,
+        "projections": {
+          "COMPETITIONS": 80
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.011599999999930333,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 80,
+        "projections": {
+          "COMPETITIONS": 1
+        }
+      }
+    },
+    {
+      "population": 80,
+      "name": "programs",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.6906000000000176,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.7169999999999845,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.6875,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.7287000000000035,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.7581000000000131,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.264599999999973,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.8899000000000115,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.74350000000004,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.7252999999999474,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.7880999999999858,
+            "returned": 5,
+            "responseBytes": 966
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.09990000000004784,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.09950000000003456,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.10120000000006257,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.09829999999999472,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.12209999999993215,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2556999999999334,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.12459999999998672,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.1048000000000684,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.16039999999998145,
+            "returned": 5,
+            "responseBytes": 966
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.10479999999995471,
+            "returned": 5,
+            "responseBytes": 966
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.74350000000004,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 400,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 400
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.1048000000000684,
+        "sheetReads": 1,
+        "batchCalls": 0,
+        "rowsRead": 400,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 5
+        }
+      }
+    },
+    {
+      "population": 80,
+      "name": "engagements",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.7556999999999334,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 2.5190000000000055,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.4549999999999272,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 9.073599999999942,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 2.1888999999999896,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.133699999999976,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.193300000000022,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.869100000000003,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 31,
+            "elapsedMs": 2.313699999999926,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.4201000000000477,
+            "returned": 10,
+            "responseBytes": 3011
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.1695999999999458,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.1555999999999358,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.198099999999954,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.1245999999999867,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.1134000000000697,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.0492000000000417,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.0401999999999134,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.0842000000000098,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.017400000000066,
+            "returned": 10,
+            "responseBytes": 3011
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 1.2006999999999834,
+            "returned": 10,
+            "responseBytes": 3011
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 2.4549999999999272,
+        "sheetReads": 4,
+        "batchCalls": 0,
+        "rowsRead": 1360,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 400,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 800
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 1.1245999999999867,
+        "sheetReads": 4,
+        "batchCalls": 0,
+        "rowsRead": 1360,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 400,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 10
+        }
+      }
+    },
+    {
+      "population": 80,
+      "name": "results-current",
+      "samples": [
+        [
+          {
+            "cpuMs": 15,
+            "elapsedMs": 19.004499999999894,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 32,
+            "elapsedMs": 21.96270000000004,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 22.756700000000023,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 19.54819999999995,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 20.15430000000015,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 31,
+            "elapsedMs": 19.442000000000007,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 20.414099999999962,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 31,
+            "elapsedMs": 20.53489999999988,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 21.407300000000077,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 27.953700000000026,
+            "returned": 30,
+            "responseBytes": 17701
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.2171999999999343,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.149400000000014,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.186200000000099,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 2.146099999999933,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.4664000000000215,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.1696999999999207,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.12279999999987,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.0961999999999534,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 3.725099999999884,
+            "returned": 30,
+            "responseBytes": 17701
+          },
+          {
+            "cpuMs": 30,
+            "elapsedMs": 3.783300000000054,
+            "returned": 30,
+            "responseBytes": 17701
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 16,
+        "medianElapsedMs": 20.53489999999988,
+        "sheetReads": 5,
+        "batchCalls": 0,
+        "rowsRead": 5360,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 400,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 800,
+          "RESULTATS": 4000
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 2.186200000000099,
+        "sheetReads": 5,
+        "batchCalls": 0,
+        "rowsRead": 5360,
+        "projections": {
+          "PROGRAMMES_COMPETITION": 400,
+          "ENGAGEMENTS_CAMPAGNES_PROGRAMMES": 10,
+          "RESULTATS": 30
+        }
+      }
+    },
+    {
+      "population": 80,
+      "name": "units",
+      "samples": [
+        [
+          {
+            "cpuMs": 16,
+            "elapsedMs": 6.756599999999935,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 5.524499999999989,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 6.099100000000135,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 12.245200000000068,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 5.503000000000156,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 5.359199999999873,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 5.694599999999809,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 5.1340000000000146,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 7.757399999999961,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 5.6240999999999985,
+            "returned": 40,
+            "responseBytes": 14241
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.8520999999998367,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.7065999999999804,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.4972999999999956,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.5632000000000517,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.9314999999999145,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 31,
+            "elapsedMs": 4.011500000000069,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 3.5405000000000655,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 3.1016000000001895,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 3.493199999999888,
+            "returned": 40,
+            "responseBytes": 14241
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.4892999999999574,
+            "returned": 40,
+            "responseBytes": 14241
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 5.694599999999809,
+        "sheetReads": 5,
+        "batchCalls": 1,
+        "rowsRead": 25200,
+        "projections": {
+          "memberComparisons": 512000
+        }
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 2.9314999999999145,
+        "sheetReads": 5,
+        "batchCalls": 1,
+        "rowsRead": 25200,
+        "projections": {
+          "memberComparisons": 12800
+        }
+      }
+    },
+    {
+      "population": 80,
+      "name": "list-form-references",
+      "samples": [
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.09029999999984284,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.18209999999999127,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.2135000000000673,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.10799999999994725,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.13520000000016807,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.13210000000003674,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.056800000000066575,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.04169999999999163,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.028299999999944703,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.028900000000021464,
+            "returned": 1,
+            "responseBytes": 177
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.023400000000037835,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.01619999999979882,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03449999999997999,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.016599999999925785,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.02490000000011605,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.03890000000001237,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.014599999999973079,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.006700000000137152,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.005300000000033833,
+            "returned": 1,
+            "responseBytes": 177
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 0.004500000000007276,
+            "returned": 1,
+            "responseBytes": 177
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.10799999999994725,
+        "sheetReads": 9,
+        "batchCalls": 1,
+        "rowsRead": 563,
+        "projections": {}
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 0.016599999999925785,
+        "sheetReads": 3,
+        "batchCalls": 0,
+        "rowsRead": 3,
+        "projections": {}
+      }
+    },
+    {
+      "population": 80,
+      "name": "list-delegations",
+      "samples": [
+        [
+          {
+            "cpuMs": 15,
+            "elapsedMs": 22.95679999999993,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 14.115600000000086,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 12.942900000000009,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 12.059599999999818,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 12.38740000000007,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 12.293100000000095,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 12.786799999999857,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 13.220400000000154,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 13.263599999999997,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 16,
+            "elapsedMs": 16.111200000000053,
+            "returned": 1,
+            "responseBytes": 1121
+          }
+        ],
+        [
+          {
+            "cpuMs": 0,
+            "elapsedMs": 7.285900000000083,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.625,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.737600000000157,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.5974999999998545,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.4145999999998367,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.3414000000000215,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.203399999999874,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 2.091699999999946,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 15,
+            "elapsedMs": 3.191100000000006,
+            "returned": 1,
+            "responseBytes": 1121
+          },
+          {
+            "cpuMs": 0,
+            "elapsedMs": 3.60570000000007,
+            "returned": 1,
+            "responseBytes": 1121
+          }
+        ]
+      ],
+      "before": {
+        "medianCpuMs": 16,
+        "medianElapsedMs": 13.220400000000154,
+        "sheetReads": 0,
+        "batchCalls": 0,
+        "rowsRead": 0,
+        "projections": {}
+      },
+      "after": {
+        "medianCpuMs": 0,
+        "medianElapsedMs": 2.625,
+        "sheetReads": 0,
+        "batchCalls": 0,
+        "rowsRead": 0,
+        "projections": {}
+      }
+    }
+  ],
+  "delegationFuzzCases": 100
+}

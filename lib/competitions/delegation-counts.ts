@@ -33,28 +33,30 @@ export function calculateCompetitionDelegationCounts(
   const campaignByEngagement = new Map(
     campaignEngagements.map((row) => [row.id_engagement_campagne, row.id_campagne]),
   )
-
-  return Object.fromEntries(competitionIds.map((competitionId) => {
-    const engagementIds = new Set(
-      engagementLinks
-        .filter((row) => row.id_competition === competitionId)
-        .map((row) => row.id_participation_equipe),
-    )
-    const campaignIds = new Set(
-      [...engagementIds].map((id) => campaignByEngagement.get(id)).filter(Boolean),
-    )
-    const delegates = new Set<string>()
-
-    for (const row of athleteParticipations) {
-      if (engagementIds.has(row.id_engagement_campagne) && DELEGATION_ATHLETE_STATUSES.has(row.id_statut_participation)) {
-        delegates.add(`ATHLETE:${row.athlete_id || row.id_selection}`)
-      }
+  const delegates = new Map(competitionIds.map((id) => [id, new Set<string>()]))
+  const competitionsByEngagement = new Map<string, Set<string>>()
+  const competitionsByCampaign = new Map<string, Set<string>>()
+  for (const row of engagementLinks) {
+    if (!delegates.has(row.id_competition)) continue
+    const competitions = competitionsByEngagement.get(row.id_participation_equipe) ?? new Set<string>()
+    competitions.add(row.id_competition)
+    competitionsByEngagement.set(row.id_participation_equipe, competitions)
+    const campaignId = campaignByEngagement.get(row.id_participation_equipe)
+    if (campaignId) {
+      const campaigns = competitionsByCampaign.get(campaignId) ?? new Set<string>()
+      campaigns.add(row.id_competition)
+      competitionsByCampaign.set(campaignId, campaigns)
     }
-    for (const row of staffAssignments) {
-      if (campaignIds.has(row.id_campagne) && row.id_acteur_coc) {
-        delegates.add(`${row.id_type_acteur || "STAFF"}:${row.id_acteur_coc}`)
-      }
-    }
-    return [competitionId, delegates.size]
-  }))
+  }
+  for (const row of athleteParticipations) {
+    const competitions = competitionsByEngagement.get(row.id_engagement_campagne)
+    if (!competitions || !DELEGATION_ATHLETE_STATUSES.has(row.id_statut_participation)) continue
+    for (const id of competitions) delegates.get(id)!.add(`ATHLETE:${row.athlete_id || row.id_selection}`)
+  }
+  for (const row of staffAssignments) {
+    const competitions = competitionsByCampaign.get(row.id_campagne)
+    if (!competitions || !row.id_acteur_coc) continue
+    for (const id of competitions) delegates.get(id)!.add(`${row.id_type_acteur || "STAFF"}:${row.id_acteur_coc}`)
+  }
+  return Object.fromEntries(competitionIds.map((id) => [id, delegates.get(id)!.size]))
 }

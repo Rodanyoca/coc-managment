@@ -1,0 +1,86 @@
+{
+  "at": "2026-10-30T11:21:29.593Z",
+  "syntheticOnly": true,
+  "authenticatedProduction": false,
+  "checks": [
+    {
+      "device": "desktop",
+      "tab": "Programmes"
+    },
+    {
+      "device": "desktop",
+      "tab": "Participants"
+    },
+    {
+      "device": "desktop",
+      "tab": "Équipes / unités"
+    },
+    {
+      "device": "desktop",
+      "tab": "Résultats"
+    },
+    {
+      "device": "desktop",
+      "tab": "Équipes / unités"
+    },
+    {
+      "device": "desktop",
+      "tab": "Résultats"
+    },
+    {
+      "device": "desktop",
+      "list": "search/empty/no-request",
+      "historyRows": [
+        31,
+        51
+      ],
+      "unitRequests": 1
+    },
+    {
+      "device": "mobile",
+      "tab": "Programmes"
+    },
+    {
+      "device": "mobile",
+      "tab": "Participants"
+    },
+    {
+      "device": "mobile",
+      "tab": "Équipes / unités"
+    },
+    {
+      "device": "mobile",
+      "tab": "Résultats"
+    },
+    {
+      "device": "mobile",
+      "tab": "Équipes / unités"
+    },
+    {
+      "device": "mobile",
+      "tab": "Résultats"
+    },
+    {
+      "device": "mobile",
+      "list": "search/empty/no-request",
+      "historyRows": [
+        31,
+        51
+      ],
+      "unitRequests": 1
+    }
+  ],
+  "requests": [
+    {
+      "device": "desktop",
+      "path": "/api/competitions/COMP0000/unites",
+      "method": "GET"
+    },
+    {
+      "device": "mobile",
+      "path": "/api/competitions/COMP0000/unites",
+      "method": "GET"
+    }
+  ],
+  "errors": []
+}

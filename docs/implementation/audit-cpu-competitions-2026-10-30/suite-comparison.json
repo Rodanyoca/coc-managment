@@ -1,0 +1,24 @@
+{
+  "reference": [
+    "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+    "la connexion recharge la destination après la pose du cookie",
+    "la liste finale masque les cérémonies et conserve une action accessible",
+    "la liste fédérations utilise le format tableau des ligues sans colonne identifiant",
+    "le formulaire remplace les dates par le référentiel des saisons",
+    "les chargements concernés utilisent un gris léger",
+    "les écritures restent contextuelles et masquées sans droit",
+    "l’administration du site regroupe toutes les anciennes entrées du sous-menu",
+    "une mise à jour Sheets réutilise les lignes et en-têtes mis en cache"
+  ],
+  "variant": [
+    "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+    "la connexion recharge la destination après la pose du cookie",
+    "la liste finale masque les cérémonies et conserve une action accessible",
+    "la liste fédérations utilise le format tableau des ligues sans colonne identifiant",
+    "le formulaire remplace les dates par le référentiel des saisons",
+    "les chargements concernés utilisent un gris léger",
+    "les écritures restent contextuelles et masquées sans droit",
+    "l’administration du site regroupe toutes les anciennes entrées du sous-menu",
+    "une mise à jour Sheets réutilise les lignes et en-têtes mis en cache"
+  ]
+}

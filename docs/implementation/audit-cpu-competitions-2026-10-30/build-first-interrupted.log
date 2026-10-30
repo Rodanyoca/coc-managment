@@ -1,0 +1,37 @@
+▲ Next.js 16.3.4 (Turbopack)
+
+✓ Running next.config.mjs took 383ms
+
+node : ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
+
+Au caractère Ligne:2 : 335
+
++ ... $_.Name) }; node node_modules/next/dist/bin/next build > ../build.log ...
+
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    + CategoryInfo          : NotSpecified: (⚠ Warning: Next...not be correct.:String) [], RemoteException
+
+    + FullyQualifiedErrorId : NativeCommandError
+
+
+
+ We detected multiple lockfiles and selected the directory of
+
+C:\Projets\SNDS-RDC\data\multisport\coc-managment\pnpm-lock.yaml as the root directory.
+
+ To silence this warning, set `turbopack.root` in your Next.js config, or consider removing one of the lockfiles if
+
+it's not needed.
+
+   See https://nextjs.org/docs/app/api-reference/config/next-config-js/turbopack#root-directory for more information.
+
+ Detected additional lockfiles:
+
+   * C:\Projets\SNDS-RDC\data\multisport\coc-managment\.cache\competitions-cpu-20261030\validation\pnpm-lock.yaml
+
+
+
+
+
+  Creating an optimized production build ...

@@ -1,0 +1,35 @@
+(node:8612) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:8612) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ competition detail and programs project only selected records, preserving normalization and freshness (125.5162ms)
+
+✔ results filter competition/history before projection; missing and orphaned relations stay excluded (40.6739ms)
+
+✔ unit members are indexed once, preserving duplicates, source order, direct composition and label failure (34.5799ms)
+
+✔ form references read only the three consumed tables and preserve returned labels (25.3558ms)
+
+✔ delegation counts scan athletes once and preserve union across campaigns and competitions (2.4988ms)
+
+✔ units route refuses absent, unassigned, expired and unavailable access before any business read (74.7774ms)
+
+✔ competition and program mutations re-read their changes without changing identity or unrelated editions (18.6395ms)
+
+ℹ tests 7
+
+ℹ suites 0
+
+ℹ pass 7
+
+ℹ fail 0
+
+ℹ cancelled 0
+
+ℹ skipped 0
+
+ℹ todo 0
+
+ℹ duration_ms 477.9244

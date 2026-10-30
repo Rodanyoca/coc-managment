@@ -20,3 +20,8 @@ Les mesures réelles dépendantes de Google ne sont pas rejouées en écriture a
 - Les messages Sheets bruts restent côté serveur ; 429 et indisponibilité sont réessayables.
 - Les lectures simultanées identiques sont dédupliquées et les appels Sheets sont limités à six lectures concurrentes avec timeout.
 - Les contrôles de session et d'autorisation conservent leur stratégie de fraîcheur dédiée.
+
+
+## Compétitions — 30 octobre 2026
+
+Une analyse et une livraison locale ciblées du bloc Compétitions sont documentées dans [le rapport CP1/CP2/CP3](audit-cpu-competitions-2026-10-30.md). Les mesures locales ne sont pas des mesures Vercel. S1/F1 et le brouillon C2 restent inchangés ; aucune publication de ce lot. La référence du workspace donne 316/325 tests, neuf échecs reproduits dans la variante, et non les six échecs des anciennes compositions.

@@ -1,0 +1,13 @@
+{
+  "base": "e6dbe7109fba06ab48b4a4131bc809cabcf1a1d2",
+  "cpuPassed": 57,
+  "cpuFailed": 0,
+  "typescript": 0,
+  "lint": 0,
+  "C2Included": false,
+  "applicationFiles": [
+    "lib/competitions/data.ts",
+    "lib/competitions/delegation-counts.ts",
+    "app/dashboard/competitions/page.tsx"
+  ]
+}

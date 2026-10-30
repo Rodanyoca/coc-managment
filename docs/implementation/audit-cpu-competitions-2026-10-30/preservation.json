@@ -1,0 +1,12 @@
+{
+  "originalFiles": 977,
+  "unchangedOutsideScope": 973,
+  "changed": [
+    "app\\dashboard\\competitions\\page.tsx",
+    "docs\\implementation\\performance-routes-audit.md",
+    "lib\\competitions\\data.ts",
+    "lib\\competitions\\delegation-counts.ts"
+  ],
+  "newRuntimeFiles": [],
+  "googleAuthAndParallelWorkUnchanged": true
+}
