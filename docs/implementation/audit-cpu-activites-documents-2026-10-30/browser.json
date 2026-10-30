@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "device": "desktop",
+      "requests": [
+        "/api/documents/DOC1/preview",
+        "/api/documents/DOC2/preview"
+      ],
+      "noInitialBinary": true,
+      "documentChangeResetsPreview": true,
+      "editAvailable": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "device": "mobile",
+      "requests": [
+        "/api/documents/DOC1/preview",
+        "/api/documents/DOC2/preview"
+      ],
+      "noInitialBinary": true,
+      "documentChangeResetsPreview": true,
+      "editAvailable": true,
+      "noHorizontalOverflow": true
+    }
+  ],
+  "errors": [],
+  "syntheticOnly": true
+}

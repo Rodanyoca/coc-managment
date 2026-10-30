@@ -4,7 +4,7 @@ export const runtime = "nodejs"; export const dynamic = "force-dynamic"; export 
 export default async function ActivitesPage() {
   let props: React.ComponentProps<typeof ActivitesClient>
   try {
-    const [activities, references] = await Promise.all([getActivities(), getActivityReferences()])
+    const [activities, references] = await Promise.all([getActivities(), getActivityReferences({ includeRelations: false })])
     props = { initialRows: activities, references }
   } catch (error) {
     props = {

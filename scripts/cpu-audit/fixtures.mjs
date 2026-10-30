@@ -6,17 +6,17 @@ export function documentRows(count) {
 }
 
 export async function documentsModule(root, rows) {
-  const state = { sizeCalls: [], sheetCalls: [], writes: [], allowWrites: false, failSize: false, failSheet: false, failHeaders: false }
+  const state = { sizeCalls: [], sheetCalls: [], referenceCalls: [], writes: [], allowWrites: false, failSize: false, failSheet: false, failHeaders: false }
   const forbidden = () => { throw new Error('Write forbidden in this offline fixture') }
-  const empty = async () => []
+  const empty = name => async () => { state.referenceCalls.push(name); return state.referenceValues?.[name] ?? [] }
   const namespace = await loadServerModule(root, 'lib/documents/data.ts', {
     '@/lib/google/sheets': { appendSheetRow: async input => { if(!state.allowWrites) return forbidden();state.writes.push(input) }, updateSheetCells: forbidden, getSheetRows: async options => { state.sheetCalls.push(options); if (state.failSheet) throw new Error('Sheets offline'); return rows }, getSheetHeaders: async () => state.failHeaders ? [] : documentHeaders },
     '@/lib/google/drive': { deleteDriveFile: forbidden, uploadPrivateFileToDrive: forbidden, getDriveFileSize: async id => { state.sizeCalls.push(id); if (state.failSize) throw new Error('Drive offline'); return String(1000 + Number(id.replace('FILE', ''))) } },
     '@/lib/federations/config': { getReferentialSpreadsheetId: () => 'REF-SYNTHETIC' },
-    '@/lib/federations/options': { getFederationOptions: empty },
-    '@/lib/activites/data': { getActivities: empty, getActors: empty },
-    '@/lib/competitions/data': { getCompetitions: empty },
-    '@/lib/equipes-nationales/data': { getNationalTeams: empty },
+    '@/lib/federations/options': { getFederationOptions: empty('federations') },
+    '@/lib/activites/data': { getActivities: empty('activities'), getActors: empty('actors') },
+    '@/lib/competitions/data': { getCompetitions: empty('competitions') },
+    '@/lib/equipes-nationales/data': { getNationalTeams: empty('nationalTeams') },
     './config': { getDocumentsSpreadsheetId: () => 'DOCS-SYNTHETIC', getDocumentsDriveFolderId: () => 'FOLDER-SYNTHETIC' },
   })
   return { namespace, state }

@@ -37,12 +37,12 @@ export async function getDocuments(options: { fresh?: boolean } = {}) {
   return withDocumentSizes(await getDocumentRecords(options))
 }
 
-export async function getDocument(id: string) {
+export async function getDocument(id: string, options: { includeSize?: boolean } = {}) {
   // Une fiche est souvent ouverte immédiatement après sa création. Cette
   // lecture doit éviter un cache d'une autre instance serveur encore ancien.
   const documentId = clean(id)
   const documents = await getDocumentRecords({ fresh: true }, (row) => clean(row.id_document) === documentId)
-  return (await withDocumentSizes(documents.slice(0, 1)))[0]
+  return options.includeSize === false ? documents[0] : (await withDocumentSizes(documents.slice(0, 1)))[0]
 }
 
 export async function getDocumentsForEntity(type: string, id: string) {
@@ -60,16 +60,17 @@ async function getDocumentTypes(): Promise<{ options: DocumentOption[]; availabl
   }
 }
 
-export async function getDocumentReferences(): Promise<DocumentReferences> {
+export async function getDocumentReferences(selection: { entityTypes?: readonly DocumentEntityType[] } = {}): Promise<DocumentReferences> {
+  const needs = (type: DocumentEntityType) => !selection.entityTypes || selection.entityTypes.includes(type)
   const safeReference = async <T,>(request: Promise<T>, fallback: T) => request.catch(() => fallback)
   const [documentTypes, activities, competitions, nationalTeams, officials, federations, entities] = await Promise.all([
     getDocumentTypes(),
-    safeReference(getActivities(), []),
-    safeReference(getCompetitions(), []),
-    safeReference(getNationalTeams(), []),
-    safeReference(getActors("OFFICIEL"), []),
-    safeReference(getFederationOptions(), []),
-    safeReference(getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }), []),
+    needs("ACTIVITE") ? safeReference(getActivities(), []) : Promise.resolve([]),
+    needs("COMPETITION") ? safeReference(getCompetitions(), []) : Promise.resolve([]),
+    needs("EQUIPE_NATIONALE") ? safeReference(getNationalTeams(), []) : Promise.resolve([]),
+    needs("OFFICIEL") ? safeReference(getActors("OFFICIEL"), []) : Promise.resolve([]),
+    needs("FEDERATION") ? safeReference(getFederationOptions(), []) : Promise.resolve([]),
+    needs("ENTITE") ? safeReference(getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }), []) : Promise.resolve([]),
   ])
   const options: Record<DocumentEntityType, DocumentOption[]> = {
     ACTIVITE: activities.map((item) => ({ id: item.id_activite, label: item.nom_activite })),
@@ -91,7 +92,7 @@ export async function getDocumentReferences(): Promise<DocumentReferences> {
 }
 
 async function validateReferences(row: ReturnType<typeof validateDocumentInput>) {
-  const references = await getDocumentReferences()
+  const references = await getDocumentReferences({ entityTypes: row.type_entite_liee ? [row.type_entite_liee as DocumentEntityType] : [] })
   if (references.hasDocumentTypeReferential && !references.documentTypes.some((type) => type.id === row.id_type_document)) throw new Error("Type de document inconnu.")
   if (row.type_entite_liee) {
     const options = references.entities[row.type_entite_liee as DocumentEntityType]

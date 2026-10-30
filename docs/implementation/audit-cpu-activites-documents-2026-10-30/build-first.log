@@ -1,0 +1,25 @@
+▲ Next.js 16.3.4 (Turbopack)
+⚠ Warning: Next.js ignored pnpm-lock.yaml in C:\Projets\SNDS-RDC\data\multisport\coc-managment because it is outside the current Git repository (C:\Projets\SNDS-RDC\data\multisport\coc-managment\.cache\activities-documents-cpu-20261030\validation).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.mjs took 136ms
+
+  Creating an optimized production build ...
+✓ Finished writing to filesystem cache in 12.0s
+
+> Build error occurred
+Error: Turbopack build failed with 1 error:
+./app/dashboard/documents/[id]/document-detail-client.tsx
+Error: Reading source code for parsing failed
+An unexpected error happened while trying to read the source code to parse: failed to convert rope into string
+
+Caused by:
+- invalid utf-8 sequence of 1 bytes from index 3748
+
+Import trace:
+  Server Component:
+    ./app/dashboard/documents/[id]/document-detail-client.tsx
+    ./app/dashboard/documents/[id]/page.tsx
+
+
+    at ignore-listed frames

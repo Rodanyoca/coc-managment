@@ -8,7 +8,7 @@ export const runtime = "nodejs"
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!(await canReadDocuments())) return NextResponse.json({ error: "Accès non autorisé." }, { status: 403 })
   try {
-    const document = await getDocument((await params).id)
+    const document = await getDocument((await params).id, { includeSize: false })
     if (!document?.drive_document_id) return NextResponse.json({ error: "Fichier non disponible." }, { status: 404 })
     const file = await downloadDriveFile(document.drive_document_id)
     const name = file.name.replace(/[\r\n"]/g, "_")

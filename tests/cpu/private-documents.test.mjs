@@ -20,7 +20,7 @@ for(const endpoint of ['preview','download'])test(`private ${endpoint}: assigned
   const route=await loadServerModule(root,`app/api/documents/[id]/${endpoint}/route.ts`,{
     'next/server':{NextResponse:{json:(body,options)=>Response.json(body,options)}},
     '@/lib/documents/auth':{canReadDocuments:()=>auth.canAccess('AUT-ADM','READ')},
-    '@/lib/documents/data':{getDocument:async id=>{documentLoads++;return data.getDocument(id)}},
+    '@/lib/documents/data':{getDocument:async (id,options)=>{documentLoads++;return data.getDocument(id,options)}},
     '@/lib/google/drive':{downloadDriveFile:async()=>{downloads++;if(driveFailure)throw new Error('Synthetic Drive failure');return{buffer:Buffer.from('%PDF-1.4\nsynthetic'),mimeType:'application/pdf',name:'test\r\n".pdf'}}},
   })
   const request=()=>route.GET(new Request('https://offline.invalid/documents'),{params:Promise.resolve({id:'DOC10'})})
@@ -39,7 +39,7 @@ for(const endpoint of ['preview','download'])test(`private ${endpoint}: assigned
   assert.equal(result.headers.get('content-type'),'application/pdf')
   assert.match(result.headers.get('content-disposition'),endpoint==='preview'?/^inline$/:/^attachment; filename="test___\.pdf"$/)
   assert.equal(await result.text(),'%PDF-1.4\nsynthetic')
-  assert.deepEqual(state.sizeCalls,['FILE10']);assert.equal(downloads,1)
+  assert.deepEqual(state.sizeCalls,[]);assert.equal(downloads,1)
   const missing=await route.GET(new Request('https://offline.invalid/documents'),{params:Promise.resolve({id:'missing'})})
   assert.equal(missing.status,404);assert.equal(downloads,1)
   const withoutFile=await route.GET(new Request('https://offline.invalid/documents'),{params:Promise.resolve({id:'DOC11'})})

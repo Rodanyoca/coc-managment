@@ -5,8 +5,8 @@ import { stripTypeScriptTypes } from 'node:module'
 
 // Execute the actual server modules, with explicit offline dependency boundaries.
 // Unknown packages fail closed: this harness cannot silently call Google.
-export async function loadServerModule(root, entry, mocks) {
-  const context = vm.createContext({ console, Buffer, URL, Date, Map, Set, Promise, Request, Response, Headers, setTimeout, clearTimeout, process: { env: { AUTH_SECRET: 'offline-synthetic-secret-only', GOOGLE_SERVICE_ACCOUNT_EMAIL: 'synthetic@example.invalid', GOOGLE_PRIVATE_KEY: 'synthetic-key' } } })
+export async function loadServerModule(root, entry, mocks, syntheticEnv = {}) {
+  const context = vm.createContext({ console, Buffer, URL, Date, Map, Set, Promise, Request, Response, Headers, setTimeout, clearTimeout, process: { env: { AUTH_SECRET: 'offline-synthetic-secret-only', GOOGLE_SERVICE_ACCOUNT_EMAIL: 'synthetic@example.invalid', GOOGLE_PRIVATE_KEY: 'synthetic-key', ...syntheticEnv } } })
   const modules = new Map()
   const mock = (key, exports) => {
     if (!modules.has(key)) modules.set(key, new vm.SyntheticModule(Object.keys(exports), function () { for (const [name, value] of Object.entries(exports)) this.setExport(name, value) }, { context, identifier: key }))

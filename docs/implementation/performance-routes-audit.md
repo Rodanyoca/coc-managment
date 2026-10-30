@@ -25,3 +25,7 @@ Les mesures réelles dépendantes de Google ne sont pas rejouées en écriture a
 ## Compétitions — 30 octobre 2026
 
 Une analyse et une livraison locale ciblées du bloc Compétitions sont documentées dans [le rapport CP1/CP2/CP3](audit-cpu-competitions-2026-10-30.md). Les mesures locales ne sont pas des mesures Vercel. S1/F1 et le brouillon C2 restent inchangés ; aucune publication de ce lot. La référence du workspace donne 316/325 tests, neuf échecs reproduits dans la variante, et non les six échecs des anciennes compositions.
+
+## Activités et Documents — 30 octobre 2026
+
+L'analyse, les écarts, les corrections locales, les mesures synthétiques et le retour arrière sont détaillés dans [le rapport Activités/Documents](audit-cpu-activites-documents-2026-10-30.md). Les modifications Compétitions et les contrôles de sécurité frais sont préservés ; aucun push ni déploiement de ce lot. La référence actuelle donne 319/328 tests généraux, avec neuf échecs préexistants reproduits.

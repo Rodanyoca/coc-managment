@@ -38,10 +38,21 @@ export type DriveUploadResult = {
 
 const driveSizeCache = (globalThis as typeof globalThis & { __cocDriveSizeCache?: Map<string, { size: string; timestamp: number }> }).__cocDriveSizeCache ??= new Map()
 const DRIVE_SIZE_CACHE_TTL_MS = 5 * 60 * 1000
+// Metadata only: permissions and private binary responses are never shared here.
+const pendingDriveSizes = new Map<string, Promise<string>>()
 
 export async function getDriveFileSize(fileId: string): Promise<string> {
   const cached = driveSizeCache.get(fileId)
   if (cached && Date.now() - cached.timestamp < DRIVE_SIZE_CACHE_TTL_MS) return cached.size
+  const pending = pendingDriveSizes.get(fileId)
+  if (pending) return pending
+  const request = readDriveFileSize(fileId)
+  pendingDriveSizes.set(fileId, request)
+  try { return await request }
+  finally { if (pendingDriveSizes.get(fileId) === request) pendingDriveSizes.delete(fileId) }
+}
+
+async function readDriveFileSize(fileId: string): Promise<string> {
   try {
     const drive = google.drive({ version: "v3", auth: getDriveAuth() })
     const response = await runGoogleRequest(() => drive.files.get({ fileId, fields: "id,size" }))
