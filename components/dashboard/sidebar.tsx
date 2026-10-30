@@ -10,13 +10,14 @@ import { cn } from "@/lib/utils"
 
 const icons = { dashboard: LayoutDashboard, landmark: Landmark, users: Users, trophy: Trophy, shield: Flag, calendar: Activity, file: FileText, globe: Globe2 }
 const actorIcons: Record<string, LucideIcon> = { athletes: Users, entraineurs: UserCog, arbitres: Flag, officiels: BadgeCheck, medecins: Stethoscope, autres: Users }
-type NavigationItem = { name: string; href: string; icon: LucideIcon }
+type NavigationItem = { name: string; href: string; icon: LucideIcon; prefetch?: boolean }
 
 function NavigationLink({ item, collapsed, pathname }: { item: NavigationItem; collapsed: boolean; pathname: string }) {
   const exact = item.href === "/dashboard" || item.href === "/dashboard/acteurs"
   const active = exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`)
   return <Link
     href={item.href}
+    prefetch={item.prefetch}
     className={cn(
       "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
       active ? "bg-sidebar-primary text-sidebar-primary-foreground" : "text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground",
@@ -35,13 +36,13 @@ function NavigationGroup({ title, href, items, open, onToggle, collapsed, pathna
   onToggle: () => void; collapsed: boolean; pathname: string
 }) {
   if (collapsed) return <>
-    {href && <NavigationLink item={{ name: title, href, icon: Users }} collapsed pathname={pathname} />}
+    {href && <NavigationLink item={{ name: title, href, icon: Users, prefetch: items[0]?.prefetch }} collapsed pathname={pathname} />}
     {items.map(item => <NavigationLink key={item.href} item={item} collapsed pathname={pathname} />)}
   </>
 
   return <div className="space-y-1">
     {href ? <div className="flex w-full items-center justify-between rounded-lg text-xs font-semibold text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground">
-      <Link href={href} className="min-w-0 flex-1 rounded-lg px-3 py-2 uppercase tracking-wide" aria-current={pathname === href ? "page" : undefined}>{title}</Link>
+      <Link href={href} prefetch={items[0]?.prefetch} className="min-w-0 flex-1 rounded-lg px-3 py-2 uppercase tracking-wide" aria-current={pathname === href ? "page" : undefined}>{title}</Link>
       <button type="button" onClick={onToggle} className="rounded-lg px-3 py-2" aria-label={`${open ? "Réduire" : "Développer"} ${title}`} aria-expanded={open}>
         {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
       </button>
@@ -60,19 +61,20 @@ function NavigationGroup({ title, href, items, open, onToggle, collapsed, pathna
   </div>
 }
 
-export function Sidebar({ initialAccess, initialIsSuperAdmin }: { initialAccess: Record<string, boolean>; initialIsSuperAdmin: boolean }) {
+export function Sidebar({ initialAccess, initialIsSuperAdmin, fallbackHome = false, disablePrefetch = false }: { initialAccess: Record<string, boolean>; initialIsSuperAdmin: boolean; fallbackHome?: boolean; disablePrefetch?: boolean }) {
   const pathname = usePathname()
   const [collapsed, setCollapsed] = useState(false)
   const [closedGroups, setClosedGroups] = useState<string[]>([])
   const readableBlocks = ["AUT-ADM", "AUT-SPT", "AUT-COM"].filter(block => initialAccess[`${block}:READ`] === true)
-  const visible = visibleDashboardNavigation(dashboardNavigation, { isSuperAdmin: initialIsSuperAdmin, readableBlocks })
+  const allowedNavigation = visibleDashboardNavigation(dashboardNavigation, { isSuperAdmin: initialIsSuperAdmin, readableBlocks })
+  const visible = fallbackHome && !allowedNavigation.length ? [dashboardNavigation[0]] : allowedNavigation
   const linksFor = (...routes: string[]): NavigationItem[] => visible
     .filter(item => item.href && routes.includes(item.href))
-    .map(item => ({ name: item.name, href: item.href!, icon: icons[item.icon] }))
+    .map(item => ({ name: item.name, href: item.href!, icon: icons[item.icon], prefetch: disablePrefetch ? false : undefined }))
   const actors = visible.find(item => item.href === "/dashboard/acteurs")
   const groups = [
     { title: "Structure territoriale", items: linksFor("/dashboard/federations") },
-    { title: "Acteurs", href: actors?.href, items: (actors?.children ?? []).map(item => ({ ...item, icon: actorIcons[item.href.split("/").pop()!] ?? Users })) },
+    { title: "Acteurs", href: actors?.href, items: (actors?.children ?? []).map(item => ({ ...item, icon: actorIcons[item.href.split("/").pop()!] ?? Users, prefetch: disablePrefetch ? false : undefined })) },
     { title: "Compétitions", items: linksFor("/dashboard/competitions") },
     { title: "Équipes nationales", items: linksFor("/dashboard/equipes-nationales") },
     { title: "Administration", items: linksFor("/dashboard/activites", "/dashboard/documents", "/dashboard/site-web", "/dashboard/utilisateurs", "/dashboard/parametres") },
@@ -85,7 +87,7 @@ export function Sidebar({ initialAccess, initialIsSuperAdmin }: { initialAccess:
   )}>
     <div className="flex h-full min-h-0 flex-col">
       <div className="relative flex h-16 shrink-0 items-center justify-between border-b border-sidebar-border px-4 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-gradient-to-r after:from-[#1188c7] after:via-[#f6c515] after:to-[#e23b52]">
-        <Link href="/dashboard" aria-label="Comité Olympique Congolais" title="Comité Olympique Congolais" className={cn("flex items-center gap-3", collapsed && "mx-auto")}>
+        <Link href="/dashboard" prefetch={disablePrefetch ? false : undefined} aria-label="Comité Olympique Congolais" title="Comité Olympique Congolais" className={cn("flex items-center gap-3", collapsed && "mx-auto")}>
           <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
             <Image src="/images/logo-coc.png" alt="Logo COC" width={45} height={52} className="h-full w-full object-contain" />
           </span>
