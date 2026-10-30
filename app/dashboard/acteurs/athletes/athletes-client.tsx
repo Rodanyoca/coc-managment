@@ -1,5 +1,6 @@
 "use client"
 
+import { ListPagination } from "@/components/dashboard/list-pagination"
 import { useCanWrite } from "@/components/dashboard/access-context"
 
 import { apiFetch } from "@/lib/api/client"
@@ -123,6 +124,8 @@ export function AthletesClient({
 }) {
   const canWrite = useCanWrite("AUT-SPT")
   const router = useRouter()
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const [searchQuery, setSearchQuery] = useState("")
   const [federationFilter, setFederationFilter] = useState("TOUTES")
   const [sexFilter, setSexFilter] = useState("TOUS")
@@ -158,6 +161,9 @@ export function AthletesClient({
       })
     )
   }, [athletes, federationFilter, searchQuery, sexFilter, statusFilter])
+  const pageCount = Math.max(1, Math.ceil(filteredAthletes.length / pageSize))
+  const currentPage = Math.min(page, pageCount)
+  const visible = filteredAthletes.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   function update<K extends keyof AthleteForm>(key: K, value: AthleteForm[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -255,10 +261,10 @@ export function AthletesClient({
             <Input
               placeholder="Rechercher un athlète..."
               value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
+              onChange={(event) => { setSearchQuery(event.target.value); setPage(1) }}
               className="pl-9"
             />
-          </div><Select value={federationFilter} onValueChange={setFederationFilter}><SelectTrigger className="w-full" aria-label="Filtrer par fédération"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUTES">Toutes les fédérations</SelectItem>{federations.map((item) => <SelectItem key={item.id} value={item.id}>{item.sigle || item.nom}</SelectItem>)}</SelectContent></Select><Select value={sexFilter} onValueChange={setSexFilter}><SelectTrigger className="w-full" aria-label="Filtrer par sexe"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les sexes</SelectItem><SelectItem value="H">Hommes</SelectItem><SelectItem value="F">Femmes</SelectItem></SelectContent></Select><Select value={statusFilter} onValueChange={setStatusFilter}><SelectTrigger className="w-full" aria-label="Filtrer par statut"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les statuts</SelectItem><SelectItem value="ACTIF">Actifs</SelectItem><SelectItem value="INACTIF">Inactifs</SelectItem></SelectContent></Select></div>
+          </div><Select value={federationFilter} onValueChange={(value) => { setFederationFilter(value); setPage(1) }}><SelectTrigger className="w-full" aria-label="Filtrer par fédération"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUTES">Toutes les fédérations</SelectItem>{federations.map((item) => <SelectItem key={item.id} value={item.id}>{item.sigle || item.nom}</SelectItem>)}</SelectContent></Select><Select value={sexFilter} onValueChange={(value) => { setSexFilter(value); setPage(1) }}><SelectTrigger className="w-full" aria-label="Filtrer par sexe"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les sexes</SelectItem><SelectItem value="H">Hommes</SelectItem><SelectItem value="F">Femmes</SelectItem></SelectContent></Select><Select value={statusFilter} onValueChange={(value) => { setStatusFilter(value); setPage(1) }}><SelectTrigger className="w-full" aria-label="Filtrer par statut"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="TOUS">Tous les statuts</SelectItem><SelectItem value="ACTIF">Actifs</SelectItem><SelectItem value="INACTIF">Inactifs</SelectItem></SelectContent></Select></div>
           {canWrite && <Button onClick={() => setEditorOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             Ajouter un athlète
@@ -282,7 +288,7 @@ export function AthletesClient({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredAthletes.map((athlete) => (
+                  {visible.map((athlete) => (
                     <TableRow key={athlete.id} className="hover:bg-muted/30">
                       <TableCell>{athlete.idNational || "—"}</TableCell>
                       <TableCell>{athlete.idFederal || "—"}</TableCell>
@@ -322,9 +328,7 @@ export function AthletesClient({
           </CardContent>
         </Card>
 
-        <p className="text-sm text-muted-foreground">
-          Affichage de {filteredAthletes.length} sur {athletes.length} athlètes
-        </p>
+        <ListPagination total={filteredAthletes.length} pageSize={pageSize} currentPage={currentPage} pageCount={pageCount} pageSizeLabel="Nombre d’athlètes par page" onPageSizeChange={(size) => { setPageSize(size); setPage(1) }} onPageChange={setPage} />
       </div>
 
       <Sheet open={canWrite && editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>

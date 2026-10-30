@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import { AlertCircle, ChevronLeft, ChevronRight, Eye, Search } from "lucide-react"
+import { AlertCircle, Eye, Search } from "lucide-react"
+import { ListPagination } from "@/components/dashboard/list-pagination"
 import { Header } from "@/components/dashboard/header"
 import { FederationCreateSheet, type FederationCreationReferences } from "@/components/dashboard/federation-create-sheet"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
@@ -55,10 +56,7 @@ export default function FederationsClient({ initialFederations: initial, referen
           </TableRow>)}{!visible.length && <TableRow><TableCell colSpan={7} className="h-24 text-center text-muted-foreground">{initialFederations.length ? "Aucune fédération ne correspond à cette recherche." : "Aucune fédération enregistrée."}</TableCell></TableRow>}</TableBody>
         </Table>
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground"><span>Afficher</span><Select value={String(pageSize)} onValueChange={(value) => { setPageSize(Number(value)); setPage(1) }}><SelectTrigger className="w-[70px]" aria-label="Nombre de fédérations par page"><SelectValue /></SelectTrigger><SelectContent>{[10, 25, 50, 100].map(size => <SelectItem key={size} value={String(size)}>{size}</SelectItem>)}</SelectContent></Select><span>sur {rows.length} résultat{rows.length > 1 ? "s" : ""}</span></div>
-        <div className="flex items-center gap-2"><Button variant="outline" size="sm" aria-label="Page précédente" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}><ChevronLeft className="h-4 w-4" /></Button><span className="text-sm text-muted-foreground">Page {currentPage} sur {pageCount}</span><Button variant="outline" size="sm" aria-label="Page suivante" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}><ChevronRight className="h-4 w-4" /></Button></div>
-      </div>
+      <ListPagination total={rows.length} pageSize={pageSize} currentPage={currentPage} pageCount={pageCount} pageSizeLabel="Nombre de fédérations par page" onPageSizeChange={(size) => { setPageSize(size); setPage(1) }} onPageChange={setPage} />
     </>}
   </main></div>
 }
