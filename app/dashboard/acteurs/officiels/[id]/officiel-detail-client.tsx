@@ -1,5 +1,7 @@
 "use client"
 
+import { useCanWrite } from "@/components/dashboard/access-context"
+
 import { apiFetch } from "@/lib/api/client"
 
 import { Contact, Fingerprint, Info, User } from "lucide-react"
@@ -84,6 +86,7 @@ export function OfficielDetailClient({
   affiliations: OfficialAffiliation[]
   affiliationsLoadError: boolean
 }) {
+  const canWrite = useCanWrite("AUT-SPT")
   const router = useRouter()
   const [officiel, setOfficiel] = useState(initialOfficiel)
   const [open, setOpen] = useState(false)
@@ -225,7 +228,7 @@ export function OfficielDetailClient({
       additionalSections={[{ id: "parcours", label: "Parcours", content: <OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} /> }, ...activitySections(officiel.id)]}
     />
 
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={canWrite && open} onOpenChange={setOpen}>
       <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
         <SheetHeader><SheetTitle>Modifier l’officiel</SheetTitle><SheetDescription>Les nouveaux médias remplaceront les fichiers Drive existants.</SheetDescription></SheetHeader>
         <div className="grid gap-4 px-4 sm:grid-cols-2">
@@ -247,7 +250,7 @@ export function OfficielDetailClient({
           <div className="space-y-2"><Label htmlFor="official-avatar-file">{officiel.avatarUrl ? "Remplacer la photo" : "Ajouter une photo"}</Label><Input id="official-avatar-file" type="file" accept=".png,.jpg,.jpeg,.webp" onChange={(e) => selectFile(e.target.files?.[0], "avatar")} /></div>
           <div className="space-y-2"><Label>Remplacer le passeport</Label><Input type="file" accept=".pdf,application/pdf" onChange={(e) => selectFile(e.target.files?.[0], "passeport")} /></div>
         </div>
-        <div className="border-t px-4 pt-5"><OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} compact canEdit /></div>
+        <div className="border-t px-4 pt-5"><OfficialAffiliations officialId={officiel.id} initialRows={affiliations} organisations={organisations} functions={functions} loadError={affiliationsLoadError} compact canEdit={canWrite} /></div>
         <SheetFooter><Button variant="outline" onClick={() => setOpen(false)}>Annuler</Button><Button onClick={save} disabled={saving}>{saving ? "Enregistrement..." : "Enregistrer"}</Button></SheetFooter>
       </SheetContent>
     </Sheet>

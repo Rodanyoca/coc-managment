@@ -1,3 +1,4 @@
+import { DashboardAccessProvider } from "@/components/dashboard/access-context"
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { getNavigationAccess, getSession } from "@/lib/auth"
 
@@ -12,7 +13,7 @@ export default async function DashboardLayout({
     <div className="flex h-screen bg-background overflow-hidden">
       <Sidebar initialAccess={access} initialIsSuperAdmin={session?.estSuperAdmin === true} />
       <main className="min-w-0 flex-1 overflow-y-auto no-scrollbar">
-        {children}
+        <DashboardAccessProvider access={access}>{children}</DashboardAccessProvider>
       </main>
     </div>
   )

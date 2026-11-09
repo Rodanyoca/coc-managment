@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test"
 
 const viewports = [
+  { name: "390x844-mobile", width: 390, height: 844 },
   { name: "1366x768", width: 1366, height: 768 },
   { name: "1440x900", width: 1440, height: 900 },
   { name: "1920x1080", width: 1920, height: 1080 },
@@ -11,15 +12,37 @@ async function fillCredentials(page: Page) {
   await page.getByLabel("Mot de passe", { exact: true }).fill("mot-de-passe")
 }
 
-test("affiche les éléments institutionnels et les partenaires réels", async ({ page }) => {
+test("affiche la composition institutionnelle COC", async ({ page }) => {
   await page.goto("/login")
   await expect(page.getByRole("heading", { name: /portons plus haut les couleurs/i })).toBeVisible()
-  await expect(page.getByRole("heading", { name: "Bienvenue" })).toBeVisible()
-  await expect(page.getByRole("img", { name: "Comité Olympique Congolais" })).toBeVisible()
-  await expect(page.getByRole("region", { name: "Avec le soutien de nos partenaires" }).getByRole("img")).toHaveCount(3)
+  await expect(page.getByRole("img", { name: "Logo du COC" })).toBeVisible()
+  await expect(page.getByText("COC", { exact: true })).toBeVisible()
+  await expect(page.locator("main > section")).not.toContainText("Comité Olympique Congolais")
+  const loginPanel = page.getByRole("complementary", { name: "Espace institutionnel" })
+  await expect(loginPanel.getByText("Comité Olympique Congolais")).toBeVisible()
+  await expect(loginPanel.getByRole("heading", { name: "Espace institutionnel" })).toBeVisible()
+  await expect(loginPanel.getByText("Comité national olympique")).toBeVisible()
   await expect(page.getByLabel("Design par DS Concept")).toBeVisible()
   await expect(page.getByLabel("Adresse e-mail")).toHaveAttribute("autocomplete", "username")
   await expect(page.getByLabel("Mot de passe", { exact: true })).toHaveAttribute("autocomplete", "current-password")
+})
+
+test("masque le visuel sur mobile et conserve les contrôles clavier", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto("/login")
+  await expect(page.locator("main > section")).toBeHidden()
+  await expect(page.getByText("Comité Olympique Congolais")).toBeVisible()
+  await expect(page.getByLabel("Adresse e-mail")).toBeVisible()
+  await expect(page.getByLabel("Mot de passe", { exact: true })).toBeVisible()
+  await expect(page.getByRole("button", { name: "Se connecter" })).toBeVisible()
+
+  await page.getByLabel("Adresse e-mail").focus()
+  await page.keyboard.press("Tab")
+  await expect(page.getByLabel("Mot de passe", { exact: true })).toBeFocused()
+  await page.keyboard.press("Tab")
+  await expect(page.getByRole("button", { name: "Afficher le mot de passe" })).toBeFocused()
+  await page.keyboard.press("Tab")
+  await expect(page.getByRole("button", { name: "Se connecter" })).toBeFocused()
 })
 
 test("respecte l’ordre clavier et la réduction des animations", async ({ page }) => {

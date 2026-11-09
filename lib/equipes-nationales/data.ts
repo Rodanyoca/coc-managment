@@ -8,6 +8,7 @@ import { getNationalTeamsSpreadsheetId } from "./config"
 import { NATIONAL_TEAM_HEADERS, NATIONAL_TEAM_ROLES, type ActorType, type AthleteSelection, type NationalTeam, type NationalTeamCampaign, type NationalTeamMember, type NationalTeamReferences, type StaffAssignment } from "./types"
 import { selectionCampaignDateError, validateCampaignInput, validateMemberInput, validateSelectionInput, validateTeamInput } from "./validation"
 import { uniqueReferenceOptions } from "./reference-options"
+import { SEASON_HEADERS, seasonContext, type Season } from "@/lib/settings/seasons"
 
 const TEAM_SHEET = "EQUIPES_NATIONALES"
 const CAMPAIGN_SHEET = "CAMPAGNES_EQUIPES_NATIONALES"
@@ -141,6 +142,7 @@ export async function getNationalTeamReferences(options: { fresh?: boolean } = {
     events: uniqueReferenceOptions(refs.EPREUVES.filter((row) => row.id_epreuve).map((row) => ({ id: row.id_epreuve, label: row.nom_epreuve || row.id_epreuve, disciplineId: row.id_discipline }))),
     ageCategories,
     seasons:refs.SAISONS.filter(row=>row.id_saison).map(row=>({id:row.id_saison,label:row.nom_saison||row.id_saison,dateStart:row.date_debut,dateEnd:row.date_fin})),
+    currentSeasonId: seasonContext(refs.SAISONS.map(row => Object.fromEntries(SEASON_HEADERS.map(key => [key, String(row[key] ?? "").trim()])) as Season)).currentSeason?.id_saison,
     roles: uniqueReferenceOptions(roles),
     ageCategoriesAvailable: ageCategories.length > 0,
     rolesReferentialAvailable,

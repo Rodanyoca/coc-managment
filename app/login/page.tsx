@@ -3,8 +3,9 @@
 import { apiFetch } from "@/lib/api/client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useRef, useState } from "react"
-import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"
+import { Eye, EyeOff, LoaderCircle, LockKeyhole } from "lucide-react"
 
 import { normalizeLoginRedirect } from "@/lib/auth/login-redirect"
 import { Button } from "@/components/ui/button"
@@ -27,6 +28,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [phase, setPhase] = useState<SubmissionPhase>("idle")
   const [error, setError] = useState<LoginError>(null)
+  const [serviceMessage, setServiceMessage] = useState("")
   const submissionLocked = useRef(false)
   const loading = phase !== "idle"
 
@@ -35,6 +37,7 @@ export default function LoginPage() {
     if (submissionLocked.current) return
     submissionLocked.current = true
     setError(null)
+    setServiceMessage("")
     setPhase("request")
     let authenticated = false
 
@@ -48,7 +51,13 @@ export default function LoginPage() {
       if (!response.ok) {
         if (response.status === 401 || response.status === 403) setError("credentials")
         else if (response.status === 400) setError("validation")
-        else setError("service")
+        else {
+          setError("service")
+          if (response.status === 503) {
+            const result = await response.json().catch(() => null)
+            if (typeof result?.error === "string") setServiceMessage(result.error.slice(0, 400))
+          }
+        }
         return
       }
 
@@ -72,22 +81,37 @@ export default function LoginPage() {
   return (
     <main className={styles.page}>
       <section className={styles.hero} aria-labelledby="institution-title">
-        <Image src="/images/login/delegation-rdc.jpeg" alt="Délégation sportive de la République démocratique du Congo réunie dans un stade" fill priority sizes="(max-width: 1023px) 100vw, 62vw" className={styles.heroImage} />
+        <Image
+          src="/images/login/delegation-rdc.jpeg"
+          alt="Délégation sportive de la République démocratique du Congo réunie dans un stade"
+          fill
+          priority
+          sizes="(max-width: 1023px) 100vw, 62vw"
+          className={styles.heroImage}
+        />
         <div className={styles.heroShade} />
         <div className={styles.heroInner}>
           <div className={styles.brandLockup}>
             <div className={styles.brandLogo}>
-              <Image src="/images/logo-coc.png" alt="Logo du Comité Olympique Congolais" fill sizes="64px" className={styles.brandLogoImage} />
+              <Image
+                src="/images/logo-coc.png"
+                alt="Logo du COC"
+                fill
+                sizes="64px"
+                className={styles.brandLogoImage}
+                priority
+              />
             </div>
             <div>
               <p className={styles.brandName}>COC</p>
-              <p className={styles.brandCountry}>Comité Olympique Congolais</p>
             </div>
           </div>
           <div className={styles.heroContent}>
-            <p className={styles.eyebrow}>Institution sportive nationale</p>
+            <p className={styles.eyebrow}>Comité national olympique</p>
             <h1 id="institution-title">Ensemble, portons plus haut les couleurs de la RDC.</h1>
-            <p className={styles.introduction}>Une plateforme nationale dédiée à la structuration, à l’identification et au développement du mouvement olympique congolais.</p>
+            <p className={styles.introduction}>
+              Une plateforme nationale dédiée à la structuration, à l’identification et au développement du mouvement olympique congolais.
+            </p>
           </div>
         </div>
         <div className={styles.nationalLine} aria-hidden="true" />
@@ -98,44 +122,78 @@ export default function LoginPage() {
           <div className={styles.welcome}>
             <p className={styles.panelEyebrow}>Comité Olympique Congolais</p>
             <h2 id="login-title">Espace institutionnel</h2>
-            <p>Connectez-vous pour accéder à la plateforme de gestion du mouvement olympique congolais.</p>
           </div>
 
           <form onSubmit={handleSubmit} className={styles.form} aria-busy={loading}>
             <div className={styles.field}>
               <Label htmlFor="email">Adresse e-mail</Label>
               <div className={styles.inputWrap}>
-                <Mail aria-hidden="true" />
-                <Input id="email" name="email" type="email" autoComplete="username" autoCapitalize="none" spellCheck={false} value={email} onChange={(event) => setEmail(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} required />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="username"
+                  autoCapitalize="none"
+                  spellCheck={false}
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  disabled={loading}
+                  aria-invalid={error === "credentials" || error === "validation"}
+                  required
+                />
               </div>
             </div>
 
             <div className={styles.field}>
               <Label htmlFor="password">Mot de passe</Label>
               <div className={styles.inputWrap}>
-                <LockKeyhole aria-hidden="true" />
-                <Input id="password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} aria-describedby={error ? "login-error" : undefined} required />
-                <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}>
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  disabled={loading}
+                  aria-invalid={error === "credentials" || error === "validation"}
+                  aria-describedby={error ? "login-error" : undefined}
+                  required
+                />
+                <button
+                  type="button"
+                  className={styles.passwordToggle}
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                >
                   {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
                 </button>
               </div>
             </div>
 
             <div className={styles.messageSlot}>
-              {error && <p id="login-error" className={styles.error} role="alert">{errorMessages[error]}</p>}
+              {error && (
+                <p id="login-error" className={styles.error} role="alert">
+                  {error === "service" && serviceMessage ? serviceMessage : errorMessages[error]}
+                </p>
+              )}
             </div>
+
             <Button type="submit" className={styles.submit} disabled={loading}>
               {loading && <LoaderCircle className={styles.spinner} aria-hidden="true" />}
+              {!loading && <LockKeyhole aria-hidden="true" />}
               {phase === "redirect" ? "Redirection en cours…" : loading ? "Connexion en cours…" : "Se connecter"}
             </Button>
           </form>
 
-          <div className={styles.panelMeta}>
-            <span>Version 1.0 · Accès sécurisé</span>
-            <span>Administration COC</span>
-          </div>
+          <nav aria-label="Informations institutionnelles" className={styles.legalLinks}>
+            <Link href="/confidentialite">Politique de confidentialité</Link>
+            <Link href="/conditions-utilisation">Conditions d’utilisation</Link>
+          </nav>
           <p className={styles.platformLabel}>Plateforme du référentiel sportif national</p>
-          <p className={styles.signature} aria-label="Design par DS Concept"><span>Design by</span><strong>DS Concept</strong></p>
+          <p className={styles.signature} aria-label="Design par DS Concept">
+            <span>Design by</span>
+            <strong>DS Concept</strong>
+          </p>
         </div>
       </aside>
     </main>

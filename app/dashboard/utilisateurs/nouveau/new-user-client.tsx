@@ -1,6 +1,6 @@
 "use client"
 
-import { apiFetch } from "@/lib/api/client"
+import { requestUserCreation } from "@/lib/users/create-user-client"
 
 import Link from "next/link"
 import { useState } from "react"
@@ -33,15 +33,13 @@ export default function NewUserClient() {
     setError("")
     setSubmitting(true)
     try {
-      const response = await apiFetch("/api/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, requestId: crypto.randomUUID(), authorizations: selected.map((block) => ({ block, dateDebut: form.dateDebut })) }) })
-      const result = await response.json()
-      if (!response.ok) {
-        setError(result.existingUserId ? `${result.error} Compte : ${result.existingUserId}` : result.error || "La création du compte a échoué.")
-        return
-      }
-      setSecret(result.temporaryAccess)
-    } catch {
-      setError("Le serveur est momentanément inaccessible. Réessayez dans quelques instants.")
+      const temporaryAccess = await requestUserCreation({ ...form, requestId: crypto.randomUUID(), authorizations: selected.map((block) => ({ block, dateDebut: form.dateDebut })) })
+      setSecret(temporaryAccess)
+    } catch (error) {
+      const code = error && typeof error === "object" && "code" in error ? error.code : undefined
+      setError(code === "ETIMEDOUT" || (error instanceof Error && error.name === "AbortError")
+        ? "Le délai de réponse est dépassé. La création n’est pas confirmée : vérifiez la liste des utilisateurs avant de réessayer."
+        : error instanceof Error ? error.message : "Le serveur est momentanément inaccessible. Vérifiez la liste des utilisateurs avant de réessayer.")
     } finally {
       setSubmitting(false)
     }

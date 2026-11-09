@@ -11,6 +11,7 @@
     "test:e2e": "playwright test",
     "test:unit": "node --test tests/unit/*.test.ts",
     "test:integration": "node --test tests/integration/*.test.ts",
+    "test:cpu": "node --experimental-vm-modules --test tests/cpu/*.test.mjs",
     "bootstrap:super-admin": "node scripts/bootstrap-first-super-admin.ts",
     "bootstrap:reset-access": "node scripts/reset-bootstrap-user-access.ts",
     "auth:purge-attempts": "node scripts/purge-auth-attempts.ts"

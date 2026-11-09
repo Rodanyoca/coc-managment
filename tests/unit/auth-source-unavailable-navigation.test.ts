@@ -15,22 +15,24 @@ test("le proxy utilise la navigation d’échec commune", async () => {
   assert.match(source, /authenticationFailurePath\(status\)/)
 })
 
-test("les contrôles de session réutilisent brièvement une lecture validée au lieu de saturer Sheets", async () => {
+test("les contrôles de session demandent une table fraîche sans repli sur le cache", async () => {
   const [adapter, sheets] = await Promise.all([
     readFile(new URL("../../lib/users/google-adapter.ts", import.meta.url), "utf8"),
     readFile(new URL("../../lib/google/sheets.ts", import.meta.url), "utf8"),
   ])
-  assert.doesNotMatch(adapter, /bypassCache:\s*true/)
-  assert.match(adapter, /cacheTtlMs:\s*60_000/)
+  assert.match(adapter, /async readTable\(sheetName\)/)
+  assert.match(adapter, /getSheetsTables\(\{ sheetNames: \[sheetName\], spreadsheetId \}\)/)
+  assert.match(adapter, /bypassCache:\s*options\.fresh/)
   assert.match(sheets, /cacheTtlMs\?:\s*number/)
   assert.match(sheets, /__cocGoogleAuthClients/)
   assert.match(sheets, /headerCache\.set\(headerCacheKey/)
 })
 
-test("la validation lit les lignes avant les en-têtes afin de partager une seule requête", async () => {
+test("la validation préfère un snapshot cohérent et conserve le repli des adaptateurs mémoire", async () => {
   const repository = await readFile(new URL("../../lib/users/repository.ts", import.meta.url), "utf8")
   const rowsPosition = repository.indexOf("this.adapter.readRows(sheetName")
   const headersPosition = repository.indexOf("this.adapter.readHeaders(sheetName")
   assert.ok(rowsPosition >= 0)
   assert.ok(headersPosition > rowsPosition)
+  assert.match(repository, /this\.adapter\.readTable\(sheetName, \{ fresh: true \}\)/)
 })

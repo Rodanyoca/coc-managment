@@ -1,5 +1,8 @@
 "use client"
 
+import { ListPagination } from "@/components/dashboard/list-pagination"
+import { useCanWrite } from "@/components/dashboard/access-context"
+
 import { apiFetch } from "@/lib/api/client"
 
 import Link from "next/link"
@@ -76,7 +79,10 @@ function initials(name: string) {
 }
 
 export function OfficielsClient({ officiels, organisations }: { officiels: OfficielListItem[]; organisations: OrganisationOption[] }) {
+  const canWrite = useCanWrite("AUT-SPT")
   const router = useRouter()
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const [searchQuery, setSearchQuery] = useState("")
   const [organisationFilter, setOrganisationFilter] = useState("TOUTES")
   const [editorOpen, setEditorOpen] = useState(false)
@@ -102,6 +108,9 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
       first.nomComplet.localeCompare(second.nomComplet, "fr", { sensitivity: "base" })
     )
   }, [officiels, organisationFilter, searchQuery])
+  const pageCount = Math.max(1, Math.ceil(filteredOfficiels.length / pageSize))
+  const currentPage = Math.min(page, pageCount)
+  const visible = filteredOfficiels.slice((currentPage - 1) * pageSize, currentPage * pageSize)
 
   function update<K extends keyof OfficielForm>(key: K, value: OfficielForm[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -186,9 +195,9 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
           <div className="flex w-full flex-col gap-3 sm:max-w-2xl sm:flex-row">
             <div className="relative w-full sm:max-w-md">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input placeholder="Rechercher un officiel..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9" />
+              <Input placeholder="Rechercher un officiel..." value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value); setPage(1) }} className="pl-9" />
             </div>
-            <Select value={organisationFilter} onValueChange={setOrganisationFilter}>
+            <Select value={organisationFilter} onValueChange={(value) => { setOrganisationFilter(value); setPage(1) }}>
               <SelectTrigger className="w-full sm:w-64" aria-label="Filtrer par organisation"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="TOUTES">Toutes les organisations</SelectItem>
@@ -196,7 +205,7 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
               </SelectContent>
             </Select>
           </div>
-          <Button onClick={() => setEditorOpen(true)}><Plus className="mr-2 h-4 w-4" />Ajouter un officiel</Button>
+          {canWrite && <Button onClick={() => setEditorOpen(true)}><Plus className="mr-2 h-4 w-4" />Ajouter un officiel</Button>}
         </div>
 
         <Card className="border-border/50"><CardContent className="p-0"><div className="overflow-x-auto">
@@ -207,7 +216,7 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
               <TableHead>Organisation</TableHead><TableHead>Statut</TableHead><TableHead className="text-right">Actions</TableHead>
             </TableRow></TableHeader>
             <TableBody>
-              {filteredOfficiels.map((officiel) => <TableRow key={officiel.id} className="hover:bg-muted/30">
+              {visible.map((officiel) => <TableRow key={officiel.id} className="hover:bg-muted/30">
                 <TableCell>{officiel.idNational || "—"}</TableCell><TableCell>{officiel.idFederal || "—"}</TableCell>
                 <TableCell>
                   <Avatar className="h-10 w-10">
@@ -231,10 +240,10 @@ export function OfficielsClient({ officiels, organisations }: { officiels: Offic
             </TableBody>
           </Table>
         </div></CardContent></Card>
-        <p className="text-sm text-muted-foreground">Affichage de {filteredOfficiels.length} sur {officiels.length} officiels</p>
+        <ListPagination total={filteredOfficiels.length} pageSize={pageSize} currentPage={currentPage} pageCount={pageCount} pageSizeLabel="Nombre d’officiels par page" onPageSizeChange={(size) => { setPageSize(size); setPage(1) }} onPageChange={setPage} />
       </div>
 
-      <Sheet open={editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>
+      <Sheet open={canWrite && editorOpen} onOpenChange={(open) => open ? setEditorOpen(true) : closeEditor()}>
         <SheetContent className="w-full overflow-y-auto sm:max-w-2xl">
           <SheetHeader><SheetTitle>Ajouter un officiel</SheetTitle><SheetDescription>Renseignez l’identité et les informations personnelles. L’organisation sera ajoutée ensuite dans le parcours.</SheetDescription></SheetHeader>
           <div className="space-y-6 px-4">

@@ -1,5 +1,6 @@
 "use client"
 
+import { useCanWrite } from "@/components/dashboard/access-context"
 import { apiFetch } from "@/lib/api/client"
 
 import { useEffect, useRef, useState } from "react"
@@ -8,6 +9,9 @@ import { Check, RefreshCw } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export function DashboardRefreshButton() {
+  const canAdm = useCanWrite("AUT-ADM")
+  const canSpt = useCanWrite("AUT-SPT")
+  const canCom = useCanWrite("AUT-COM")
   const router = useRouter()
   const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle")
   const resetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -30,6 +34,7 @@ export function DashboardRefreshButton() {
     }
   }
 
+  if (!canAdm && !canSpt && !canCom) return null
   return <div className="flex items-center gap-2">
     <Button variant="outline" size="sm" onClick={refresh} disabled={state === "loading"} className="gap-2 border-border/80 bg-card/80 shadow-[0_6px_16px_rgba(7,25,54,0.06)] hover:border-primary/40 hover:text-primary">
       {state === "success" ? <Check className="h-4 w-4" /> : <RefreshCw className={`h-4 w-4 ${state === "loading" ? "animate-spin" : ""}`} />}

@@ -1,4 +1,4 @@
-import { getActivities, getActivityReferences } from "./data"
+import { getActivities, getActivityTypes } from "./data"
 import type { ActivityStatus } from "./types"
 
 export const ACTIVITIES_DASHBOARD_CACHE_TAG = "activities-dashboard"
@@ -33,8 +33,8 @@ function countStatuses(statuses: ActivityStatus[]) {
 }
 
 async function aggregateActivitiesDashboardStats(): Promise<ActivitiesDashboardStats> {
-  const [activities, references] = await Promise.all([getActivities(), getActivityReferences()])
-  const knownTypes = references.types.map((type) => ({ key: type.id, label: type.label || type.id }))
+  const [activities, activityTypes] = await Promise.all([getActivities(), getActivityTypes()])
+  const knownTypes = activityTypes.map((type) => ({ key: type.id, label: type.label || type.id }))
   const unknownIds = [...new Set(activities.map((activity) => activity.id_type_activite).filter((id) => id && !knownTypes.some((type) => type.key === id)))]
   const typeOptions = [...knownTypes, ...unknownIds.map((id) => ({ key: id, label: id }))]
 

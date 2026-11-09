@@ -36,6 +36,8 @@ Classeur : **00_REFERENTIELS**. Variable : `GOOGLE_SHEETS_REFERENTIEL_SPREADSHEE
 - **ROLES_ENTITE_ACTIVITE** : `id_role_entite_activite`, `nom_role_entite_activite`, `observation`
 - **TYPES_DOCUMENT** : `id_type_document`, `nom_type_document`, `observations`
 - **SAISONS** : `id_saison`, `nom_saison`, `date_debut`, `date_fin`, `statut`, `observation`
+
+  Gestion depuis **Administration → Paramètres**, réservée au super-administrateur. La saison courante est l’unique ligne `ACTIF` dont la période couvre la date du jour à Kinshasa. Aucun onglet ni colonne supplémentaire. Les identifiants historiques restent utilisés par les équipes nationales ; leur création présélectionne la saison courante si elle est déterminable.
 - **ROLES_STAFF_EQUIPE_NATIONALE** : `id_role_staff`, `id_type_acteur`, `nom_role_staff`, `observation`
 - **STATUTS_CAMPAGNE** : `id_statut_campagne`, `nom_statut_campagne`, `observation`
 - **TYPES_COMPETITION** : `id_type_competition`, `nom_type_competition`, `portee_sportive`, `niveau_competition`, `description`, `statut`, `observations`
@@ -54,7 +56,7 @@ Classeur : **00_REFERENTIELS**. Variable : `GOOGLE_SHEETS_REFERENTIEL_SPREADSHEE
 - **DISTINCTIONS_SPORTIVES** : `id_distinction`, `id_federation`, `id_sport`, `id_discipline`, `nom_distinction`, `description`, `statut`, `observations`
 - **STATUTS_RESULTAT** : `id_statut_resultat`, `nom_statut_resultat`, `observation`
 - **TYPES_ADVERSAIRES** : `id_type_adversaire`, `nom_type_adversaire`, `observation`
-- **STATUTS_PUBLICATION** : `id_statut_publication`, `nom_statut_publication`, `observation`
+- **STATUTS_PUBLICATION** (inventaire historique) : pour le Site Web, la source active est désormais le classeur unique décrit ci-dessous. Aucune suppression de feuille effectuée.
 
 ## STRUCTURE_TERRITORIALE â€” AUT-SPT
 
@@ -137,3 +139,20 @@ Classeur : **09_USERS**. Variable : `GOOGLE_SHEETS_USERS_SPREADSHEET_ID`.
 - Les membres d'Ã©quipes nationales sont modÃ©lisÃ©s par campagnes (`SELECTIONS_ATHLETES` et `AFFECTATIONS_STAFF`), et non par un onglet gÃ©nÃ©rique.
 - Les colonnes physiques au singulier (`observation`) sont adaptÃ©es vers `observations` dans le modÃ¨le d'interface.
 
+
+## Site Web unifié — AUT-COM (mise à jour du 23 octobre 2026)
+
+Classeur actif : **10_SITE_WEB_CONTENUS**, configuration `lib/site-web/config.ts`. Le code Site Web ne lit plus les statuts dans Référentiel et ne dépend pas de l’ancien classeur de données publiques. En-têtes vérifiés sur les feuilles réelles, sans mutation du classeur.
+
+- **SLIDERS_SITE** : `id_slide`, `titre`, `description`, `image_url`, `libelle_bouton`, `lien_bouton`, `ordre_affichage`, `id_statut_publication`, `date_debut_publication`, `date_fin_publication`
+- **ACTIVITES_PUBLIQUES** : `id_evenement_public`, `titre`, `type_evenement`, `date_debut`, `date_fin`, `lieu`, `description`, `image_url`, `id_statut_publication`, `logo_url`, `est_mis_en_avant`, `ordre_affichage`
+- **COMMUNIQUES_SITE** : `id_communique`, `date_publication`, `titre`, `extrait`, `contenu`, `fichier_url`, `image_url`, `id_statut_publication`, `est_mis_en_avant`, `ordre_affichage`, `id_document_public`
+- **ACTUALITES_SITE** : `id_actualite`, `id_categorie_actualite`, `date_publication`, `titre`, `extrait`, `contenu`, `image_url`, `auteur`, `id_statut_publication`, `est_mis_en_avant`, `ordre_affichage`, `id_galerie`
+- **ATHLETES_PUBLICS** : `id_athlete_public`, `nom_complet`, `sexe`, `sport`, `discipline`, `photo_url`, `biographie_courte`, `est_olympien`, `est_mis_en_avant`, `ordre_affichage`, `id_statut_publication`, `distinction`
+- **GALERIES_SITE** : `id_galerie`, `titre`, `description`, `date_evenement`, `image_couverture_url`, `id_statut_publication`, `est_mis_en_avant`, `ordre_affichage`
+- **MEDIAS_GALERIE_SITE** : `id_media_galerie`, `id_galerie`, `type_media`, `titre_media`, `fichier_url`, `legende`, `credit`, `ordre_affichage`
+- **DOCUMENTS_PUBLICS** : `id_document_public`, `type_document`, `titre`, `date_document`, `description`, `fichier_url`, `id_statut_publication`
+- **CATEGORIES_ACTUALITES** : `id_categorie_actualite`, `nom_categorie_actualite`, `observation`
+- **STATUTS_PUBLICATION** : `id_statut_publication`, `nom_statut_publication`, `observation`
+
+Les autres onglets sont conservés, sans implémentation Jeux/résultats/médailles. Voir [le contrat et les routes Site Web](../interfaces/administration-site-web.md).

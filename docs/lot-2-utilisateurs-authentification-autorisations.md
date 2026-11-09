@@ -175,13 +175,15 @@ Réservée au super-administrateur :
 
 - liste recherchable et filtrable par type, statut et qualité de super-administrateur ;
 - création d'un utilisateur ;
-- détail et historique minimal ;
+- fiche structurée du compte et de ses autorisations (l'historique minimal présenté dans la fiche est retiré à la demande utilisateur du 23 octobre 2026) ;
 - modification de l'identité, de l'adresse, du type et du statut ;
 - attribution, programmation, fermeture ou retrait des blocs ;
 - réinitialisation de l'accès ;
 - révocation de toutes les sessions.
 
 Un changement d'adresse déclenche une nouvelle activation, un nouvel accès temporaire et la révocation des sessions. Une réinitialisation remplace l'ancienne empreinte, fixe l'expiration à 24 heures et rend les sessions existantes invalides.
+
+La liste et la fiche utilisent les composants visuels communs du COC. Le chargement du détail, côté page et GET `/api/users/[id]`, n'appelle plus `getAuditLog` et ne renvoie plus le journal filtré pour cet écran. Cette suppression concerne uniquement la consultation d'historique dans l'interface : `JOURNAL_OPERATIONS`, ses écritures et ses lectures d'idempotence restent conservés, de même que les tentatives d'authentification et les contrôles anti-abus. Voir [l'harmonisation du module Utilisateurs](interfaces/harmonisation-utilisateurs-2026-10-23.md).
 
 ### 6.6 États interdits
 

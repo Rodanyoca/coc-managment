@@ -1,17 +1,21 @@
 import "server-only"
 
-import { appendSheetRow, deleteSheetRow, getSheetHeaders, getSheetRows, updateSheetCells } from "@/lib/google/sheets"
+import { appendSheetRow, deleteSheetRow, getSheetHeaders, getSheetRows, getSheetsTables, updateSheetCells } from "@/lib/google/sheets"
 import { getUsersSpreadsheetId } from "./config"
 import type { SheetRow, UsersSheetsAdapter } from "./types"
 
 export function createGoogleUsersSheetsAdapter(): UsersSheetsAdapter {
   const spreadsheetId = getUsersSpreadsheetId()
   return {
-    readHeaders(sheetName) {
-      return getSheetHeaders({ sheetName, spreadsheetId, cacheTtlMs: 60_000 })
+    async readTable(sheetName) {
+      // One fresh source response for rows and headers; never a cached snapshot.
+      return (await getSheetsTables({ sheetNames: [sheetName], spreadsheetId }))[sheetName]
     },
-    readRows(sheetName) {
-      return getSheetRows({ sheetName, spreadsheetId, cacheTtlMs: 60_000 })
+    readHeaders(sheetName, options) {
+      return getSheetHeaders({ sheetName, spreadsheetId, cacheTtlMs: 60_000, bypassCache: options.fresh })
+    },
+    readRows(sheetName, options) {
+      return getSheetRows({ sheetName, spreadsheetId, cacheTtlMs: 60_000, bypassCache: options.fresh })
     },
     appendRow(sheetName: string, row: SheetRow) {
       return appendSheetRow({ sheetName, row, spreadsheetId })

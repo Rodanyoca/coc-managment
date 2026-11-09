@@ -21,23 +21,34 @@ async function assertDocumentHeaders() {
   if (missing.length) throw new Error(`Colonnes Documents manquantes : ${missing.join(", ")}`)
 }
 
-export async function getDocuments(options: { fresh?: boolean } = {}) {
+async function getDocumentRecords(options: { fresh?: boolean } = {}, matches?: (row: Record<string, string>) => boolean) {
   const rows = await getSheetRows({ sheetName: SHEET_NAME, spreadsheetId: getDocumentsSpreadsheetId(), bypassCache: options.fresh })
   await assertDocumentHeaders()
-  const documents = rows.map(mapDocument).filter((document) => document.id_document)
+  if (matches) return rows.filter((row) => clean(row.id_document) && matches(row)).map(mapDocument)
+  return rows.map(mapDocument).filter((document) => document.id_document)
+}
+
+async function withDocumentSizes(documents: DocumentRecord[]) {
   const sizes = await Promise.all(documents.map((document) => document.drive_document_id ? getDriveFileSize(document.drive_document_id).catch(() => "") : Promise.resolve("")))
   return documents.map((document, index) => ({ ...document, taille: sizes[index] }))
 }
 
-export async function getDocument(id: string) {
+export async function getDocuments(options: { fresh?: boolean } = {}) {
+  return withDocumentSizes(await getDocumentRecords(options))
+}
+
+export async function getDocument(id: string, options: { includeSize?: boolean } = {}) {
   // Une fiche est souvent ouverte immédiatement après sa création. Cette
   // lecture doit éviter un cache d'une autre instance serveur encore ancien.
-  return (await getDocuments({ fresh: true })).find((document) => document.id_document === clean(id))
+  const documentId = clean(id)
+  const documents = await getDocumentRecords({ fresh: true }, (row) => clean(row.id_document) === documentId)
+  return options.includeSize === false ? documents[0] : (await withDocumentSizes(documents.slice(0, 1)))[0]
 }
 
 export async function getDocumentsForEntity(type: string, id: string) {
   const normalizedType = clean(type).toUpperCase()
-  return (await getDocuments()).filter((document) => document.type_entite_liee === normalizedType && document.id_entite_liee === clean(id))
+  const entityId = clean(id)
+  return withDocumentSizes(await getDocumentRecords({}, (row) => clean(row.type_objet_lie) === normalizedType && clean(row.id_objet_lie) === entityId))
 }
 
 async function getDocumentTypes(): Promise<{ options: DocumentOption[]; available: boolean }> {
@@ -49,16 +60,17 @@ async function getDocumentTypes(): Promise<{ options: DocumentOption[]; availabl
   }
 }
 
-export async function getDocumentReferences(): Promise<DocumentReferences> {
+export async function getDocumentReferences(selection: { entityTypes?: readonly DocumentEntityType[] } = {}): Promise<DocumentReferences> {
+  const needs = (type: DocumentEntityType) => !selection.entityTypes || selection.entityTypes.includes(type)
   const safeReference = async <T,>(request: Promise<T>, fallback: T) => request.catch(() => fallback)
   const [documentTypes, activities, competitions, nationalTeams, officials, federations, entities] = await Promise.all([
     getDocumentTypes(),
-    safeReference(getActivities(), []),
-    safeReference(getCompetitions(), []),
-    safeReference(getNationalTeams(), []),
-    safeReference(getActors("OFFICIEL"), []),
-    safeReference(getFederationOptions(), []),
-    safeReference(getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }), []),
+    needs("ACTIVITE") ? safeReference(getActivities(), []) : Promise.resolve([]),
+    needs("COMPETITION") ? safeReference(getCompetitions(), []) : Promise.resolve([]),
+    needs("EQUIPE_NATIONALE") ? safeReference(getNationalTeams(), []) : Promise.resolve([]),
+    needs("OFFICIEL") ? safeReference(getActors("OFFICIEL"), []) : Promise.resolve([]),
+    needs("FEDERATION") ? safeReference(getFederationOptions(), []) : Promise.resolve([]),
+    needs("ENTITE") ? safeReference(getSheetRows({ sheetName: "ENTITES", spreadsheetId: getReferentialSpreadsheetId() }), []) : Promise.resolve([]),
   ])
   const options: Record<DocumentEntityType, DocumentOption[]> = {
     ACTIVITE: activities.map((item) => ({ id: item.id_activite, label: item.nom_activite })),
@@ -80,7 +92,7 @@ export async function getDocumentReferences(): Promise<DocumentReferences> {
 }
 
 async function validateReferences(row: ReturnType<typeof validateDocumentInput>) {
-  const references = await getDocumentReferences()
+  const references = await getDocumentReferences({ entityTypes: row.type_entite_liee ? [row.type_entite_liee as DocumentEntityType] : [] })
   if (references.hasDocumentTypeReferential && !references.documentTypes.some((type) => type.id === row.id_type_document)) throw new Error("Type de document inconnu.")
   if (row.type_entite_liee) {
     const options = references.entities[row.type_entite_liee as DocumentEntityType]
@@ -100,7 +112,7 @@ export async function createDocument(input: Record<string, unknown>, pdf?: Buffe
   const row = validateDocumentInput(input)
   await validateReferences(row)
   // La génération du prochain ID doit toujours partir de la feuille à jour.
-  const existing = await getDocuments({ fresh: true })
+  const existing = await getDocumentRecords({ fresh: true })
   const id = nextDocumentId(existing)
   if (existing.some((document) => document.id_document === id)) throw new Error("Impossible de générer un identifiant document unique.")
   let uploaded: { fileId: string; url: string } | undefined
