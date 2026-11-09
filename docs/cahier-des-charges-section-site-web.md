@@ -1,8 +1,8 @@
 # Cahier des charges détaillé — Section Site Web du COC
 
-**Projet :** SaaS du Comité Olympique Congolais · **Dépôt :** coc-cible
-**Version documentaire :** 1.0 · **Date :** 25 octobre 2026
-**Objet :** référence fonctionnelle, visuelle et technique de l’administration des contenus du site public.
+**Projet :** SaaS du Comité Olympique Congolais · **Dépôt :** coc-cible  
+**Version documentaire :** 1.0 · **Date :** 25 octobre 2026  
+**Objet :** référence fonctionnelle, visuelle et technique de l’administration des contenus du site public.  
 **Statut :** consolidation des demandes, du code et des preuves existantes. Les propositions et contrôles manquants sont séparés des réalisations. Ce document ne vaut pas recette authentifiée ni publication de la dernière maquette.
 
 ## Sommaire

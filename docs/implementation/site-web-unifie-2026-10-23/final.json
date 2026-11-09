@@ -1,0 +1,38 @@
+{
+  "at": "2026-10-23T16:04:31.467Z",
+  "rootHead": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+  "isolatedApplicationFiles": 375,
+  "checkoutDrift": [],
+  "rootProfileOverride": [
+    "lib/google/sheets.ts"
+  ],
+  "preservedExistingFiles": 796,
+  "changedExisting": [
+    "docs/implementation/audit-cpu-suivi-2026-10-22.md",
+    "app/api/site-web/sliders/[id]/route.ts",
+    "app/api/site-web/sliders/route.ts",
+    "app/dashboard/site-web/page.tsx",
+    "app/dashboard/site-web/sliders/page.tsx",
+    "app/dashboard/site-web/sliders/sliders-client.tsx",
+    "docs/mappings/google-sheets-workbooks.md",
+    "lib/auth/route-policy.ts",
+    "lib/google/drive.ts",
+    "lib/site-web/config.ts",
+    "lib/site-web/sliders.ts",
+    "proxy.ts"
+  ],
+  "unexpected": [],
+  "fonts": 11,
+  "normalBuild": true,
+  "mockedFonts": false,
+  "typeChecksEnabled": true,
+  "previewRoutesInBuild": false,
+  "c2Deferred": true,
+  "globalRawInvalidationProfile": true,
+  "rootC2DraftUnchanged": true,
+  "sourceReadOnly": true,
+  "productionWrites": false,
+  "pushed": false,
+  "moduleDocumentationUpdated": true,
+  "browserVerifier": "scripts/site-web/verify-browser.mjs"
+}

@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-23T10:31:03.451Z",
+  "node": "v24.16.0",
+  "freeGiB": 0.7198028564453125,
+  "totalGiB": 7.651950836181641,
+  "availableCpus": 2,
+  "candidate": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-delivery\\candidate",
+  "normalBuild": true,
+  "mockedFonts": false,
+  "policy": "global raw invalidation, precise fresh-source fences"
+}

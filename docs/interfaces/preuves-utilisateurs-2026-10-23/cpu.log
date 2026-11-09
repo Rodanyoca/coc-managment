@@ -1,0 +1,148 @@
+TAP version 13
+# (node:16604) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:16604) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: detail preserves full document output but reads size only for the selected file
+ok 1 - detail preserves full document output but reads size only for the selected file
+  ---
+  duration_ms: 111.2857
+  type: 'test'
+  ...
+# Subtest: missing detail never enriches unrelated files
+ok 2 - missing detail never enriches unrelated files
+  ---
+  duration_ms: 26.0259
+  type: 'test'
+  ...
+# Subtest: entity selection normalizes fields before enrichment and preserves order
+ok 3 - entity selection normalizes fields before enrichment and preserves order
+  ---
+  duration_ms: 21.6251
+  type: 'test'
+  ...
+# Subtest: list keeps all sizes, missing file and Drive failure semantics
+ok 4 - list keeps all sizes, missing file and Drive failure semantics
+  ---
+  duration_ms: 18.6155
+  type: 'test'
+  ...
+# Subtest: creation scans fresh document identifiers without reading unrelated Drive sizes
+ok 5 - creation scans fresh document identifiers without reading unrelated Drive sizes
+  ---
+  duration_ms: 23.2043
+  type: 'test'
+  ...
+# (node:22008) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:22008) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: server navigation and canAccess enforce assigned VIEWER blocks and fail closed
+ok 6 - server navigation and canAccess enforce assigned VIEWER blocks and fail closed
+  ---
+  duration_ms: 120.1649
+  type: 'test'
+  ...
+# Document preview error Error: Synthetic Drive failure
+#     at downloadDriveFile (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/users-ui/validation/tests/cpu/private-documents.test.mjs:24:89)
+#     at Module.GET (C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\users-ui\\validation\\app\\api\\documents\\[id]\\preview\\route.ts:13:24)
+#     at async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/users-ui/validation/tests/cpu/private-documents.test.mjs:48:17)
+#     at async Test.run (node:internal/test_runner/test:1313:7)
+#     at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+# Document download error Error: Synthetic Drive failure
+#     at downloadDriveFile (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/users-ui/validation/tests/cpu/private-documents.test.mjs:24:89)
+#     at Module.GET (C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\users-ui\\validation\\app\\api\\documents\\[id]\\download\\route.ts:13:24)
+#     at async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/users-ui/validation/tests/cpu/private-documents.test.mjs:48:17)
+#     at async Test.run (node:internal/test_runner/test:1313:7)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+# (node:13684) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:13684) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: private preview: assigned VIEWER only, missing files, size and binary cache headers
+ok 7 - private preview: assigned VIEWER only, missing files, size and binary cache headers
+  ---
+  duration_ms: 190.084
+  type: 'test'
+  ...
+# Subtest: private download: assigned VIEWER only, missing files, size and binary cache headers
+ok 8 - private download: assigned VIEWER only, missing files, size and binary cache headers
+  ---
+  duration_ms: 32.2979
+  type: 'test'
+  ...
+# (node:2608) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:2608) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: batch reads only missing unique ranges, preserves the complete result
+ok 9 - batch reads only missing unique ranges, preserves the complete result
+  ---
+  duration_ms: 105.0582
+  type: 'test'
+  ...
+# Subtest: overlapping batches and individual readers share in-flight missing ranges
+ok 10 - overlapping batches and individual readers share in-flight missing ranges
+  ---
+  duration_ms: 17.2581
+  type: 'test'
+  ...
+# Subtest: invalidating an in-flight single read prevents stale cache resurrection
+ok 11 - invalidating an in-flight single read prevents stale cache resurrection
+  ---
+  duration_ms: 16.4445
+  type: 'test'
+  ...
+# Subtest: successful write invalidates a batch already in flight, without cancelling its caller
+ok 12 - successful write invalidates a batch already in flight, without cancelling its caller
+  ---
+  duration_ms: 12.2996
+  type: 'test'
+  ...
+# Subtest: headers finishing after invalidation do not poison subsequent reads
+ok 13 - headers finishing after invalidation do not poison subsequent reads
+  ---
+  duration_ms: 7.9686
+  type: 'test'
+  ...
+# Subtest: ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+ok 14 - ordinary error fallback is kept, explicit fresh reads fail closed and never cache
+  ---
+  duration_ms: 10.5118
+  type: 'test'
+  ...
+# Subtest: different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+ok 15 - different workbooks remain isolated; expiry triggers another read; empty batch does no I/O
+  ---
+  duration_ms: 8.381
+  type: 'test'
+  ...
+# Subtest: old completion cannot replace a new cache entry or remove its in-flight read
+ok 16 - old completion cannot replace a new cache entry or remove its in-flight read
+  ---
+  duration_ms: 7.422
+  type: 'test'
+  ...
+# Subtest: failed shared batch cleans its promises so a later request can retry
+ok 17 - failed shared batch cleans its promises so a later request can retry
+  ---
+  duration_ms: 10.7697
+  type: 'test'
+  ...
+# Subtest: hot batches do no I/O, fresh batches do not share promises or populate caches
+ok 18 - hot batches do no I/O, fresh batches do not share promises or populate caches
+  ---
+  duration_ms: 6.8821
+  type: 'test'
+  ...
+# Subtest: separate process contexts do not share cache entries or invalidations
+ok 19 - separate process contexts do not share cache entries or invalidations
+  ---
+  duration_ms: 14.7887
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 357.6808

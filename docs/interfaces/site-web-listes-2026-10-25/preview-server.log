@@ -1,0 +1,2015 @@
+▲ Next.js 16.3.4 (Turbopack)
+- Local:         http://127.0.0.1:3157
+- Network:       http://127.0.0.1:3157
+✓ Ready in 6.8s
+⚠ Warning: Next.js ignored pnpm-lock.yaml in C:\Projets\SNDS-HARMONISATION\coc-cible because it is outside the current Git repository (C:\Projets\SNDS-HARMONISATION\coc-cible\.cache\site-web-20261023\checkout).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.mjs took 28ms
+Creating turbopack project {
+  dir: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\site-web-20261023\\checkout',
+  testMode: true
+}
+○ Compiling proxy ...
+
+○ Compiling /site-web-fixtures ...
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=categories 200 in 5.8s (next.js: 5.5s, application-code: 258ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=sliders&mode= 200 in 80ms (next.js: 25ms, application-code: 55ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=evenements&mode= 200 in 119ms (next.js: 15ms, application-code: 104ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=communiques&mode= 200 in 85ms (next.js: 13ms, application-code: 72ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=actualites&mode= 200 in 115ms (next.js: 13ms, application-code: 103ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=athletes&mode= 200 in 155ms (next.js: 15ms, application-code: 139ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=galeries&mode= 200 in 89ms (next.js: 12ms, application-code: 77ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=documents&mode= 200 in 86ms (next.js: 13ms, application-code: 73ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=categories&mode= 200 in 113ms (next.js: 16ms, application-code: 96ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=sliders&mode= 200 in 75ms (next.js: 14ms, application-code: 61ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=evenements&mode= 200 in 75ms (next.js: 10ms, application-code: 65ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=communiques&mode= 200 in 71ms (next.js: 7ms, application-code: 64ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=actualites&mode= 200 in 69ms (next.js: 11ms, application-code: 58ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=athletes&mode= 200 in 69ms (next.js: 10ms, application-code: 59ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=galeries&mode= 200 in 104ms (next.js: 10ms, application-code: 94ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=documents&mode= 200 in 73ms (next.js: 7ms, application-code: 66ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=categories&mode= 200 in 57ms (next.js: 6ms, application-code: 51ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=actualites&mode= 200 in 85ms (next.js: 12ms, application-code: 73ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=actualites&mode=viewer 200 in 54ms (next.js: 10ms, application-code: 44ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=categories&mode=empty 200 in 45ms (next.js: 6ms, application-code: 40ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=categories&mode=error 200 in 82ms (next.js: 7ms, application-code: 76ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+ GET /site-web-fixtures?resource=galeries&mode= 200 in 66ms (next.js: 8ms, application-code: 58ms)
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: Error while requesting resource
+There was an issue establishing a connection while requesting https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_6ebdd91a.module.css
+Warning: next/font: warning:
+Failed to download Geist from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_6ebdd91a.module.css
+    [next]/internal/font/google/geist_6ebdd91a.js
+    ./app/layout.tsx
+
+
+⚠ [next]/internal/font/google/geist_mono_42eec60.module.css
+Warning: next/font: warning:
+Failed to download Geist Mono from Google Fonts. Using a fallback font instead.
+If you are offline or behind a proxy, self-host the font with next/font/local, or set HTTP_PROXY/HTTPS_PROXY so Next.js can reach fonts.googleapis.com.
+
+Import trace:
+  Server Component:
+    [next]/internal/font/google/geist_mono_42eec60.module.css
+    [next]/internal/font/google/geist_mono_42eec60.js
+    ./app/layout.tsx
+
+

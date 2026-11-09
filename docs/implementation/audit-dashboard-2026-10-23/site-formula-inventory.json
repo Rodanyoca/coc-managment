@@ -1,0 +1,8 @@
+{
+  "checkedAt": "2026-10-23T09:33:01.388Z",
+  "scope": "SITE_WEB static code workbook",
+  "writes": 0,
+  "connectorAccess": "unavailable; fallback to application read-only Sheets credential",
+  "complete": false,
+  "errorCode": 404
+}

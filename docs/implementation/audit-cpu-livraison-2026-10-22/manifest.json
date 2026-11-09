@@ -1,0 +1,285 @@
+{
+  "head": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+  "lineEndings": "SHA-256 and patches normalized to LF",
+  "groups": {
+    "00-support-tests": [
+      "package.json",
+      "scripts/cpu-audit/module-harness.mjs",
+      "scripts/cpu-audit/fixtures.mjs"
+    ],
+    "D1-documents": [
+      "lib/documents/data.ts",
+      "tests/cpu/documents.test.mjs",
+      "tests/cpu/private-documents.test.mjs"
+    ],
+    "C1-sheets": [
+      "lib/google/sheets.ts",
+      "tests/cpu/sheets.test.mjs"
+    ],
+    "S1-viewer": [
+      "lib/auth.ts",
+      "lib/auth/authorization.ts",
+      "lib/auth/post-login-route.ts",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/post-login-route.test.ts",
+      "tests/cpu/navigation-access.test.mjs"
+    ]
+  },
+  "runtimeFiles": [
+    "lib/auth.ts",
+    "lib/auth/authorization.ts",
+    "lib/auth/post-login-route.ts",
+    "lib/documents/data.ts",
+    "lib/google/sheets.ts"
+  ],
+  "families": {
+    "baseline-workspace": {
+      "appliedAndCompared": true,
+      "checkDirectory": "C:\\Users\\HP\\AppData\\Local\\Temp\\coc-delivery-check-3qavg2h7",
+      "patches": [
+        "baseline-workspace\\00-support-tests.patch",
+        "baseline-workspace\\D1-documents.patch",
+        "baseline-workspace\\C1-sheets.patch",
+        "baseline-workspace\\S1-viewer.patch"
+      ],
+      "files": [
+        {
+          "group": "00-support-tests",
+          "file": "package.json",
+          "runtime": false,
+          "beforeSha256": "83fdcfd5a5e0f789f508a30bb704cd73144dbe79c2972dfe35f5e3a464cb1607",
+          "afterSha256": "a3f455e149a21238bcec5cfba727cc7774bfff7015ce1f3fafa18734bb35a876",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "00-support-tests",
+          "file": "scripts/cpu-audit/module-harness.mjs",
+          "runtime": false,
+          "beforeSha256": "536c7a61f24a70f1f9bf5a2c4a89542ae382340bcc271a76b7f3d739f74daa3b",
+          "afterSha256": "7e706d7a8fca52ed54b3fe82510ce346f2e0ce92377a398c4fe9b6b147385357",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "00-support-tests",
+          "file": "scripts/cpu-audit/fixtures.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "93157207b49343a503a0cc1ed8de90a82849b27e8b3137a8d3d7480d45289eaf",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "D1-documents",
+          "file": "lib/documents/data.ts",
+          "runtime": true,
+          "beforeSha256": "c9b868329592159b37e534bb425188c22e95528b2260491d394149758f482724",
+          "afterSha256": "17bb06500b156a1bbd32fe4e3a6611b03fec5987a8cb36498705a9760dcf3060",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "D1-documents",
+          "file": "tests/cpu/documents.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "e0745487c890c4ef03345eacdb030ad71b516d1c036bca48c08d1310fd481af1",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "D1-documents",
+          "file": "tests/cpu/private-documents.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "7d3ec08a2f0245d378636e8c03d1e565b0dab23520d7106cf4e2f5ad0c009770",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "C1-sheets",
+          "file": "lib/google/sheets.ts",
+          "runtime": true,
+          "beforeSha256": "df50ca44fe1cc594c7e855b50b9ada0611c844fb3bc3b722a739938ea69983f7",
+          "afterSha256": "bc202bf1aa9621facaa7f99f7dfaad85f344a368440cc94ffae9a47a0ecc6f5f",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "C1-sheets",
+          "file": "tests/cpu/sheets.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "cebefe2564587b20ea0fa78565073e412fb654d924cb1f528458ac1006f937ec",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "S1-viewer",
+          "file": "lib/auth.ts",
+          "runtime": true,
+          "beforeSha256": "42e65f51c364a8cdd449d583c11450c093553c8f05ce761637492c63906e8719",
+          "afterSha256": "d61a1facd7841e7c6296f9ca9596035510935fcf7efb1fd28f7cddfe0502e76f",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "lib/auth/authorization.ts",
+          "runtime": true,
+          "beforeSha256": "c2da9b90c5fc5068507bc49a50fc814eba79f688dfb6187118151c6ba83d302a",
+          "afterSha256": "6adf5367efa5c056cccd614118ed99cef42e58bab2c903304446e0d78dfdffa7",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "lib/auth/post-login-route.ts",
+          "runtime": true,
+          "beforeSha256": "6810f5d5a0a0aa6c00416004ff3b4d62a6f407ebeaa5a998ce748978cf99f1eb",
+          "afterSha256": "783d82e1cff12554e55dd1e908215b5ce765c9cc5980b4fde2dd0c0ab367a24d",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "tests/unit/authorization.test.ts",
+          "runtime": false,
+          "beforeSha256": "d1cd10c303005317e431f1fdeda294f721ab502b2a505777769fff7df9889069",
+          "afterSha256": "10b637a21cfa375129e0ae4c4d2ad56316f336319def6e255d7e4883a104d186",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "tests/unit/post-login-route.test.ts",
+          "runtime": false,
+          "beforeSha256": "b2071db52421c03bc829652be813b216badd1f1b1a98f2cd0e10fd5185db5b9d",
+          "afterSha256": "93dc91ad1e3b7927a3147cf77914b3a8abedba3e77788001993e59bb2953d2a1",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "tests/cpu/navigation-access.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "7a8762e3969687d30af08818ce91d2bd2c1c2a276057b7fa2addb67924c3613a",
+          "preexistingWorkspaceDifferenceFromHead": false
+        }
+      ]
+    },
+    "head": {
+      "appliedAndCompared": true,
+      "checkDirectory": "C:\\Users\\HP\\AppData\\Local\\Temp\\coc-delivery-check-vt24dkff",
+      "patches": [
+        "head\\00-support-tests.patch",
+        "head\\D1-documents.patch",
+        "head\\C1-sheets.patch",
+        "head\\S1-viewer.patch"
+      ],
+      "files": [
+        {
+          "group": "00-support-tests",
+          "file": "package.json",
+          "runtime": false,
+          "beforeSha256": "83fdcfd5a5e0f789f508a30bb704cd73144dbe79c2972dfe35f5e3a464cb1607",
+          "afterSha256": "a3f455e149a21238bcec5cfba727cc7774bfff7015ce1f3fafa18734bb35a876",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "00-support-tests",
+          "file": "scripts/cpu-audit/module-harness.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "7e706d7a8fca52ed54b3fe82510ce346f2e0ce92377a398c4fe9b6b147385357",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "00-support-tests",
+          "file": "scripts/cpu-audit/fixtures.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "93157207b49343a503a0cc1ed8de90a82849b27e8b3137a8d3d7480d45289eaf",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "D1-documents",
+          "file": "lib/documents/data.ts",
+          "runtime": true,
+          "beforeSha256": "c9b868329592159b37e534bb425188c22e95528b2260491d394149758f482724",
+          "afterSha256": "17bb06500b156a1bbd32fe4e3a6611b03fec5987a8cb36498705a9760dcf3060",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "D1-documents",
+          "file": "tests/cpu/documents.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "e0745487c890c4ef03345eacdb030ad71b516d1c036bca48c08d1310fd481af1",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "D1-documents",
+          "file": "tests/cpu/private-documents.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "7d3ec08a2f0245d378636e8c03d1e565b0dab23520d7106cf4e2f5ad0c009770",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "C1-sheets",
+          "file": "lib/google/sheets.ts",
+          "runtime": true,
+          "beforeSha256": "df50ca44fe1cc594c7e855b50b9ada0611c844fb3bc3b722a739938ea69983f7",
+          "afterSha256": "bc202bf1aa9621facaa7f99f7dfaad85f344a368440cc94ffae9a47a0ecc6f5f",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "C1-sheets",
+          "file": "tests/cpu/sheets.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "cebefe2564587b20ea0fa78565073e412fb654d924cb1f528458ac1006f937ec",
+          "preexistingWorkspaceDifferenceFromHead": false
+        },
+        {
+          "group": "S1-viewer",
+          "file": "lib/auth.ts",
+          "runtime": true,
+          "beforeSha256": "87a223a6a66f70dbf1eebef94b5cb6e5d48408d0453fd89b5007fab65783944a",
+          "afterSha256": "d61a1facd7841e7c6296f9ca9596035510935fcf7efb1fd28f7cddfe0502e76f",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "lib/auth/authorization.ts",
+          "runtime": true,
+          "beforeSha256": "f1005d14f69be6a5673aa19912acc33ec1e05e88a31b6ce5074b9c23e5e030b1",
+          "afterSha256": "6adf5367efa5c056cccd614118ed99cef42e58bab2c903304446e0d78dfdffa7",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "lib/auth/post-login-route.ts",
+          "runtime": true,
+          "beforeSha256": "d9205597767cd35baf8af0183ffb21eac39c933bb95ade30e97ba34b61ebcd81",
+          "afterSha256": "783d82e1cff12554e55dd1e908215b5ce765c9cc5980b4fde2dd0c0ab367a24d",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "tests/unit/authorization.test.ts",
+          "runtime": false,
+          "beforeSha256": "adc4b0bec932424b453fd2c0748ec05fea8dbc21cf8ce8f3bb7cf875899ab5db",
+          "afterSha256": "10b637a21cfa375129e0ae4c4d2ad56316f336319def6e255d7e4883a104d186",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "tests/unit/post-login-route.test.ts",
+          "runtime": false,
+          "beforeSha256": "54f91b794214c57eb5358ed71b82cb7898b0389be98df63c6b78d6bba058cc51",
+          "afterSha256": "93dc91ad1e3b7927a3147cf77914b3a8abedba3e77788001993e59bb2953d2a1",
+          "preexistingWorkspaceDifferenceFromHead": true
+        },
+        {
+          "group": "S1-viewer",
+          "file": "tests/cpu/navigation-access.test.mjs",
+          "runtime": false,
+          "beforeSha256": null,
+          "afterSha256": "7a8762e3969687d30af08818ce91d2bd2c1c2a276057b7fa2addb67924c3613a",
+          "preexistingWorkspaceDifferenceFromHead": false
+        }
+      ]
+    }
+  }
+}

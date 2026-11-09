@@ -1,0 +1,55 @@
+[
+  {
+    "name": "tests",
+    "code": 0,
+    "elapsedMs": 1559
+  },
+  {
+    "name": "lint",
+    "code": 0,
+    "elapsedMs": 124848
+  },
+  {
+    "name": "build",
+    "code": 1,
+    "elapsedMs": 102359
+  },
+  {
+    "name": "build-network-enabled",
+    "code": 0,
+    "elapsedMs": 81036
+  },
+  {
+    "name": "typescript",
+    "code": 0,
+    "elapsedMs": 60109
+  },
+  {
+    "name": "lint-final",
+    "code": 0,
+    "elapsedMs": 88754
+  },
+  {
+    "name": "tests-final",
+    "code": 0,
+    "elapsedMs": 1419,
+    "tests": 92,
+    "pass": 92,
+    "failures": []
+  },
+  {
+    "name": "suite",
+    "code": 1,
+    "elapsedMs": 18620,
+    "tests": 325,
+    "pass": 319,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  }
+]

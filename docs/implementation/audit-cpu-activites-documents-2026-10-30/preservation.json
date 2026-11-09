@@ -1,0 +1,17 @@
+{
+  "referenceFiles": 1013,
+  "changedExistingFiles": [
+    "app/api/documents/[id]/download/route.ts",
+    "app/api/documents/[id]/preview/route.ts",
+    "app/dashboard/activites/page.tsx",
+    "app/dashboard/documents/[id]/document-detail-client.tsx",
+    "docs/implementation/performance-routes-audit.md",
+    "lib/activites/data.ts",
+    "lib/documents/data.ts",
+    "lib/google/drive.ts",
+    "scripts/cpu-audit/fixtures.mjs",
+    "scripts/cpu-audit/module-harness.mjs",
+    "tests/cpu/private-documents.test.mjs"
+  ],
+  "competitionsUnchanged": true
+}

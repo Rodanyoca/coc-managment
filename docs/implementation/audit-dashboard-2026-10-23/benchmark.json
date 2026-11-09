@@ -1,0 +1,2877 @@
+{
+  "at": "2026-10-23T09:48:17.852Z",
+  "node": "v24.16.0",
+  "freeGiB": 1.9158973693847656,
+  "cpus": 12,
+  "reference": ".cache/cpu-dashboard/reference",
+  "variant": ".",
+  "sourceHashes": {
+    ".cache/cpu-dashboard/reference": {
+      "lib/activites/data.ts": "ef56315dc26dfa0c91bc745bf57fd382eaf3c58f408eea6b21f1f15bd9e18ed2",
+      "lib/activites/dashboard.ts": "f899c5f8c429e9f0eef8064f271d0a72340bc21131ce7160ae60f67e2bbbfcbe",
+      "lib/google/sheets.ts": "a56cf1b69e97d3f9e1a5336232ee0bf07b827496626c996dc947c8529d1590c0"
+    },
+    ".": {
+      "lib/activites/data.ts": "0411fd8118ea4ba8e31e6b8fdb0a4a5a3d27f2ca52cb2afa06e80e005d3fa015",
+      "lib/activites/dashboard.ts": "16f259b5fe8e3e57cbf05f472e6cb650825039d08727a51d6e2d7756a2b767b6",
+      "lib/google/sheets.ts": "a56cf1b69e97d3f9e1a5336232ee0bf07b827496626c996dc947c8529d1590c0"
+    }
+  },
+  "scope": "Actual Activities dashboard loader, data conversion and C2 raw cache; offline dependencies; no auth, React, other dashboard sections or network latency",
+  "warmup": 5,
+  "rounds": 9,
+  "minimumIterations": 20,
+  "minimumSampleMs": 100,
+  "results": [
+    {
+      "rows": 20,
+      "scenario": "cold",
+      "equal": true,
+      "resultBytes": 1328,
+      "reference": {
+        "cpuMs": 2.2244897959183674,
+        "elapsedMs": 2.0540040816326557,
+        "getCalls": 5,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 1.5,
+        "elapsedMs": 1.4985208955223894,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 23,
+            "cpuMs": 4.086956521739131,
+            "elapsedMs": 4.353569565217393,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 31,
+            "cpuMs": 3.5161290322580645,
+            "elapsedMs": 3.2578806451612925,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 24,
+            "cpuMs": 4.583333333333333,
+            "elapsedMs": 4.210145833333333,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 50,
+            "cpuMs": 5,
+            "elapsedMs": 2.1320939999999973,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 49,
+            "cpuMs": 2.2244897959183674,
+            "elapsedMs": 2.0540040816326557,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 55,
+            "cpuMs": 1.709090909090909,
+            "elapsedMs": 1.8214400000000006,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 61,
+            "cpuMs": 1.7868852459016393,
+            "elapsedMs": 1.6630016393442617,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 61,
+            "cpuMs": 1.8032786885245902,
+            "elapsedMs": 1.647454098360659,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 84,
+            "cpuMs": 1.119047619047619,
+            "elapsedMs": 1.1919714285714322,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 33,
+            "cpuMs": 3.303030303030303,
+            "elapsedMs": 3.180748484848485,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 2.7857142857142856,
+            "elapsedMs": 3.639378571428568,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 62,
+            "cpuMs": 1.5,
+            "elapsedMs": 1.624703225806449,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 67,
+            "cpuMs": 1.4029850746268657,
+            "elapsedMs": 1.4985208955223894,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 64,
+            "cpuMs": 1.953125,
+            "elapsedMs": 1.5735703124999958,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 71,
+            "cpuMs": 1.7605633802816902,
+            "elapsedMs": 1.4103436619718297,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 138,
+            "cpuMs": 0.6811594202898551,
+            "elapsedMs": 0.726483333333333,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 79,
+            "cpuMs": 1.379746835443038,
+            "elapsedMs": 1.2756177215189866,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 84,
+            "cpuMs": 1.119047619047619,
+            "elapsedMs": 1.2135488095238078,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 20,
+      "scenario": "warm",
+      "equal": true,
+      "resultBytes": 1328,
+      "reference": {
+        "cpuMs": 0.6687116564417178,
+        "elapsedMs": 0.6624841059602653,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 0.7099236641221374,
+        "elapsedMs": 0.7423503703703722,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 94,
+            "cpuMs": 1.3404255319148937,
+            "elapsedMs": 1.0739957446808488,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 151,
+            "cpuMs": 0.6225165562913907,
+            "elapsedMs": 0.6624841059602653,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 163,
+            "cpuMs": 0.6687116564417178,
+            "elapsedMs": 0.6167883435582804,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 149,
+            "cpuMs": 0.7315436241610739,
+            "elapsedMs": 0.67961812080537,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 123,
+            "cpuMs": 0.8943089430894309,
+            "elapsedMs": 0.813492682926826,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 114,
+            "cpuMs": 0.8245614035087719,
+            "elapsedMs": 0.8839885964912275,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 184,
+            "cpuMs": 0.592391304347826,
+            "elapsedMs": 0.5472913043478279,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 168,
+            "cpuMs": 0.6488095238095238,
+            "elapsedMs": 0.6006089285714324,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 157,
+            "cpuMs": 0.5987261146496815,
+            "elapsedMs": 0.6385057324840809,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 96,
+            "cpuMs": 1.1354166666666667,
+            "elapsedMs": 1.0458979166666655,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 176,
+            "cpuMs": 0.5340909090909091,
+            "elapsedMs": 0.5748812500000017,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 119,
+            "cpuMs": 0.7899159663865546,
+            "elapsedMs": 0.8492529411764735,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 166,
+            "cpuMs": 0.7530120481927711,
+            "elapsedMs": 0.6077632530120453,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 150,
+            "cpuMs": 0.62,
+            "elapsedMs": 0.6692773333333328,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 135,
+            "cpuMs": 0.6962962962962963,
+            "elapsedMs": 0.7423503703703722,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 131,
+            "cpuMs": 0.7099236641221374,
+            "elapsedMs": 0.7677824427480903,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 124,
+            "cpuMs": 0.8870967741935484,
+            "elapsedMs": 0.8128758064516176,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 181,
+            "cpuMs": 0.6906077348066298,
+            "elapsedMs": 0.5525541436464106,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 20,
+      "scenario": "concurrent-8",
+      "equal": true,
+      "resultBytes": 10633,
+      "reference": {
+        "cpuMs": 4.954545454545454,
+        "elapsedMs": 4.5483227272727,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 40,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 4.074074074074074,
+        "elapsedMs": 3.7906703703703424,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 16,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 22,
+            "cpuMs": 4.954545454545454,
+            "elapsedMs": 4.5483227272727,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 31,
+            "cpuMs": 3.5161290322580645,
+            "elapsedMs": 3.306770967741936,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 9.4,
+            "elapsedMs": 6.164139999999998,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 23,
+            "cpuMs": 5.434782608695652,
+            "elapsedMs": 4.400660869565241,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 21,
+            "cpuMs": 4.476190476190476,
+            "elapsedMs": 4.831900000000003,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 5.45,
+            "elapsedMs": 5.391304999999965,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 23,
+            "cpuMs": 4.782608695652174,
+            "elapsedMs": 4.537908695652178,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 5.45,
+            "elapsedMs": 5.461315000000013,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 29,
+            "cpuMs": 3.2413793103448274,
+            "elapsedMs": 3.6352448275861993,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 27,
+            "cpuMs": 4.074074074074074,
+            "elapsedMs": 3.7906703703703424,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 5.45,
+            "elapsedMs": 5.362874999999986,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 7,
+            "elapsedMs": 6.092810000000009,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 24,
+            "cpuMs": 4.583333333333333,
+            "elapsedMs": 4.189479166666653,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 33,
+            "cpuMs": 3.303030303030303,
+            "elapsedMs": 3.06590606060606,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 31,
+            "cpuMs": 3.032258064516129,
+            "elapsedMs": 3.27033225806451,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 35,
+            "cpuMs": 3.1142857142857143,
+            "elapsedMs": 2.9718885714285666,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 32,
+            "cpuMs": 3.4375,
+            "elapsedMs": 3.162259375000019,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 23,
+            "cpuMs": 4.695652173913044,
+            "elapsedMs": 4.470760869565232,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 20,
+      "scenario": "after-reference-mutation",
+      "equal": true,
+      "resultBytes": 1328,
+      "reference": {
+        "cpuMs": 1.8,
+        "elapsedMs": 1.9806392156862749,
+        "getCalls": 4,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 1
+      },
+      "variant": {
+        "cpuMs": 1.0784313725490196,
+        "elapsedMs": 1.1683081395348867,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 1
+      },
+      "samples": [
+        [
+          {
+            "iterations": 51,
+            "cpuMs": 2.1372549019607843,
+            "elapsedMs": 1.9806392156862749,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 61,
+            "cpuMs": 2.557377049180328,
+            "elapsedMs": 1.6456524590163903,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 45,
+            "cpuMs": 2.422222222222222,
+            "elapsedMs": 2.2658866666666655,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 35,
+            "cpuMs": 1.8,
+            "elapsedMs": 4.846934285714295,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 0.75,
+            "elapsedMs": 11.936345000000074,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 50,
+            "cpuMs": 1.26,
+            "elapsedMs": 2.039233999999997,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 55,
+            "cpuMs": 1.981818181818182,
+            "elapsedMs": 1.8312490909090808,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 69,
+            "cpuMs": 1.3623188405797102,
+            "elapsedMs": 1.449304347826093,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 70,
+            "cpuMs": 1.3285714285714285,
+            "elapsedMs": 1.4470057142857122,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          }
+        ],
+        [
+          {
+            "iterations": 75,
+            "cpuMs": 1.4533333333333334,
+            "elapsedMs": 1.346196000000006,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 87,
+            "cpuMs": 1.264367816091954,
+            "elapsedMs": 1.150649425287355,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 74,
+            "cpuMs": 0.8513513513513513,
+            "elapsedMs": 1.3596040540540564,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 85,
+            "cpuMs": 1.2823529411764707,
+            "elapsedMs": 1.1844905882352952,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 94,
+            "cpuMs": 0.8297872340425532,
+            "elapsedMs": 1.075727659574481,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 86,
+            "cpuMs": 1.2790697674418605,
+            "elapsedMs": 1.1683081395348867,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 79,
+            "cpuMs": 0.9873417721518988,
+            "elapsedMs": 1.2712873417721646,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 102,
+            "cpuMs": 1.0784313725490196,
+            "elapsedMs": 0.9917647058823515,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 106,
+            "cpuMs": 1.028301886792453,
+            "elapsedMs": 0.9454830188679241,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 20,
+      "scenario": "after-activity-mutation",
+      "equal": true,
+      "resultBytes": 1328,
+      "reference": {
+        "cpuMs": 1.3478260869565217,
+        "elapsedMs": 1.3220092105262953,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 1
+      },
+      "variant": {
+        "cpuMs": 1.0217391304347827,
+        "elapsedMs": 1.0916119565217346,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 1
+      },
+      "samples": [
+        [
+          {
+            "iterations": 60,
+            "cpuMs": 1.8166666666666667,
+            "elapsedMs": 1.68131999999999,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 110,
+            "cpuMs": 0.8545454545454545,
+            "elapsedMs": 0.9391899999999871,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 73,
+            "cpuMs": 1.5068493150684932,
+            "elapsedMs": 1.3741164383561837,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 66,
+            "cpuMs": 1.6666666666666667,
+            "elapsedMs": 1.5349015151515149,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 69,
+            "cpuMs": 1.3478260869565217,
+            "elapsedMs": 1.4666550724637815,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 78,
+            "cpuMs": 1.5897435897435896,
+            "elapsedMs": 1.2846846153846248,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 117,
+            "cpuMs": 1.0683760683760684,
+            "elapsedMs": 0.8574837606837618,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 76,
+            "cpuMs": 1.236842105263158,
+            "elapsedMs": 1.3220092105262953,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 84,
+            "cpuMs": 1.2976190476190477,
+            "elapsedMs": 1.1957607142857167,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          }
+        ],
+        [
+          {
+            "iterations": 99,
+            "cpuMs": 0.9494949494949495,
+            "elapsedMs": 1.0233959595959525,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 136,
+            "cpuMs": 0.8014705882352942,
+            "elapsedMs": 0.7374382352941211,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 72,
+            "cpuMs": 1.9444444444444444,
+            "elapsedMs": 1.3914166666666763,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 92,
+            "cpuMs": 1.0217391304347827,
+            "elapsedMs": 1.0916119565217346,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 68,
+            "cpuMs": 1.6176470588235294,
+            "elapsedMs": 1.4890323529411678,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 70,
+            "cpuMs": 1.5571428571428572,
+            "elapsedMs": 1.436122857142852,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 85,
+            "cpuMs": 1.1058823529411765,
+            "elapsedMs": 1.1782282352941205,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 145,
+            "cpuMs": 0.6482758620689655,
+            "elapsedMs": 0.6965289655172393,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 123,
+            "cpuMs": 0.7642276422764228,
+            "elapsedMs": 0.815917886178869,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 200,
+      "scenario": "cold",
+      "equal": true,
+      "resultBytes": 1339,
+      "reference": {
+        "cpuMs": 6.25,
+        "elapsedMs": 5.904935000000023,
+        "getCalls": 5,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 4.583333333333333,
+        "elapsedMs": 4.578345454545425,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 7,
+            "elapsedMs": 7.037979999999971,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 6.25,
+            "elapsedMs": 6.2905700000000255,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 7.8,
+            "elapsedMs": 6.833789999999953,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 6.25,
+            "elapsedMs": 6.345699999999942,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 6.25,
+            "elapsedMs": 5.904935000000023,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 6.25,
+            "elapsedMs": 5.51253999999999,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 4.65,
+            "elapsedMs": 5.3503950000000255,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 4.65,
+            "elapsedMs": 5.541965000000073,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 5.5,
+            "elapsedMs": 5.389904999999999,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 6.25,
+            "elapsedMs": 6.185429999999997,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 9.4,
+            "elapsedMs": 6.851044999999976,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 22,
+            "cpuMs": 4.954545454545454,
+            "elapsedMs": 4.697622727272739,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 22,
+            "cpuMs": 4.2727272727272725,
+            "elapsedMs": 4.578345454545425,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 22,
+            "cpuMs": 5,
+            "elapsedMs": 4.683354545454511,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 23,
+            "cpuMs": 3.391304347826087,
+            "elapsedMs": 4.4601000000000015,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 24,
+            "cpuMs": 4.583333333333333,
+            "elapsedMs": 4.23126666666667,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 26,
+            "cpuMs": 3.6153846153846154,
+            "elapsedMs": 3.932180769230749,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 24,
+            "cpuMs": 4.541666666666667,
+            "elapsedMs": 4.2287708333333285,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 200,
+      "scenario": "warm",
+      "equal": true,
+      "resultBytes": 1339,
+      "reference": {
+        "cpuMs": 2.369565217391304,
+        "elapsedMs": 2.2433888888888758,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 2.2941176470588234,
+        "elapsedMs": 2.2228711111110897,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 43,
+            "cpuMs": 2.558139534883721,
+            "elapsedMs": 2.356848837209285,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 40,
+            "cpuMs": 3.125,
+            "elapsedMs": 2.5307874999999966,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 46,
+            "cpuMs": 1.6956521739130435,
+            "elapsedMs": 2.212578260869597,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 46,
+            "cpuMs": 2.369565217391304,
+            "elapsedMs": 2.2201239130434893,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 45,
+            "cpuMs": 1.7555555555555555,
+            "elapsedMs": 2.2433888888888758,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 46,
+            "cpuMs": 2.0434782608695654,
+            "elapsedMs": 2.1934130434782397,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 46,
+            "cpuMs": 2.369565217391304,
+            "elapsedMs": 2.1906956521739316,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 39,
+            "cpuMs": 2.41025641025641,
+            "elapsedMs": 2.600728205128223,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 36,
+            "cpuMs": 3.0277777777777777,
+            "elapsedMs": 2.816169444444414,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 43,
+            "cpuMs": 2.5348837209302326,
+            "elapsedMs": 2.352169767441854,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 44,
+            "cpuMs": 2.5,
+            "elapsedMs": 2.294063636363634,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 46,
+            "cpuMs": 2.0434782608695654,
+            "elapsedMs": 2.185195652173918,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 46,
+            "cpuMs": 2.369565217391304,
+            "elapsedMs": 2.182682608695675,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 44,
+            "cpuMs": 2.1136363636363638,
+            "elapsedMs": 2.294065909090891,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 47,
+            "cpuMs": 1.3404255319148937,
+            "elapsedMs": 2.1588851063829777,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 45,
+            "cpuMs": 2.088888888888889,
+            "elapsedMs": 2.2228711111110897,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 46,
+            "cpuMs": 2.369565217391304,
+            "elapsedMs": 2.1976913043478383,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 34,
+            "cpuMs": 2.2941176470588234,
+            "elapsedMs": 3.063405882352901,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 200,
+      "scenario": "concurrent-8",
+      "equal": true,
+      "resultBytes": 10721,
+      "reference": {
+        "cpuMs": 17.95,
+        "elapsedMs": 17.78737000000001,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 40,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 17.15,
+        "elapsedMs": 17.202264999999898,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 16,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 32.05,
+            "elapsedMs": 30.24236000000001,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 18,
+            "elapsedMs": 18.50969499999992,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 17.2,
+            "elapsedMs": 17.766849999999977,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 16.4,
+            "elapsedMs": 16.54984999999997,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 17.2,
+            "elapsedMs": 16.856674999999996,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 17.2,
+            "elapsedMs": 17.658189999999923,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 17.95,
+            "elapsedMs": 17.78737000000001,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 39.85,
+            "elapsedMs": 40.564314999999986,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 25.8,
+            "elapsedMs": 26.038995000000067,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 17.15,
+            "elapsedMs": 17.58629000000001,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 17.15,
+            "elapsedMs": 18.083280000000013,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 16.4,
+            "elapsedMs": 16.698480000000018,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 16.4,
+            "elapsedMs": 16.143905000000085,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 16.4,
+            "elapsedMs": 16.31133000000009,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 17.2,
+            "elapsedMs": 16.939155000000028,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 16.4,
+            "elapsedMs": 17.202264999999898,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 18.75,
+            "elapsedMs": 18.70252500000006,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 21.1,
+            "elapsedMs": 22.08116000000009,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 200,
+      "scenario": "after-reference-mutation",
+      "equal": true,
+      "resultBytes": 1339,
+      "reference": {
+        "cpuMs": 4.36,
+        "elapsedMs": 4.024487999999983,
+        "getCalls": 4,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 1
+      },
+      "variant": {
+        "cpuMs": 2.35,
+        "elapsedMs": 2.4808195121951897,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 1
+      },
+      "samples": [
+        [
+          {
+            "iterations": 21,
+            "cpuMs": 4.428571428571429,
+            "elapsedMs": 4.944585714285668,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 25,
+            "cpuMs": 4.36,
+            "elapsedMs": 4.171744000000035,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 23,
+            "cpuMs": 5.434782608695652,
+            "elapsedMs": 4.4235086956521075,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 25,
+            "cpuMs": 4.4,
+            "elapsedMs": 4.00525999999998,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 25,
+            "cpuMs": 3.72,
+            "elapsedMs": 4.014835999999923,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 25,
+            "cpuMs": 5,
+            "elapsedMs": 4.024487999999983,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 26,
+            "cpuMs": 3.6153846153846154,
+            "elapsedMs": 3.8724192307692227,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 26,
+            "cpuMs": 3.576923076923077,
+            "elapsedMs": 3.926573076923048,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 26,
+            "cpuMs": 3.6153846153846154,
+            "elapsedMs": 4.025719230769168,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          }
+        ],
+        [
+          {
+            "iterations": 34,
+            "cpuMs": 3.676470588235294,
+            "elapsedMs": 2.94572647058821,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 37,
+            "cpuMs": 2.972972972972973,
+            "elapsedMs": 2.757421621621639,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 41,
+            "cpuMs": 2.682926829268293,
+            "elapsedMs": 2.4808195121951897,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 43,
+            "cpuMs": 2.1627906976744184,
+            "elapsedMs": 2.3661558139534717,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 41,
+            "cpuMs": 2.292682926829268,
+            "elapsedMs": 2.4828536585366416,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 40,
+            "cpuMs": 2.35,
+            "elapsedMs": 2.513979999999992,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 42,
+            "cpuMs": 2.238095238095238,
+            "elapsedMs": 2.4214952380953036,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 41,
+            "cpuMs": 2.292682926829268,
+            "elapsedMs": 2.4744243902439447,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 45,
+            "cpuMs": 2.422222222222222,
+            "elapsedMs": 2.2937177777777027,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 200,
+      "scenario": "after-activity-mutation",
+      "equal": true,
+      "resultBytes": 1339,
+      "reference": {
+        "cpuMs": 3.76,
+        "elapsedMs": 3.7150777777778448,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 1
+      },
+      "variant": {
+        "cpuMs": 3.6153846153846154,
+        "elapsedMs": 3.7937111111112043,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 1
+      },
+      "samples": [
+        [
+          {
+            "iterations": 24,
+            "cpuMs": 3.25,
+            "elapsedMs": 4.2160166666667465,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 25,
+            "cpuMs": 3.76,
+            "elapsedMs": 4.1456560000000175,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 25,
+            "cpuMs": 4.36,
+            "elapsedMs": 4.027275999999984,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 26,
+            "cpuMs": 3.6153846153846154,
+            "elapsedMs": 3.888480769230787,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 3.892857142857143,
+            "elapsedMs": 3.6762142857141953,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 3.3214285714285716,
+            "elapsedMs": 3.6697285714286147,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 27,
+            "cpuMs": 4.62962962962963,
+            "elapsedMs": 3.7150777777778448,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 2.8214285714285716,
+            "elapsedMs": 3.645664285714312,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 4.464285714285714,
+            "elapsedMs": 3.6491964285713556,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          }
+        ],
+        [
+          {
+            "iterations": 25,
+            "cpuMs": 3.76,
+            "elapsedMs": 4.118920000000071,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 24,
+            "cpuMs": 4.541666666666667,
+            "elapsedMs": 4.1954375000000255,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 25,
+            "cpuMs": 3.76,
+            "elapsedMs": 4.0578519999999845,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 26,
+            "cpuMs": 3.6153846153846154,
+            "elapsedMs": 3.9052384615384095,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 3.357142857142857,
+            "elapsedMs": 3.6023178571428747,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 3.357142857142857,
+            "elapsedMs": 3.5918000000000183,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 3.357142857142857,
+            "elapsedMs": 3.5915071428571537,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 27,
+            "cpuMs": 4.037037037037037,
+            "elapsedMs": 3.7937111111112043,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 28,
+            "cpuMs": 2.7857142857142856,
+            "elapsedMs": 3.594185714285751,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 2000,
+      "scenario": "cold",
+      "equal": true,
+      "resultBytes": 1410,
+      "reference": {
+        "cpuMs": 91.4,
+        "elapsedMs": 94.64480500000009,
+        "getCalls": 5,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 66.4,
+        "elapsedMs": 65.94905500000023,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 74.2,
+            "elapsedMs": 73.36684000000005,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 91.4,
+            "elapsedMs": 94.64480500000009,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 107.85,
+            "elapsedMs": 99.93657999999996,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 100.75,
+            "elapsedMs": 98.77687499999993,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 135.2,
+            "elapsedMs": 232.71053500000016,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 125.75,
+            "elapsedMs": 147.7373950000001,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 82.05,
+            "elapsedMs": 79.67329000000026,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 82.05,
+            "elapsedMs": 74.29929000000011,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 68,
+            "elapsedMs": 69.66419999999998,
+            "getCalls": 5,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 71.9,
+            "elapsedMs": 74.06517499999991,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 63.25,
+            "elapsedMs": 65.01320999999989,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 100.8,
+            "elapsedMs": 175.3632450000001,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 66.4,
+            "elapsedMs": 65.94905500000023,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 100.75,
+            "elapsedMs": 119.27556499999992,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 93,
+            "elapsedMs": 107.70614999999998,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 38.25,
+            "elapsedMs": 39.39186000000009,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 36.7,
+            "elapsedMs": 37.114585000000076,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 35.95,
+            "elapsedMs": 37.31242499999971,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 2000,
+      "scenario": "warm",
+      "equal": true,
+      "resultBytes": 1410,
+      "reference": {
+        "cpuMs": 21.05,
+        "elapsedMs": 20.993345000000044,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 20.3,
+        "elapsedMs": 20.330505000000265,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 21.1,
+            "elapsedMs": 21.50321499999991,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 21.1,
+            "elapsedMs": 21.4268250000001,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 21.05,
+            "elapsedMs": 20.993345000000044,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 21.9,
+            "elapsedMs": 21.878639999999724,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 21.1,
+            "elapsedMs": 21.150919999999314,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 19.5,
+            "elapsedMs": 20.69666999999972,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 19.55,
+            "elapsedMs": 19.682645000000047,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 20.3,
+            "elapsedMs": 20.3114250000006,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 18.75,
+            "elapsedMs": 19.739190000000235,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 20.3,
+            "elapsedMs": 20.63361999999979,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 21.1,
+            "elapsedMs": 21.46128000000026,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 19.55,
+            "elapsedMs": 20.685399999999937,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 21.1,
+            "elapsedMs": 20.875849999999993,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 20.3,
+            "elapsedMs": 20.330505000000265,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 19.55,
+            "elapsedMs": 20.31178,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 19.5,
+            "elapsedMs": 19.89277000000002,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 18.75,
+            "elapsedMs": 19.387340000000403,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 20.3,
+            "elapsedMs": 20.23093499999959,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 2000,
+      "scenario": "concurrent-8",
+      "equal": true,
+      "resultBytes": 11289,
+      "reference": {
+        "cpuMs": 219.55,
+        "elapsedMs": 231.57871000000014,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 40,
+        "writes": 0
+      },
+      "variant": {
+        "cpuMs": 165.6,
+        "elapsedMs": 165.7810949999999,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "logicalRowReads": 16,
+        "writes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 284.4,
+            "elapsedMs": 329.7276150000005,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 219.55,
+            "elapsedMs": 226.05827500000015,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 324.2,
+            "elapsedMs": 390.9671200000004,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 215.65,
+            "elapsedMs": 218.09891000000061,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 216.4,
+            "elapsedMs": 231.57871000000014,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 160.95,
+            "elapsedMs": 165.43394499999994,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 159.35,
+            "elapsedMs": 164.87330999999978,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 324.2,
+            "elapsedMs": 526.2642299999992,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 402.35,
+            "elapsedMs": 631.904299999999,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 40,
+            "writes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 282,
+            "elapsedMs": 294.6181499999999,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 160.15,
+            "elapsedMs": 161.70221999999995,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 235.95,
+            "elapsedMs": 243.43294000000023,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 214.8,
+            "elapsedMs": 216.97795499999992,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 159.4,
+            "elapsedMs": 157.94100000000034,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 165.6,
+            "elapsedMs": 165.7810949999999,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 154.75,
+            "elapsedMs": 158.45842499999998,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 142.15,
+            "elapsedMs": 150.037000000001,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 397.7,
+            "elapsedMs": 523.0845700000006,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "logicalRowReads": 16,
+            "writes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 2000,
+      "scenario": "after-reference-mutation",
+      "equal": true,
+      "resultBytes": 1410,
+      "reference": {
+        "cpuMs": 85.2,
+        "elapsedMs": 97.82829499999934,
+        "getCalls": 4,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 1
+      },
+      "variant": {
+        "cpuMs": 53.9,
+        "elapsedMs": 60.131530000000204,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 1
+      },
+      "samples": [
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 89.1,
+            "elapsedMs": 87.86431500000035,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 80.45,
+            "elapsedMs": 79.92206000000006,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 80.5,
+            "elapsedMs": 79.75678000000043,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 92.15,
+            "elapsedMs": 228.29538500000052,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 90.65,
+            "elapsedMs": 139.5724549999999,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 84.35,
+            "elapsedMs": 97.82829499999934,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 85.2,
+            "elapsedMs": 109.61687500000116,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 90.65,
+            "elapsedMs": 132.72000499999996,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 85.1,
+            "elapsedMs": 91.66343500000076,
+            "getCalls": 4,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 53.95,
+            "elapsedMs": 51.98677500000049,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 49.2,
+            "elapsedMs": 49.04324999999953,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 53.9,
+            "elapsedMs": 69.42747999999992,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 67.95,
+            "elapsedMs": 113.58666999999987,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 60.2,
+            "elapsedMs": 79.36169999999984,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 50.75,
+            "elapsedMs": 60.131530000000204,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 48.4,
+            "elapsedMs": 51.108839999999326,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 78.9,
+            "elapsedMs": 66.00697999999974,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 53.15,
+            "elapsedMs": 54.905960000000775,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          }
+        ]
+      ]
+    },
+    {
+      "rows": 2000,
+      "scenario": "after-activity-mutation",
+      "equal": true,
+      "resultBytes": 1410,
+      "reference": {
+        "cpuMs": 53.95,
+        "elapsedMs": 52.52967000000062,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 5,
+        "writes": 1
+      },
+      "variant": {
+        "cpuMs": 60.15,
+        "elapsedMs": 59.04467000000004,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "logicalRowReads": 2,
+        "writes": 1
+      },
+      "samples": [
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 100,
+            "elapsedMs": 123.09003500000108,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 66.35,
+            "elapsedMs": 67.59407500000088,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 57.85,
+            "elapsedMs": 58.182844999998636,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 50,
+            "elapsedMs": 51.269319999999425,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 53.95,
+            "elapsedMs": 55.05885999999882,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 47.7,
+            "elapsedMs": 48.87903499999957,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 46.05,
+            "elapsedMs": 48.448519999999554,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 54.65,
+            "elapsedMs": 51.778310000000054,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 50.8,
+            "elapsedMs": 52.52967000000062,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 5,
+            "writes": 1
+          }
+        ],
+        [
+          {
+            "iterations": 20,
+            "cpuMs": 88.3,
+            "elapsedMs": 90.22942000000039,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 67.2,
+            "elapsedMs": 70.53074000000052,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 60.15,
+            "elapsedMs": 57.67966000000015,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 57.8,
+            "elapsedMs": 59.04467000000004,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 62.5,
+            "elapsedMs": 63.31227500000095,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 46.85,
+            "elapsedMs": 48.563045000001146,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 47.7,
+            "elapsedMs": 49.31900500000047,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 48.4,
+            "elapsedMs": 49.152654999999505,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          },
+          {
+            "iterations": 20,
+            "cpuMs": 71.9,
+            "elapsedMs": 73.74630499999913,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "logicalRowReads": 2,
+            "writes": 1
+          }
+        ]
+      ]
+    }
+  ]
+}

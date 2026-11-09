@@ -1,0 +1,13 @@
+{
+  "protectedFiles": 710,
+  "runtimeChanges": [
+    "lib/activites/data.ts",
+    "lib/activites/dashboard.ts"
+  ],
+  "benchmarkCasesPerSeries": 15,
+  "series": 2,
+  "benchmarkNativeExitCode": 0,
+  "benchmarkBuildSourceHashesMatch": true,
+  "head": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+  "noPublication": true
+}

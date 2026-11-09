@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-23T11:12:05.562Z",
+  "sourceFiles": 744,
+  "candidateDrift": [],
+  "runtimeDrift": [],
+  "remoteBase": "e6fa5b24a0a3da6491aec19f8bdd9b1ebe8e8964",
+  "previousDeployment": "dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx",
+  "browser": {
+    "apps": [],
+    "browsers": []
+  },
+  "controlsReused": "Exact same application/build inputs; only review documentation added"
+}

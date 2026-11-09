@@ -1,0 +1,7 @@
+{
+  "scope": "Full CPU suite on isolated A1 rollback, with all seven dashboard expectations matched to restored full references; F1 and conservative policy unchanged",
+  "exitCode": 1,
+  "tests": 53,
+  "pass": 51,
+  "fail": 2
+}

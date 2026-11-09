@@ -1,0 +1,47 @@
+(node:18268) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18268) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+✔ entity schemas match historical headers except the explicitly removed communique image (4.1206ms)
+✔ text stays plain; URLs, calendar dates, periods, statuses and booleans validated (2.2552ms)
+✔ only PUB002 is eligible; highlighted is not published and dates use Kinshasa (13.5247ms)
+✔ each block creates and updates only its source; IDs survive retries and deletions (163.5787ms)
+✔ publication validates related gallery and PDF; unpublish dependency is protected (14.4791ms)
+✔ categories prevent normalized duplicates; duplicate IDs and outages fail closed (12.3052ms)
+✔ gallery photos are projected after filtering; no private actor or document enrichment (9.3191ms)
+✔ arbitrary private file URL cannot be attached; failed writes preserve data (11.0679ms)
+✔ Communication permissions cover every new resource and reject VIEWER writes (1.2897ms)
+✔ signed upload claims bind actor, resource, record, field, kind and expiry (2.0892ms)
+✔ communique image removed from schema, reads and writes; PDF association preserved (11.6392ms)
+(node:32680) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ read/write handlers authorize before source reads, uploads or audit; source failure refuses access (58.8686ms)
+(node:32680) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+✔ public media is inaccessible for draft/archive/future slider; no private Drive download before eligibility (25.2209ms)
+✔ client uploads a 25 MiB PDF in bounded fragments without putting binary data in Sheets (33.7592ms)
+✔ fragmented upload checks limits, signatures, ownership and completed private bytes (14.7723ms)
+✔ a permission revoked while a mutation waits in the local queue is checked again (16.3352ms)
+(node:25708) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:25708) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+✔ Site Web creation ignores 999 checkbox FALSE template rows and writes physical row 2 (42.766ms)
+✔ all nine Site Web resources reuse row 2 in blank or FALSE-only templates (85.5185ms)
+✔ empty grid with headers and a completely full grid append at the first new row (8.4981ms)
+✔ incomplete rows, TRUE, zero, status, and formulas reserve their physical row (6.0763ms)
+✔ unknown and unlabelled columns with values are never overwritten, including FALSE (6.4181ms)
+✔ first hole between records is reused, and existing physical rows remain readable and editable (7.7197ms)
+✔ same-ID retry does not duplicate or overwrite and duplicate IDs or missing headers fail closed (13.9064ms)
+✔ simultaneous local creations select different rows, including retries of the same ID (9.2594ms)
+✔ lost acknowledgement after committed write recovers with same ID and frees local queue (6.4262ms)
+✔ row recheck detects an outside writer before overwrite and selects the next free slot (7.6872ms)
+✔ non-opt-in append preserves existing SaaS append behavior (7.1456ms)
+✔ different instances selecting the same hole insert atomically without overwriting either record (15.4475ms)
+✔ a write arriving after the slot recheck is shifted intact by the atomic creation (7.0537ms)
+✔ Site Web fresh update locates its ID after insertion from another instance, ignoring stale row cache (17.1981ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 433.0405

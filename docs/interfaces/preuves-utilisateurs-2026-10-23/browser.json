@@ -1,0 +1,214 @@
+{
+  "startedAt": "2026-10-22T23:41:01.779Z",
+  "finishedAt": "2026-10-22T23:41:21.477Z",
+  "scope": "Real UI components, synthetic local preview, mocked commands; no authentication/session and no Google data. Not a production authorization journey.",
+  "screens": [
+    {
+      "file": "before-list-desktop.png",
+      "view": "before-list",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "list-desktop.png",
+      "view": "list",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "before-detail-desktop.png",
+      "view": "before-detail",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "detail-desktop.png",
+      "view": "detail",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "empty-desktop.png",
+      "view": "empty",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "loading-desktop.png",
+      "view": "loading",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "16px"
+    },
+    {
+      "file": "detail-loading-desktop.png",
+      "view": "detail-loading",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "16px"
+    },
+    {
+      "file": "error-desktop.png",
+      "view": "error",
+      "device": "desktop",
+      "viewport": 1440,
+      "pageWidth": 1440,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "before-list-mobile.png",
+      "view": "before-list",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "list-mobile.png",
+      "view": "list",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "before-detail-mobile.png",
+      "view": "before-detail",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "detail-mobile.png",
+      "view": "detail",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "empty-mobile.png",
+      "view": "empty",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    },
+    {
+      "file": "loading-mobile.png",
+      "view": "loading",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "16px"
+    },
+    {
+      "file": "detail-loading-mobile.png",
+      "view": "detail-loading",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "16px"
+    },
+    {
+      "file": "error-mobile.png",
+      "view": "error",
+      "device": "mobile",
+      "viewport": 390,
+      "pageWidth": 390,
+      "font": "Geist, \"Geist Fallback\", ui-sans-serif, system-ui, sans-serif",
+      "titleSize": "20px"
+    }
+  ],
+  "commands": [
+    {
+      "method": "PATCH",
+      "path": "/api/users/USR-DEMO",
+      "body": {
+        "requestId": "18f58d22-cae8-41fe-b699-0ce9683a8bbe",
+        "patch": {
+          "nomComplet": "Aline Démo modifiée",
+          "email": "aline@example.invalid",
+          "typeUser": "ADMIN",
+          "statut": "ACTIF",
+          "estSuperAdmin": false
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "path": "/api/users/USR-DEMO",
+      "body": {
+        "requestId": "13aa139b-d890-4293-b55e-871ffc3f0531",
+        "patch": {
+          "nomComplet": "Aline Démo modifiée",
+          "email": "aline@example.invalid",
+          "typeUser": "ADMIN",
+          "statut": "ACTIF",
+          "estSuperAdmin": false
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/USR-DEMO/authorizations",
+      "body": {
+        "requestId": "e8e96ba3-063b-4eb1-a19e-e95e7117fb90",
+        "block": "AUT-ADM",
+        "dateDebut": "2026-10-01",
+        "dateFin": ""
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/users/USR-DEMO/authorizations",
+      "body": {
+        "requestId": "e2e99643-eb16-43b5-96e3-eee0cc450be5",
+        "id": "UA-1"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/USR-DEMO/revoke-sessions",
+      "body": {
+        "requestId": "f6d5b980-ba71-4920-99de-3d7cbd0ba74e"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/api/users/USR-DEMO/reset-access",
+      "body": {
+        "requestId": "82ef40c8-0262-4a41-a47f-7cf81ccb2f00"
+      }
+    }
+  ],
+  "errors": []
+}

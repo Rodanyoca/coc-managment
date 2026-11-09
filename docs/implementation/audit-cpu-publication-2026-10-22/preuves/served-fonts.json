@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-10-22T22:01:57.474Z",
+  "finishedAt": "2026-10-22T22:01:58.120Z",
+  "method": "GET public login and its font preloads; no cookies or writes",
+  "fonts": [
+    {
+      "url": "/_next/static/immutable/media/797e433ab948586e-s.p.1v5bejj26fx9h.woff2",
+      "status": 200,
+      "bytes": 23108,
+      "signature": "wOF2",
+      "sha256": "5f3d6ad60f29d6cb708414ec6887163d63bf197377ef5417d2483ff31ace6c3b",
+      "matchesRealLocalFont": true
+    },
+    {
+      "url": "/_next/static/immutable/media/caa3a2e1cccd8315-s.p.0zr6hhvz-h9nw.woff2",
+      "status": 200,
+      "bytes": 29288,
+      "signature": "wOF2",
+      "sha256": "9b6f5ff45b278c744b5f379a2c4ecbaf858a842b8eaf82ac8d21b699ca16c608",
+      "matchesRealLocalFont": true
+    }
+  ]
+}

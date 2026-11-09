@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-23T09:01:03.572Z",
+  "node": "v24.16.0",
+  "availableCpus": 2,
+  "totalGiB": 7.651950836181641,
+  "freeGiB": 1.0558815002441406,
+  "normalBuildArgs": [
+    "node_modules/next/dist/bin/next",
+    "build"
+  ],
+  "configurationChanged": false,
+  "mockedFonts": false
+}

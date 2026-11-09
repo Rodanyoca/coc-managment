@@ -1,5 +1,7 @@
 # Compétitions — audit CPU et livraison locale du 30 octobre 2026
 
+> Ce rapport décrit la validation locale antérieure à la demande de push. La composition Git préparée ensuite est décrite dans [la note de livraison](publication-cpu-competitions-2026-10-30.md).
+
 ## Référence et portée des preuves
 
 Périmètre exclusif : `data/multisport/coc-managment`. Chemin résolu : `C:\Projets\SNDS-RDC\data\multisport\coc-managment`. Aucun AGENTS.md applicable trouvé dans ce checkout et ses parents vérifiés. README, CONTEXT, ADR 0003, audits CPU/écarts/sources/clôture, publications F1/A1 et rapports Compétitions consultés. Aucun autre dépôt inspecté ou modifié.

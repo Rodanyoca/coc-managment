@@ -1,0 +1,148 @@
+TAP version 13
+# Subtest: AUT-ADM: VIEWER lit avec attribution mais n'écrit jamais
+ok 1 - AUT-ADM: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 23.1922
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: ADMIN écrit uniquement avec attribution active dans la période
+ok 2 - AUT-ADM: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 1.4211
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: la super-administration accorde un accès métier complet
+ok 3 - AUT-ADM: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 1.0623
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: VIEWER lit avec attribution mais n'écrit jamais
+ok 4 - AUT-SPT: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 0.6877
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: ADMIN écrit uniquement avec attribution active dans la période
+ok 5 - AUT-SPT: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 1.0606
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: la super-administration accorde un accès métier complet
+ok 6 - AUT-SPT: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.6322
+  type: 'test'
+  ...
+# Subtest: AUT-COM: VIEWER lit avec attribution mais n'écrit jamais
+ok 7 - AUT-COM: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 0.6949
+  type: 'test'
+  ...
+# Subtest: AUT-COM: ADMIN écrit uniquement avec attribution active dans la période
+ok 8 - AUT-COM: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 0.6422
+  type: 'test'
+  ...
+# Subtest: AUT-COM: la super-administration accorde un accès métier complet
+ok 9 - AUT-COM: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.8298
+  type: 'test'
+  ...
+# Subtest: seul le super-administrateur accède au périmètre réservé
+ok 10 - seul le super-administrateur accède au périmètre réservé
+  ---
+  duration_ms: 7.4296
+  type: 'test'
+  ...
+# Subtest: VIEWER lit un bloc attribué mais ne peut jamais l'écrire
+ok 11 - VIEWER lit un bloc attribué mais ne peut jamais l'écrire
+  ---
+  duration_ms: 7.9634
+  type: 'test'
+  ...
+# Subtest: ADMIN écrit seulement dans un bloc explicitement attribué et actif
+ok 12 - ADMIN écrit seulement dans un bloc explicitement attribué et actif
+  ---
+  duration_ms: 1.3803
+  type: 'test'
+  ...
+# Subtest: les bornes sont inclusives selon la date civile Africa/Kinshasa
+ok 13 - les bornes sont inclusives selon la date civile Africa/Kinshasa
+  ---
+  duration_ms: 167.8329
+  type: 'test'
+  ...
+# Subtest: le super-administrateur accède à tous les blocs métier
+ok 14 - le super-administrateur accède à tous les blocs métier
+  ---
+  duration_ms: 0.4491
+  type: 'test'
+  ...
+# Subtest: le super-administrateur reste autorisé si la source des blocs est indisponible
+ok 15 - le super-administrateur reste autorisé si la source des blocs est indisponible
+  ---
+  duration_ms: 2.2113
+  type: 'test'
+  ...
+# Subtest: une panne de la source d'autorisation produit un refus fermé
+ok 16 - une panne de la source d'autorisation produit un refus fermé
+  ---
+  duration_ms: 1.8603
+  type: 'test'
+  ...
+# Subtest: le dernier super-administrateur actif ne peut pas être neutralisé
+ok 17 - le dernier super-administrateur actif ne peut pas être neutralisé
+  ---
+  duration_ms: 3.879
+  type: 'test'
+  ...
+# Subtest: VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible
+ok 18 - VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible
+  ---
+  duration_ms: 3.7171
+  type: 'test'
+  ...
+# Subtest: redirige une activation obligatoire vers l'activation
+ok 19 - redirige une activation obligatoire vers l'activation
+  ---
+  duration_ms: 4.9166
+  type: 'test'
+  ...
+# Subtest: redirige un utilisateur avec un bloc métier vers le dashboard
+ok 20 - redirige un utilisateur avec un bloc métier vers le dashboard
+  ---
+  duration_ms: 1.2401
+  type: 'test'
+  ...
+# Subtest: ne renvoie pas vers le dashboard un utilisateur sans bloc métier
+ok 21 - ne renvoie pas vers le dashboard un utilisateur sans bloc métier
+  ---
+  duration_ms: 0.7703
+  type: 'test'
+  ...
+# Subtest: redirige un super-administrateur sans bloc vers le tableau de bord
+ok 22 - redirige un super-administrateur sans bloc vers le tableau de bord
+  ---
+  duration_ms: 1.4626
+  type: 'test'
+  ...
+# Subtest: VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation
+ok 23 - VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation
+  ---
+  duration_ms: 2.7686
+  type: 'test'
+  ...
+1..23
+# tests 23
+# suites 0
+# pass 23
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1246.4877

@@ -25,11 +25,3 @@ Aucun gain CPU Vercel mesuré ou annoncé. Aucun test de charge, nouvelle optimi
 ## Validation finale avant push
 
 Le 28 octobre 2026, composition reprise dans un checkout main propre, sans C2 ni modifications de coc-website : 92/92 tests ciblés, TypeScript, lint ciblé et build de production normal réussis. Build : 378,988 s écoulées, 11 polices woff2 réelles, ignoreBuildErrors=false. Aucun gain CPU runtime déduit de cette durée. Voir publication-saas-2026-10-28.md et son dossier de preuves. La recette visuelle authentifiée et la migration de colonne restent distinctes et non exécutées. La conclusion de blocage du premier essai ci-dessus est historique : le blocage de build est levé.
-
-## Résultat après push
-
-Commit publié : 60ca688124ca4e1ff71cdf03df99b89a9cb9bf05, main. Déploiement dpl_Cp6vuzHF5e6YJ9Pqx9pJUaasXDgN READY le 2026-10-28 à 11:13:25.268 UTC, alias database.coc-rdc.net confirmé par API. Aucun déploiement CLI créé.
-
-Contrôles anonymes 11:13:56–11:14:01 UTC : /login 200 ; /dashboard/site-web 307 vers /login ; /api/site-web/communiques et /api/users 401. Journaux erreur/fatal du seul nouveau déploiement, fenêtre 11:13:25–11:14:25 UTC, limite 20 : 0 enregistrement retourné. Cette fenêtre ne démontre pas une absence générale d'incident ni une recette authentifiée.
-
-Recette authentifiée et retrait physique de image_url dans COMMUNIQUES_SITE restent à effectuer. Classeur et Drive inchangés. C2 exclu ; protections S1/F1 et purges globales conservées. Copie de préparation isolée .cache/push-saas-20261028 ; branche et modifications du dossier de travail initial préservées. Ce résultat après push reste documentaire local afin d'éviter un second déploiement.

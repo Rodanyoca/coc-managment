@@ -1,0 +1,3434 @@
+{
+  "at": "2026-10-23T00:01:04.432Z",
+  "node": "v24.16.0",
+  "reference": ".cache/cpu-next/reference",
+  "variant": ".",
+  "network": "offline fixtures, no Google or Vercel measurements; invocations are local helper invocations",
+  "warmup": 5,
+  "rounds": 9,
+  "minimumIterations": 20,
+  "minimumElapsedMs": 150,
+  "order": "AB/BA alternating",
+  "scenarios": [
+    {
+      "scenario": "cold",
+      "rows": 20,
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.029431528020427363,
+        "elapsedMs": 0.021231691436659553,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 436
+      },
+      "variant": {
+        "cpuMs": 0.025969702014316632,
+        "elapsedMs": 0.021936218807274782,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 436
+      },
+      "samples": [
+        [
+          {
+            "iterations": 7433,
+            "cpuMs": 0.020987488228171668,
+            "elapsedMs": 0.020180815283196558,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6936,
+            "cpuMs": 0.04051326412918108,
+            "elapsedMs": 0.021628416955017292,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 7441,
+            "cpuMs": 0.029431528020427363,
+            "elapsedMs": 0.02086929176185997,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 7132,
+            "cpuMs": 0.019770050476724622,
+            "elapsedMs": 0.02103280987100394,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 7185,
+            "cpuMs": 0.028114126652748782,
+            "elapsedMs": 0.020877940153096734,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6664,
+            "cpuMs": 0.032863145258103243,
+            "elapsedMs": 0.022510384153661495,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 7065,
+            "cpuMs": 0.037650389242745934,
+            "elapsedMs": 0.021231691436659553,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6833,
+            "cpuMs": 0.02048880433191863,
+            "elapsedMs": 0.022040626372018136,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6874,
+            "cpuMs": 0.036223450683735815,
+            "elapsedMs": 0.021823697992435238,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          }
+        ],
+        [
+          {
+            "iterations": 6752,
+            "cpuMs": 0.0231042654028436,
+            "elapsedMs": 0.022217728080568717,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 7006,
+            "cpuMs": 0.022409363402797602,
+            "elapsedMs": 0.021410890665144164,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 7093,
+            "cpuMs": 0.02199351473283519,
+            "elapsedMs": 0.021936218807274782,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 7223,
+            "cpuMs": 0.03668835663851585,
+            "elapsedMs": 0.02147754395680465,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6976,
+            "cpuMs": 0.029099770642201834,
+            "elapsedMs": 0.021505131880733948,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6479,
+            "cpuMs": 0.04584040747028863,
+            "elapsedMs": 0.023156212378453462,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6077,
+            "cpuMs": 0.03340464044758927,
+            "elapsedMs": 0.02468540398222805,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6954,
+            "cpuMs": 0.022433132010353754,
+            "elapsedMs": 0.021571110152430285,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6007,
+            "cpuMs": 0.025969702014316632,
+            "elapsedMs": 0.024975978025636725,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "warm",
+      "rows": 20,
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.0016552572151479683,
+        "elapsedMs": 0.0015950935772011936,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.0013835797465210952,
+        "elapsedMs": 0.0014076793138073744,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 59341,
+            "cpuMs": 0.0034209062873898316,
+            "elapsedMs": 0.0025296253854838946,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 94040,
+            "cpuMs": 0.0016695023394300299,
+            "elapsedMs": 0.0015950935772011936,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 79556,
+            "cpuMs": 0.0019608829000955304,
+            "elapsedMs": 0.0018854819246819864,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 94319,
+            "cpuMs": 0.001494926790996512,
+            "elapsedMs": 0.001590358252313958,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 102530,
+            "cpuMs": 0.0015215059007119868,
+            "elapsedMs": 0.0014657241782892836,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 114899,
+            "cpuMs": 0.0012271647272822218,
+            "elapsedMs": 0.0013055117973176397,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 84579,
+            "cpuMs": 0.0016552572151479683,
+            "elapsedMs": 0.0017735064259449757,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 76613,
+            "cpuMs": 0.0018273661128006995,
+            "elapsedMs": 0.001958140263401776,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 98958,
+            "cpuMs": 0.0015865316598961175,
+            "elapsedMs": 0.0015158107479940944,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 35172,
+            "cpuMs": 0.004008870692596383,
+            "elapsedMs": 0.004264909587171614,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 48708,
+            "cpuMs": 0.0028742711669540936,
+            "elapsedMs": 0.0030795906216637935,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 138368,
+            "cpuMs": 0.0010117946345975948,
+            "elapsedMs": 0.0010840721843200741,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 82765,
+            "cpuMs": 0.0020781731408203953,
+            "elapsedMs": 0.0018123820455506554,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 156354,
+            "cpuMs": 0.0009977359069803138,
+            "elapsedMs": 0.000959366565613926,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 150857,
+            "cpuMs": 0.0009346599760037651,
+            "elapsedMs": 0.0009943237635641673,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 73771,
+            "cpuMs": 0.0021282075612368005,
+            "elapsedMs": 0.002033338303669465,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 112751,
+            "cpuMs": 0.0013835797465210952,
+            "elapsedMs": 0.0013303740099866014,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 106559,
+            "cpuMs": 0.0011730590564851396,
+            "elapsedMs": 0.0014076793138073744,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-consult",
+      "rows": 20,
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.051008303677342826,
+        "elapsedMs": 0.04533653671804153,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 467
+      },
+      "variant": {
+        "cpuMs": 0.01249799711584682,
+        "elapsedMs": 0.012437260591990707,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 31
+      },
+      "samples": [
+        [
+          {
+            "iterations": 3372,
+            "cpuMs": 0.051008303677342826,
+            "elapsedMs": 0.0444852016607355,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 3309,
+            "cpuMs": 0.061347839226352376,
+            "elapsedMs": 0.04533653671804153,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 3085,
+            "cpuMs": 0.05089141004862237,
+            "elapsedMs": 0.048627260940032294,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 3593,
+            "cpuMs": 0.052323963261898136,
+            "elapsedMs": 0.04175794600612295,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 3159,
+            "cpuMs": 0.04969927192149414,
+            "elapsedMs": 0.047486609686609886,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 2839,
+            "cpuMs": 0.054948925678055656,
+            "elapsedMs": 0.05284448749559695,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 3553,
+            "cpuMs": 0.061638052350126656,
+            "elapsedMs": 0.042219504643962624,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 5571,
+            "cpuMs": 0.028002154011847066,
+            "elapsedMs": 0.026928002154011907,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 2947,
+            "cpuMs": 0.04784526637258229,
+            "elapsedMs": 0.050906311503224076,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          }
+        ],
+        [
+          {
+            "iterations": 10730,
+            "cpuMs": 0.015936626281453866,
+            "elapsedMs": 0.01397965517241386,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 14738,
+            "cpuMs": 0.010652734428009228,
+            "elapsedMs": 0.010178239924005931,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 11577,
+            "cpuMs": 0.01347499352163773,
+            "elapsedMs": 0.012957000950159808,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 12482,
+            "cpuMs": 0.01249799711584682,
+            "elapsedMs": 0.012017553276718466,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5345,
+            "cpuMs": 0.04097287184284378,
+            "elapsedMs": 0.028173246024321842,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 8258,
+            "cpuMs": 0.018890772584160814,
+            "elapsedMs": 0.01818631629934599,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 12276,
+            "cpuMs": 0.011485826001955034,
+            "elapsedMs": 0.012220039100684288,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 12061,
+            "cpuMs": 0.011690572920984993,
+            "elapsedMs": 0.012437260591990707,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 12627,
+            "cpuMs": 0.011166547873604181,
+            "elapsedMs": 0.011879702225389973,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-8-consults",
+      "rows": 20,
+      "equal": true,
+      "responseBytes": 5457,
+      "reference": {
+        "cpuMs": 0.059293044469783354,
+        "elapsedMs": 0.06305350987809949,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 467
+      },
+      "variant": {
+        "cpuMs": 0.03474387527839644,
+        "elapsedMs": 0.033114701986754834,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 31
+      },
+      "samples": [
+        [
+          {
+            "iterations": 3003,
+            "cpuMs": 0.04695304695304695,
+            "elapsedMs": 0.049950449550449756,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 3352,
+            "cpuMs": 0.046539379474940336,
+            "elapsedMs": 0.044754594272076016,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 3525,
+            "cpuMs": 0.03971631205673759,
+            "elapsedMs": 0.04257222695035467,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 2170,
+            "cpuMs": 0.10092165898617511,
+            "elapsedMs": 0.06916898617511523,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 2631,
+            "cpuMs": 0.059293044469783354,
+            "elapsedMs": 0.057026073736221684,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 2379,
+            "cpuMs": 0.05926860025220681,
+            "elapsedMs": 0.06305350987809949,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 2114,
+            "cpuMs": 0.07379375591296121,
+            "elapsedMs": 0.07097417218543116,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 1938,
+            "cpuMs": 0.07275541795665634,
+            "elapsedMs": 0.07740541795665588,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          },
+          {
+            "iterations": 1833,
+            "cpuMs": 0.0851063829787234,
+            "elapsedMs": 0.08184773595199069,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 467
+          }
+        ],
+        [
+          {
+            "iterations": 6535,
+            "cpuMs": 0.021576128538638103,
+            "elapsedMs": 0.022956113236419346,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 6766,
+            "cpuMs": 0.025421223765888266,
+            "elapsedMs": 0.02216970144841862,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 4530,
+            "cpuMs": 0.045033112582781455,
+            "elapsedMs": 0.033114701986754834,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5061,
+            "cpuMs": 0.027662517289073305,
+            "elapsedMs": 0.029653329381544954,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 3124,
+            "cpuMs": 0.07010243277848911,
+            "elapsedMs": 0.04804910371318834,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 4490,
+            "cpuMs": 0.03474387527839644,
+            "elapsedMs": 0.03341692650334064,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5097,
+            "cpuMs": 0.036884441828526585,
+            "elapsedMs": 0.02942937021777522,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 4365,
+            "cpuMs": 0.03230240549828179,
+            "elapsedMs": 0.034364627720503915,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 2844,
+            "cpuMs": 0.05520393811533052,
+            "elapsedMs": 0.05274472573839705,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "same-workbook-write",
+      "rows": 20,
+      "equal": true,
+      "responseBytes": 681,
+      "reference": {
+        "cpuMs": 0.05453282389718652,
+        "elapsedMs": 0.04918652459016424,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 436
+      },
+      "variant": {
+        "cpuMs": 0.05875706214689266,
+        "elapsedMs": 0.06061474747474777,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 436
+      },
+      "samples": [
+        [
+          {
+            "iterations": 2879,
+            "cpuMs": 0.05453282389718652,
+            "elapsedMs": 0.05210687738798191,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3075,
+            "cpuMs": 0.05105691056910569,
+            "elapsedMs": 0.04879499186991846,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2027,
+            "cpuMs": 0.061667488899852,
+            "elapsedMs": 0.0740029600394667,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3314,
+            "cpuMs": 0.05190102595051298,
+            "elapsedMs": 0.04527226916113426,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3748,
+            "cpuMs": 0.03735325506937033,
+            "elapsedMs": 0.04002465314834568,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 1637,
+            "cpuMs": 0.08613317043372022,
+            "elapsedMs": 0.09167049480757465,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 1709,
+            "cpuMs": 0.08250438853130486,
+            "elapsedMs": 0.08783171445289653,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3213,
+            "cpuMs": 0.04388422035480859,
+            "elapsedMs": 0.04671167133520079,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3050,
+            "cpuMs": 0.0718032786885246,
+            "elapsedMs": 0.04918652459016424,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          }
+        ],
+        [
+          {
+            "iterations": 2196,
+            "cpuMs": 0.07103825136612021,
+            "elapsedMs": 0.0683151183970858,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2655,
+            "cpuMs": 0.05875706214689266,
+            "elapsedMs": 0.056537777777778374,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2852,
+            "cpuMs": 0.04943899018232819,
+            "elapsedMs": 0.05261970546984534,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 1579,
+            "cpuMs": 0.08929702343255225,
+            "elapsedMs": 0.09500443318556087,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2276,
+            "cpuMs": 0.08919156414762741,
+            "elapsedMs": 0.06592513181019309,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 1742,
+            "cpuMs": 0.07175660160734787,
+            "elapsedMs": 0.08616331802525812,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2605,
+            "cpuMs": 0.053742802303262956,
+            "elapsedMs": 0.057594088291746816,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3268,
+            "cpuMs": 0.04804161566707466,
+            "elapsedMs": 0.04592194002447956,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2475,
+            "cpuMs": 0.05696969696969697,
+            "elapsedMs": 0.06061474747474777,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 436
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "fresh-security",
+      "rows": 20,
+      "equal": true,
+      "responseBytes": 715,
+      "reference": {
+        "cpuMs": 0.004569152363657665,
+        "elapsedMs": 0.004454525746866986,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.03928481490808361,
+        "elapsedMs": 0.044619185008923416,
+        "getCalls": 0,
+        "batchCalls": 1,
+        "writes": 0,
+        "dependencyPayloadBytes": 436
+      },
+      "samples": [
+        [
+          {
+            "iterations": 30403,
+            "cpuMs": 0.007729500378252146,
+            "elapsedMs": 0.004933832187613074,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 39895,
+            "cpuMs": 0.003910264444165936,
+            "elapsedMs": 0.00375998245394162,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 24790,
+            "cpuMs": 0.005647438483259379,
+            "elapsedMs": 0.006050923759580452,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 22553,
+            "cpuMs": 0.006917039861659203,
+            "elapsedMs": 0.0066510929809782075,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 15896,
+            "cpuMs": 0.007863613487669854,
+            "elapsedMs": 0.009436669602415633,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 33674,
+            "cpuMs": 0.004187206747045198,
+            "elapsedMs": 0.004454525746866986,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 34142,
+            "cpuMs": 0.004569152363657665,
+            "elapsedMs": 0.004393491886825658,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 51124,
+            "cpuMs": 0.0027580001564822786,
+            "elapsedMs": 0.002934083796260032,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 60934,
+            "cpuMs": 0.0025601470443430596,
+            "elapsedMs": 0.002461712672727876,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 2807,
+            "cpuMs": 0.055575347345920914,
+            "elapsedMs": 0.053439722123263526,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 4617,
+            "cpuMs": 0.03725362789690275,
+            "elapsedMs": 0.03249761750054134,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2012,
+            "cpuMs": 0.07803180914512922,
+            "elapsedMs": 0.07461381709741531,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2290,
+            "cpuMs": 0.08209606986899563,
+            "elapsedMs": 0.06552157205240204,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 2310,
+            "cpuMs": 0.06060606060606061,
+            "elapsedMs": 0.06493987012987,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3362,
+            "cpuMs": 0.037180249851279,
+            "elapsedMs": 0.044619185008923416,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 3971,
+            "cpuMs": 0.03928481490808361,
+            "elapsedMs": 0.03777481742634062,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6535,
+            "cpuMs": 0.024024483550114765,
+            "elapsedMs": 0.02295430757459863,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          },
+          {
+            "iterations": 6610,
+            "cpuMs": 0.021331316187594554,
+            "elapsedMs": 0.022695824508320334,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 436
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "cold",
+      "rows": 200,
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.30042918454935624,
+        "elapsedMs": 0.3223118025751069,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 4596
+      },
+      "variant": {
+        "cpuMs": 0.3263785394932936,
+        "elapsedMs": 0.309173868312757,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 4596
+      },
+      "samples": [
+        [
+          {
+            "iterations": 528,
+            "cpuMs": 0.29545454545454547,
+            "elapsedMs": 0.28442651515151873,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 723,
+            "cpuMs": 0.21715076071922546,
+            "elapsedMs": 0.20763526970954174,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 821,
+            "cpuMs": 0.26674786845310594,
+            "elapsedMs": 0.18305651644335913,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 359,
+            "cpuMs": 0.30362116991643456,
+            "elapsedMs": 0.41800501392757633,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 466,
+            "cpuMs": 0.30042918454935624,
+            "elapsedMs": 0.3223118025751069,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 597,
+            "cpuMs": 0.2629815745393635,
+            "elapsedMs": 0.25164355108878056,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 450,
+            "cpuMs": 0.5911111111111111,
+            "elapsedMs": 0.3335364444444389,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 359,
+            "cpuMs": 0.6072423398328691,
+            "elapsedMs": 0.4179754874651869,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 411,
+            "cpuMs": 0.3819951338199513,
+            "elapsedMs": 0.36531508515814726,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          }
+        ],
+        [
+          {
+            "iterations": 486,
+            "cpuMs": 0.32098765432098764,
+            "elapsedMs": 0.309173868312757,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 376,
+            "cpuMs": 0.45478723404255317,
+            "elapsedMs": 0.3996377659574485,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 618,
+            "cpuMs": 0.45307443365695793,
+            "elapsedMs": 0.24301601941747572,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 429,
+            "cpuMs": 0.32867132867132864,
+            "elapsedMs": 0.36554335664335763,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 651,
+            "cpuMs": 0.33640552995391704,
+            "elapsedMs": 0.23067726574500919,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 613,
+            "cpuMs": 0.2561174551386623,
+            "elapsedMs": 0.24498613376835465,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 671,
+            "cpuMs": 0.3263785394932936,
+            "elapsedMs": 0.22363144560357825,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 431,
+            "cpuMs": 0.2900232018561485,
+            "elapsedMs": 0.34824199535962935,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 470,
+            "cpuMs": 0.26595744680851063,
+            "elapsedMs": 0.319305531914893,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "warm",
+      "rows": 200,
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.0018109614911974337,
+        "elapsedMs": 0.0019403301124089369,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.002199183160540371,
+        "elapsedMs": 0.0023563069431353865,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 72240,
+            "cpuMs": 0.002173311184939092,
+            "elapsedMs": 0.002076443798449614,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 71629,
+            "cpuMs": 0.0021778888439040055,
+            "elapsedMs": 0.0020942216141506625,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 77307,
+            "cpuMs": 0.0018109614911974337,
+            "elapsedMs": 0.0019403301124089369,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 87990,
+            "cpuMs": 0.0017729287419024889,
+            "elapsedMs": 0.0017047653142402558,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 98792,
+            "cpuMs": 0.0014171187950441332,
+            "elapsedMs": 0.001518360798445211,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 85482,
+            "cpuMs": 0.0016494700638730962,
+            "elapsedMs": 0.0017547729346528917,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 41129,
+            "cpuMs": 0.0034039242383719515,
+            "elapsedMs": 0.003647137056578037,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 66064,
+            "cpuMs": 0.0023613465730201017,
+            "elapsedMs": 0.0022705452288689742,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 103731,
+            "cpuMs": 0.001513530188661056,
+            "elapsedMs": 0.0014460595193336494,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 63660,
+            "cpuMs": 0.002199183160540371,
+            "elapsedMs": 0.0023563069431353865,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 92279,
+            "cpuMs": 0.0017013621734089013,
+            "elapsedMs": 0.0016255377713239264,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 51105,
+            "cpuMs": 0.0042852949809216315,
+            "elapsedMs": 0.0029351550728891757,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 54550,
+            "cpuMs": 0.00230980751604033,
+            "elapsedMs": 0.0027498075160403376,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 84580,
+            "cpuMs": 0.001477890754315441,
+            "elapsedMs": 0.0017734984629936,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 84237,
+            "cpuMs": 0.0018519178033405749,
+            "elapsedMs": 0.0017807020667877128,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 47104,
+            "cpuMs": 0.0033330502717391305,
+            "elapsedMs": 0.003184491762907611,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 48699,
+            "cpuMs": 0.002874802357337933,
+            "elapsedMs": 0.0030802110926302223,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 85498,
+            "cpuMs": 0.001462022503450373,
+            "elapsedMs": 0.0017544445484104715,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-consult",
+      "rows": 200,
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.26666666666666666,
+        "elapsedMs": 0.23277038759689564,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 4627
+      },
+      "variant": {
+        "cpuMs": 0.01501552356759808,
+        "elapsedMs": 0.013781817346563753,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 31
+      },
+      "samples": [
+        [
+          {
+            "iterations": 711,
+            "cpuMs": 0.19831223628691982,
+            "elapsedMs": 0.21111111111110906,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 731,
+            "cpuMs": 0.213406292749658,
+            "elapsedMs": 0.2052943912448727,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 683,
+            "cpuMs": 0.20497803806734993,
+            "elapsedMs": 0.21993191800878187,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 424,
+            "cpuMs": 0.330188679245283,
+            "elapsedMs": 0.3540728773584889,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 645,
+            "cpuMs": 0.26666666666666666,
+            "elapsedMs": 0.23277038759689564,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 757,
+            "cpuMs": 0.20607661822985468,
+            "elapsedMs": 0.1982145310435927,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 337,
+            "cpuMs": 0.4629080118694362,
+            "elapsedMs": 0.4488026706231379,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 556,
+            "cpuMs": 0.2805755395683453,
+            "elapsedMs": 0.28402338129496635,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 449,
+            "cpuMs": 0.31403118040089084,
+            "elapsedMs": 0.3343590200445412,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          }
+        ],
+        [
+          {
+            "iterations": 15261,
+            "cpuMs": 0.011205032435620208,
+            "elapsedMs": 0.009829185505536938,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 16929,
+            "cpuMs": 0.012936381357433989,
+            "elapsedMs": 0.008860617874653021,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 7142,
+            "cpuMs": 0.028423410809297115,
+            "elapsedMs": 0.02100592271072542,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 10884,
+            "cpuMs": 0.01442484380742374,
+            "elapsedMs": 0.013781817346563753,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 17715,
+            "cpuMs": 0.01501552356759808,
+            "elapsedMs": 0.008467863392605149,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 13544,
+            "cpuMs": 0.013880685174246898,
+            "elapsedMs": 0.011075723567631514,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 8869,
+            "cpuMs": 0.015898071935956704,
+            "elapsedMs": 0.0169138008794678,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 7950,
+            "cpuMs": 0.015723270440251572,
+            "elapsedMs": 0.01886798742138389,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 9503,
+            "cpuMs": 0.02136167526044407,
+            "elapsedMs": 0.015787646006524134,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-8-consults",
+      "rows": 200,
+      "equal": true,
+      "responseBytes": 57457,
+      "reference": {
+        "cpuMs": 0.347068145800317,
+        "elapsedMs": 0.23800443740094812,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 4627
+      },
+      "variant": {
+        "cpuMs": 0.036042944785276074,
+        "elapsedMs": 0.029291058180398292,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 31
+      },
+      "samples": [
+        [
+          {
+            "iterations": 321,
+            "cpuMs": 0.6355140186915887,
+            "elapsedMs": 0.4677314641744587,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 676,
+            "cpuMs": 0.23224852071005916,
+            "elapsedMs": 0.22193520710059267,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 523,
+            "cpuMs": 0.390057361376673,
+            "elapsedMs": 0.28732925430210254,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 402,
+            "cpuMs": 0.35074626865671643,
+            "elapsedMs": 0.373633084577121,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 631,
+            "cpuMs": 0.347068145800317,
+            "elapsedMs": 0.23800443740094812,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 668,
+            "cpuMs": 0.23353293413173654,
+            "elapsedMs": 0.22504700598802263,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 544,
+            "cpuMs": 0.4025735294117647,
+            "elapsedMs": 0.2758433823529458,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 718,
+            "cpuMs": 0.21727019498607242,
+            "elapsedMs": 0.20924679665738158,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          },
+          {
+            "iterations": 763,
+            "cpuMs": 0.26605504587155965,
+            "elapsedMs": 0.1966592398427254,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4627
+          }
+        ],
+        [
+          {
+            "iterations": 3378,
+            "cpuMs": 0.050621669626998225,
+            "elapsedMs": 0.04441438721136787,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5122,
+            "cpuMs": 0.030456852791878174,
+            "elapsedMs": 0.029291058180398292,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5335,
+            "cpuMs": 0.03223992502343018,
+            "elapsedMs": 0.028120468603560957,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 3882,
+            "cpuMs": 0.0401854714064915,
+            "elapsedMs": 0.03865146831530094,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 6764,
+            "cpuMs": 0.032229450029568306,
+            "elapsedMs": 0.022179376108811405,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 6861,
+            "cpuMs": 0.022737210319195452,
+            "elapsedMs": 0.021863926541320862,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 3901,
+            "cpuMs": 0.03614457831325301,
+            "elapsedMs": 0.038457677518585455,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 3811,
+            "cpuMs": 0.040934138021516665,
+            "elapsedMs": 0.039361611125688506,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5216,
+            "cpuMs": 0.036042944785276074,
+            "elapsedMs": 0.029250958588957116,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "same-workbook-write",
+      "rows": 200,
+      "equal": true,
+      "responseBytes": 7181,
+      "reference": {
+        "cpuMs": 0.2727272727272727,
+        "elapsedMs": 0.2623622377622415,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 4596
+      },
+      "variant": {
+        "cpuMs": 0.24263431542461006,
+        "elapsedMs": 0.21713183791606597,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 4596
+      },
+      "samples": [
+        [
+          {
+            "iterations": 525,
+            "cpuMs": 0.29714285714285715,
+            "elapsedMs": 0.28653771428571506,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 572,
+            "cpuMs": 0.2727272727272727,
+            "elapsedMs": 0.2623622377622415,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 776,
+            "cpuMs": 0.20103092783505155,
+            "elapsedMs": 0.1933653350515435,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 619,
+            "cpuMs": 0.22778675282714056,
+            "elapsedMs": 0.24235218093699454,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 422,
+            "cpuMs": 0.37203791469194314,
+            "elapsedMs": 0.35627511848341054,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 567,
+            "cpuMs": 0.19223985890652556,
+            "elapsedMs": 0.2646738977072325,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 458,
+            "cpuMs": 0.3406113537117904,
+            "elapsedMs": 0.32857008733624826,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 596,
+            "cpuMs": 0.3674496644295302,
+            "elapsedMs": 0.2553931208053685,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 666,
+            "cpuMs": 0.23273273273273273,
+            "elapsedMs": 0.22522642642642884,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          }
+        ],
+        [
+          {
+            "iterations": 448,
+            "cpuMs": 0.27901785714285715,
+            "elapsedMs": 0.3348899553571495,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 487,
+            "cpuMs": 0.3203285420944558,
+            "elapsedMs": 0.30821149897331,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 801,
+            "cpuMs": 0.1760299625468165,
+            "elapsedMs": 0.18821223470661877,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 768,
+            "cpuMs": 0.203125,
+            "elapsedMs": 0.19550013020833035,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 577,
+            "cpuMs": 0.24263431542461006,
+            "elapsedMs": 0.25998838821490877,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 542,
+            "cpuMs": 0.25830258302583026,
+            "elapsedMs": 0.2770808118081205,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 694,
+            "cpuMs": 0.20317002881844382,
+            "elapsedMs": 0.21624668587896678,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 747,
+            "cpuMs": 0.18875502008032127,
+            "elapsedMs": 0.20096680053547253,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 691,
+            "cpuMs": 0.24891461649782923,
+            "elapsedMs": 0.21713183791606597,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 4596
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "fresh-security",
+      "rows": 200,
+      "equal": true,
+      "responseBytes": 7215,
+      "reference": {
+        "cpuMs": 0.003882721887600179,
+        "elapsedMs": 0.0038410760012291484,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.2152671755725191,
+        "elapsedMs": 0.2090144846796721,
+        "getCalls": 0,
+        "batchCalls": 1,
+        "writes": 0,
+        "dependencyPayloadBytes": 4596
+      },
+      "samples": [
+        [
+          {
+            "iterations": 33288,
+            "cpuMs": 0.004205719778899303,
+            "elapsedMs": 0.004506149363133877,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 26314,
+            "cpuMs": 0.005928403131412936,
+            "elapsedMs": 0.005705080945504351,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 47086,
+            "cpuMs": 0.002994520664316357,
+            "elapsedMs": 0.0031856942615639382,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 39052,
+            "cpuMs": 0.003584963638225955,
+            "elapsedMs": 0.0038410760012291484,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 40178,
+            "cpuMs": 0.003882721887600179,
+            "elapsedMs": 0.003733418786400425,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 43482,
+            "cpuMs": 0.003219723103813072,
+            "elapsedMs": 0.003449737822547226,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 46203,
+            "cpuMs": 0.003376404129601974,
+            "elapsedMs": 0.003246583555180463,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 20712,
+            "cpuMs": 0.007531865585168019,
+            "elapsedMs": 0.007242448821939168,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 23986,
+            "cpuMs": 0.006462102893354456,
+            "elapsedMs": 0.006253802217960524,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 728,
+            "cpuMs": 0.21565934065934067,
+            "elapsedMs": 0.20624739010989307,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 891,
+            "cpuMs": 0.15824915824915825,
+            "elapsedMs": 0.16846498316498573,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 831,
+            "cpuMs": 0.2069795427196149,
+            "elapsedMs": 0.18067605294825223,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 689,
+            "cpuMs": 0.22786647314949202,
+            "elapsedMs": 0.21797982583454192,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 718,
+            "cpuMs": 0.19637883008356546,
+            "elapsedMs": 0.2090144846796721,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 693,
+            "cpuMs": 0.22510822510822512,
+            "elapsedMs": 0.2166062049062015,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 655,
+            "cpuMs": 0.2152671755725191,
+            "elapsedMs": 0.22915175572519353,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 454,
+            "cpuMs": 0.3436123348017621,
+            "elapsedMs": 0.33143700440528356,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          },
+          {
+            "iterations": 719,
+            "cpuMs": 0.19610570236439498,
+            "elapsedMs": 0.20865952712100172,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 4596
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "cold",
+      "rows": 2000,
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 2.1506849315068495,
+        "elapsedMs": 2.0689342465753624,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 49796
+      },
+      "variant": {
+        "cpuMs": 2.0526315789473686,
+        "elapsedMs": 1.9751881578947512,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 49796
+      },
+      "samples": [
+        [
+          {
+            "iterations": 74,
+            "cpuMs": 2.108108108108108,
+            "elapsedMs": 2.0460959459459125,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 73,
+            "cpuMs": 2.1506849315068495,
+            "elapsedMs": 2.0689342465753624,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 67,
+            "cpuMs": 2.1044776119402986,
+            "elapsedMs": 2.262510447761169,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 84,
+            "cpuMs": 1.8571428571428572,
+            "elapsedMs": 1.793782142857145,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 72,
+            "cpuMs": 2.388888888888889,
+            "elapsedMs": 2.108465277777719,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 72,
+            "cpuMs": 2.1666666666666665,
+            "elapsedMs": 2.0919916666666216,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 83,
+            "cpuMs": 3.0120481927710845,
+            "elapsedMs": 1.8369349397589867,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 73,
+            "cpuMs": 2.136986301369863,
+            "elapsedMs": 2.06461917808218,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 59,
+            "cpuMs": 2.6440677966101696,
+            "elapsedMs": 2.6983101694915943,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          }
+        ],
+        [
+          {
+            "iterations": 64,
+            "cpuMs": 2.4375,
+            "elapsedMs": 2.350182812499952,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 69,
+            "cpuMs": 3.1739130434782608,
+            "elapsedMs": 2.19351304347831,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 58,
+            "cpuMs": 2.689655172413793,
+            "elapsedMs": 2.6049620689655373,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 76,
+            "cpuMs": 3.0921052631578947,
+            "elapsedMs": 1.9866881578947007,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 85,
+            "cpuMs": 1.8352941176470587,
+            "elapsedMs": 1.7759047058823532,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 85,
+            "cpuMs": 1.6588235294117648,
+            "elapsedMs": 1.785616470588224,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 84,
+            "cpuMs": 1.8571428571428572,
+            "elapsedMs": 1.7867892857142404,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 76,
+            "cpuMs": 2.0526315789473686,
+            "elapsedMs": 1.9751881578947512,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 81,
+            "cpuMs": 1.9259259259259258,
+            "elapsedMs": 1.8641086419753086,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "warm",
+      "rows": 2000,
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 0.0013596430065541765,
+        "elapsedMs": 0.0013063575559116455,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "variant": {
+        "cpuMs": 0.001260264735866171,
+        "elapsedMs": 0.0012375699222810677,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "samples": [
+        [
+          {
+            "iterations": 71157,
+            "cpuMs": 0.0032885028879801005,
+            "elapsedMs": 0.0021139058701182445,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 62884,
+            "cpuMs": 0.0024966605177787673,
+            "elapsedMs": 0.002385381019019148,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 102527,
+            "cpuMs": 0.0013654939674427225,
+            "elapsedMs": 0.0014630429057711726,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 119739,
+            "cpuMs": 0.001169209697759293,
+            "elapsedMs": 0.0012527480603646433,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 114824,
+            "cpuMs": 0.0013673099700411064,
+            "elapsedMs": 0.0013063575559116455,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 128081,
+            "cpuMs": 0.0012179792475074367,
+            "elapsedMs": 0.0011711487261967266,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 121874,
+            "cpuMs": 0.001156932569703136,
+            "elapsedMs": 0.0012307949193428923,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 120883,
+            "cpuMs": 0.0011664171140689757,
+            "elapsedMs": 0.001242535344093033,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 114736,
+            "cpuMs": 0.0013596430065541765,
+            "elapsedMs": 0.001307359503555979,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 116723,
+            "cpuMs": 0.001345064811562417,
+            "elapsedMs": 0.0012851083334047336,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 87113,
+            "cpuMs": 0.001607108009137557,
+            "elapsedMs": 0.001721916361507508,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 124555,
+            "cpuMs": 0.001252458753161254,
+            "elapsedMs": 0.0012042968969531436,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 124577,
+            "cpuMs": 0.001260264735866171,
+            "elapsedMs": 0.0012040858264366113,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 121206,
+            "cpuMs": 0.0011550583304456876,
+            "elapsedMs": 0.0012375699222810677,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 130117,
+            "cpuMs": 0.0009606738550688996,
+            "elapsedMs": 0.001152821691247058,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 121278,
+            "cpuMs": 0.0012863008954633157,
+            "elapsedMs": 0.0012368368541697695,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 118319,
+            "cpuMs": 0.0011916936417650588,
+            "elapsedMs": 0.0012677735613045532,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 109636,
+            "cpuMs": 0.0012769528257141815,
+            "elapsedMs": 0.0013681737750374085,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-consult",
+      "rows": 2000,
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 2.5161290322580645,
+        "elapsedMs": 2.461029687499945,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 49827
+      },
+      "variant": {
+        "cpuMs": 0.014322438486962909,
+        "elapsedMs": 0.012233580689879635,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 31
+      },
+      "samples": [
+        [
+          {
+            "iterations": 94,
+            "cpuMs": 1.6702127659574468,
+            "elapsedMs": 1.5970627659574328,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 78,
+            "cpuMs": 2.3974358974358974,
+            "elapsedMs": 1.9384923076923326,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 86,
+            "cpuMs": 2,
+            "elapsedMs": 1.7513709302325287,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 72,
+            "cpuMs": 2.5972222222222223,
+            "elapsedMs": 2.099926388888889,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 61,
+            "cpuMs": 2.557377049180328,
+            "elapsedMs": 2.466486885245998,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 55,
+            "cpuMs": 2.8363636363636364,
+            "elapsedMs": 2.7440927272727342,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 62,
+            "cpuMs": 2.5161290322580645,
+            "elapsedMs": 2.5978758064515968,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 57,
+            "cpuMs": 3.8421052631578947,
+            "elapsedMs": 2.6570964912280672,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 64,
+            "cpuMs": 2.1875,
+            "elapsedMs": 2.461029687499945,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          }
+        ],
+        [
+          {
+            "iterations": 18115,
+            "cpuMs": 0.01380071763731714,
+            "elapsedMs": 0.008280496825834876,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 17121,
+            "cpuMs": 0.009111617312072893,
+            "elapsedMs": 0.00876124058174165,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 9933,
+            "cpuMs": 0.02516862981979261,
+            "elapsedMs": 0.015101459780529751,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 17412,
+            "cpuMs": 0.011658626234780612,
+            "elapsedMs": 0.008614949460142367,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 9112,
+            "cpuMs": 0.017120280948200176,
+            "elapsedMs": 0.01646230245829705,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 9747,
+            "cpuMs": 0.01600492459218221,
+            "elapsedMs": 0.015390314968708591,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 12263,
+            "cpuMs": 0.016553861208513414,
+            "elapsedMs": 0.012233580689879635,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 10892,
+            "cpuMs": 0.014322438486962909,
+            "elapsedMs": 0.013772548659566118,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 15748,
+            "cpuMs": 0.008953517907035814,
+            "elapsedMs": 0.009525292100584233,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "audit-then-8-consults",
+      "rows": 2000,
+      "equal": true,
+      "responseBytes": 606257,
+      "reference": {
+        "cpuMs": 2.388888888888889,
+        "elapsedMs": 2.0750432432431736,
+        "getCalls": 2,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 49827
+      },
+      "variant": {
+        "cpuMs": 0.025729244577412116,
+        "elapsedMs": 0.022439670905011283,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 31
+      },
+      "samples": [
+        [
+          {
+            "iterations": 74,
+            "cpuMs": 2.108108108108108,
+            "elapsedMs": 2.0750432432431736,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 71,
+            "cpuMs": 2.859154929577465,
+            "elapsedMs": 2.1264873239436985,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 68,
+            "cpuMs": 2.0588235294117645,
+            "elapsedMs": 2.213676470588218,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 70,
+            "cpuMs": 2.6857142857142855,
+            "elapsedMs": 2.2793085714285555,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 74,
+            "cpuMs": 2.527027027027027,
+            "elapsedMs": 2.036447297297265,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 78,
+            "cpuMs": 2.3974358974358974,
+            "elapsedMs": 1.9456679487179476,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 72,
+            "cpuMs": 2.388888888888889,
+            "elapsedMs": 2.1107416666666015,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 88,
+            "cpuMs": 1.9545454545454546,
+            "elapsedMs": 1.718549999999926,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          },
+          {
+            "iterations": 81,
+            "cpuMs": 1.9382716049382716,
+            "elapsedMs": 1.8597790123456457,
+            "getCalls": 2,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49827
+          }
+        ],
+        [
+          {
+            "iterations": 6461,
+            "cpuMs": 0.0290976629004798,
+            "elapsedMs": 0.0232285095186496,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 6685,
+            "cpuMs": 0.025729244577412116,
+            "elapsedMs": 0.022439670905011283,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5778,
+            "cpuMs": 0.03790238836967809,
+            "elapsedMs": 0.025965160955348246,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5669,
+            "cpuMs": 0.027518080790262835,
+            "elapsedMs": 0.026462144999117674,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 7848,
+            "cpuMs": 0.019877675840978593,
+            "elapsedMs": 0.019114207441385582,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 5077,
+            "cpuMs": 0.02757533976757928,
+            "elapsedMs": 0.029546287177466195,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 7765,
+            "cpuMs": 0.018158403090792016,
+            "elapsedMs": 0.019317952350290192,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 8939,
+            "cpuMs": 0.015773576462691577,
+            "elapsedMs": 0.01678179885893244,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          },
+          {
+            "iterations": 8091,
+            "cpuMs": 0.0192806822395254,
+            "elapsedMs": 0.018539772586824505,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 31
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "same-workbook-write",
+      "rows": 2000,
+      "equal": true,
+      "responseBytes": 75781,
+      "reference": {
+        "cpuMs": 2.073529411764706,
+        "elapsedMs": 2.1584842857142834,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 49796
+      },
+      "variant": {
+        "cpuMs": 2.0259740259740258,
+        "elapsedMs": 1.953541558441595,
+        "getCalls": 1,
+        "batchCalls": 0,
+        "writes": 1,
+        "dependencyPayloadBytes": 49796
+      },
+      "samples": [
+        [
+          {
+            "iterations": 75,
+            "cpuMs": 1.88,
+            "elapsedMs": 2.0233333333333334,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 67,
+            "cpuMs": 2.08955223880597,
+            "elapsedMs": 2.2448641791044466,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 63,
+            "cpuMs": 2.7301587301587302,
+            "elapsedMs": 2.392017460317422,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 76,
+            "cpuMs": 1.855263157894737,
+            "elapsedMs": 1.9829302631578205,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 69,
+            "cpuMs": 1.8115942028985508,
+            "elapsedMs": 2.181031884057924,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 71,
+            "cpuMs": 1.9859154929577465,
+            "elapsedMs": 2.136795774647908,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 70,
+            "cpuMs": 2.242857142857143,
+            "elapsedMs": 2.1584842857142834,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 72,
+            "cpuMs": 2.1805555555555554,
+            "elapsedMs": 2.095843055555532,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 68,
+            "cpuMs": 2.073529411764706,
+            "elapsedMs": 2.206145588235278,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          }
+        ],
+        [
+          {
+            "iterations": 57,
+            "cpuMs": 5.2105263157894735,
+            "elapsedMs": 2.63276666666666,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 80,
+            "cpuMs": 1.95,
+            "elapsedMs": 1.8765949999999976,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 55,
+            "cpuMs": 2.5636363636363635,
+            "elapsedMs": 2.7319418181817374,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 82,
+            "cpuMs": 1.9024390243902438,
+            "elapsedMs": 1.841235365853652,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 77,
+            "cpuMs": 2.0259740259740258,
+            "elapsedMs": 1.953541558441595,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 79,
+            "cpuMs": 1.7721518987341771,
+            "elapsedMs": 1.8995797468354496,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 70,
+            "cpuMs": 3.1142857142857143,
+            "elapsedMs": 2.1683428571428522,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 83,
+            "cpuMs": 1.6987951807228916,
+            "elapsedMs": 1.817542168674696,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 65,
+            "cpuMs": 2.8923076923076922,
+            "elapsedMs": 2.324609230769252,
+            "getCalls": 1,
+            "batchCalls": 0,
+            "writes": 1,
+            "dependencyPayloadBytes": 49796
+          }
+        ]
+      ]
+    },
+    {
+      "scenario": "fresh-security",
+      "rows": 2000,
+      "equal": true,
+      "responseBytes": 75815,
+      "reference": {
+        "cpuMs": 0.0026968156830204336,
+        "elapsedMs": 0.0026617733692952004,
+        "getCalls": 0,
+        "batchCalls": 0,
+        "writes": 0,
+        "dependencyPayloadBytes": 0
+      },
+      "variant": {
+        "cpuMs": 1.752808988764045,
+        "elapsedMs": 1.7286761363636536,
+        "getCalls": 0,
+        "batchCalls": 1,
+        "writes": 0,
+        "dependencyPayloadBytes": 49796
+      },
+      "samples": [
+        [
+          {
+            "iterations": 29847,
+            "cpuMs": 0.004154521392434751,
+            "elapsedMs": 0.005025764733473835,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 57846,
+            "cpuMs": 0.0026968156830204336,
+            "elapsedMs": 0.002593126577464309,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 53886,
+            "cpuMs": 0.0026166351185836767,
+            "elapsedMs": 0.002783708198790029,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 58619,
+            "cpuMs": 0.0026783124925365497,
+            "elapsedMs": 0.0025614527712857476,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 58844,
+            "cpuMs": 0.002379172048127252,
+            "elapsedMs": 0.0025491350010195817,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 40491,
+            "cpuMs": 0.0034822553159961473,
+            "elapsedMs": 0.0037045787952877892,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 56356,
+            "cpuMs": 0.002768116970686351,
+            "elapsedMs": 0.0026617733692952004,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 49323,
+            "cpuMs": 0.004115726942805588,
+            "elapsedMs": 0.0030412221478822326,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          },
+          {
+            "iterations": 60926,
+            "cpuMs": 0.002314282900567902,
+            "elapsedMs": 0.0024620506844368496,
+            "getCalls": 0,
+            "batchCalls": 0,
+            "writes": 0,
+            "dependencyPayloadBytes": 0
+          }
+        ],
+        [
+          {
+            "iterations": 70,
+            "cpuMs": 2.4571428571428573,
+            "elapsedMs": 2.170291428571363,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 68,
+            "cpuMs": 2.3088235294117645,
+            "elapsedMs": 2.218819117647025,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 89,
+            "cpuMs": 1.752808988764045,
+            "elapsedMs": 1.6990561797752848,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 86,
+            "cpuMs": 1.8255813953488371,
+            "elapsedMs": 1.7560860465116073,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 87,
+            "cpuMs": 1.793103448275862,
+            "elapsedMs": 1.7337597701149918,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 88,
+            "cpuMs": 1.6022727272727273,
+            "elapsedMs": 1.7286761363636536,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 88,
+            "cpuMs": 1.5909090909090908,
+            "elapsedMs": 1.7198977272726717,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 94,
+            "cpuMs": 1.6702127659574468,
+            "elapsedMs": 1.6079819148936292,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          },
+          {
+            "iterations": 94,
+            "cpuMs": 1.6702127659574468,
+            "elapsedMs": 1.6107744680850877,
+            "getCalls": 0,
+            "batchCalls": 1,
+            "writes": 0,
+            "dependencyPayloadBytes": 49796
+          }
+        ]
+      ]
+    }
+  ]
+}

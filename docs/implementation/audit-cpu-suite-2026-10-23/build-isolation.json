@@ -1,0 +1,33 @@
+{
+  "firstAttemptAbortedMs": 273015,
+  "beforeRoot": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible",
+  "after": [
+    {
+      "path": ".cache/cpu-next/reference",
+      "lockFiles": [
+        "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-next\\reference\\pnpm-lock.yaml"
+      ],
+      "rootDir": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-next\\reference",
+      "boundary": {
+        "boundary": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-next\\reference",
+        "marker": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\pnpm-lock.yaml",
+        "root": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible",
+        "type": "repository"
+      }
+    },
+    {
+      "path": ".cache/cpu-next/variant",
+      "lockFiles": [
+        "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-next\\variant\\pnpm-lock.yaml"
+      ],
+      "rootDir": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-next\\variant",
+      "boundary": {
+        "boundary": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\cpu-next\\variant",
+        "marker": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\pnpm-lock.yaml",
+        "root": "C:\\Projets\\SNDS-HARMONISATION\\coc-cible",
+        "type": "repository"
+      }
+    }
+  ],
+  "change": "isolated git init only; application configuration unchanged"
+}

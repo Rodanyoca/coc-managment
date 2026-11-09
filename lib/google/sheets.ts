@@ -56,10 +56,12 @@ function setCache(key: string, data: Record<string, string>[]) {
   cache.set(key, { data, ts: Date.now() })
 }
 
-// A global refresh remains available; writes fence only their workbook.
+// Mutations conservatively fence all raw workbooks; fresh reads use source fences.
 // No derived/authorization results are stored here, only raw ranges and headers.
 function cacheGeneration(spreadsheetId: string) {
-  return `${generation.value}:${workbookGenerations.get(spreadsheetId) ?? 0}`
+  const version = workbookGenerations.get(spreadsheetId) ?? 0
+  workbookGenerations.set(spreadsheetId, version)
+  return `${generation.value}:${version}`
 }
 
 function freshGeneration(spreadsheetId: string, sheetNames: string[]) {
@@ -112,6 +114,13 @@ async function runSheetMutation<T>(spreadsheetId: string, sheetName: string, tas
     return await runGoogleRequest(task, { idempotent: false })
   } finally {
     clearSheetCache(spreadsheetId, sheetName)
+    // Restore global raw-cache invalidation without broadening fresh source fences.
+    for (const [book, version] of workbookGenerations) {
+      if (book !== spreadsheetId) workbookGenerations.set(book, version + 1)
+    }
+    cache.clear()
+    headerCache.clear()
+    pendingReads.clear()
   }
 }
 

@@ -1,0 +1,69 @@
+TAP version 13
+# (node:19644) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# (node:19644) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+# Subtest: activity dashboard loads only the displayed reference, preserving all statuses and unknown types
+not ok 1 - activity dashboard loads only the displayed reference, preserving all statuses and unknown types
+  ---
+  duration_ms: 104.3102
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\tests\\cpu\\dashboard.test.mjs:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        'ACTIVITES',
+    +   'ENTITES',
+    +   'ROLES_ENTITE_ACTIVITE',
+    +   'TYPES_ACTEURS',
+        'TYPES_ACTIVITE'
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0: 'ACTIVITES'
+    1: 'TYPES_ACTIVITE'
+  actual:
+    0: 'ACTIVITES'
+    1: 'ENTITES'
+    2: 'ROLES_ENTITE_ACTIVITE'
+    3: 'TYPES_ACTEURS'
+    4: 'TYPES_ACTIVITE'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/dashboard.test.mjs:16:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  ...
+# Subtest: independent unused reference failure does not break the activity dashboard
+not ok 2 - independent unused reference failure does not break the activity dashboard
+  ---
+  duration_ms: 28.1978
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\tests\\cpu\\dashboard.test.mjs:19:1'
+  failureType: 'testCodeFailure'
+  error: "Failed to read Google Sheet (spreadsheetId=REF, range='ENTITES'!A:Z): Error: unused reference offline"
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    C:\Projets\SNDS-HARMONISATION\coc-cible\lib\google\sheets.ts:209:11
+    async Module.getSheetRows (C:\Projets\SNDS-HARMONISATION\coc-cible\lib\google\sheets.ts:234:12)
+    async Promise.all (index 0)
+    async getActivityReferences (C:\Projets\SNDS-HARMONISATION\coc-cible\lib\activites\data.ts:23:158)
+    async Promise.all (index 1)
+    async Module.aggregateActivitiesDashboardStats (C:\Projets\SNDS-HARMONISATION\coc-cible\lib\activites\dashboard.ts:36:36)
+    async TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/tests/cpu/dashboard.test.mjs:25:17)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 244.8283

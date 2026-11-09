@@ -50,16 +50,16 @@ for (const kind of ['rows', 'headers', 'batch', 'table']) test(`fresh ${kind} re
   assert.match(String((await outcome).error), /invalid/)
 })
 
-test('an audit append preserves warm business data and headers, invalidates its own workbook', async () => {
+test('an audit append conservatively invalidates all raw workbook caches', async () => {
   const { namespace: data, state } = await sheetsModule(root)
   await data.getSheetRows(params())
   await data.getSheetRows(params('USERS'))
   await data.appendSheetRow({ ...params('USERS'), row: { id: '2', value: 'audit' } })
   const before = state.calls.length
   await data.getSheetRows(params()); await data.getSheetHeaders(params())
-  assert.equal(state.calls.length, before, 'unrelated workbook must remain warm')
+  assert.equal(state.calls.length, before + 1, 'conservative policy refreshes the other workbook')
   await data.getSheetRows(params('USERS'))
-  assert.equal(state.calls.length, before + 1)
+  assert.equal(state.calls.length, before + 2)
 })
 
 test('fresh adapter reads cannot return a cached revoked account or stale fallback', async () => {
@@ -99,7 +99,7 @@ test('fresh read interrupted by local invalidation rejects instead of returning 
 })
 
 for (const method of ['appendSheetRow', 'appendSheetRows', 'updateSheetCell', 'updateSheetCells', 'deleteSheetRow']) {
-  for (const fails of [false, true]) test(`${method}: ${fails ? 'uncertain error' : 'success'} fences all ranges of its workbook only`, async () => {
+  for (const fails of [false, true]) test(`${method}: ${fails ? 'uncertain error' : 'success'} fences all raw workbook ranges`, async () => {
     const { namespace: data, state } = await sheetsModule(root)
     await data.getSheetRows(params()); await data.getSheetRows(params('USERS'))
     await data.getSheetRows({ ...params('USERS'), range: "'A'!A:B" })
@@ -110,10 +110,10 @@ for (const method of ['appendSheetRow', 'appendSheetRows', 'updateSheetCell', 'u
     else await data[method](input)
     const before = state.calls.length
     await data.getSheetRows(params()); await data.getSheetRows(params('USERS-OTHER'))
-    assert.equal(state.calls.length, before)
+    assert.equal(state.calls.length, before + 2)
     await data.getSheetRows(params('USERS')); await data.getSheetRows({ ...params('USERS'), range: "'A'!A:B" })
     await data.getSheetHeaders({ ...params('USERS'), sheetName: 'B' })
-    assert.equal(state.calls.length, before + 3)
+    assert.equal(state.calls.length, before + 5)
   })
 }
 

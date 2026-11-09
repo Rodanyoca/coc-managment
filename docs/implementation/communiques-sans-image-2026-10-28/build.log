@@ -1,0 +1,6 @@
+▲ Next.js 16.3.4 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.mjs took 29ms
+
+  Creating an optimized production build ...
+spawnSync C:\Program Files\nodejs\node.exe ETIMEDOUT

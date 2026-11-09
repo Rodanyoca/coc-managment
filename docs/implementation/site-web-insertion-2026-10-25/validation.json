@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-25T17:42:19.038Z",
+  "targeted": {
+    "tests": 114,
+    "pass": 114
+  },
+  "insertionTests": 14,
+  "lintExit": 0,
+  "buildExit": 0,
+  "typescriptExit": 0,
+  "normalBuild": true,
+  "mockedFonts": false,
+  "browserDate": "2025-03-21",
+  "productionWrites": false,
+  "moved": false,
+  "pushed": false,
+  "c2Deferred": true,
+  "conservativeProfileOutsideTargetFunctionsUnchanged": true,
+  "rootProfileMismatchReproducedBeforeFix": true,
+  "hashes": {
+    "lib/google/sheets.ts": "9e647fd50bc55a786bc116ba1a5b7cf264f57c171d058c886531c0d1c53f9131",
+    "lib/site-web/content.ts": "f90eeb2bb570a3425b4f47030266733d3cf239d4cc29fbf7ec3f8f23ecedb9fc",
+    "tests/site-web/insertion.test.mjs": "b2b5955c7d1aafac3df640f35965437cdf3eb943b8727a1402293e2a5e4b2359",
+    "tests/site-web/content.test.mjs": "3e6e3cf81c52f16efc65a5294adf9d1c6f9a690f547b555ec779a31b1a50c8ec",
+    "scripts/cpu-audit/fixtures.mjs": "be32fa8fdea06b473572208958d059f78817d43320689a5c4bea1d120fa81f10"
+  }
+}

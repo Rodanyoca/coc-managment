@@ -1,0 +1,11 @@
+[
+  {
+    "label": "reference-build",
+    "args": [
+      "node_modules/next/dist/bin/next",
+      "build"
+    ],
+    "exitCode": 1,
+    "elapsedMs": 273015
+  }
+]

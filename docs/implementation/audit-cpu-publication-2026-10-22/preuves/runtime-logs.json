@@ -1,0 +1,17 @@
+{
+  "since": "2026-10-22T21:58:24.619Z",
+  "until": "2026-10-22T22:00:06.1490234Z",
+  "exitCode": 0,
+  "limit": 100,
+  "deploymentId": "dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx",
+  "source": "Vercel CLI runtime logs; no metrics query",
+  "recordsReturned": 0,
+  "timeRange": {
+    "start": "2026-10-22T21:58:24.619Z",
+    "end": "2026-10-22T22:00:06.149Z"
+  },
+  "hasMore": false,
+  "excludedIntervals": [],
+  "limitation": "No runtime console records returned in this window. This is not proof of no traffic or of no errors on all paths; no authenticated journey was performed.",
+  "metricsQueried": false
+}

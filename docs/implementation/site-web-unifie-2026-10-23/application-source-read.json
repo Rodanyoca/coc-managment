@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-23T14:45:04.695Z",
+  "readOnly": true,
+  "identity": "configured service account",
+  "spreadsheet": "1cVIijJBdyhNhMwVIWtMzZHzWPvBqM5W73rYj0Ws8qMM",
+  "configured": {
+    "GOOGLE_DRIVE_SITE_WEB_SLIDERS_FOLDER_ID": true,
+    "GOOGLE_DRIVE_SITE_WEB_IMAGES_FOLDER_ID": false,
+    "GOOGLE_DRIVE_SITE_WEB_DOCUMENTS_FOLDER_ID": false,
+    "GOOGLE_OAUTH_CLIENT_ID": true,
+    "GOOGLE_OAUTH_CLIENT_SECRET": true,
+    "GOOGLE_DRIVE_REFRESH_TOKEN": true
+  },
+  "readSucceeded": true,
+  "statusIds": [
+    "PUB001",
+    "PUB002",
+    "PUB003"
+  ]
+}

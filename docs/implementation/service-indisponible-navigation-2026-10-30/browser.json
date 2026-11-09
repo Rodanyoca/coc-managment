@@ -1,0 +1,85 @@
+{
+  "syntheticOnly": true,
+  "checks": [
+    {
+      "device": "desktop",
+      "entity": "/dashboard/competitions/COMP001",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "desktop",
+      "entity": "/dashboard/acteurs/athletes?statut=ACTIF",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "desktop",
+      "entity": "/dashboard/federations",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "desktop",
+      "entity": "/dashboard/documents",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "desktop",
+      "entity": "/dashboard/site-web/actualites",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "desktop",
+      "realProxy": "failed-source-with-display-menu",
+      "businessApiStatus": 503
+    },
+    {
+      "device": "desktop",
+      "noConfirmedMenu": "dashboard-only"
+    },
+    {
+      "device": "mobile",
+      "entity": "/dashboard/competitions/COMP001",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "mobile",
+      "entity": "/dashboard/acteurs/athletes?statut=ACTIF",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "mobile",
+      "entity": "/dashboard/federations",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "mobile",
+      "entity": "/dashboard/documents",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "mobile",
+      "entity": "/dashboard/site-web/actualites",
+      "menuPreserved": true,
+      "retryPreserved": true
+    },
+    {
+      "device": "mobile",
+      "realProxy": "failed-source-with-display-menu",
+      "businessApiStatus": 503
+    },
+    {
+      "device": "mobile",
+      "noConfirmedMenu": "dashboard-only"
+    }
+  ],
+  "errors": [],
+  "apiRequests": []
+}

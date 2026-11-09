@@ -1,0 +1,185 @@
+(node:26928) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:26928) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✖ competition detail and programs project only selected records, preserving normalization and freshness (107.4707ms)
+
+✖ results filter competition/history before projection; missing and orphaned relations stay excluded (38.9956ms)
+
+✖ unit members are indexed once, preserving duplicates, source order, direct composition and label failure (28.6925ms)
+
+✖ form references read only the three consumed tables and preserve returned labels (14.5128ms)
+
+✖ delegation counts scan athletes once and preserve union across campaigns and competitions (5.8359ms)
+
+ℹ tests 5
+
+ℹ suites 0
+
+ℹ pass 0
+
+ℹ fail 5
+
+ℹ cancelled 0
+
+ℹ skipped 0
+
+ℹ todo 0
+
+ℹ duration_ms 315.9824
+
+
+
+✖ failing tests:
+
+
+
+test at tests\cpu\competitions.test.mjs:9:1
+
+✖ competition detail and programs project only selected records, preserving normalization and freshness (107.4707ms)
+
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+
+
+  8 !== 1
+
+
+
+      at TestContext.<anonymous> (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/tests/cpu/competitions.test.mjs:12:10)
+
+      at async Test.run (node:internal/test_runner/test:1313:7)
+
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+
+    generatedMessage: true,
+
+    code: 'ERR_ASSERTION',
+
+    actual: 8,
+
+    expected: 1,
+
+    operator: 'strictEqual',
+
+    diff: 'simple'
+
+  }
+
+
+
+test at tests\cpu\competitions.test.mjs:25:1
+
+✖ results filter competition/history before projection; missing and orphaned relations stay excluded (38.9956ms)
+
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+
+
+  401 !== 30
+
+
+
+      at TestContext.<anonymous> (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/tests/cpu/competitions.test.mjs:31:10)
+
+      at async Test.run (node:internal/test_runner/test:1313:7)
+
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+
+    generatedMessage: true,
+
+    code: 'ERR_ASSERTION',
+
+    actual: 401,
+
+    expected: 30,
+
+    operator: 'strictEqual',
+
+    diff: 'simple'
+
+  }
+
+
+
+test at tests\cpu\competitions.test.mjs:40:1
+
+✖ unit members are indexed once, preserving duplicates, source order, direct composition and label failure (28.6925ms)
+
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+
+
+  51240 !== 1281
+
+
+
+      at TestContext.<anonymous> (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/tests/cpu/competitions.test.mjs:46:10)
+
+      at async Test.run (node:internal/test_runner/test:1313:7)
+
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+
+    generatedMessage: true,
+
+    code: 'ERR_ASSERTION',
+
+    actual: 51240,
+
+    expected: 1281,
+
+    operator: 'strictEqual',
+
+    diff: 'simple'
+
+  }
+
+
+
+test at tests\cpu\competitions.test.mjs:57:1
+
+✖ form references read only the three consumed tables and preserve returned labels (14.5128ms)
+
+  TypeError: data.getCompetitionFormReferences is not a function
+
+      at TestContext.<anonymous> (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/tests/cpu/competitions.test.mjs:60:27)
+
+      at async Test.run (node:internal/test_runner/test:1313:7)
+
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+
+
+test at tests\cpu\competitions.test.mjs:67:1
+
+✖ delegation counts scan athletes once and preserve union across campaigns and competitions (5.8359ms)
+
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+
+
+  6 !== 2
+
+
+
+      at TestContext.<anonymous> (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/tests/cpu/competitions.test.mjs:75:10)
+
+      at async Test.run (node:internal/test_runner/test:1313:7)
+
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+
+    generatedMessage: true,
+
+    code: 'ERR_ASSERTION',
+
+    actual: 6,
+
+    expected: 2,
+
+    operator: 'strictEqual',
+
+    diff: 'simple'
+
+  }

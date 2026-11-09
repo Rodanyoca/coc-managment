@@ -1,0 +1,131 @@
+▲ Next.js 16.3.4 (Turbopack)
+⚠ Warning: Next.js ignored pnpm-lock.yaml in C:\Projets\SNDS-RDC\data\multisport\coc-managment because it is outside the current Git repository (C:\Projets\SNDS-RDC\data\multisport\coc-managment\.cache\competitions-cpu-20261030\validation).
+ To use this directory, set `turbopack.root` in your Next.js config.
+
+✓ Running next.config.mjs took 20ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 8.5min
+  Running TypeScript ...
+✓ Finished writing to filesystem cache in 61s
+  Finished TypeScript in 3.2min ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/42) ...
+  Generating static pages using 11 workers (10/42)
+
+  Generating static pages using 11 workers (20/42)
+
+  Generating static pages using 11 workers (31/42)
+
+✓ Generating static pages using 11 workers (42/42) in 9.2s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /activation
+├ ƒ /api/activites
+├ ƒ /api/activites/[id]
+├ ƒ /api/activites/[id]/entites
+├ ƒ /api/activites/[id]/participants
+├ ƒ /api/activites/acteurs/[id]
+├ ƒ /api/arbitres
+├ ƒ /api/athletes
+├ ƒ /api/athletes/[id]/sport-history
+├ ƒ /api/auth/activate
+├ ƒ /api/auth/change-password
+├ ƒ /api/auth/login
+├ ƒ /api/auth/logout
+├ ƒ /api/auth/session
+├ ƒ /api/autres
+├ ƒ /api/coachs
+├ ƒ /api/competitions
+├ ƒ /api/competitions/[id]
+├ ƒ /api/competitions/[id]/engagements
+├ ƒ /api/competitions/[id]/equipes-nationales
+├ ƒ /api/competitions/[id]/medailles
+├ ƒ /api/competitions/[id]/participants
+├ ƒ /api/competitions/[id]/programmes
+├ ƒ /api/competitions/[id]/resultats
+├ ƒ /api/competitions/[id]/unites
+├ ƒ /api/dashboard/refresh
+├ ƒ /api/documents
+├ ƒ /api/documents/[id]
+├ ƒ /api/documents/[id]/download
+├ ƒ /api/documents/[id]/file
+├ ƒ /api/documents/[id]/preview
+├ ƒ /api/equipes-nationales
+├ ƒ /api/equipes-nationales/[id]
+├ ƒ /api/equipes-nationales/[id]/campagnes
+├ ƒ /api/equipes-nationales/[id]/membres
+├ ƒ /api/equipes-nationales/[id]/selections
+├ ƒ /api/equipes-nationales/acteurs
+├ ƒ /api/equipes-nationales/acteurs/[id]
+├ ƒ /api/federations
+├ ƒ /api/federations/[resource]
+├ ƒ /api/federations/contacts
+├ ƒ /api/federations/logo/[id]
+├ ƒ /api/medecins
+├ ƒ /api/officiels
+├ ƒ /api/officiels/affiliations
+├ ƒ /api/parametres/saisons
+├ ƒ /api/site-web/[resource]
+├ ƒ /api/site-web/[resource]/[id]
+├ ƒ /api/site-web/media/[resource]/[id]/[field]
+├ ƒ /api/site-web/sliders
+├ ƒ /api/site-web/sliders/[id]
+├ ƒ /api/site-web/uploads
+├ ƒ /api/upload-media
+├ ƒ /api/users
+├ ƒ /api/users/[id]
+├ ƒ /api/users/[id]/authorizations
+├ ƒ /api/users/[id]/reset-access
+├ ƒ /api/users/[id]/revoke-sessions
+├ ○ /apple-icon.png
+├ ƒ /dashboard
+├ ƒ /dashboard/acteurs
+├ ƒ /dashboard/acteurs/arbitres
+├ ƒ /dashboard/acteurs/arbitres/[id]
+├ ƒ /dashboard/acteurs/athletes
+├ ƒ /dashboard/acteurs/athletes/[id]
+├ ƒ /dashboard/acteurs/autres
+├ ƒ /dashboard/acteurs/autres/[id]
+├ ƒ /dashboard/acteurs/autres/[id]/modifier
+├ ƒ /dashboard/acteurs/autres/nouveau
+├ ƒ /dashboard/acteurs/entraineurs
+├ ƒ /dashboard/acteurs/entraineurs/[id]
+├ ƒ /dashboard/acteurs/medecins
+├ ƒ /dashboard/acteurs/medecins/[id]
+├ ƒ /dashboard/acteurs/officiels
+├ ƒ /dashboard/acteurs/officiels/[id]
+├ ƒ /dashboard/activites
+├ ƒ /dashboard/activites/[id]
+├ ƒ /dashboard/competitions
+├ ƒ /dashboard/competitions/[id]
+├ ƒ /dashboard/competitions/nouveau
+├ ƒ /dashboard/documents
+├ ƒ /dashboard/documents/[id]
+├ ƒ /dashboard/documents/nouveau
+├ ƒ /dashboard/equipes-nationales
+├ ƒ /dashboard/equipes-nationales/[id]
+├ ƒ /dashboard/equipes-nationales/nouveau
+├ ƒ /dashboard/federations
+├ ƒ /dashboard/federations/[id]
+├ ƒ /dashboard/federations/[id]/parametres
+├ ƒ /dashboard/parametres
+├ ƒ /dashboard/site-web
+├ ƒ /dashboard/site-web/[resource]
+├ ƒ /dashboard/site-web/sliders
+├ ƒ /dashboard/utilisateurs
+├ ƒ /dashboard/utilisateurs/[id]
+├ ƒ /dashboard/utilisateurs/nouveau
+├ ○ /icon.png
+├ ○ /login
+├ ƒ /mon-compte
+└ ○ /service-indisponible
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand

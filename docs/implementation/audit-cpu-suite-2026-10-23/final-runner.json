@@ -1,0 +1,8 @@
+﻿{
+    "runnerPid":  16348,
+    "affinity":  3,
+    "cores":  2,
+    "startedUtc":  "2026-10-23T01:24:20.6374516Z",
+    "reference":  "successful normal build + TypeScript + 319/325 suite retained",
+    "source":  "fine per-source-sheet fresh fence; raw workbook invalidation"
+}

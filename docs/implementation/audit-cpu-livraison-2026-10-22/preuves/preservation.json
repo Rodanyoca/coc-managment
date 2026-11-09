@@ -1,0 +1,15 @@
+{
+  "preserved": 526,
+  "changed": [
+    "scripts/cpu-audit/module-harness.mjs",
+    "lib/auth.ts",
+    "lib/auth/authorization.ts",
+    "lib/auth/post-login-route.ts",
+    "lib/documents/data.ts",
+    "lib/google/sheets.ts",
+    "package.json",
+    "tests/unit/authorization.test.ts",
+    "tests/unit/post-login-route.test.ts"
+  ],
+  "unexpected": []
+}

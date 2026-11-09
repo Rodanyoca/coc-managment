@@ -1,0 +1,81 @@
+[
+  {
+    "name": "lint",
+    "args": [
+      "node_modules/eslint/bin/eslint.js",
+      "lib/site-web",
+      "components/site-web",
+      "app/api/site-web",
+      "app/dashboard/site-web",
+      "lib/google/drive.ts",
+      "proxy.ts",
+      "lib/auth/route-policy.ts",
+      "tests/site-web"
+    ],
+    "code": 0,
+    "elapsedMs": 5599
+  },
+  {
+    "name": "tests",
+    "args": [
+      "--experimental-vm-modules",
+      "--test",
+      "--test-reporter=tap",
+      "tests/site-web/*.test.mjs",
+      "tests/settings/*.test.mjs",
+      "tests/cpu/*.test.mjs",
+      "tests/delivery/*.test.mjs",
+      "tests/users-ui/*.test.mjs",
+      "tests/unit/authorization.test.ts",
+      "tests/unit/authorization-matrix.test.ts",
+      "tests/unit/route-policy.test.ts"
+    ],
+    "code": 0,
+    "elapsedMs": 1156,
+    "tests": 100,
+    "pass": 100,
+    "failures": []
+  },
+  {
+    "name": "build",
+    "args": [
+      "node_modules/next/dist/bin/next",
+      "build"
+    ],
+    "code": 0,
+    "elapsedMs": 85086
+  },
+  {
+    "name": "typescript",
+    "args": [
+      "node_modules/typescript/bin/tsc",
+      "--noEmit",
+      "--incremental",
+      "false"
+    ],
+    "code": 0,
+    "elapsedMs": 45203
+  },
+  {
+    "name": "suite",
+    "args": [
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "tests/unit/*.test.ts",
+      "tests/integration/*.test.ts"
+    ],
+    "code": 1,
+    "elapsedMs": 3573567,
+    "tests": 325,
+    "pass": 319,
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination après la pose du cookie",
+      "la liste finale masque les cérémonies et conserve une action accessible",
+      "le formulaire remplace les dates par le référentiel des saisons",
+      "les chargements concernés utilisent un gris léger",
+      "les écritures restent contextuelles et masquées sans droit"
+    ]
+  }
+]

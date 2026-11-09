@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-25T16:50:21.576Z",
+  "screens": [
+    {
+      "name": "site-web-desktop",
+      "viewport": 1440,
+      "width": 1440
+    },
+    {
+      "name": "site-web-mobile",
+      "viewport": 390,
+      "width": 390
+    }
+  ],
+  "errors": [],
+  "authenticated": false,
+  "productionWrites": false,
+  "route": "/dashboard/site-web",
+  "render": "actual page component in isolated preview"
+}

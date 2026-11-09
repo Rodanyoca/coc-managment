@@ -1,0 +1,35 @@
+{
+  "observedAt": "2026-10-22T21:59:28.878Z",
+  "id": "dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx",
+  "projectId": "prj_GfEgDmQ9y6SvELDNuHZyPYNcTYbA",
+  "name": "coc-managment",
+  "url": "coc-managment-9pi01j3qj-yoca-souleymane-s-projects.vercel.app",
+  "target": "production",
+  "readyState": "READY",
+  "createdAt": 1792706220128,
+  "buildingAt": 1792706221311,
+  "ready": 1792706304619,
+  "alias": "database.coc-rdc.net",
+  "sha": "e6fa5b24a0a3da6491aec19f8bdd9b1ebe8e8964",
+  "ref": "main",
+  "errorCode": null,
+  "errorMessage": null,
+  "aliases": [
+    {
+      "alias": "database.coc-rdc.net",
+      "deploymentId": "dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx",
+      "projectId": "prj_GfEgDmQ9y6SvELDNuHZyPYNcTYbA"
+    },
+    {
+      "alias": "coc-managment.vercel.app",
+      "deploymentId": "dpl_DFHRq2mKp62EVz3nkmJ1THoaczdx",
+      "projectId": "prj_GfEgDmQ9y6SvELDNuHZyPYNcTYbA"
+    }
+  ],
+  "readyAtUtc": "2026-10-22T21:58:24.619Z",
+  "workflow": "single fast-forward Git push to main; automatic Git production deployment; no CLI deployment",
+  "previous": {
+    "sha": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+    "id": "dpl_ENVvMe52hN8h5PerjuwZ2p34woTw"
+  }
+}

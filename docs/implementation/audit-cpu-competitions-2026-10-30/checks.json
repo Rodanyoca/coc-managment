@@ -1,0 +1,36 @@
+{
+  "normalBuild": 0,
+  "realWoff2Files": 11,
+  "buildElapsedMs": 867665,
+  "typescript": 0,
+  "lintErrors": 0,
+  "lintPreexistingWarnings": 1,
+  "generalReference": {
+    "passed": 316,
+    "failed": 9
+  },
+  "generalVariant": {
+    "passed": 316,
+    "failed": 9
+  },
+  "cpu": {
+    "passed": 57,
+    "failed": 0
+  },
+  "newCompetitionTests": 7,
+  "differentialServices": 81,
+  "delegationFuzzCases": 100,
+  "browser": {
+    "checks": 14,
+    "errors": 0,
+    "unitGetsPerVisit": 1,
+    "productionAuthenticated": false
+  },
+  "rollbackPatchCheck": "passed",
+  "published": false,
+  "applicationHashes": {
+    "lib/competitions/data.ts": "fae12767f93b1d5a1ff94cc8f8d89e383dad64ba349664aa27689e6c6207d334",
+    "lib/competitions/delegation-counts.ts": "374a00406c18cf6d387452d9eddb119611cce31d2506e59d2d2b2620ae79179e",
+    "app/dashboard/competitions/page.tsx": "29122301a38312c11065aa51b7cdae5f300266690d5275ed736e1b7b3304e354"
+  }
+}

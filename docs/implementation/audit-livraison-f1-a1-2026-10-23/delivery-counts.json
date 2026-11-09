@@ -1,0 +1,35 @@
+{
+  "scope": "Deterministic dependency counters on selected global raw-cache policy; no timing or CPU benchmark",
+  "results": [
+    {
+      "scenario": "cold",
+      "oldA1GetCalls": 5,
+      "selectedGetCalls": 2,
+      "equal": true
+    },
+    {
+      "scenario": "warm",
+      "oldA1GetCalls": 0,
+      "selectedGetCalls": 0,
+      "equal": true
+    },
+    {
+      "scenario": "concurrent-cold-8",
+      "oldA1GetCalls": 5,
+      "selectedGetCalls": 2,
+      "equal": true
+    },
+    {
+      "scenario": "after-reference-write",
+      "oldA1GetCalls": 5,
+      "selectedGetCalls": 2,
+      "equal": true
+    },
+    {
+      "scenario": "after-activity-write",
+      "oldA1GetCalls": 5,
+      "selectedGetCalls": 2,
+      "equal": true
+    }
+  ]
+}

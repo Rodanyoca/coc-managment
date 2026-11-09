@@ -1,0 +1,15 @@
+{
+  "closedAt": "2026-10-23T11:19:27.202Z",
+  "sha": "cd9f29fbdfba9d35a60af358041dd8ad852c1173",
+  "deploymentId": "dpl_EGA6j7Qwf4euUNywAXRj8KehA4z3",
+  "readyAtUtc": "2026-10-23T11:17:12.4740000Z",
+  "alias": "database.coc-rdc.net",
+  "anonymousPassed": 11,
+  "runtimeLogRecords": 0,
+  "authenticated": false,
+  "c2Deferred": true,
+  "globalRawInvalidation": true,
+  "rootParallelWorkPreserved": true,
+  "postPublicationDocumentation": "Local only, no redundant deployment",
+  "vercelCpuGainMeasured": false
+}

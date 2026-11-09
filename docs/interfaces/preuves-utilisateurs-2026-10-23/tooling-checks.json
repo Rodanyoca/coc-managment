@@ -1,0 +1,7 @@
+{
+  "lintCommand": "node node_modules/eslint/bin/eslint.js scripts/users-ui",
+  "lintExitCode": 0,
+  "syntaxCommand": "node --check scripts/users-ui/prepare-validation.mjs",
+  "syntaxExitCode": 0,
+  "note": "Supplementary checks after adding preparation/preservation tooling; application source unchanged."
+}

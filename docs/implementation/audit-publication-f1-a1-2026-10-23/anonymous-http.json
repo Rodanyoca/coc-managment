@@ -1,0 +1,131 @@
+{
+  "startedAt": "2026-10-23T11:17:59.148Z",
+  "finishedAt": "2026-10-23T11:18:06.640Z",
+  "deploymentId": "dpl_EGA6j7Qwf4euUNywAXRj8KehA4z3",
+  "sha": "cd9f29fbdfba9d35a60af358041dd8ad852c1173",
+  "method": "Sequential anonymous GET only; no cookies, no load test, no business write",
+  "metric": "elapsed HTTP, not active CPU",
+  "results": [
+    {
+      "route": "/login",
+      "expected": 200,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 19079,
+      "elapsedHttpMs": 3053,
+      "requestId": "cpt1::67c9f-1792754280273-b0a3e28d94ab",
+      "ok": true
+    },
+    {
+      "route": "/service-indisponible",
+      "expected": 200,
+      "status": 200,
+      "location": null,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 14452,
+      "elapsedHttpMs": 970,
+      "requestId": "cpt1::ktqgb-1792754282731-345969363177",
+      "ok": true
+    },
+    {
+      "route": "/dashboard",
+      "expected": 307,
+      "status": 307,
+      "location": "/login",
+      "contentType": "text/plain",
+      "bytes": 15,
+      "elapsedHttpMs": 499,
+      "requestId": "cpt1::67c9f-1792754283699-cf0969b684f2",
+      "ok": true
+    },
+    {
+      "route": "/dashboard/documents",
+      "expected": 307,
+      "status": 307,
+      "location": "/login",
+      "contentType": "text/plain",
+      "bytes": 15,
+      "elapsedHttpMs": 718,
+      "requestId": "cpt1::ktqgb-1792754284410-ca17e83ec4b9",
+      "ok": true
+    },
+    {
+      "route": "/activation",
+      "expected": 307,
+      "status": 307,
+      "location": "/login",
+      "contentType": "text/plain",
+      "bytes": 15,
+      "elapsedHttpMs": 307,
+      "requestId": "cpt1::wwczr-1792754284918-af80581006f6",
+      "ok": true
+    },
+    {
+      "route": "/api/auth/session",
+      "expected": 401,
+      "status": 401,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "elapsedHttpMs": 268,
+      "requestId": "cpt1::bddv4-1792754285220-5b3433d4b55c",
+      "ok": true
+    },
+    {
+      "route": "/api/documents",
+      "expected": 401,
+      "status": 401,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "elapsedHttpMs": 244,
+      "requestId": "cpt1::67c9f-1792754285500-2ae3eb67108c",
+      "ok": true
+    },
+    {
+      "route": "/api/documents/AUDIT-ANONYME/preview",
+      "expected": 401,
+      "status": 401,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "elapsedHttpMs": 306,
+      "requestId": "cpt1::bddv4-1792754285731-b454a04912ca",
+      "ok": true
+    },
+    {
+      "route": "/api/documents/AUDIT-ANONYME/download",
+      "expected": 401,
+      "status": 401,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "elapsedHttpMs": 309,
+      "requestId": "cpt1::67c9f-1792754286042-26961e94211c",
+      "ok": true
+    },
+    {
+      "route": "/api/users",
+      "expected": 401,
+      "status": 401,
+      "location": null,
+      "contentType": "application/json",
+      "bytes": 29,
+      "elapsedHttpMs": 514,
+      "requestId": "cpt1::jv2hp-1792754286347-b02cb78a1999",
+      "ok": true
+    },
+    {
+      "route": "/dashboard/utilisateurs",
+      "expected": 307,
+      "status": 307,
+      "location": "/login",
+      "contentType": "text/plain",
+      "bytes": 15,
+      "elapsedHttpMs": 303,
+      "requestId": "cpt1::67c9f-1792754286863-18a2d1d680da",
+      "ok": true
+    }
+  ]
+}

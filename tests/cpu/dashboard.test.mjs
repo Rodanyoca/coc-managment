@@ -47,7 +47,7 @@ test('concurrent dashboards share raw reads, never memoize aggregates across mut
   assert.equal((await f.load()).types.find(t => t.key === 'T1').label, 'Changed label')
 })
 
-test('a two-workbook mutation fences each old read and preserves an independent workbook', async () => {
+test('a two-workbook mutation fences old reads and conservatively refreshes all raw workbooks', async () => {
   const f = await activityDashboardFixture(root), gate = deferred()
   const ordinary = { spreadsheetId: 'OTHER', sheetName: 'A' }
   await f.raw.namespace.getSheetRows(ordinary)
@@ -65,11 +65,11 @@ test('a two-workbook mutation fences each old read and preserves an independent 
   f.raw.state.get = null
   const before = f.raw.state.calls.length
   await f.raw.namespace.getSheetRows(ordinary)
-  assert.equal(f.raw.state.calls.length, before)
+  assert.equal(f.raw.state.calls.length, before + 1)
   assert.equal((await f.load()).types.find(t => t.key === 'T1').label, 'After mutation')
 })
 
-test('partial failure across workbooks invalidates both attempted writes, not an independent cache', async () => {
+test('partial failure across workbooks invalidates all raw caches on either attempted write', async () => {
   const f = await activityDashboardFixture(root)
   await f.load()
   await f.raw.namespace.getSheetRows({ spreadsheetId: 'OTHER', sheetName: 'A' })
@@ -78,7 +78,7 @@ test('partial failure across workbooks invalidates both attempted writes, not an
   await assert.rejects(f.raw.namespace.appendSheetRow({ spreadsheetId: 'ACTIVITIES', sheetName: 'ACTIVITES', row: { id_activite: 'NEW' } }), /lost acknowledgement/)
   const before = f.raw.state.calls.length
   await f.raw.namespace.getSheetRows({ spreadsheetId: 'OTHER', sheetName: 'A' })
-  assert.equal(f.raw.state.calls.length, before)
+  assert.equal(f.raw.state.calls.length, before + 1)
   await f.load()
-  assert.equal(f.raw.state.calls.length - before, 2)
+  assert.equal(f.raw.state.calls.length - before, 3)
 })

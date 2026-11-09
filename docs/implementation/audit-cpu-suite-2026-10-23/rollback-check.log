@@ -1,0 +1,22 @@
+(node:10644) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10644) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+✔ batch reads only missing unique ranges, preserves the complete result (211.1071ms)
+✔ overlapping batches and individual readers share in-flight missing ranges (15.452ms)
+✔ invalidating an in-flight single read prevents stale cache resurrection (10.9245ms)
+✔ successful write invalidates a batch already in flight, without cancelling its caller (12.4798ms)
+✔ headers finishing after invalidation do not poison subsequent reads (10.4455ms)
+✔ ordinary error fallback is kept, explicit fresh reads fail closed and never cache (13.5355ms)
+✔ different workbooks remain isolated; expiry triggers another read; empty batch does no I/O (11.6207ms)
+✔ old completion cannot replace a new cache entry or remove its in-flight read (11.5202ms)
+✔ failed shared batch cleans its promises so a later request can retry (11.1666ms)
+✔ hot batches do no I/O, fresh batches do not share promises or populate caches (10.7964ms)
+✔ separate process contexts do not share cache entries or invalidations (15.8034ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 513.0996

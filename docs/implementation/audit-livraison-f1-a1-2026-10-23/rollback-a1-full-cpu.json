@@ -1,0 +1,7 @@
+{
+  "scope": "Full CPU suite on isolated A1 rollback; app routes included, dashboard assertions match full references, security unchanged",
+  "exitCode": 0,
+  "tests": 53,
+  "pass": 53,
+  "fail": 0
+}

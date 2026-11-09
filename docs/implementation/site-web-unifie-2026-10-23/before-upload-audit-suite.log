@@ -1,0 +1,3020 @@
+TAP version 13
+# Subtest: activation, changement volontaire et réinitialisation révoquent les versions précédentes
+ok 1 - activation, changement volontaire et réinitialisation révoquent les versions précédentes
+  ---
+  duration_ms: 1604.8368
+  type: 'test'
+  ...
+# Subtest: refuse accès temporaire expiré, incorrect et confirmation déjà consommée
+ok 2 - refuse accès temporaire expiré, incorrect et confirmation déjà consommée
+  ---
+  duration_ms: 338.7754
+  type: 'test'
+  ...
+# Subtest: deux écritures concurrentes du même request_id ne créent qu'une ligne
+ok 3 - deux écritures concurrentes du même request_id ne créent qu'une ligne
+  ---
+  duration_ms: 24.8872
+  type: 'test'
+  ...
+# Subtest: expurge les détails sensibles du journal
+ok 4 - expurge les détails sensibles du journal
+  ---
+  duration_ms: 12.3413
+  type: 'test'
+  ...
+# Subtest: réception: parcours multisport complet équipe-campagne-programme-participant-résultat
+ok 5 - réception: parcours multisport complet équipe-campagne-programme-participant-résultat
+  ---
+  duration_ms: 1.1206
+  type: 'test'
+  ...
+# Subtest: réception: un remplacement conserve sa participation liée
+ok 6 - réception: un remplacement conserve sa participation liée
+  ---
+  duration_ms: 0.1437
+  type: 'test'
+  ...
+# Subtest: réception: une correction officielle conserve les versions
+ok 7 - réception: une correction officielle conserve les versions
+  ---
+  duration_ms: 9.619
+  type: 'test'
+  ...
+# Subtest: réception: le modèle refuse les relations croisées entre campagnes
+ok 8 - réception: le modèle refuse les relations croisées entre campagnes
+  ---
+  duration_ms: 0.853
+  type: 'test'
+  ...
+# Subtest: réception finale: basket, boxe et athlétisme acceptent les trois formes d’adversaire
+ok 9 - réception finale: basket, boxe et athlétisme acceptent les trois formes d’adversaire
+  ---
+  duration_ms: 0.426
+  type: 'test'
+  ...
+# Subtest: réception finale: paire, relais et TEAM ATHLETISME restent des équipes multi-athlètes
+ok 10 - réception finale: paire, relais et TEAM ATHLETISME restent des équipes multi-athlètes
+  ---
+  duration_ms: 0.196
+  type: 'test'
+  ...
+# Subtest: réception finale: sélection sans participation et résultat invalide restent distincts
+ok 11 - réception finale: sélection sans participation et résultat invalide restent distincts
+  ---
+  duration_ms: 0.1847
+  type: 'test'
+  ...
+# Subtest: crée un compte, audite et remet le secret une seule fois
+ok 12 - crée un compte, audite et remet le secret une seule fois
+  ---
+  duration_ms: 176.0491
+  type: 'test'
+  ...
+# Subtest: compense une création multi-feuilles partielle
+ok 13 - compense une création multi-feuilles partielle
+  ---
+  duration_ms: 155.1466
+  type: 'test'
+  ...
+# Subtest: refuse les périodes superposées et protège le dernier super-administrateur
+ok 14 - refuse les périodes superposées et protège le dernier super-administrateur
+  ---
+  duration_ms: 185.2305
+  type: 'test'
+  ...
+# Subtest: les participants référencent une relation entité-activité sans rôle libre
+ok 15 - les participants référencent une relation entité-activité sans rôle libre
+  ---
+  duration_ms: 6.5744
+  type: 'test'
+  ...
+# Subtest: les rôles d’entité viennent du référentiel et les suppressions utilisées sont refusées
+ok 16 - les rôles d’entité viennent du référentiel et les suppressions utilisées sont refusées
+  ---
+  duration_ms: 1.5162
+  type: 'test'
+  ...
+# Subtest: la fiche actualise localement les entités, participants et compteurs
+ok 17 - la fiche actualise localement les entités, participants et compteurs
+  ---
+  duration_ms: 3.5106
+  type: 'test'
+  ...
+# Subtest: les commandes d’écriture de la fiche sont masquées pour un viewer
+ok 18 - les commandes d’écriture de la fiche sont masquées pour un viewer
+  ---
+  duration_ms: 5.537
+  type: 'test'
+  ...
+# Subtest: retrouve un acteur malgré les espaces et la casse provenant de Sheets
+ok 19 - retrouve un acteur malgré les espaces et la casse provenant de Sheets
+  ---
+  duration_ms: 4.6411
+  type: 'test'
+  ...
+# Subtest: ne confond pas deux identifiants distincts
+ok 20 - ne confond pas deux identifiants distincts
+  ---
+  duration_ms: 0.1939
+  type: 'test'
+  ...
+# Subtest: utilise les titres réels des onglets du classeur ACTEURS
+ok 21 - utilise les titres réels des onglets du classeur ACTEURS
+  ---
+  duration_ms: 1.1242
+  type: 'test'
+  ...
+# Subtest: les listes d’acteurs relisent leur feuille principale après une création
+ok 22 - les listes d’acteurs relisent leur feuille principale après une création
+  ---
+  duration_ms: 5.9227
+  type: 'test'
+  ...
+# Subtest: l'erreur 400 produit le contrat API commun
+ok 23 - l'erreur 400 produit le contrat API commun
+  ---
+  duration_ms: 0.9537
+  type: 'test'
+  ...
+# Subtest: l'erreur 401 produit le contrat API commun
+ok 24 - l'erreur 401 produit le contrat API commun
+  ---
+  duration_ms: 0.1321
+  type: 'test'
+  ...
+# Subtest: l'erreur 403 produit le contrat API commun
+ok 25 - l'erreur 403 produit le contrat API commun
+  ---
+  duration_ms: 0.0968
+  type: 'test'
+  ...
+# Subtest: l'erreur 404 produit le contrat API commun
+ok 26 - l'erreur 404 produit le contrat API commun
+  ---
+  duration_ms: 0.09
+  type: 'test'
+  ...
+# Subtest: l'erreur 409 produit le contrat API commun
+ok 27 - l'erreur 409 produit le contrat API commun
+  ---
+  duration_ms: 0.0942
+  type: 'test'
+  ...
+# Subtest: l'erreur 429 produit le contrat API commun
+ok 28 - l'erreur 429 produit le contrat API commun
+  ---
+  duration_ms: 0.073
+  type: 'test'
+  ...
+# Subtest: l'erreur 500 produit le contrat API commun
+ok 29 - l'erreur 500 produit le contrat API commun
+  ---
+  duration_ms: 0.082
+  type: 'test'
+  ...
+# Subtest: une erreur Sheets est temporaire et son détail brut reste côté serveur
+ok 30 - une erreur Sheets est temporaire et son détail brut reste côté serveur
+  ---
+  duration_ms: 0.3348
+  type: 'test'
+  ...
+# Subtest: l'âge tient compte de l'anniversaire pour les formats ISO et français
+ok 31 - l'âge tient compte de l'anniversaire pour les formats ISO et français
+  ---
+  duration_ms: 1.9651
+  type: 'test'
+  ...
+# Subtest: une naissance absente, impossible ou future ne produit pas un âge inventé
+ok 32 - une naissance absente, impossible ou future ne produit pas un âge inventé
+  ---
+  duration_ms: 0.8106
+  type: 'test'
+  ...
+# Subtest: la liste et la fiche athlète résolvent la fédération depuis son identifiant
+ok 33 - la liste et la fiche athlète résolvent la fédération depuis son identifiant
+  ---
+  duration_ms: 7.4395
+  type: 'test'
+  ...
+# Subtest: déduplique les équipes exclusivement par identifiant
+ok 34 - déduplique les équipes exclusivement par identifiant
+  ---
+  duration_ms: 11.3178
+  type: 'test'
+  ...
+# Subtest: conserve deux équipes de même nom si leurs identifiants diffèrent
+ok 35 - conserve deux équipes de même nom si leurs identifiants diffèrent
+  ---
+  duration_ms: 0.225
+  type: 'test'
+  ...
+# Subtest: affiche avec NON une sélection d’une campagne engagée sans participation
+ok 36 - affiche avec NON une sélection d’une campagne engagée sans participation
+  ---
+  duration_ms: 0.2786
+  type: 'test'
+  ...
+# Subtest: résout chaque participation et ignore les répétitions techniques
+ok 37 - résout chaque participation et ignore les répétitions techniques
+  ---
+  duration_ms: 0.2635
+  type: 'test'
+  ...
+# Subtest: ignore les campagnes sans engagement et tolère les références absentes
+ok 38 - ignore les campagnes sans engagement et tolère les références absentes
+  ---
+  duration_ms: 0.3228
+  type: 'test'
+  ...
+# Subtest: conserve plusieurs épreuves d’une même compétition
+ok 39 - conserve plusieurs épreuves d’une même compétition
+  ---
+  duration_ms: 0.2585
+  type: 'test'
+  ...
+# Subtest: la fiche athlète retire Activités, partage une lecture et reste responsive
+ok 40 - la fiche athlète retire Activités, partage une lecture et reste responsive
+  ---
+  duration_ms: 11.2472
+  type: 'test'
+  ...
+# Subtest: la liste des athlètes combine les filtres de fédération, sexe et statut
+ok 41 - la liste des athlètes combine les filtres de fédération, sexe et statut
+  ---
+  duration_ms: 4.0447
+  type: 'test'
+  ...
+# Subtest: une indisponibilité temporaire de la source ne renvoie pas vers la connexion
+ok 42 - une indisponibilité temporaire de la source ne renvoie pas vers la connexion
+  ---
+  duration_ms: 0.7322
+  type: 'test'
+  ...
+# Subtest: le proxy utilise la navigation d’échec commune
+ok 43 - le proxy utilise la navigation d’échec commune
+  ---
+  duration_ms: 8.3015
+  type: 'test'
+  ...
+# Subtest: les contrôles de session demandent une table fraîche sans repli sur le cache
+ok 44 - les contrôles de session demandent une table fraîche sans repli sur le cache
+  ---
+  duration_ms: 2.234
+  type: 'test'
+  ...
+# Subtest: la validation préfère un snapshot cohérent et conserve le repli des adaptateurs mémoire
+ok 45 - la validation préfère un snapshot cohérent et conserve le repli des adaptateurs mémoire
+  ---
+  duration_ms: 1.6326
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: VIEWER lit avec attribution mais n'écrit jamais
+ok 46 - AUT-ADM: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 0.9224
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: ADMIN écrit uniquement avec attribution active dans la période
+ok 47 - AUT-ADM: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 0.1966
+  type: 'test'
+  ...
+# Subtest: AUT-ADM: la super-administration accorde un accès métier complet
+ok 48 - AUT-ADM: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.1169
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: VIEWER lit avec attribution mais n'écrit jamais
+ok 49 - AUT-SPT: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 0.096
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: ADMIN écrit uniquement avec attribution active dans la période
+ok 50 - AUT-SPT: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 0.1218
+  type: 'test'
+  ...
+# Subtest: AUT-SPT: la super-administration accorde un accès métier complet
+ok 51 - AUT-SPT: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.0668
+  type: 'test'
+  ...
+# Subtest: AUT-COM: VIEWER lit avec attribution mais n'écrit jamais
+ok 52 - AUT-COM: VIEWER lit avec attribution mais n'écrit jamais
+  ---
+  duration_ms: 0.0718
+  type: 'test'
+  ...
+# Subtest: AUT-COM: ADMIN écrit uniquement avec attribution active dans la période
+ok 53 - AUT-COM: ADMIN écrit uniquement avec attribution active dans la période
+  ---
+  duration_ms: 0.0812
+  type: 'test'
+  ...
+# Subtest: AUT-COM: la super-administration accorde un accès métier complet
+ok 54 - AUT-COM: la super-administration accorde un accès métier complet
+  ---
+  duration_ms: 0.0975
+  type: 'test'
+  ...
+# Subtest: seul le super-administrateur accède au périmètre réservé
+ok 55 - seul le super-administrateur accède au périmètre réservé
+  ---
+  duration_ms: 1.1097
+  type: 'test'
+  ...
+# Subtest: VIEWER lit un bloc attribué mais ne peut jamais l'écrire
+ok 56 - VIEWER lit un bloc attribué mais ne peut jamais l'écrire
+  ---
+  duration_ms: 0.8762
+  type: 'test'
+  ...
+# Subtest: ADMIN écrit seulement dans un bloc explicitement attribué et actif
+ok 57 - ADMIN écrit seulement dans un bloc explicitement attribué et actif
+  ---
+  duration_ms: 0.1608
+  type: 'test'
+  ...
+# Subtest: les bornes sont inclusives selon la date civile Africa/Kinshasa
+ok 58 - les bornes sont inclusives selon la date civile Africa/Kinshasa
+  ---
+  duration_ms: 65.5576
+  type: 'test'
+  ...
+# Subtest: le super-administrateur accède à tous les blocs métier
+ok 59 - le super-administrateur accède à tous les blocs métier
+  ---
+  duration_ms: 0.1553
+  type: 'test'
+  ...
+# Subtest: le super-administrateur reste autorisé si la source des blocs est indisponible
+ok 60 - le super-administrateur reste autorisé si la source des blocs est indisponible
+  ---
+  duration_ms: 0.6677
+  type: 'test'
+  ...
+# Subtest: une panne de la source d'autorisation produit un refus fermé
+ok 61 - une panne de la source d'autorisation produit un refus fermé
+  ---
+  duration_ms: 0.2709
+  type: 'test'
+  ...
+# Subtest: le dernier super-administrateur actif ne peut pas être neutralisé
+ok 62 - le dernier super-administrateur actif ne peut pas être neutralisé
+  ---
+  duration_ms: 0.7365
+  type: 'test'
+  ...
+# Subtest: VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible
+ok 63 - VIEWER exige une attribution valide et refuse la lecture si sa source est indisponible
+  ---
+  duration_ms: 0.6256
+  type: 'test'
+  ...
+# Subtest: le contrôle à blanc valide une feuille vide sans écrire
+ok 64 - le contrôle à blanc valide une feuille vide sans écrire
+  ---
+  duration_ms: 4.0684
+  type: 'test'
+  ...
+# Subtest: l'amorçage écrit seulement le hash et impose activation sous 24 heures
+ok 65 - l'amorçage écrit seulement le hash et impose activation sous 24 heures
+  ---
+  duration_ms: 318.1657
+  type: 'test'
+  ...
+# Subtest: refuse l'amorçage si USERS contient déjà un compte
+ok 66 - refuse l'amorçage si USERS contient déjà un compte
+  ---
+  duration_ms: 155.5829
+  type: 'test'
+  ...
+# Subtest: la commande USERS est idempotente après une première création confirmée
+ok 67 - la commande USERS est idempotente après une première création confirmée
+  ---
+  duration_ms: 151.5479
+  type: 'test'
+  ...
+# Subtest: le formulaire d'engagement normalise les lignes incomplètes avant de contrôler les Select
+ok 68 - le formulaire d'engagement normalise les lignes incomplètes avant de contrôler les Select
+  ---
+  duration_ms: 3.6235
+  type: 'test'
+  ...
+# Subtest: le volet de création bloque les données obligatoires avant l'appel API
+ok 69 - le volet de création bloque les données obligatoires avant l'appel API
+  ---
+  duration_ms: 0.5838
+  type: 'test'
+  ...
+# Subtest: la portée suit le type de compétition choisi
+ok 70 - la portée suit le type de compétition choisi
+  ---
+  duration_ms: 0.131
+  type: 'test'
+  ...
+# Subtest: la date de fin est bornée et le client revérifie avant fetch
+ok 71 - la date de fin est bornée et le client revérifie avant fetch
+  ---
+  duration_ms: 4.871
+  type: 'test'
+  ...
+# Subtest: calcule la délégation sans doubler un acteur engagé plusieurs fois
+ok 72 - calcule la délégation sans doubler un acteur engagé plusieurs fois
+  ---
+  duration_ms: 1.4603
+  type: 'test'
+  ...
+# Subtest: la fiche compétition relit les engagements directement après une écriture
+ok 73 - la fiche compétition relit les engagements directement après une écriture
+  ---
+  duration_ms: 5.9844
+  type: 'test'
+  ...
+# Subtest: valide les trois distinctions et une date ISO
+ok 74 - valide les trois distinctions et une date ISO
+  ---
+  duration_ms: 1.2544
+  type: 'test'
+  ...
+# Subtest: l’ajout d’une médaille valide son contexte avec une lecture groupée sans projection enrichie
+ok 75 - l’ajout d’une médaille valide son contexte avec une lecture groupée sans projection enrichie
+  ---
+  duration_ms: 5.1857
+  type: 'test'
+  ...
+# Subtest: la donnée relie la médaille au résultat logique courant et protège les doublons
+ok 76 - la donnée relie la médaille au résultat logique courant et protège les doublons
+  ---
+  duration_ms: 1.5946
+  type: 'test'
+  ...
+# Subtest: affiche l’athlète pour une unité individuelle et le nom pour une équipe
+ok 77 - affiche l’athlète pour une unité individuelle et le nom pour une équipe
+  ---
+  duration_ms: 0.2766
+  type: 'test'
+  ...
+# Subtest: l’interface couvre accessibilité et confirmation
+ok 78 - l’interface couvre accessibilité et confirmation
+  ---
+  duration_ms: 2.4463
+  type: 'test'
+  ...
+# Subtest: l’API impose AUT-SPT et l’enveloppe ADMIN active
+ok 79 - l’API impose AUT-SPT et l’enveloppe ADMIN active
+  ---
+  duration_ms: 1.1707
+  type: 'test'
+  ...
+# Subtest: le bouton participant explique les prérequis manquants au lieu de rester inerte
+ok 80 - le bouton participant explique les prérequis manquants au lieu de rester inerte
+  ---
+  duration_ms: 3.1522
+  type: 'test'
+  ...
+# Subtest: une participation créée reçoit immédiatement le nom de l’athlète sélectionné
+ok 81 - une participation créée reçoit immédiatement le nom de l’athlète sélectionné
+  ---
+  duration_ms: 3.1007
+  type: 'test'
+  ...
+# Subtest: calcule les durées en jours calendaires de manière inclusive
+ok 82 - calcule les durées en jours calendaires de manière inclusive
+  ---
+  duration_ms: 1.8469
+  type: 'test'
+  ...
+# Subtest: accepte une épreuve avant l’ouverture et le jour de la clôture
+ok 83 - accepte une épreuve avant l’ouverture et le jour de la clôture
+  ---
+  duration_ms: 0.2153
+  type: 'test'
+  ...
+# Subtest: refuse toute date dépassant la cérémonie de clôture
+ok 84 - refuse toute date dépassant la cérémonie de clôture
+  ---
+  duration_ms: 0.364
+  type: 'test'
+  ...
+# Subtest: conserve les programmes sans dates dans l’état à planifier
+ok 85 - conserve les programmes sans dates dans l’état à planifier
+  ---
+  duration_ms: 0.1814
+  type: 'test'
+  ...
+# Subtest: le programme utilise une vue Gantt unique sans restaurer les cartes
+ok 86 - le programme utilise une vue Gantt unique sans restaurer les cartes
+  ---
+  duration_ms: 10.9339
+  type: 'test'
+  ...
+# Subtest: le formulaire bloque le payload invalide avant l’appel API
+ok 87 - le formulaire bloque le payload invalide avant l’appel API
+  ---
+  duration_ms: 3.0896
+  type: 'test'
+  ...
+# Subtest: le chargement de la fiche reprend les deux cartes du cadre général
+ok 88 - le chargement de la fiche reprend les deux cartes du cadre général
+  ---
+  duration_ms: 3.4488
+  type: 'test'
+  ...
+# Subtest: filtre et ordonne les décisions actives par discipline, sport puis génériques
+ok 89 - filtre et ordonne les décisions actives par discipline, sport puis génériques
+  ---
+  duration_ms: 1.2072
+  type: 'test'
+  ...
+# Subtest: TR_DECISION masque les valeurs et exige synthèse et décision
+ok 90 - TR_DECISION masque les valeurs et exige synthèse et décision
+  ---
+  duration_ms: 0.2183
+  type: 'test'
+  ...
+# Subtest: une décision générique seule n’affiche pas le sélecteur sur les mesures
+ok 91 - une décision générique seule n’affiche pas le sélecteur sur les mesures
+  ---
+  duration_ms: 0.1229
+  type: 'test'
+  ...
+# Subtest: compose une synthèse sans inventer de score ou d’unité
+ok 92 - compose une synthèse sans inventer de score ou d’unité
+  ---
+  duration_ms: 0.1256
+  type: 'test'
+  ...
+# Subtest: les engagements et résultats de compétition sont affichés en tableaux
+ok 93 - les engagements et résultats de compétition sont affichés en tableaux
+  ---
+  duration_ms: 5.9146
+  type: 'test'
+  ...
+# Subtest: les engagements de la fiche équipe nationale sont affichés en tableau
+ok 94 - les engagements de la fiche équipe nationale sont affichés en tableau
+  ---
+  duration_ms: 2.0417
+  type: 'test'
+  ...
+# Subtest: les tableaux internes n’exposent aucune colonne ni commande d’action
+ok 95 - les tableaux internes n’exposent aucune colonne ni commande d’action
+  ---
+  duration_ms: 4.9223
+  type: 'test'
+  ...
+# Subtest: les listes principales conservent seules l’accès aux fiches détaillées
+ok 96 - les listes principales conservent seules l’accès aux fiches détaillées
+  ---
+  duration_ms: 2.1407
+  type: 'test'
+  ...
+# Subtest: la lecture des unités regroupe les feuilles métier et tolère l’indisponibilité des libellés
+ok 97 - la lecture des unités regroupe les feuilles métier et tolère l’indisponibilité des libellés
+  ---
+  duration_ms: 4.8567
+  type: 'test'
+  ...
+# Subtest: la route qualifie les pannes temporaires et le client réessaie sans boucler
+ok 98 - la route qualifie les pannes temporaires et le client réessaie sans boucler
+  ---
+  duration_ms: 3.7046
+  type: 'test'
+  ...
+# Subtest: une saturation de la source des autorisations ne devient pas un refus 403
+ok 99 - une saturation de la source des autorisations ne devient pas un refus 403
+  ---
+  duration_ms: 4.8209
+  type: 'test'
+  ...
+# Subtest: la composition d’une unité est écrite en lot pour éviter le quota Sheets
+ok 100 - la composition d’une unité est écrite en lot pour éviter le quota Sheets
+  ---
+  duration_ms: 1.6708
+  type: 'test'
+  ...
+# Subtest: un résultat nouvellement créé affiche son contexte depuis l’engagement déjà chargé
+ok 101 - un résultat nouvellement créé affiche son contexte depuis l’engagement déjà chargé
+  ---
+  duration_ms: 2.6303
+  type: 'test'
+  ...
+# Subtest: la liste finale masque les cérémonies et conserve une action accessible
+not ok 102 - la liste finale masque les cérémonies et conserve une action accessible
+  ---
+  duration_ms: 9.4761
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\site-web-20261023\\checkout\\tests\\unit\\competitions-final-interfaces.test.ts:6:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Édition/. Input:
+    
+    '"use client"\r\n' +
+      '\r\n' +
+      'import { apiFetch } from "@/lib/api/client"\r\n' +
+      'import Link from "next/link"\r\n' +
+      'import {useMemo,useState} from "react"\r\n' +
+      'import {useRouter} from "next/navigation"\r\n' +
+      'import {ChevronLeft,ChevronRight,Eye,Plus,Search} from "lucide-react"\r\n' +
+      'import {toast} from "sonner"\r\n' +
+      'import {CompetitionForm,emptyCompetitionForm} from "@/components/dashboard/competition-form"\r\n' +
+      'import {Header} from "@/components/dashboard/header"\r\n' +
+      'import {Badge} from "@/components/ui/badge"\r\n' +
+      'import {Button} from "@/components/ui/button"\r\n' +
+      'import {Card,CardContent} from "@/components/ui/card"\r\n' +
+      'import {Input} from "@/components/ui/input"\r\n' +
+      'import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select"\r\n' +
+      'import {Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle} from "@/components/ui/sheet"\r\n' +
+      'import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"\r\n' +
+      'import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"\r\n' +
+      'import {competitionStatusLabels,formatDateFr,normalizeCompetitionDate} from "@/lib/competitions/format"\n' +
+      'import {competitionFormError} from "@/lib/competitions/form-validation"\r\n' +
+      'import {compareCompetitionsByMostRecent} from "@/lib/competitions/sort"\r\n' +
+      'import type {Competition,CompetitionOption} from "@/lib/competitions/types"\r\n' +
+      'const shown=(value?:string)=>value||"Non renseigné"\r\n' +
+      'export default function CompetitionsClient({competitions,types,levels,statuses,delegationCounts,canEdit,initialCreate=false,loadError}:{competitions:Competition[];types:CompetitionOption[];levels:CompetitionOption[];statuses:CompetitionOption[];delegationCounts:Record<string,number>;canEdit:boolean;initialCreate?:boolean;loadError?:string}){\r\n' +
+      ' const router=useRouter()\r\n' +
+      ' const[query,setQuery]=useState(""),[status,setStatus]=useState("tous"),[periodStart,setPeriodStart]=useState(""),[periodEnd,setPeriodEnd]=useState(""),[page,setPage]=useState(1),[pageSize,setPageSize]=useState(10)\r\n' +
+      ' const[createOpen,setCreateOpen]=useState(initialCreate),[form,setForm]=useState(emptyCompetitionForm),[saving,setSaving]=useState(false)\r\n' +
+      ' const rows=useMemo(()=>{const needle=query.trim().toLocaleLowerCase("fr");return competitions.map((item)=>({...item,date_debut:normalizeCompetitionDate(item.date_debut),date_fin:normalizeCompetitionDate(item.date_fin)})).filter((item)=>{const identity=[item.id_competition,item.nom_competition,item.date_debut.slice(0,4)].join(" ").toLocaleLowerCase("fr"),overlaps=(!periodStart||!item.date_fin||item.date_fin>=periodStart)&&(!periodEnd||!item.date_debut||item.date_debut<=periodEnd);return(!needle||identity.includes(needle))&&(status==="tous"||item.statut_normalise===status)&&overlaps}).sort(compareCompetitionsByMostRecent)},[competitions,periodEnd,periodStart,query,status])\n' +
+      ' const pageCount=Math.max(1,Math.ceil(rows.length/pageSize)),currentPage=Math.min(page,pageCount),visible=rows.slice((currentPage-1)*pageSize,currentPage*pageSize),filter=(action:()=>void)=>{action();setPage(1)}\r\n' +
+      ' const detail=(item:Competition)=><TooltipProvider><Tooltip><TooltipTrigger asChild><Button asChild variant="ghost" size="icon"><Link href={`/dashboard/competitions/${encodeURIComponent(item.id_competition)}`} aria-label={`Voir les détails de ${item.nom_competition}`}><Eye className="h-4 w-4"/></Link></Button></TooltipTrigger><TooltipContent>Voir les détails</TooltipContent></Tooltip></TooltipProvider>\r\n' +
+      ' async function createCompetition(){const validationError=competitionFormError(form,types,levels,statuses);if(validationError){toast.error(validationError);return}setSaving(true);try{const response=await apiFetch("/api/competitions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({row:form})}),result=await response.json();if(!response.ok)throw new Error(result.message||result.error||`Enregistrement impossible (${response.status}).`);toast.success("Compétition créée.");setCreateOpen(false);router.push(`/dashboard/competitions/${result.row.id_competition}`)}catch(error){toast.error(error instanceof Error?error.message:String(error))}finally{setSaving(false)}}\r\n' +
+      ' return <div className="min-h-screen min-w-0 overflow-x-hidden"><Header title="Compétitions" subtitle="Toutes les compétitions suivies par le COC"/><main className="min-w-0 space-y-5 p-4 md:p-6">\n' +
+      '  <div className="flex justify-end">{canEdit&&<Button onClick={()=>{setForm(emptyCompetitionForm);setCreateOpen(true)}}><Plus className="mr-2 h-4 w-4"/>Nouvelle compétition</Button>}</div>\r\n' +
+      '  {loadError&&<p role="alert" className="rounded-lg border border-destructive/30 p-4 text-destructive">{loadError} La page reste disponible.</p>}\r\n' +
+      '  <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-[minmax(16rem,1fr)_12rem_11rem_11rem]"><div className="relative md:col-span-2 xl:col-span-1"><Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"/><Input className="pl-9" aria-label="Rechercher une compétition" placeholder="Identifiant, nom ou année…" value={query} onChange={(e)=>filter(()=>setQuery(e.target.value))}/></div><Select value={status} onValueChange={(v)=>filter(()=>setStatus(v))}><SelectTrigger aria-label="Filtrer par statut"><SelectValue/></SelectTrigger><SelectContent><SelectItem value="tous">Tous les statuts</SelectItem>{Object.entries(competitionStatusLabels).map(([id,label])=><SelectItem key={id} value={id}>{label}</SelectItem>)}</SelectContent></Select><Input type="date" aria-label="Début à partir du" value={periodStart} onChange={(e)=>filter(()=>setPeriodStart(e.target.value))}/><Input type="date" aria-label="Fin jusqu’au" min={periodStart||undefined} value={periodEnd} onChange={(e)=>filter(()=>setPeriodEnd(e.target.value))}/></div>\n' +
+      '  <Card className="min-w-0 overflow-hidden"><CardContent className="p-0"><div className="hidden lg:block"><Table><TableHeader><TableRow><TableHead>Année</TableHead><TableHead>Nom de la compétition</TableHead><TableHead>Début</TableHead><TableHead>Fin</TableHead><TableHead>Pays</TableHead><TableHead className="text-right">Total délégation</TableHead><TableHead>Statut</TableHead><TableHead className="w-14"/></TableRow></TableHeader><TableBody>{visible.map((item)=><TableRow key={item.id_competition}><TableCell className="tabular-nums">{item.date_debut.slice(0,4)||"Non renseigné"}</TableCell><TableCell className="max-w-80 whitespace-normal font-medium">{shown(item.nom_competition)}</TableCell><TableCell className="tabular-nums">{formatDateFr(item.date_debut)}</TableCell><TableCell className="tabular-nums">{formatDateFr(item.date_fin)}</TableCell><TableCell>{shown(item.pays)}</TableCell><TableCell className="text-right tabular-nums">{delegationCounts[item.id_competition]||0}</TableCell><TableCell><Badge variant="outline">{shown(competitionStatusLabels[item.statut_normalise])}</Badge></TableCell><TableCell>{detail(item)}</TableCell></TableRow>)}{!visible.length&&<TableRow><TableCell colSpan={8} className="h-24 text-center text-muted-foreground">{competitions.length?"Aucune compétition ne correspond aux critères.":"Aucune compétition enregistrée."}</TableCell></TableRow>}</TableBody></Table></div>\n' +
+      '   <div className="grid min-w-0 gap-3 p-3 sm:grid-cols-2 lg:hidden">{visible.map((item)=><article key={item.id_competition} className="min-w-0 rounded-lg border p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{item.date_debut.slice(0,4)||"Année non renseignée"}</p><h2 className="mt-1 min-w-0 break-words font-semibold">{shown(item.nom_competition)}</h2></div>{detail(item)}</div><div className="mt-3 space-y-2 text-sm"><p><span className="text-muted-foreground">Début : </span>{formatDateFr(item.date_debut)}</p><p><span className="text-muted-foreground">Fin : </span>{formatDateFr(item.date_fin)}</p><p><span className="text-muted-foreground">Pays : </span>{shown(item.pays)}</p><p><span className="text-muted-foreground">Total délégation : </span><span className="tabular-nums">{delegationCounts[item.id_competition]||0}</span></p><Badge variant="outline">{shown(competitionStatusLabels[item.statut_normalise])}</Badge></div></article>)}{!visible.length&&<p className="py-10 text-center text-sm text-muted-foreground sm:col-span-2">{competitions.length?"Aucune compétition ne correspond aux critères.":"Aucune compétition enregistrée."}</p>}</div>\n' +
+      '  </CardContent></Card>\r\n' +
+      '  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><p className="text-sm text-muted-foreground">{rows.length} résultat(s) · page {currentPage} sur {pageCount}</p><div className="flex items-center gap-2"><Select value={String(pageSize)} onValueChange={(v)=>filter(()=>setPageSize(Number(v)))}><SelectTrigger className="w-24" aria-label="Résultats par page"><SelectValue/></SelectTrigger><SelectContent>{[10, 20, 50].map((size)=><SelectItem key={size} value={String(size)}>{size}</SelectItem>)}</SelectContent></Select><Button variant="outline" size="icon" disabled={currentPage<=1} onClick={()=>setPage(currentPage-1)} aria-label="Page précédente"><ChevronLeft className="h-4 w-4"/></Button><Button variant="outline" size="icon" disabled={currentPage>=pageCount} onClick={()=>setPage(currentPage+1)} aria-label="Page suivante"><ChevronRight className="h-4 w-4"/></Button></div></div>\r\n' +
+      ' </main><Sheet open={createOpen} onOpenChange={setCreateOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Nouvelle compétition</SheetTitle><SheetDescription>Enregistrer une nouvelle compétition.</SheetDescription></SheetHeader><div className="px-4"><CompetitionForm value={form} onChange={setForm} types={types} levels={levels} statuses={statuses} saving={saving} onSubmit={createCompetition} onCancel={()=>setCreateOpen(false)}/></div></SheetContent></Sheet></div>\n' +
+      '}\r\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    "use client"
+    
+    import { apiFetch } from "@/lib/api/client"
+    import Link from "next/link"
+    import {useMemo,useState} from "react"
+    import {useRouter} from "next/navigation"
+    import {ChevronLeft,ChevronRight,Eye,Plus,Search} from "lucide-react"
+    import {toast} from "sonner"
+    import {CompetitionForm,emptyCompetitionForm} from "@/components/dashboard/competition-form"
+    import {Header} from "@/components/dashboard/header"
+    import {Badge} from "@/components/ui/badge"
+    import {Button} from "@/components/ui/button"
+    import {Card,CardContent} from "@/components/ui/card"
+    import {Input} from "@/components/ui/input"
+    import {Select,SelectContent,SelectItem,SelectTrigger,SelectValue} from "@/components/ui/select"
+    import {Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle} from "@/components/ui/sheet"
+    import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from "@/components/ui/table"
+    import {Tooltip,TooltipContent,TooltipProvider,TooltipTrigger} from "@/components/ui/tooltip"
+    import {competitionStatusLabels,formatDateFr,normalizeCompetitionDate} from "@/lib/competitions/format"
+    import {competitionFormError} from "@/lib/competitions/form-validation"
+    import {compareCompetitionsByMostRecent} from "@/lib/competitions/sort"
+    import type {Competition,CompetitionOption} from "@/lib/competitions/types"
+    const shown=(value?:string)=>value||"Non renseigné"
+    export default function CompetitionsClient({competitions,types,levels,statuses,delegationCounts,canEdit,initialCreate=false,loadError}:{competitions:Competition[];types:CompetitionOption[];levels:CompetitionOption[];statuses:CompetitionOption[];delegationCounts:Record<string,number>;canEdit:boolean;initialCreate?:boolean;loadError?:string}){
+     const router=useRouter()
+     const[query,setQuery]=useState(""),[status,setStatus]=useState("tous"),[periodStart,setPeriodStart]=useState(""),[periodEnd,setPeriodEnd]=useState(""),[page,setPage]=useState(1),[pageSize,setPageSize]=useState(10)
+     const[createOpen,setCreateOpen]=useState(initialCreate),[form,setForm]=useState(emptyCompetitionForm),[saving,setSaving]=useState(false)
+     const rows=useMemo(()=>{const needle=query.trim().toLocaleLowerCase("fr");return competitions.map((item)=>({...item,date_debut:normalizeCompetitionDate(item.date_debut),date_fin:normalizeCompetitionDate(item.date_fin)})).filter((item)=>{const identity=[item.id_competition,item.nom_competition,item.date_debut.slice(0,4)].join(" ").toLocaleLowerCase("fr"),overlaps=(!periodStart||!item.date_fin||item.date_fin>=periodStart)&&(!periodEnd||!item.date_debut||item.date_debut<=periodEnd);return(!needle||identity.includes(needle))&&(status==="tous"||item.statut_normalise===status)&&overlaps}).sort(compareCompetitionsByMostRecent)},[competitions,periodEnd,periodStart,query,status])
+     const pageCount=Math.max(1,Math.ceil(rows.length/pageSize)),currentPage=Math.min(page,pageCount),visible=rows.slice((currentPage-1)*pageSize,currentPage*pageSize),filter=(action:()=>void)=>{action();setPage(1)}
+     const detail=(item:Competition)=><TooltipProvider><Tooltip><TooltipTrigger asChild><Button asChild variant="ghost" size="icon"><Link href={`/dashboard/competitions/${encodeURIComponent(item.id_competition)}`} aria-label={`Voir les détails de ${item.nom_competition}`}><Eye className="h-4 w-4"/></Link></Button></TooltipTrigger><TooltipContent>Voir les détails</TooltipContent></Tooltip></TooltipProvider>
+     async function createCompetition(){const validationError=competitionFormError(form,types,levels,statuses);if(validationError){toast.error(validationError);return}setSaving(true);try{const response=await apiFetch("/api/competitions",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({row:form})}),result=await response.json();if(!response.ok)throw new Error(result.message||result.error||`Enregistrement impossible (${response.status}).`);toast.success("Compétition créée.");setCreateOpen(false);router.push(`/dashboard/competitions/${result.row.id_competition}`)}catch(error){toast.error(error instanceof Error?error.message:String(error))}finally{setSaving(false)}}
+     return <div className="min-h-screen min-w-0 overflow-x-hidden"><Header title="Compétitions" subtitle="Toutes les compétitions suivies par le COC"/><main className="min-w-0 space-y-5 p-4 md:p-6">
+      <div className="flex justify-end">{canEdit&&<Button onClick={()=>{setForm(emptyCompetitionForm);setCreateOpen(true)}}><Plus className="mr-2 h-4 w-4"/>Nouvelle compétition</Button>}</div>
+      {loadError&&<p role="alert" className="rounded-lg border border-destructive/30 p-4 text-destructive">{loadError} La page reste disponible.</p>}
+      <div className="grid min-w-0 gap-3 md:grid-cols-2 xl:grid-cols-[minmax(16rem,1fr)_12rem_11rem_11rem]"><div className="relative md:col-span-2 xl:col-span-1"><Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground"/><Input className="pl-9" aria-label="Rechercher une compétition" placeholder="Identifiant, nom ou année…" value={query} onChange={(e)=>filter(()=>setQuery(e.target.value))}/></div><Select value={status} onValueChange={(v)=>filter(()=>setStatus(v))}><SelectTrigger aria-label="Filtrer par statut"><SelectValue/></SelectTrigger><SelectContent><SelectItem value="tous">Tous les statuts</SelectItem>{Object.entries(competitionStatusLabels).map(([id,label])=><SelectItem key={id} value={id}>{label}</SelectItem>)}</SelectContent></Select><Input type="date" aria-label="Début à partir du" value={periodStart} onChange={(e)=>filter(()=>setPeriodStart(e.target.value))}/><Input type="date" aria-label="Fin jusqu’au" min={periodStart||undefined} value={periodEnd} onChange={(e)=>filter(()=>setPeriodEnd(e.target.value))}/></div>
+      <Card className="min-w-0 overflow-hidden"><CardContent className="p-0"><div className="hidden lg:block"><Table><TableHeader><TableRow><TableHead>Année</TableHead><TableHead>Nom de la compétition</TableHead><TableHead>Début</TableHead><TableHead>Fin</TableHead><TableHead>Pays</TableHead><TableHead className="text-right">Total délégation</TableHead><TableHead>Statut</TableHead><TableHead className="w-14"/></TableRow></TableHeader><TableBody>{visible.map((item)=><TableRow key={item.id_competition}><TableCell className="tabular-nums">{item.date_debut.slice(0,4)||"Non renseigné"}</TableCell><TableCell className="max-w-80 whitespace-normal font-medium">{shown(item.nom_competition)}</TableCell><TableCell className="tabular-nums">{formatDateFr(item.date_debut)}</TableCell><TableCell className="tabular-nums">{formatDateFr(item.date_fin)}</TableCell><TableCell>{shown(item.pays)}</TableCell><TableCell className="text-right tabular-nums">{delegationCounts[item.id_competition]||0}</TableCell><TableCell><Badge variant="outline">{shown(competitionStatusLabels[item.statut_normalise])}</Badge></TableCell><TableCell>{detail(item)}</TableCell></TableRow>)}{!visible.length&&<TableRow><TableCell colSpan={8} className="h-24 text-center text-muted-foreground">{competitions.length?"Aucune compétition ne correspond aux critères.":"Aucune compétition enregistrée."}</TableCell></TableRow>}</TableBody></Table></div>
+       <div className="grid min-w-0 gap-3 p-3 sm:grid-cols-2 lg:hidden">{visible.map((item)=><article key={item.id_competition} className="min-w-0 rounded-lg border p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{item.date_debut.slice(0,4)||"Année non renseignée"}</p><h2 className="mt-1 min-w-0 break-words font-semibold">{shown(item.nom_competition)}</h2></div>{detail(item)}</div><div className="mt-3 space-y-2 text-sm"><p><span className="text-muted-foreground">Début : </span>{formatDateFr(item.date_debut)}</p><p><span className="text-muted-foreground">Fin : </span>{formatDateFr(item.date_fin)}</p><p><span className="text-muted-foreground">Pays : </span>{shown(item.pays)}</p><p><span className="text-muted-foreground">Total délégation : </span><span className="tabular-nums">{delegationCounts[item.id_competition]||0}</span></p><Badge variant="outline">{shown(competitionStatusLabels[item.statut_normalise])}</Badge></div></article>)}{!visible.length&&<p className="py-10 text-center text-sm text-muted-foreground sm:col-span-2">{competitions.length?"Aucune compétition ne correspond aux critères.":"Aucune compétition enregistrée."}</p>}</div>
+      </CardContent></Card>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><p className="text-sm text-muted-foreground">{rows.length} résultat(s) · page {currentPage} sur {pageCount}</p><div className="flex items-center gap-2"><Select value={String(pageSize)} onValueChange={(v)=>filter(()=>setPageSize(Number(v)))}><SelectTrigger className="w-24" aria-label="Résultats par page"><SelectValue/></SelectTrigger><SelectContent>{[10, 20, 50].map((size)=><SelectItem key={size} value={String(size)}>{size}</SelectItem>)}</SelectContent></Select><Button variant="outline" size="icon" disabled={currentPage<=1} onClick={()=>setPage(currentPage-1)} aria-label="Page précédente"><ChevronLeft className="h-4 w-4"/></Button><Button variant="outline" size="icon" disabled={currentPage>=pageCount} onClick={()=>setPage(currentPage+1)} aria-label="Page suivante"><ChevronRight className="h-4 w-4"/></Button></div></div>
+     </main><Sheet open={createOpen} onOpenChange={setCreateOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Nouvelle compétition</SheetTitle><SheetDescription>Enregistrer une nouvelle compétition.</SheetDescription></SheetHeader><div className="px-4"><CompetitionForm value={form} onChange={setForm} types={types} levels={levels} statuses={statuses} saving={saving} onSubmit={createCompetition} onCancel={()=>setCreateOpen(false)}/></div></SheetContent></Sheet></div>
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/site-web-20261023/checkout/tests/unit/competitions-final-interfaces.test.ts:8:73)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  ...
+# Subtest: la fiche finale possède cinq onglets et conserve le modèle campagne-programme-unité
+ok 103 - la fiche finale possède cinq onglets et conserve le modèle campagne-programme-unité
+  ---
+  duration_ms: 7.6375
+  type: 'test'
+  ...
+# Subtest: les écritures restent contextuelles et masquées sans droit
+not ok 104 - les écritures restent contextuelles et masquées sans droit
+  ---
+  duration_ms: 4.7633
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\site-web-20261023\\checkout\\tests\\unit\\competitions-final-interfaces.test.ts:23:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /canEdit&&<Button onClick=\{openEdit\}/. Input:
+    
+    '"use client"\r\n' +
+      '\r\n' +
+      'import { apiFetch } from "@/lib/api/client"\r\n' +
+      'import Link from "next/link"\r\n' +
+      'import {useState} from "react"\r\n' +
+      'import {useRouter} from "next/navigation"\r\n' +
+      'import {ArrowLeft,MapPin,Pencil,Trophy} from "lucide-react"\r\n' +
+      'import {toast} from "sonner"\r\n' +
+      'import {CompetitionForm,competitionToForm} from "@/components/dashboard/competition-form"\r\n' +
+      'import {CompetitionPrograms} from "./competition-programs"\r\n' +
+      'import {CampaignEngagements} from "@/components/dashboard/campaign-engagements"\r\n' +
+      'import {CompetitionParticipants} from "@/components/dashboard/competition-participants"\r\n' +
+      'import {CompetitionResults} from "@/components/dashboard/competition-results"\r\n' +
+      'import {CompetitionMedals} from "@/components/dashboard/competition-medals"\r\n' +
+      'import {ParticipatingUnits} from "@/components/dashboard/participating-units"\r\n' +
+      'import {Header} from "@/components/dashboard/header"\r\n' +
+      'import {DataQualitySummary} from "@/components/dashboard/data-quality-summary"\r\n' +
+      'import {DetailCard} from "@/components/dashboard/detail-card"\r\n' +
+      'import {Button} from "@/components/ui/button"\r\n' +
+      'import {Card,CardContent} from "@/components/ui/card"\r\n' +
+      'import {Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle} from "@/components/ui/sheet"\r\n' +
+      'import {Tabs,TabsContent,TabsList,TabsTrigger} from "@/components/ui/tabs"\r\n' +
+      'import {competitionStatusLabels} from "@/lib/competitions/format"\r\n' +
+      'import type {CampaignEngagement,Competition,CompetitionMedal,CompetitionParticipant,CompetitionProgram,CompetitionReferences,CompetitionResult} from "@/lib/competitions/types"\r\n' +
+      'import type {AthleteSelection} from "@/lib/equipes-nationales/types"\r\n' +
+      'import type {DocumentRecord} from "@/lib/documents/types"\r\n' +
+      'import type {DataQualityReport} from "@/lib/competitions/quality"\r\n' +
+      '\r\n' +
+      'type EngagementRefs={campaigns:{id:string;label:string;teamId:string;teamName:string;federationId:string;dateStart:string;dateEnd:string;status:string}[];statuses:{id:string;label:string}[];federations:{id:string;label:string}[]}\r\n' +
+      'type ResultRefs={synthetics:{id:string;label:string}[];units:{id:string;label:string;type?:string}[];decisions:{id:string;label:string;federationId?:string;sportId?:string;disciplineId?:string}[];statuses:{id:string;label:string}[];federations:{id:string;label:string}[]}\r\n' +
+      'const shown=(value?:string)=>value||"Non renseigné"\r\n' +
+      'const label=(rows:{id:string;label:string}[],id?:string)=>rows.find((row)=>row.id===id)?.label||shown(id)\r\n' +
+      '\r\n' +
+      'export default function CompetitionDetailClient({competition:initial,qualityReport,references,programs,programsError,engagements,engagementReferences,engagementsError,athleteParticipations,participationReferences,participationsError,results,resultReferences,resultsError,medals,medalReferences,medalsError,canEdit}:{competition:Competition;qualityReport:DataQualityReport;references:CompetitionReferences;programs:CompetitionProgram[];programsError?:string;engagements:CampaignEngagement[];engagementReferences:EngagementRefs;engagementsError?:string;athleteParticipations:CompetitionParticipant[];participationReferences:{statuses:{id:string;label:string}[];selections:AthleteSelection[]};participationsError?:string;results:CompetitionResult[];resultReferences:ResultRefs;resultsError?:string;medals:CompetitionMedal[];medalReferences:{id:string;label:string}[];medalsError?:string;documents?:DocumentRecord[];documentsError?:string;canEdit:boolean}){\r\n' +
+      ' const[competition,setCompetition]=useState(initial),[editOpen,setEditOpen]=useState(false),[form,setForm]=useState(competitionToForm(initial)),[saving,setSaving]=useState(false)\r\n' +
+      ' async function saveCompetition(){setSaving(true);try{const response=await apiFetch("/api/competitions",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:competition.id_competition,row:form})}),result=await response.json();if(!response.ok)throw new Error(result.message||result.error);setCompetition(result.row);setEditOpen(false);toast.success("Compétition modifiée.")}catch(error){toast.error(error instanceof Error?error.message:String(error))}finally{setSaving(false)}}\r\n' +
+      ' const openEdit=()=>{setForm(competitionToForm(competition));setEditOpen(true)}\r\n' +
+      ' const generalFields=[\r\n' +
+      '  {label:"Référence",value:competition.id_competition},\r\n' +
+      '  {label:"Nom",value:competition.nom_competition},\r\n' +
+      '  {label:"Édition",value:competition.edition},\r\n' +
+      '  {label:"Type",value:label(references.types,competition.id_type_competition)},\r\n' +
+      '  {label:"Niveau",value:label(references.levels||[],competition.niveau_competition)},\r\n' +
+      '  {label:"Caractère",value:competition.est_multisport==="OUI"?"Multisport":"Monosport"},\r\n' +
+      '  {label:"Statut",value:competitionStatusLabels[competition.statut_normalise]},\r\n' +
+      ' ]\r\n' +
+      ' const organisationFields=[\r\n' +
+      '  {label:"Début",value:competition.date_debut},\r\n' +
+      '  {label:"Fin",value:competition.date_fin},\r\n' +
+      '  {label:"Pays",value:competition.pays},\r\n' +
+      '  {label:"Ville",value:competition.ville},\r\n' +
+      '  {label:"Lieu",value:competition.lieu},\r\n' +
+      '  {label:"Observations",value:competition.observations},\r\n' +
+      ' ]\r\n' +
+      ' return <div className="min-h-screen min-w-0 overflow-x-hidden"><Header title={competition.nom_competition} subtitle={competition.edition}/><main className="min-w-0 space-y-5 p-4 sm:p-6">\r\n' +
+      '  <div className="flex flex-wrap items-center justify-between gap-3"><Button asChild variant="outline"><Link href="/dashboard/competitions"><ArrowLeft className="h-4 w-4"/>Retour aux compétitions</Link></Button></div>\r\n' +
+      '  <Tabs defaultValue="general" className="min-w-0 w-full"><TabsList className="grid h-auto w-full grid-cols-2 gap-1 p-1 sm:grid-cols-3 lg:grid-cols-5">\r\n' +
+      '   <TabsTrigger value="general" className="min-w-0 whitespace-normal py-2">Général</TabsTrigger><TabsTrigger value="programs" className="min-w-0 whitespace-normal py-2">Programmes</TabsTrigger><TabsTrigger value="teams" className="min-w-0 whitespace-normal py-2">Équipes / unités</TabsTrigger><TabsTrigger value="participants" className="min-w-0 whitespace-normal py-2">Participants</TabsTrigger><TabsTrigger value="results" className="min-w-0 whitespace-normal py-2">Résultats</TabsTrigger>\r\n' +
+      '  </TabsList>\r\n' +
+      '   <TabsContent value="general" className="min-w-0 space-y-4">\r\n' +
+      '    {canEdit&&<div className="flex justify-end"><Button onClick={openEdit}><Pencil className="h-4 w-4"/>Modifier</Button></div>}\r\n' +
+      '    <div className="grid min-w-0 gap-5 lg:grid-cols-2"><DetailCard title="Informations générales" icon={Trophy} fields={generalFields}/><DetailCard title="Organisation" icon={MapPin} fields={organisationFields}/></div>\r\n' +
+      '    <dl className="grid gap-3 sm:grid-cols-3">{[\r\n' +
+      '     {label:"Programmes",value:programs.length},\r\n' +
+      '     {label:"Engagements",value:engagements.length},\r\n' +
+      '     {label:"Participants",value:athleteParticipations.filter(item=>item.id_statut_participation==="PARTICIPANT").length},\r\n' +
+      '    ].map(metric=><div key={metric.label} className="min-w-0 rounded-lg border border-border/80 px-4 py-3"><dt className="text-sm text-muted-foreground">{metric.label}</dt><dd className="text-lg font-semibold tabular-nums">{metric.value}</dd></div>)}</dl>\r\n' +
+      '    <DataQualitySummary report={qualityReport}/>\r\n' +
+      '   </TabsContent>\r\n' +
+      '   <TabsContent value="programs" className="mt-0 space-y-4">{programsError?<SectionError message={programsError}/>:<CompetitionPrograms competition={competition} initialRows={programs} references={references} canEdit={canEdit}/>}</TabsContent>\r\n' +
+      '   <TabsContent value="participants" className="mt-0 space-y-4">{participationsError?<SectionError message={participationsError}/>:<CompetitionParticipants competitionId={competition.id_competition} initialRows={athleteParticipations} engagements={engagements} programs={programs} references={references} participationReferences={participationReferences} federations={engagementReferences.federations} canEdit={canEdit}/>}</TabsContent>\r\n' +
+      '   <TabsContent value="teams" className="mt-0 space-y-4">{engagementsError?<SectionError message={engagementsError}/>:<CampaignEngagements competitionId={competition.id_competition} programs={programs} initialRows={engagements} references={engagementReferences} competitionReferences={references} canEdit={canEdit}/>} {!engagementsError&&!participationsError&&<ParticipatingUnits competitionId={competition.id_competition} engagements={engagements} participants={athleteParticipations.filter(row=>row.id_type_acteur==="ATHLETE")} programs={programs} references={references} canEdit={canEdit}/>}</TabsContent>\r\n' +
+      '   <TabsContent value="results" className="mt-0 space-y-8"><SectionTitle title="Résultats" action={canEdit?"Ajouter ou modifier un résultat":undefined}/>{resultsError?<SectionError message={resultsError}/>:<CompetitionResults competitionId={competition.id_competition} engagements={engagements} programs={programs} competitionReferences={references} initialRows={results} references={resultReferences} canEdit={canEdit}/>}<div className="border-t pt-6">{medalsError?<SectionError message={medalsError}/>:<CompetitionMedals competitionId={competition.id_competition} initialRows={medals} results={results} programs={programs} competitionReferences={references} distinctions={medalReferences} canEdit={canEdit}/>}</div></TabsContent>\r\n' +
+      '  </Tabs>\r\n' +
+      '  <Sheet open={editOpen} onOpenChange={setEditOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier la compétition</SheetTitle><SheetDescription>L’identifiant {competition.id_competition} reste immuable.</SheetDescription></SheetHeader><div className="px-4"><CompetitionForm value={form} onChange={setForm} types={references.types} levels={references.levels} statuses={references.statuses} saving={saving} submitLabel="Enregistrer les modifications" onSubmit={saveCompetition} onCancel={()=>setEditOpen(false)}/></div></SheetContent></Sheet>\r\n' +
+      ' </main></div>\r\n' +
+      '}\r\n' +
+      'function SectionTitle({title,action}:{title:string;action?:string}){return <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"><h2 className="text-lg font-semibold">{title}</h2>{action&&<p className="text-sm text-muted-foreground">{action}</p>}</div>}\r\n' +
+      'function SectionError({mess'... 356 more characters
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    "use client"
+    
+    import { apiFetch } from "@/lib/api/client"
+    import Link from "next/link"
+    import {useState} from "react"
+    import {useRouter} from "next/navigation"
+    import {ArrowLeft,MapPin,Pencil,Trophy} from "lucide-react"
+    import {toast} from "sonner"
+    import {CompetitionForm,competitionToForm} from "@/components/dashboard/competition-form"
+    import {CompetitionPrograms} from "./competition-programs"
+    import {CampaignEngagements} from "@/components/dashboard/campaign-engagements"
+    import {CompetitionParticipants} from "@/components/dashboard/competition-participants"
+    import {CompetitionResults} from "@/components/dashboard/competition-results"
+    import {CompetitionMedals} from "@/components/dashboard/competition-medals"
+    import {ParticipatingUnits} from "@/components/dashboard/participating-units"
+    import {Header} from "@/components/dashboard/header"
+    import {DataQualitySummary} from "@/components/dashboard/data-quality-summary"
+    import {DetailCard} from "@/components/dashboard/detail-card"
+    import {Button} from "@/components/ui/button"
+    import {Card,CardContent} from "@/components/ui/card"
+    import {Sheet,SheetContent,SheetDescription,SheetHeader,SheetTitle} from "@/components/ui/sheet"
+    import {Tabs,TabsContent,TabsList,TabsTrigger} from "@/components/ui/tabs"
+    import {competitionStatusLabels} from "@/lib/competitions/format"
+    import type {CampaignEngagement,Competition,CompetitionMedal,CompetitionParticipant,CompetitionProgram,CompetitionReferences,CompetitionResult} from "@/lib/competitions/types"
+    import type {AthleteSelection} from "@/lib/equipes-nationales/types"
+    import type {DocumentRecord} from "@/lib/documents/types"
+    import type {DataQualityReport} from "@/lib/competitions/quality"
+    
+    type EngagementRefs={campaigns:{id:string;label:string;teamId:string;teamName:string;federationId:string;dateStart:string;dateEnd:string;status:string}[];statuses:{id:string;label:string}[];federations:{id:string;label:string}[]}
+    type ResultRefs={synthetics:{id:string;label:string}[];units:{id:string;label:string;type?:string}[];decisions:{id:string;label:string;federationId?:string;sportId?:string;disciplineId?:string}[];statuses:{id:string;label:string}[];federations:{id:string;label:string}[]}
+    const shown=(value?:string)=>value||"Non renseigné"
+    const label=(rows:{id:string;label:string}[],id?:string)=>rows.find((row)=>row.id===id)?.label||shown(id)
+    
+    export default function CompetitionDetailClient({competition:initial,qualityReport,references,programs,programsError,engagements,engagementReferences,engagementsError,athleteParticipations,participationReferences,participationsError,results,resultReferences,resultsError,medals,medalReferences,medalsError,canEdit}:{competition:Competition;qualityReport:DataQualityReport;references:CompetitionReferences;programs:CompetitionProgram[];programsError?:string;engagements:CampaignEngagement[];engagementReferences:EngagementRefs;engagementsError?:string;athleteParticipations:CompetitionParticipant[];participationReferences:{statuses:{id:string;label:string}[];selections:AthleteSelection[]};participationsError?:string;results:CompetitionResult[];resultReferences:ResultRefs;resultsError?:string;medals:CompetitionMedal[];medalReferences:{id:string;label:string}[];medalsError?:string;documents?:DocumentRecord[];documentsError?:string;canEdit:boolean}){
+     const[competition,setCompetition]=useState(initial),[editOpen,setEditOpen]=useState(false),[form,setForm]=useState(competitionToForm(initial)),[saving,setSaving]=useState(false)
+     async function saveCompetition(){setSaving(true);try{const response=await apiFetch("/api/competitions",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify({id:competition.id_competition,row:form})}),result=await response.json();if(!response.ok)throw new Error(result.message||result.error);setCompetition(result.row);setEditOpen(false);toast.success("Compétition modifiée.")}catch(error){toast.error(error instanceof Error?error.message:String(error))}finally{setSaving(false)}}
+     const openEdit=()=>{setForm(competitionToForm(competition));setEditOpen(true)}
+     const generalFields=[
+      {label:"Référence",value:competition.id_competition},
+      {label:"Nom",value:competition.nom_competition},
+      {label:"Édition",value:competition.edition},
+      {label:"Type",value:label(references.types,competition.id_type_competition)},
+      {label:"Niveau",value:label(references.levels||[],competition.niveau_competition)},
+      {label:"Caractère",value:competition.est_multisport==="OUI"?"Multisport":"Monosport"},
+      {label:"Statut",value:competitionStatusLabels[competition.statut_normalise]},
+     ]
+     const organisationFields=[
+      {label:"Début",value:competition.date_debut},
+      {label:"Fin",value:competition.date_fin},
+      {label:"Pays",value:competition.pays},
+      {label:"Ville",value:competition.ville},
+      {label:"Lieu",value:competition.lieu},
+      {label:"Observations",value:competition.observations},
+     ]
+     return <div className="min-h-screen min-w-0 overflow-x-hidden"><Header title={competition.nom_competition} subtitle={competition.edition}/><main className="min-w-0 space-y-5 p-4 sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3"><Button asChild variant="outline"><Link href="/dashboard/competitions"><ArrowLeft className="h-4 w-4"/>Retour aux compétitions</Link></Button></div>
+      <Tabs defaultValue="general" className="min-w-0 w-full"><TabsList className="grid h-auto w-full grid-cols-2 gap-1 p-1 sm:grid-cols-3 lg:grid-cols-5">
+       <TabsTrigger value="general" className="min-w-0 whitespace-normal py-2">Général</TabsTrigger><TabsTrigger value="programs" className="min-w-0 whitespace-normal py-2">Programmes</TabsTrigger><TabsTrigger value="teams" className="min-w-0 whitespace-normal py-2">Équipes / unités</TabsTrigger><TabsTrigger value="participants" className="min-w-0 whitespace-normal py-2">Participants</TabsTrigger><TabsTrigger value="results" className="min-w-0 whitespace-normal py-2">Résultats</TabsTrigger>
+      </TabsList>
+       <TabsContent value="general" className="min-w-0 space-y-4">
+        {canEdit&&<div className="flex justify-end"><Button onClick={openEdit}><Pencil className="h-4 w-4"/>Modifier</Button></div>}
+        <div className="grid min-w-0 gap-5 lg:grid-cols-2"><DetailCard title="Informations générales" icon={Trophy} fields={generalFields}/><DetailCard title="Organisation" icon={MapPin} fields={organisationFields}/></div>
+        <dl className="grid gap-3 sm:grid-cols-3">{[
+         {label:"Programmes",value:programs.length},
+         {label:"Engagements",value:engagements.length},
+         {label:"Participants",value:athleteParticipations.filter(item=>item.id_statut_participation==="PARTICIPANT").length},
+        ].map(metric=><div key={metric.label} className="min-w-0 rounded-lg border border-border/80 px-4 py-3"><dt className="text-sm text-muted-foreground">{metric.label}</dt><dd className="text-lg font-semibold tabular-nums">{metric.value}</dd></div>)}</dl>
+        <DataQualitySummary report={qualityReport}/>
+       </TabsContent>
+       <TabsContent value="programs" className="mt-0 space-y-4">{programsError?<SectionError message={programsError}/>:<CompetitionPrograms competition={competition} initialRows={programs} references={references} canEdit={canEdit}/>}</TabsContent>
+       <TabsContent value="participants" className="mt-0 space-y-4">{participationsError?<SectionError message={participationsError}/>:<CompetitionParticipants competitionId={competition.id_competition} initialRows={athleteParticipations} engagements={engagements} programs={programs} references={references} participationReferences={participationReferences} federations={engagementReferences.federations} canEdit={canEdit}/>}</TabsContent>
+       <TabsContent value="teams" className="mt-0 space-y-4">{engagementsError?<SectionError message={engagementsError}/>:<CampaignEngagements competitionId={competition.id_competition} programs={programs} initialRows={engagements} references={engagementReferences} competitionReferences={references} canEdit={canEdit}/>} {!engagementsError&&!participationsError&&<ParticipatingUnits competitionId={competition.id_competition} engagements={engagements} participants={athleteParticipations.filter(row=>row.id_type_acteur==="ATHLETE")} programs={programs} references={references} canEdit={canEdit}/>}</TabsContent>
+       <TabsContent value="results" className="mt-0 space-y-8"><SectionTitle title="Résultats" action={canEdit?"Ajouter ou modifier un résultat":undefined}/>{resultsError?<SectionError message={resultsError}/>:<CompetitionResults competitionId={competition.id_competition} engagements={engagements} programs={programs} competitionReferences={references} initialRows={results} references={resultReferences} canEdit={canEdit}/>}<div className="border-t pt-6">{medalsError?<SectionError message={medalsError}/>:<CompetitionMedals competitionId={competition.id_competition} initialRows={medals} results={results} programs={programs} competitionReferences={references} distinctions={medalReferences} canEdit={canEdit}/>}</div></TabsContent>
+      </Tabs>
+      <Sheet open={editOpen} onOpenChange={setEditOpen}><SheetContent className="w-full overflow-y-auto sm:max-w-2xl"><SheetHeader><SheetTitle>Modifier la compétition</SheetTitle><SheetDescription>L’identifiant {competition.id_competition} reste immuable.</SheetDescription></SheetHeader><div className="px-4"><CompetitionForm value={form} onChange={setForm} types={references.types} levels={references.levels} statuses={references.statuses} saving={saving} submitLabel="Enregistrer les modifications" onSubmit={saveCompetition} onCancel={()=>setEditOpen(false)}/></div></SheetContent></Sheet>
+     </main></div>
+    }
+    function SectionTitle({title,action}:{title:string;action?:string}){return <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between"><h2 className="text-lg font-semibold">{title}</h2>{action&&<p className="text-sm text-muted-foreground">{action}</p>}</div>}
+    function SectionError({message}:{message:string}){const router=useRouter();return <Card><CardContent role="alert" className="flex flex-wrap items-center justify-between gap-3 p-6 text-destructive"><span>{message} Les autres sections restent disponibles.</span><Button type="button" variant="outline" size="sm" onClick={()=>router.refresh()}>Réessayer</Button></CardContent></Card>}
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/site-web-20261023/checkout/tests/unit/competitions-final-interfaces.test.ts:25:9)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: les unités sont créables et modifiables, et les erreurs de résultat conservent le formulaire
+ok 105 - les unités sont créables et modifiables, et les erreurs de résultat conservent le formulaire
+  ---
+  duration_ms: 7.3023
+  type: 'test'
+  ...
+# Subtest: la fiche relit les participations modifiées directement dans le classeur
+ok 106 - la fiche relit les participations modifiées directement dans le classeur
+  ---
+  duration_ms: 2.16
+  type: 'test'
+  ...
+# Subtest: les participants sont regroupés par sport et type et l'ajout COC exclut les athlètes
+ok 107 - les participants sont regroupés par sport et type et l'ajout COC exclut les athlètes
+  ---
+  duration_ms: 2.2306
+  type: 'test'
+  ...
+# Subtest: la liste des compétitions résiste au quota des données de délégation
+ok 108 - la liste des compétitions résiste au quota des données de délégation
+  ---
+  duration_ms: 0.8838
+  type: 'test'
+  ...
+# Subtest: la fiche compétition ne conserve pas l’ancien résumé des équipes engagées
+ok 109 - la fiche compétition ne conserve pas l’ancien résumé des équipes engagées
+  ---
+  duration_ms: 2.263
+  type: 'test'
+  ...
+# Subtest: le tableau des résultats affiche la synthèse et la décision référencées
+ok 110 - le tableau des résultats affiche la synthèse et la décision référencées
+  ---
+  duration_ms: 0.9635
+  type: 'test'
+  ...
+# Subtest: les unités participantes partagent une seule lecture client
+ok 111 - les unités participantes partagent une seule lecture client
+  ---
+  duration_ms: 3.6258
+  type: 'test'
+  ...
+# Subtest: le formulaire de participation affiche la fédération à la place de l’identifiant programme
+ok 112 - le formulaire de participation affiche la fédération à la place de l’identifiant programme
+  ---
+  duration_ms: 0.9648
+  type: 'test'
+  ...
+# Subtest: la couche Sheets mutualise les lectures simultanées après un redémarrage
+ok 113 - la couche Sheets mutualise les lectures simultanées après un redémarrage
+  ---
+  duration_ms: 1.2366
+  type: 'test'
+  ...
+# Subtest: le formulaire de résultat affiche la fédération dans la liste des engagements
+ok 114 - le formulaire de résultat affiche la fédération dans la liste des engagements
+  ---
+  duration_ms: 1.2059
+  type: 'test'
+  ...
+# Subtest: la liste des compétitions utilise le cache court au lieu d'une lecture forcée
+ok 115 - la liste des compétitions utilise le cache court au lieu d'une lecture forcée
+  ---
+  duration_ms: 4.5339
+  type: 'test'
+  ...
+# Subtest: la fiche compétition relit les programmes après une modification directe
+ok 116 - la fiche compétition relit les programmes après une modification directe
+  ---
+  duration_ms: 2.3818
+  type: 'test'
+  ...
+# Subtest: la fiche compétition relit la compétition après une création
+ok 117 - la fiche compétition relit la compétition après une création
+  ---
+  duration_ms: 2.812
+  type: 'test'
+  ...
+# Subtest: la fiche relit les résultats et affiche leur programme physique après une modification directe
+ok 118 - la fiche relit les résultats et affiche leur programme physique après une modification directe
+  ---
+  duration_ms: 2.8625
+  type: 'test'
+  ...
+# Subtest: trie les compétitions de la plus récente à la plus ancienne
+ok 119 - trie les compétitions de la plus récente à la plus ancienne
+  ---
+  duration_ms: 1.4695
+  type: 'test'
+  ...
+# Subtest: trie strictement sur la date de début et stabilise les dates identiques
+ok 120 - trie strictement sur la date de début et stabilise les dates identiques
+  ---
+  duration_ms: 11.4826
+  type: 'test'
+  ...
+# Subtest: reconnaît les dates françaises renvoyées par Google Sheets
+ok 121 - reconnaît les dates françaises renvoyées par Google Sheets
+  ---
+  duration_ms: 0.2606
+  type: 'test'
+  ...
+# Subtest: conserve explicitement la portée mono ou multisport
+ok 122 - conserve explicitement la portée mono ou multisport
+  ---
+  duration_ms: 1.2941
+  type: 'test'
+  ...
+# Subtest: valide les dates d’un programme et exige une épreuve
+ok 123 - valide les dates d’un programme et exige une épreuve
+  ---
+  duration_ms: 1.0318
+  type: 'test'
+  ...
+# Subtest: l’interface programme reste compacte et gère le référentiel vide
+ok 124 - l’interface programme reste compacte et gère le référentiel vide
+  ---
+  duration_ms: 1.8526
+  type: 'test'
+  ...
+# Subtest: les écritures de programmes sont contrôlées côté serveur
+ok 125 - les écritures de programmes sont contrôlées côté serveur
+  ---
+  duration_ms: 1.0412
+  type: 'test'
+  ...
+# Subtest: valide plusieurs campagnes temporelles sans les confondre avec l’équipe permanente
+ok 126 - valide plusieurs campagnes temporelles sans les confondre avec l’équipe permanente
+  ---
+  duration_ms: 1.1834
+  type: 'test'
+  ...
+# Subtest: exige programme, campagne, statut, date d’engagement et provenance
+ok 127 - exige programme, campagne, statut, date d’engagement et provenance
+  ---
+  duration_ms: 0.7706
+  type: 'test'
+  ...
+# Subtest: un programme conserve une période interne cohérente
+ok 128 - un programme conserve une période interne cohérente
+  ---
+  duration_ms: 2.301
+  type: 'test'
+  ...
+# Subtest: les vues T06 sont responsives et n’exposent plus l’engagement direct de l’équipe
+ok 129 - les vues T06 sont responsives et n’exposent plus l’engagement direct de l’équipe
+  ---
+  duration_ms: 1.4951
+  type: 'test'
+  ...
+# Subtest: les deux API T06 contrôlent lecture et écriture côté serveur
+ok 130 - les deux API T06 contrôlent lecture et écriture côté serveur
+  ---
+  duration_ms: 1.2634
+  type: 'test'
+  ...
+# Subtest: la période de campagne borne la date de sélection
+ok 131 - la période de campagne borne la date de sélection
+  ---
+  duration_ms: 0.6126
+  type: 'test'
+  ...
+# Subtest: une sélection est valide sans participation
+ok 132 - une sélection est valide sans participation
+  ---
+  duration_ms: 0.1964
+  type: 'test'
+  ...
+# Subtest: les cinq statuts de sélection sont acceptés
+ok 133 - les cinq statuts de sélection sont acceptés
+  ---
+  duration_ms: 0.1413
+  type: 'test'
+  ...
+# Subtest: les statuts de participation restent distincts de la sélection
+ok 134 - les statuts de participation restent distincts de la sélection
+  ---
+  duration_ms: 0.2307
+  type: 'test'
+  ...
+# Subtest: un remplacement exige une autre sélection
+ok 135 - un remplacement exige une autre sélection
+  ---
+  duration_ms: 0.4173
+  type: 'test'
+  ...
+# Subtest: les interfaces expliquent qu’une sélection ne prouve pas la présence
+ok 136 - les interfaces expliquent qu’une sélection ne prouve pas la présence
+  ---
+  duration_ms: 1.8567
+  type: 'test'
+  ...
+# Subtest: les API T07 imposent AUT-SPT côté serveur
+ok 137 - les API T07 imposent AUT-SPT côté serveur
+  ---
+  duration_ms: 1.1344
+  type: 'test'
+  ...
+# Subtest: accepte victoire, nul, défaite et qualification sans calcul
+ok 138 - accepte victoire, nul, défaite et qualification sans calcul
+  ---
+  duration_ms: 0.9494
+  type: 'test'
+  ...
+# Subtest: accepte un score ou une mesure avec unité
+ok 139 - accepte un score ou une mesure avec unité
+  ---
+  duration_ms: 0.1685
+  type: 'test'
+  ...
+# Subtest: accepte un rang sans inventer une unité
+ok 140 - accepte un rang sans inventer une unité
+  ---
+  duration_ms: 0.1214
+  type: 'test'
+  ...
+# Subtest: accepte une décision sans score et refuse un résultat vide
+ok 141 - accepte une décision sans score et refuse un résultat vide
+  ---
+  duration_ms: 0.4401
+  type: 'test'
+  ...
+# Subtest: limite les statuts aux états métier
+ok 142 - limite les statuts aux états métier
+  ---
+  duration_ms: 0.2154
+  type: 'test'
+  ...
+# Subtest: la correction est versionnée et ne modifie pas silencieusement le résultat
+ok 143 - la correction est versionnée et ne modifie pas silencieusement le résultat
+  ---
+  duration_ms: 2.1235
+  type: 'test'
+  ...
+# Subtest: l’interface expose l’historique sans classement calculé
+ok 144 - l’interface expose l’historique sans classement calculé
+  ---
+  duration_ms: 0.9916
+  type: 'test'
+  ...
+# Subtest: l’API résultats contrôle les droits serveur
+ok 145 - l’API résultats contrôle les droits serveur
+  ---
+  duration_ms: 0.7148
+  type: 'test'
+  ...
+# Subtest: T11: la liste des compétitions est responsive, filtrable et paginée
+ok 146 - T11: la liste des compétitions est responsive, filtrable et paginée
+  ---
+  duration_ms: 5.4524
+  type: 'test'
+  ...
+# Subtest: T11: la liste des équipes nationales réduit ses colonnes sur mobile
+ok 147 - T11: la liste des équipes nationales réduit ses colonnes sur mobile
+  ---
+  duration_ms: 1.9965
+  type: 'test'
+  ...
+# Subtest: T11: la fiche équipe navigue par programme et engagement, jamais par participation directe
+ok 148 - T11: la fiche équipe navigue par programme et engagement, jamais par participation directe
+  ---
+  duration_ms: 3.3283
+  type: 'test'
+  ...
+# Subtest: T11: les erreurs secondaires des détails restent isolées
+ok 149 - T11: les erreurs secondaires des détails restent isolées
+  ---
+  duration_ms: 4.6103
+  type: 'test'
+  ...
+# Subtest: T11: les vues qualifient les valeurs et relations absentes
+ok 150 - T11: les vues qualifient les valeurs et relations absentes
+  ---
+  duration_ms: 3.0739
+  type: 'test'
+  ...
+# Subtest: T11: chaque engagement résout sa discipline depuis l’épreuve de son programme
+ok 151 - T11: chaque engagement résout sa discipline depuis l’épreuve de son programme
+  ---
+  duration_ms: 2.4313
+  type: 'test'
+  ...
+# Subtest: T12: VIEWER ne peut jamais écrire et ADMIN exige une attribution AUT-SPT active
+ok 152 - T12: VIEWER ne peut jamais écrire et ADMIN exige une attribution AUT-SPT active
+  ---
+  duration_ms: 0.7243
+  type: 'test'
+  ...
+# Subtest: T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise
+not ok 153 - T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise
+  ---
+  duration_ms: 5.7122
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\site-web-20261023\\checkout\\tests\\unit\\competitions-t12.test.ts:19:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /status: 403/. Input:
+    
+    'import "server-only"\r\n' +
+      '\r\n' +
+      'import { createHash, randomUUID } from "node:crypto"\r\n' +
+      'import { NextResponse } from "next/server"\r\n' +
+      'import { apiErrorPayload } from "@/lib/api/errors"\r\n' +
+      'import { writeAudit } from "@/lib/audit/logger"\r\n' +
+      'import { getSession } from "@/lib/auth"\r\n' +
+      'import { authorizeWithSource } from "@/lib/auth/authorization"\r\n' +
+      'import { getAuthorizationsForUser } from "@/lib/users/data"\r\n' +
+      'import { createGoogleUsersSheetsAdapter } from "@/lib/users/google-adapter"\r\n' +
+      'import { UsersRepository } from "@/lib/users/repository"\r\n' +
+      '\r\n' +
+      'type MutationResult<T> = { row: T; objectId: string }\r\n' +
+      'type SportMutationBody = Record<string, unknown> & { id?: unknown; row?: Record<string, unknown> }\r\n' +
+      '\r\n' +
+      'export async function runSportMutation<T>(\r\n' +
+      '  request: Request,\r\n' +
+      '  meta: { action: string; typeObjet: string },\r\n' +
+      '  operation: (body: SportMutationBody) => Promise<MutationResult<T>>,\r\n' +
+      ') {\r\n' +
+      '  const startedAt = performance.now()\r\n' +
+      '  const session = await getSession()\r\n' +
+      '  if (!session) {\r\n' +
+      '    const failure = apiErrorPayload(new Error("Authentification requise."), randomUUID(), 401)\r\n' +
+      '    return NextResponse.json(failure.payload, { status: 401 })\r\n' +
+      '  }\r\n' +
+      '  const access = await authorizeWithSource({\r\n' +
+      '    user: session,\r\n' +
+      '    requirement: { scope: "BUSINESS", blocks: ["AUT-SPT"] },\r\n' +
+      '    action: "WRITE",\r\n' +
+      '    loadAuthorizations: () => getAuthorizationsForUser(session.idUser),\r\n' +
+      '  })\r\n' +
+      '  if (!access.allowed) {\r\n' +
+      '    const sourceUnavailable = access.reason === "SOURCE_UNAVAILABLE"\r\n' +
+      '    const status = sourceUnavailable ? 503 : 403\r\n' +
+      '    const failure = apiErrorPayload(new Error(sourceUnavailable ? "Service d’autorisation temporairement indisponible." : "Accès refusé."), randomUUID(), status)\r\n' +
+      '    return NextResponse.json(failure.payload, { status })\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  const suppliedRequestId = request.headers.get("x-request-id")?.trim() || ""\r\n' +
+      '  if (suppliedRequestId && (suppliedRequestId.length < 8 || suppliedRequestId.length > 100)) {\r\n' +
+      '    const failure = apiErrorPayload(new Error("Identifiant de requête invalide."), randomUUID(), 400)\r\n' +
+      '    return NextResponse.json(failure.payload, { status: failure.status })\r\n' +
+      '  }\r\n' +
+      '  const requestId = suppliedRequestId || createHash("sha256")\r\n' +
+      '    .update(`${session.idUser}|${request.method}|${request.url}|${await request.clone().text()}|${Math.floor(Date.now() / 30_000)}`)\r\n' +
+      '    .digest("hex")\r\n' +
+      '  const adapter = createGoogleUsersSheetsAdapter()\r\n' +
+      '  const processed = (await new UsersRepository(adapter).getAuditLog()).some((entry) => entry.requestId === requestId)\r\n' +
+      '  if (processed) {\r\n' +
+      '    const failure = apiErrorPayload(new Error("Cette requête a déjà été traitée."), requestId, 409)\r\n' +
+      '    return NextResponse.json({ ...failure.payload, alreadyProcessed: true }, { status: failure.status })\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  try {\r\n' +
+      '    const body = await request.json() as SportMutationBody\r\n' +
+      '    const result = await operation(body)\r\n' +
+      '    await writeAudit({ adapter, actorId: session.idUser, action: meta.action, typeObjet: meta.typeObjet, objectId: result.objectId, result: "SUCCES", requestId })\r\n' +
+      '    const duration = Math.round(performance.now() - startedAt)\r\n' +
+      '    return NextResponse.json(\r\n' +
+      '      { ok: true, row: result.row, requestId, request_id: requestId, server_timing_ms: duration },\r\n' +
+      '      { headers: { "x-request-id": requestId, "server-timing": `app;dur=${duration}` } },\r\n' +
+      '    )\r\n' +
+      '  } catch (error) {\r\n' +
+      '    const failure = apiErrorPayload(error, requestId)\r\n' +
+      '    await writeAudit({ adapter, actorId: session.idUser, action: meta.action, typeObjet: meta.typeObjet, result: "ECHEC", requestId, details: { message: failure.payload.message } }).catch(() => undefined)\r\n' +
+      '    const duration = Math.round(performance.now() - startedAt)\r\n' +
+      '    return NextResponse.json(failure.payload, {\r\n' +
+      '      status: failure.status,\r\n' +
+      '      headers: { "x-request-id": requestId, "server-timing": `app;dur=${duration}` },\r\n' +
+      '    })\r\n' +
+      '  }\r\n' +
+      '}\r\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    import "server-only"
+    
+    import { createHash, randomUUID } from "node:crypto"
+    import { NextResponse } from "next/server"
+    import { apiErrorPayload } from "@/lib/api/errors"
+    import { writeAudit } from "@/lib/audit/logger"
+    import { getSession } from "@/lib/auth"
+    import { authorizeWithSource } from "@/lib/auth/authorization"
+    import { getAuthorizationsForUser } from "@/lib/users/data"
+    import { createGoogleUsersSheetsAdapter } from "@/lib/users/google-adapter"
+    import { UsersRepository } from "@/lib/users/repository"
+    
+    type MutationResult<T> = { row: T; objectId: string }
+    type SportMutationBody = Record<string, unknown> & { id?: unknown; row?: Record<string, unknown> }
+    
+    export async function runSportMutation<T>(
+      request: Request,
+      meta: { action: string; typeObjet: string },
+      operation: (body: SportMutationBody) => Promise<MutationResult<T>>,
+    ) {
+      const startedAt = performance.now()
+      const session = await getSession()
+      if (!session) {
+        const failure = apiErrorPayload(new Error("Authentification requise."), randomUUID(), 401)
+        return NextResponse.json(failure.payload, { status: 401 })
+      }
+      const access = await authorizeWithSource({
+        user: session,
+        requirement: { scope: "BUSINESS", blocks: ["AUT-SPT"] },
+        action: "WRITE",
+        loadAuthorizations: () => getAuthorizationsForUser(session.idUser),
+      })
+      if (!access.allowed) {
+        const sourceUnavailable = access.reason === "SOURCE_UNAVAILABLE"
+        const status = sourceUnavailable ? 503 : 403
+        const failure = apiErrorPayload(new Error(sourceUnavailable ? "Service d’autorisation temporairement indisponible." : "Accès refusé."), randomUUID(), status)
+        return NextResponse.json(failure.payload, { status })
+      }
+    
+      const suppliedRequestId = request.headers.get("x-request-id")?.trim() || ""
+      if (suppliedRequestId && (suppliedRequestId.length < 8 || suppliedRequestId.length > 100)) {
+        const failure = apiErrorPayload(new Error("Identifiant de requête invalide."), randomUUID(), 400)
+        return NextResponse.json(failure.payload, { status: failure.status })
+      }
+      const requestId = suppliedRequestId || createHash("sha256")
+        .update(`${session.idUser}|${request.method}|${request.url}|${await request.clone().text()}|${Math.floor(Date.now() / 30_000)}`)
+        .digest("hex")
+      const adapter = createGoogleUsersSheetsAdapter()
+      const processed = (await new UsersRepository(adapter).getAuditLog()).some((entry) => entry.requestId === requestId)
+      if (processed) {
+        const failure = apiErrorPayload(new Error("Cette requête a déjà été traitée."), requestId, 409)
+        return NextResponse.json({ ...failure.payload, alreadyProcessed: true }, { status: failure.status })
+      }
+    
+      try {
+        const body = await request.json() as SportMutationBody
+        const result = await operation(body)
+        await writeAudit({ adapter, actorId: session.idUser, action: meta.action, typeObjet: meta.typeObjet, objectId: result.objectId, result: "SUCCES", requestId })
+        const duration = Math.round(performance.now() - startedAt)
+        return NextResponse.json(
+          { ok: true, row: result.row, requestId, request_id: requestId, server_timing_ms: duration },
+          { headers: { "x-request-id": requestId, "server-timing": `app;dur=${duration}` } },
+        )
+      } catch (error) {
+        const failure = apiErrorPayload(error, requestId)
+        await writeAudit({ adapter, actorId: session.idUser, action: meta.action, typeObjet: meta.typeObjet, result: "ECHEC", requestId, details: { message: failure.payload.message } }).catch(() => undefined)
+        const duration = Math.round(performance.now() - startedAt)
+        return NextResponse.json(failure.payload, {
+          status: failure.status,
+          headers: { "x-request-id": requestId, "server-timing": `app;dur=${duration}` },
+        })
+      }
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/site-web-20261023/checkout/tests/unit/competitions-t12.test.ts:22:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: T12: chaque mutation V1 utilise l'enveloppe sécurisée et auditée
+ok 154 - T12: chaque mutation V1 utilise l'enveloppe sécurisée et auditée
+  ---
+  duration_ms: 16.3656
+  type: 'test'
+  ...
+# Subtest: T12: la relation directe équipe-compétition est protégée et retirée en écriture
+ok 155 - T12: la relation directe équipe-compétition est protégée et retirée en écriture
+  ---
+  duration_ms: 1.4672
+  type: 'test'
+  ...
+# Subtest: T12: les routes de lecture secondaires contrôlent AUT-SPT côté serveur
+ok 156 - T12: les routes de lecture secondaires contrôlent AUT-SPT côté serveur
+  ---
+  duration_ms: 7.9058
+  type: 'test'
+  ...
+# Subtest: T12: les formulaires conservent leur état en erreur et bloquent l'action pendant l'enregistrement
+ok 157 - T12: les formulaires conservent leur état en erreur et bloquent l'action pendant l'enregistrement
+  ---
+  duration_ms: 7.2915
+  type: 'test'
+  ...
+# Subtest: T13: qualifie distinctement non renseigné, inconnu et non applicable
+ok 158 - T13: qualifie distinctement non renseigné, inconnu et non applicable
+  ---
+  duration_ms: 1.4249
+  type: 'test'
+  ...
+# Subtest: T13: distingue schéma invalide, timeout et source indisponible
+ok 159 - T13: distingue schéma invalide, timeout et source indisponible
+  ---
+  duration_ms: 0.4011
+  type: 'test'
+  ...
+# Subtest: T13: une relation orpheline est visible et ne fait pas échouer le rapport
+ok 160 - T13: une relation orpheline est visible et ne fait pas échouer le rapport
+  ---
+  duration_ms: 0.2971
+  type: 'test'
+  ...
+# Subtest: T13: la complétude et la provenance sont calculées sans inventer de valeur
+ok 161 - T13: la complétude et la provenance sont calculées sans inventer de valeur
+  ---
+  duration_ms: 0.2585
+  type: 'test'
+  ...
+# Subtest: T13: les fiches affichent le diagnostic sans masquer leurs onglets
+ok 162 - T13: les fiches affichent le diagnostic sans masquer leurs onglets
+  ---
+  duration_ms: 10.4884
+  type: 'test'
+  ...
+# Subtest: T13: les mutations réussies invalident toujours les caches concernés
+ok 163 - T13: les mutations réussies invalident toujours les caches concernés
+  ---
+  duration_ms: 6.1576
+  type: 'test'
+  ...
+# Subtest: mappe uniquement les en-têtes physiques V1
+ok 164 - mappe uniquement les en-têtes physiques V1
+  ---
+  duration_ms: 1.0635
+  type: 'test'
+  ...
+# Subtest: détecte un schéma incomplet
+ok 165 - détecte un schéma incomplet
+  ---
+  duration_ms: 0.172
+  type: 'test'
+  ...
+# Subtest: valide le graphe campagne-programme-participation-résultat
+ok 166 - valide le graphe campagne-programme-participation-résultat
+  ---
+  duration_ms: 0.3244
+  type: 'test'
+  ...
+# Subtest: refuse une participation déduite d’une autre campagne
+ok 167 - refuse une participation déduite d’une autre campagne
+  ---
+  duration_ms: 0.3969
+  type: 'test'
+  ...
+# Subtest: exige une sélection remplaçante et une correction motivée
+ok 168 - exige une sélection remplaçante et une correction motivée
+  ---
+  duration_ms: 0.2514
+  type: 'test'
+  ...
+# Subtest: attend la compilation de 36 secondes sans abandonner ni répéter la création
+ok 169 - attend la compilation de 36 secondes sans abandonner ni répéter la création
+  ---
+  duration_ms: 54.5071
+  type: 'test'
+  ...
+# Subtest: un HTTP 200 sans confirmation ne constitue pas une création réussie
+ok 170 - un HTTP 200 sans confirmation ne constitue pas une création réussie
+  ---
+  duration_ms: 0.9305
+  type: 'test'
+  ...
+# Subtest: conserve le détail du doublon et refuse une fausse confirmation 201
+ok 171 - conserve le détail du doublon et refuse une fausse confirmation 201
+  ---
+  duration_ms: 0.8054
+  type: 'test'
+  ...
+# Subtest: charge les données d'accueil sans vider le cache Sheets
+ok 172 - charge les données d'accueil sans vider le cache Sheets
+  ---
+  duration_ms: 1.2283
+  type: 'test'
+  ...
+# Subtest: le tableau de bord affiche le total des médailles par distinction
+ok 173 - le tableau de bord affiche le total des médailles par distinction
+  ---
+  duration_ms: 3.4231
+  type: 'test'
+  ...
+# Subtest: le super-administrateur voit immédiatement toutes les sections disponibles
+ok 174 - le super-administrateur voit immédiatement toutes les sections disponibles
+  ---
+  duration_ms: 1.2182
+  type: 'test'
+  ...
+# Subtest: la section Site web ouvre une administration unique sans sous-menu
+ok 175 - la section Site web ouvre une administration unique sans sous-menu
+  ---
+  duration_ms: 0.1975
+  type: 'test'
+  ...
+# Subtest: AUT-COM contrôle la visibilité de Site web pour les comptes ordinaires
+ok 176 - AUT-COM contrôle la visibilité de Site web pour les comptes ordinaires
+  ---
+  duration_ms: 0.1562
+  type: 'test'
+  ...
+# Subtest: chaque section principale, y compris Acteurs, possède une destination cliquable
+ok 177 - chaque section principale, y compris Acteurs, possède une destination cliquable
+  ---
+  duration_ms: 0.2867
+  type: 'test'
+  ...
+# Subtest: les anomalies de qualité de même type utilisent une clé distincte par section
+ok 178 - les anomalies de qualité de même type utilisent une clé distincte par section
+  ---
+  duration_ms: 2.4607
+  type: 'test'
+  ...
+# Subtest: calcule la taille des documents depuis les métadonnées Drive
+ok 179 - calcule la taille des documents depuis les métadonnées Drive
+  ---
+  duration_ms: 4.5041
+  type: 'test'
+  ...
+# Subtest: affiche la taille dans la liste, le stockage total et la fiche
+ok 180 - affiche la taille dans la liste, le stockage total et la fiche
+  ---
+  duration_ms: 2.8859
+  type: 'test'
+  ...
+# Subtest: un document PDF de 7 Mo est désormais accepté
+ok 181 - un document PDF de 7 Mo est désormais accepté
+  ---
+  duration_ms: 0.7154
+  type: 'test'
+  ...
+# Subtest: la limite documentaire reste contrôlée côté serveur
+ok 182 - la limite documentaire reste contrôlée côté serveur
+  ---
+  duration_ms: 0.3575
+  type: 'test'
+  ...
+# Subtest: la création de document utilise le volet latéral et respecte AUT-ADM
+ok 183 - la création de document utilise le volet latéral et respecte AUT-ADM
+  ---
+  duration_ms: 5.0399
+  type: 'test'
+  ...
+# Subtest: la liste Documents est responsive et son action est accessible
+ok 184 - la liste Documents est responsive et son action est accessible
+  ---
+  duration_ms: 1.6702
+  type: 'test'
+  ...
+# Subtest: la modification et le remplacement du fichier sont masqués en lecture seule
+ok 185 - la modification et le remplacement du fichier sont masqués en lecture seule
+  ---
+  duration_ms: 3.5871
+  type: 'test'
+  ...
+# Subtest: la lecture des activités réutilise les en-têtes de la lecture des lignes
+ok 186 - la lecture des activités réutilise les en-têtes de la lecture des lignes
+  ---
+  duration_ms: 6.1358
+  type: 'test'
+  ...
+# Subtest: un référentiel secondaire saturé ne fait pas tomber la page Documents
+ok 187 - un référentiel secondaire saturé ne fait pas tomber la page Documents
+  ---
+  duration_ms: 3.8331
+  type: 'test'
+  ...
+# Subtest: accepte le type TYPACT002
+ok 188 - accepte le type TYPACT002
+  ---
+  duration_ms: 1.0688
+  type: 'test'
+  ...
+# Subtest: accepte le type TYPACT003
+ok 189 - accepte le type TYPACT003
+  ---
+  duration_ms: 0.1334
+  type: 'test'
+  ...
+# Subtest: accepte le type TYPACT004
+ok 190 - accepte le type TYPACT004
+  ---
+  duration_ms: 0.1003
+  type: 'test'
+  ...
+# Subtest: accepte le type TYPACT005
+ok 191 - accepte le type TYPACT005
+  ---
+  duration_ms: 0.0833
+  type: 'test'
+  ...
+# Subtest: accepte le type TYPACT006
+ok 192 - accepte le type TYPACT006
+  ---
+  duration_ms: 0.0973
+  type: 'test'
+  ...
+# Subtest: refuse explicitement un athlète
+ok 193 - refuse explicitement un athlète
+  ---
+  duration_ms: 0.4545
+  type: 'test'
+  ...
+# Subtest: refuse une relation active identique
+ok 194 - refuse une relation active identique
+  ---
+  duration_ms: 0.1981
+  type: 'test'
+  ...
+# Subtest: refuse un second contact principal actif
+ok 195 - refuse un second contact principal actif
+  ---
+  duration_ms: 0.1606
+  type: 'test'
+  ...
+# Subtest: normalise le sigle et génère les identifiants serveur séquentiels
+ok 196 - normalise le sigle et génère les identifiants serveur séquentiels
+  ---
+  duration_ms: 1.2461
+  type: 'test'
+  ...
+# Subtest: valide les champs obligatoires et les coordonnées
+ok 197 - valide les champs obligatoires et les coordonnées
+  ---
+  duration_ms: 0.8727
+  type: 'test'
+  ...
+# Subtest: le sigle est facultatif lors de la création
+ok 198 - le sigle est facultatif lors de la création
+  ---
+  duration_ms: 0.1982
+  type: 'test'
+  ...
+# Subtest: une date de rattachement exige son entité
+ok 199 - une date de rattachement exige son entité
+  ---
+  duration_ms: 0.3298
+  type: 'test'
+  ...
+# Subtest: refuse un utilisateur sans droit d’écriture AUT-SPT
+ok 200 - refuse un utilisateur sans droit d’écriture AUT-SPT
+  ---
+  duration_ms: 39.4875
+  type: 'test'
+  ...
+# Subtest: retourne le nouveau logo après un envoi autorisé
+ok 201 - retourne le nouveau logo après un envoi autorisé
+  ---
+  duration_ms: 11.6428
+  type: 'test'
+  ...
+# Subtest: signale clairement un quota Google temporairement dépassé
+ok 202 - signale clairement un quota Google temporairement dépassé
+  ---
+  duration_ms: 1.393
+  type: 'test'
+  ...
+# Subtest: signale une configuration Drive absente en production
+ok 203 - signale une configuration Drive absente en production
+  ---
+  duration_ms: 3.1815
+  type: 'test'
+  ...
+# Subtest: ne réalise qu’une lecture fraîche de FEDERATIONS avant l’upload
+ok 204 - ne réalise qu’une lecture fraîche de FEDERATIONS avant l’upload
+  ---
+  duration_ms: 3.266
+  type: 'test'
+  ...
+# Subtest: remplace la référence Sheets avant de supprimer l’ancien logo
+ok 205 - remplace la référence Sheets avant de supprimer l’ancien logo
+  ---
+  duration_ms: 1.446
+  type: 'test'
+  ...
+# Subtest: supprime le nouveau fichier si l’écriture Sheets échoue
+ok 206 - supprime le nouveau fichier si l’écriture Sheets échoue
+  ---
+  duration_ms: 0.6148
+  type: 'test'
+  ...
+# Subtest: affiche le logo disponible ou les initiales neutres sans bloquer la fiche
+ok 207 - affiche le logo disponible ou les initiales neutres sans bloquer la fiche
+  ---
+  duration_ms: 5.2879
+  type: 'test'
+  ...
+# Subtest: propose une modale compacte avec aperçu et confirmation explicite
+ok 208 - propose une modale compacte avec aperçu et confirmation explicite
+  ---
+  duration_ms: 2.5003
+  type: 'test'
+  ...
+# Subtest: place la colonne Logo en premier sans colonne Identifiant dans la liste
+ok 209 - place la colonne Logo en premier sans colonne Identifiant dans la liste
+  ---
+  duration_ms: 2.3095
+  type: 'test'
+  ...
+# Subtest: l’API logo n’utilise pas un slug concurrent de [resource]
+ok 210 - l’API logo n’utilise pas un slug concurrent de [resource]
+  ---
+  duration_ms: 6.6141
+  type: 'test'
+  ...
+# Subtest: accepte un logo PNG valide et refuse format ou taille invalides
+ok 211 - accepte un logo PNG valide et refuse format ou taille invalides
+  ---
+  duration_ms: 1.437
+  type: 'test'
+  ...
+# Subtest: refuse une image dont le contenu ne correspond pas au format annoncé
+ok 212 - refuse une image dont le contenu ne correspond pas au format annoncé
+  ---
+  duration_ms: 0.255
+  type: 'test'
+  ...
+# Subtest: ouvre, ferme et réinitialise la modale du logo
+ok 213 - ouvre, ferme et réinitialise la modale du logo
+  ---
+  duration_ms: 0.1558
+  type: 'test'
+  ...
+# Subtest: expose les états de confirmation, envoi, réussite et échec
+ok 214 - expose les états de confirmation, envoi, réussite et échec
+  ---
+  duration_ms: 0.1393
+  type: 'test'
+  ...
+# Subtest: construit uniquement la hiérarchie réellement configurée et distingue un niveau vide
+ok 215 - construit uniquement la hiérarchie réellement configurée et distingue un niveau vide
+  ---
+  duration_ms: 3.0052
+  type: 'test'
+  ...
+# Subtest: affiche les pseudos des ligues et ententes comme rattachements
+ok 216 - affiche les pseudos des ligues et ententes comme rattachements
+  ---
+  duration_ms: 0.3478
+  type: 'test'
+  ...
+# Subtest: calcule le total et les statuts réels des fédérations
+ok 217 - calcule le total et les statuts réels des fédérations
+  ---
+  duration_ms: 21.6911
+  type: 'test'
+  ...
+# Subtest: le détail Fédérations du dashboard utilise un tableau synthétique sans icône ni cartes
+ok 218 - le détail Fédérations du dashboard utilise un tableau synthétique sans icône ni cartes
+  ---
+  duration_ms: 3.7795
+  type: 'test'
+  ...
+# Subtest: résout seulement les contacts AUTRES actifs liés à l’entité
+ok 219 - résout seulement les contacts AUTRES actifs liés à l’entité
+  ---
+  duration_ms: 1.3126
+  type: 'test'
+  ...
+# Subtest: ne crée aucun contact quand l’entité ou la relation est absente
+ok 220 - ne crée aucun contact quand l’entité ou la relation est absente
+  ---
+  duration_ms: 0.1669
+  type: 'test'
+  ...
+# Subtest: les vues Fédérations limitent explicitement la durée de leurs données en cache
+ok 221 - les vues Fédérations limitent explicitement la durée de leurs données en cache
+  ---
+  duration_ms: 4.1541
+  type: 'test'
+  ...
+# Subtest: le cache groupé accepte une durée propre au consommateur
+ok 222 - le cache groupé accepte une durée propre au consommateur
+  ---
+  duration_ms: 2.7803
+  type: 'test'
+  ...
+# Subtest: projette uniquement les champs réels d’une entité utiles à la fiche fédération
+ok 223 - projette uniquement les champs réels d’une entité utiles à la fiche fédération
+  ---
+  duration_ms: 1.5169
+  type: 'test'
+  ...
+# Subtest: conserve les statuts et rattachements réels de FEDERATIONS sans inventer les données d’entité
+ok 224 - conserve les statuts et rattachements réels de FEDERATIONS sans inventer les données d’entité
+  ---
+  duration_ms: 0.329
+  type: 'test'
+  ...
+# Subtest: la liste fédérations utilise le format tableau des ligues sans colonne identifiant
+ok 225 - la liste fédérations utilise le format tableau des ligues sans colonne identifiant
+  ---
+  duration_ms: 4.0235
+  type: 'test'
+  ...
+# Subtest: la liste fédérations propose un filtre de catégorie combiné à la recherche
+ok 226 - la liste fédérations propose un filtre de catégorie combiné à la recherche
+  ---
+  duration_ms: 2.0292
+  type: 'test'
+  ...
+# Subtest: l’action de détail est une icône accessible avec infobulle
+ok 227 - l’action de détail est une icône accessible avec infobulle
+  ---
+  duration_ms: 1.7751
+  type: 'test'
+  ...
+# Subtest: la fiche présente quatre blocs deux par deux puis les tableaux territoriaux sans onglets
+ok 228 - la fiche présente quatre blocs deux par deux puis les tableaux territoriaux sans onglets
+  ---
+  duration_ms: 1.7772
+  type: 'test'
+  ...
+# Subtest: chaque tableau de structure propose recherche et pagination 10, 20 ou 50
+ok 229 - chaque tableau de structure propose recherche et pagination 10, 20 ou 50
+  ---
+  duration_ms: 0.9583
+  type: 'test'
+  ...
+# Subtest: les notifications Sonner sont montées globalement
+ok 230 - les notifications Sonner sont montées globalement
+  ---
+  duration_ms: 4.9822
+  type: 'test'
+  ...
+# Subtest: le sélecteur d'acteur reste interactif dans un volet
+ok 231 - le sélecteur d'acteur reste interactif dans un volet
+  ---
+  duration_ms: 3.2889
+  type: 'test'
+  ...
+# Subtest: apiFetch absorbe un 503 transitoire sur une lecture
+ok 232 - apiFetch absorbe un 503 transitoire sur une lecture
+  ---
+  duration_ms: 22.9546
+  type: 'test'
+  ...
+# Subtest: apiFetch ne rejoue jamais une mutation non idempotente
+ok 233 - apiFetch ne rejoue jamais une mutation non idempotente
+  ---
+  duration_ms: 0.2526
+  type: 'test'
+  ...
+# Subtest: les lectures concurrentes identiques sont dédupliquées
+ok 234 - les lectures concurrentes identiques sont dédupliquées
+  ---
+  duration_ms: 0.5007
+  type: 'test'
+  ...
+# Subtest: runResilientRequest rejoue les erreurs 503 Google
+ok 235 - runResilientRequest rejoue les erreurs 503 Google
+  ---
+  duration_ms: 0.2195
+  type: 'test'
+  ...
+# Subtest: active l'attente progressive au cinquième échec
+ok 236 - active l'attente progressive au cinquième échec
+  ---
+  duration_ms: 0.7669
+  type: 'test'
+  ...
+# Subtest: bloque exactement trente minutes au dixième échec puis se lève automatiquement
+ok 237 - bloque exactement trente minutes au dixième échec puis se lève automatiquement
+  ---
+  duration_ms: 1.5698
+  type: 'test'
+  ...
+# Subtest: un succès intermédiaire clôt la série
+ok 238 - un succès intermédiaire clôt la série
+  ---
+  duration_ms: 0.1822
+  type: 'test'
+  ...
+# Subtest: un changement d'adresse réseau ne contourne pas la protection du compte
+ok 239 - un changement d'adresse réseau ne contourne pas la protection du compte
+  ---
+  duration_ms: 0.1714
+  type: 'test'
+  ...
+# Subtest: pseudonymise de manière stable sans conserver la valeur source
+ok 240 - pseudonymise de manière stable sans conserver la valeur source
+  ---
+  duration_ms: 4.0272
+  type: 'test'
+  ...
+# Subtest: purge les tentatives après 90 jours et préserve l'audit récent
+ok 241 - purge les tentatives après 90 jours et préserve l'audit récent
+  ---
+  duration_ms: 0.9515
+  type: 'test'
+  ...
+# Subtest: détecte clairement les erreurs de configuration d'authentification
+ok 242 - détecte clairement les erreurs de configuration d'authentification
+  ---
+  duration_ms: 1.2089
+  type: 'test'
+  ...
+# Subtest: la connexion recharge la destination après la pose du cookie
+not ok 243 - la connexion recharge la destination après la pose du cookie
+  ---
+  duration_ms: 5.2466
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\site-web-20261023\\checkout\\tests\\unit\\login-navigation.test.ts:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /window\.location\.assign\(normalizeLoginRedirect\(result\.redirectTo\)\)/. Input:
+    
+    '"use client"\r\n' +
+      '\r\n' +
+      'import { apiFetch } from "@/lib/api/client"\r\n' +
+      '\r\n' +
+      'import Image from "next/image"\r\n' +
+      'import { useRef, useState } from "react"\r\n' +
+      'import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"\r\n' +
+      '\r\n' +
+      'import { normalizeLoginRedirect } from "@/lib/auth/login-redirect"\r\n' +
+      'import { Button } from "@/components/ui/button"\r\n' +
+      'import { Input } from "@/components/ui/input"\r\n' +
+      'import { Label } from "@/components/ui/label"\r\n' +
+      'import styles from "./login.module.css"\r\n' +
+      '\r\n' +
+      'type LoginError = "credentials" | "service" | "validation" | null\r\n' +
+      'type SubmissionPhase = "idle" | "request" | "redirect"\r\n' +
+      '\r\n' +
+      'const errorMessages: Record<Exclude<LoginError, null>, string> = {\r\n' +
+      '  credentials: "Les informations saisies ne permettent pas d’accéder au système. Vérifiez votre adresse e-mail et votre mot de passe.",\r\n' +
+      '  service: "Le service de connexion est momentanément indisponible. Veuillez réessayer dans quelques instants.",\r\n' +
+      '  validation: "Vérifiez les informations saisies puis réessayez.",\r\n' +
+      '}\r\n' +
+      '\r\n' +
+      'export default function LoginPage() {\r\n' +
+      '  const [email, setEmail] = useState("")\r\n' +
+      '  const [password, setPassword] = useState("")\r\n' +
+      '  const [showPassword, setShowPassword] = useState(false)\r\n' +
+      '  const [phase, setPhase] = useState<SubmissionPhase>("idle")\r\n' +
+      '  const [error, setError] = useState<LoginError>(null)\r\n' +
+      '  const submissionLocked = useRef(false)\r\n' +
+      '  const loading = phase !== "idle"\r\n' +
+      '\r\n' +
+      '  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {\r\n' +
+      '    event.preventDefault()\r\n' +
+      '    if (submissionLocked.current) return\r\n' +
+      '    submissionLocked.current = true\r\n' +
+      '    setError(null)\r\n' +
+      '    setPhase("request")\r\n' +
+      '    let authenticated = false\r\n' +
+      '\r\n' +
+      '    try {\r\n' +
+      '      const response = await apiFetch("/api/auth/login", {\r\n' +
+      '        method: "POST",\r\n' +
+      '        headers: { "Content-Type": "application/json" },\r\n' +
+      '        body: JSON.stringify({ email, password }),\r\n' +
+      '      })\r\n' +
+      '\r\n' +
+      '      if (!response.ok) {\r\n' +
+      '        if (response.status === 401 || response.status === 403) setError("credentials")\r\n' +
+      '        else if (response.status === 400) setError("validation")\r\n' +
+      '        else setError("service")\r\n' +
+      '        return\r\n' +
+      '      }\r\n' +
+      '\r\n' +
+      '      const result = await response.json()\r\n' +
+      '      authenticated = true\r\n' +
+      '      setPhase("redirect")\r\n' +
+      "      // Une connexion change l'état d'authentification côté serveur. Une\r\n" +
+      '      // navigation complète évite de réutiliser un arbre RSC préchargé avant\r\n' +
+      '      // la pose du cookie de session, ce qui provoquait un retour vers /login.\r\n' +
+      '      window.location.replace(normalizeLoginRedirect(result.redirectTo))\r\n' +
+      '    } catch {\r\n' +
+      '      setError("service")\r\n' +
+      '    } finally {\r\n' +
+      '      if (!authenticated) {\r\n' +
+      '        submissionLocked.current = false\r\n' +
+      '        setPhase("idle")\r\n' +
+      '      }\r\n' +
+      '    }\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  return (\r\n' +
+      '    <main className={styles.page}>\r\n' +
+      '      <section className={styles.hero} aria-labelledby="institution-title">\r\n' +
+      '        <Image src="/images/login/delegation-rdc.jpeg" alt="Délégation sportive de la République démocratique du Congo réunie dans un stade" fill priority sizes="(max-width: 1023px) 100vw, 62vw" className={styles.heroImage} />\r\n' +
+      '        <div className={styles.heroShade} />\r\n' +
+      '        <div className={styles.heroInner}>\r\n' +
+      '          <div className={styles.brandLockup}>\r\n' +
+      '            <div className={styles.brandLogo}>\r\n' +
+      '              <Image src="/images/logo-coc.png" alt="Logo du Comité Olympique Congolais" fill sizes="64px" className={styles.brandLogoImage} />\r\n' +
+      '            </div>\r\n' +
+      '            <div>\r\n' +
+      '              <p className={styles.brandName}>COC</p>\r\n' +
+      '              <p className={styles.brandCountry}>Comité Olympique Congolais</p>\r\n' +
+      '            </div>\r\n' +
+      '          </div>\r\n' +
+      '          <div className={styles.heroContent}>\r\n' +
+      '            <p className={styles.eyebrow}>Institution sportive nationale</p>\r\n' +
+      '            <h1 id="institution-title">Ensemble, portons plus haut les couleurs de la RDC.</h1>\r\n' +
+      '            <p className={styles.introduction}>Une plateforme nationale dédiée à la structuration, à l’identification et au développement du mouvement olympique congolais.</p>\r\n' +
+      '          </div>\r\n' +
+      '        </div>\r\n' +
+      '        <div className={styles.nationalLine} aria-hidden="true" />\r\n' +
+      '      </section>\r\n' +
+      '\r\n' +
+      '      <aside className={styles.loginPanel} aria-labelledby="login-title">\r\n' +
+      '        <div className={styles.panelContent}>\r\n' +
+      '          <div className={styles.welcome}>\r\n' +
+      '            <p className={styles.panelEyebrow}>Comité Olympique Congolais</p>\r\n' +
+      '            <h2 id="login-title">Espace institutionnel</h2>\r\n' +
+      '            <p>Connectez-vous pour accéder à la plateforme de gestion du mouvement olympique congolais.</p>\r\n' +
+      '          </div>\r\n' +
+      '\r\n' +
+      '          <form onSubmit={handleSubmit} className={styles.form} aria-busy={loading}>\r\n' +
+      '            <div className={styles.field}>\r\n' +
+      '              <Label htmlFor="email">Adresse e-mail</Label>\r\n' +
+      '              <div className={styles.inputWrap}>\r\n' +
+      '                <Mail aria-hidden="true" />\r\n' +
+      '                <Input id="email" name="email" type="email" autoComplete="username" autoCapitalize="none" spellCheck={false} value={email} onChange={(event) => setEmail(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} required />\r\n' +
+      '              </div>\r\n' +
+      '            </div>\r\n' +
+      '\r\n' +
+      '            <div className={styles.field}>\r\n' +
+      '              <Label htmlFor="password">Mot de passe</Label>\r\n' +
+      '              <div className={styles.inputWrap}>\r\n' +
+      '                <LockKeyhole aria-hidden="true" />\r\n' +
+      '                <Input id="password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} aria-describedby={error ? "login-error" : undefined} required />\r\n' +
+      '                <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}>\r\n' +
+      '                  {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}\r\n' +
+      '                </button>\r\n' +
+      '              </div>\r\n' +
+      '            </div>\r\n' +
+      '\r\n' +
+      '            <div className={styles.messageSlot}>\r\n' +
+      '              {error && <p id="login-error" className={styles.error} role="alert">{errorMessages[error]}</p>}\r\n' +
+      '            </div>\r\n' +
+      '            <Button type="submit" className={styles.submit} disabled={loading}>\r\n' +
+      '              {loading && <LoaderCircle className={styles.spinner} aria-hidden="true" />}\r\n' +
+      '              {phase === "redirect" ? "Redirection en cours…" : loading ? "Connexion en cours…" : "Se connecter"}\r\n' +
+      '            </Button>\r\n' +
+      '          </form>\r\n' +
+      '\r\n' +
+      '          <div className={styles.panelMeta}>\r\n' +
+      '            <span>Version 1.0 · Accès sécurisé</span>\r\n' +
+      '            <span>Administration COC</span>\r\n' +
+      '          </div>\r\n' +
+      '          <p className={styles.platformLabel}>Plateforme du référentiel sportif national</p>\r\n' +
+      '          <p className={styles.signature} aria-label="Design par DS Concept"><span>Design by</span><strong>DS Concept</strong></p>\r\n' +
+      '        </div>\r\n' +
+      '      </aside>\r\n' +
+      '    </main>\r\n' +
+      '  )\r\n' +
+      '}\r\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    "use client"
+    
+    import { apiFetch } from "@/lib/api/client"
+    
+    import Image from "next/image"
+    import { useRef, useState } from "react"
+    import { Eye, EyeOff, LoaderCircle, LockKeyhole, Mail } from "lucide-react"
+    
+    import { normalizeLoginRedirect } from "@/lib/auth/login-redirect"
+    import { Button } from "@/components/ui/button"
+    import { Input } from "@/components/ui/input"
+    import { Label } from "@/components/ui/label"
+    import styles from "./login.module.css"
+    
+    type LoginError = "credentials" | "service" | "validation" | null
+    type SubmissionPhase = "idle" | "request" | "redirect"
+    
+    const errorMessages: Record<Exclude<LoginError, null>, string> = {
+      credentials: "Les informations saisies ne permettent pas d’accéder au système. Vérifiez votre adresse e-mail et votre mot de passe.",
+      service: "Le service de connexion est momentanément indisponible. Veuillez réessayer dans quelques instants.",
+      validation: "Vérifiez les informations saisies puis réessayez.",
+    }
+    
+    export default function LoginPage() {
+      const [email, setEmail] = useState("")
+      const [password, setPassword] = useState("")
+      const [showPassword, setShowPassword] = useState(false)
+      const [phase, setPhase] = useState<SubmissionPhase>("idle")
+      const [error, setError] = useState<LoginError>(null)
+      const submissionLocked = useRef(false)
+      const loading = phase !== "idle"
+    
+      async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        if (submissionLocked.current) return
+        submissionLocked.current = true
+        setError(null)
+        setPhase("request")
+        let authenticated = false
+    
+        try {
+          const response = await apiFetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          })
+    
+          if (!response.ok) {
+            if (response.status === 401 || response.status === 403) setError("credentials")
+            else if (response.status === 400) setError("validation")
+            else setError("service")
+            return
+          }
+    
+          const result = await response.json()
+          authenticated = true
+          setPhase("redirect")
+          // Une connexion change l'état d'authentification côté serveur. Une
+          // navigation complète évite de réutiliser un arbre RSC préchargé avant
+          // la pose du cookie de session, ce qui provoquait un retour vers /login.
+          window.location.replace(normalizeLoginRedirect(result.redirectTo))
+        } catch {
+          setError("service")
+        } finally {
+          if (!authenticated) {
+            submissionLocked.current = false
+            setPhase("idle")
+          }
+        }
+      }
+    
+      return (
+        <main className={styles.page}>
+          <section className={styles.hero} aria-labelledby="institution-title">
+            <Image src="/images/login/delegation-rdc.jpeg" alt="Délégation sportive de la République démocratique du Congo réunie dans un stade" fill priority sizes="(max-width: 1023px) 100vw, 62vw" className={styles.heroImage} />
+            <div className={styles.heroShade} />
+            <div className={styles.heroInner}>
+              <div className={styles.brandLockup}>
+                <div className={styles.brandLogo}>
+                  <Image src="/images/logo-coc.png" alt="Logo du Comité Olympique Congolais" fill sizes="64px" className={styles.brandLogoImage} />
+                </div>
+                <div>
+                  <p className={styles.brandName}>COC</p>
+                  <p className={styles.brandCountry}>Comité Olympique Congolais</p>
+                </div>
+              </div>
+              <div className={styles.heroContent}>
+                <p className={styles.eyebrow}>Institution sportive nationale</p>
+                <h1 id="institution-title">Ensemble, portons plus haut les couleurs de la RDC.</h1>
+                <p className={styles.introduction}>Une plateforme nationale dédiée à la structuration, à l’identification et au développement du mouvement olympique congolais.</p>
+              </div>
+            </div>
+            <div className={styles.nationalLine} aria-hidden="true" />
+          </section>
+    
+          <aside className={styles.loginPanel} aria-labelledby="login-title">
+            <div className={styles.panelContent}>
+              <div className={styles.welcome}>
+                <p className={styles.panelEyebrow}>Comité Olympique Congolais</p>
+                <h2 id="login-title">Espace institutionnel</h2>
+                <p>Connectez-vous pour accéder à la plateforme de gestion du mouvement olympique congolais.</p>
+              </div>
+    
+              <form onSubmit={handleSubmit} className={styles.form} aria-busy={loading}>
+                <div className={styles.field}>
+                  <Label htmlFor="email">Adresse e-mail</Label>
+                  <div className={styles.inputWrap}>
+                    <Mail aria-hidden="true" />
+                    <Input id="email" name="email" type="email" autoComplete="username" autoCapitalize="none" spellCheck={false} value={email} onChange={(event) => setEmail(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} required />
+                  </div>
+                </div>
+    
+                <div className={styles.field}>
+                  <Label htmlFor="password">Mot de passe</Label>
+                  <div className={styles.inputWrap}>
+                    <LockKeyhole aria-hidden="true" />
+                    <Input id="password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} disabled={loading} aria-invalid={error === "credentials" || error === "validation"} aria-describedby={error ? "login-error" : undefined} required />
+                    <button type="button" className={styles.passwordToggle} onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}>
+                      {showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
+                    </button>
+                  </div>
+                </div>
+    
+                <div className={styles.messageSlot}>
+                  {error && <p id="login-error" className={styles.error} role="alert">{errorMessages[error]}</p>}
+                </div>
+                <Button type="submit" className={styles.submit} disabled={loading}>
+                  {loading && <LoaderCircle className={styles.spinner} aria-hidden="true" />}
+                  {phase === "redirect" ? "Redirection en cours…" : loading ? "Connexion en cours…" : "Se connecter"}
+                </Button>
+              </form>
+    
+              <div className={styles.panelMeta}>
+                <span>Version 1.0 · Accès sécurisé</span>
+                <span>Administration COC</span>
+              </div>
+              <p className={styles.platformLabel}>Plateforme du référentiel sportif national</p>
+              <p className={styles.signature} aria-label="Design par DS Concept"><span>Design by</span><strong>DS Concept</strong></p>
+            </div>
+          </aside>
+        </main>
+      )
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/site-web-20261023/checkout/tests/unit/login-navigation.test.ts:8:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+  ...
+# Subtest: le développement n'utilise pas le répertoire des builds de production
+ok 244 - le développement n'utilise pas le répertoire des builds de production
+  ---
+  duration_ms: 4.7903
+  type: 'test'
+  ...
+# Subtest: conserve toutes les destinations de connexion autorisées
+ok 245 - conserve toutes les destinations de connexion autorisées
+  ---
+  duration_ms: 0.6427
+  type: 'test'
+  ...
+# Subtest: refuse une destination injectée et conserve un repli sûr
+ok 246 - refuse une destination injectée et conserve un repli sûr
+  ---
+  duration_ms: 0.1514
+  type: 'test'
+  ...
+# Subtest: la connexion reste verrouillée entre le succès et le remplacement de page
+ok 247 - la connexion reste verrouillée entre le succès et le remplacement de page
+  ---
+  duration_ms: 3.9895
+  type: 'test'
+  ...
+# Subtest: la modification d’une campagne regroupe ses lectures sans appels frais en cascade
+ok 248 - la modification d’une campagne regroupe ses lectures sans appels frais en cascade
+  ---
+  duration_ms: 3.4235
+  type: 'test'
+  ...
+# Subtest: une mise à jour Sheets réutilise les lignes et en-têtes mis en cache
+ok 249 - une mise à jour Sheets réutilise les lignes et en-têtes mis en cache
+  ---
+  duration_ms: 1.9441
+  type: 'test'
+  ...
+# Subtest: les options de référentiel ont une clé React unique
+ok 250 - les options de référentiel ont une clé React unique
+  ---
+  duration_ms: 1.4451
+  type: 'test'
+  ...
+# Subtest: une équipe nationale appartient à une saison sans dates dupliquées
+ok 251 - une équipe nationale appartient à une saison sans dates dupliquées
+  ---
+  duration_ms: 0.6599
+  type: 'test'
+  ...
+# Subtest: le formulaire remplace les dates par le référentiel des saisons
+not ok 252 - le formulaire remplace les dates par le référentiel des saisons
+  ---
+  duration_ms: 4.732
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\site-web-20261023\\checkout\\tests\\unit\\national-team-season.test.ts:11:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /Label>Saison \*/. Input:
+    
+    '"use client"\r\n' +
+      '\r\n' +
+      'import { Button } from "@/components/ui/button"\r\n' +
+      'import { Input } from "@/components/ui/input"\r\n' +
+      'import { Label } from "@/components/ui/label"\r\n' +
+      'import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"\r\n' +
+      'import { Textarea } from "@/components/ui/textarea"\r\n' +
+      'import type { NationalTeam, NationalTeamReferences } from "@/lib/equipes-nationales/types"\r\n' +
+      '\r\n' +
+      'export const emptyNationalTeamForm = { id_federation: "", id_sport: "", id_discipline: "", nom_equipe_nationale: "", id_categorie_age: "", id_saison:"", statut: "ACTIF", observations: "" }\r\n' +
+      'export type NationalTeamFormValue = typeof emptyNationalTeamForm\r\n' +
+      'export const nationalTeamToForm = (team: NationalTeam) => Object.fromEntries(Object.keys(emptyNationalTeamForm).map((key) => [key, team[key as keyof NationalTeam] || ""])) as NationalTeamFormValue\r\n' +
+      '\r\n' +
+      'export function NationalTeamForm({ value, onChange, references, saving, onSubmit, onCancel, editing = false }: { value: NationalTeamFormValue; onChange: (value: NationalTeamFormValue) => void; references: NationalTeamReferences; saving: boolean; onSubmit: () => void; onCancel?: () => void; editing?: boolean }) {\r\n' +
+      '  const federation = references.federations.find((item) => item.id === value.id_federation)\r\n' +
+      '  const disciplineOptions = references.disciplines.filter((item) => item.parentId === value.id_sport)\r\n' +
+      '  const categoryParent = value.id_discipline || value.id_sport\r\n' +
+      '  const categoryOptions = references.ageCategories.filter((item) => item.parentId === categoryParent)\r\n' +
+      '  const update = (key: keyof NationalTeamFormValue, next: string) => {\r\n' +
+      '    if (key === "id_federation") {\r\n' +
+      '      const selected = references.federations.find((item) => item.id === next)\r\n' +
+      '      onChange({ ...value, id_federation: next, id_sport: selected?.parentId || "", id_discipline: "", id_categorie_age: "" })\r\n' +
+      '      return\r\n' +
+      '    }\r\n' +
+      '    if (key === "id_sport") { onChange({ ...value, id_sport: next, id_discipline: "", id_categorie_age: "" }); return }\r\n' +
+      '    if (key === "id_discipline") { onChange({ ...value, id_discipline: next, id_categorie_age: "" }); return }\r\n' +
+      '    onChange({ ...value, [key]: next })\r\n' +
+      '  }\r\n' +
+      '  const seasons=references.seasons||[],season=seasons.find((item)=>item.id===value.id_saison)\r\n' +
+      '\r\n' +
+      '  return <div className="space-y-6 rounded-2xl border border-border/80 bg-card/60 p-4 shadow-[0_10px_30px_rgba(7,25,54,0.12)] sm:p-5">\r\n' +
+      '    <div className="grid gap-4 sm:grid-cols-2">\r\n' +
+      '      <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Fédération *</Label><Select disabled={editing} value={value.id_federation} onValueChange={(next) => update("id_federation", next)}><SelectTrigger className="w-full"><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent>{references.federations.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}{item.secondary ? ` — ${item.secondary}` : ""}</SelectItem>)}</SelectContent></Select></div>\r\n' +
+      '      <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Sport *</Label>{federation?.parentId || editing ? <Input value={references.sports.find((item) => item.id === value.id_sport)?.label || value.id_sport} readOnly className="bg-muted" /> : <><Select value={value.id_sport} onValueChange={(next) => update("id_sport", next)}><SelectTrigger className="w-full"><SelectValue placeholder="Sélectionner le sport" /></SelectTrigger><SelectContent>{references.sports.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{federation && <p className="text-xs text-amber-500">Le sport n’est pas renseigné sur cette fédération dans le référentiel. Sélection manuelle requise.</p>}</>}</div>\r\n' +
+      '      <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Discipline</Label><Select disabled={!value.id_sport || disciplineOptions.length === 0} value={value.id_discipline || "aucune"} onValueChange={(next) => update("id_discipline", next === "aucune" ? "" : next)}><SelectTrigger className="w-full"><SelectValue placeholder="Non renseignée" /></SelectTrigger><SelectContent><SelectItem value="aucune">Non renseignée</SelectItem>{disciplineOptions.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{value.id_sport && disciplineOptions.length === 0 && <p className="text-xs text-muted-foreground">Aucune discipline n’est configurée pour ce sport.</p>}</div>\r\n' +
+      '      <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Catégorie d’âge</Label><Select disabled={!categoryParent || categoryOptions.length === 0} value={value.id_categorie_age || "aucune"} onValueChange={(next) => update("id_categorie_age", next === "aucune" ? "" : next)}><SelectTrigger className="w-full"><SelectValue placeholder="Non renseignée" /></SelectTrigger><SelectContent><SelectItem value="aucune">Non renseignée</SelectItem>{categoryOptions.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{categoryParent && categoryOptions.length === 0 && <p className="text-xs text-muted-foreground">Aucune catégorie n’est configurée pour ce sport ou cette discipline.</p>}</div>\r\n' +
+      '      <div className="space-y-2 sm:col-span-2"><Label className="text-sm font-medium text-muted-foreground">Nom de l’équipe nationale *</Label><Input value={value.nom_equipe_nationale} onChange={(event) => update("nom_equipe_nationale", event.target.value)} /></div>\r\n' +
+      '      <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Statut *</Label><Select value={value.statut} onValueChange={(next) => update("statut", next)}><SelectTrigger className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="ACTIF">Actif</SelectItem><SelectItem value="INACTIF">Inactif</SelectItem></SelectContent></Select></div>\r\n' +
+      '      <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Saison *</Label><Select disabled={editing} value={value.id_saison} onValueChange={(next)=>update("id_saison",next)}><SelectTrigger className="w-full"><SelectValue placeholder="Sélectionner une saison"/></SelectTrigger><SelectContent>{seasons.map((item)=><SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{season&&<p className="text-xs text-muted-foreground">Du {season.dateStart} au {season.dateEnd}</p>}</div>\r\n' +
+      '      <div className="space-y-2 sm:col-span-2"><Label className="text-sm font-medium text-muted-foreground">Observations</Label><Textarea value={value.observations} onChange={(event) => update("observations", event.target.value)} /></div>\r\n' +
+      '    </div>\r\n' +
+      '    <div className="flex justify-end gap-2">{onCancel && <Button variant="outline" onClick={onCancel}>Annuler</Button>}<Button disabled={saving} onClick={onSubmit}>{saving ? "Enregistrement…" : "Enregistrer"}</Button></div>\r\n' +
+      '  </div>\r\n' +
+      '}\r\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    "use client"
+    
+    import { Button } from "@/components/ui/button"
+    import { Input } from "@/components/ui/input"
+    import { Label } from "@/components/ui/label"
+    import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+    import { Textarea } from "@/components/ui/textarea"
+    import type { NationalTeam, NationalTeamReferences } from "@/lib/equipes-nationales/types"
+    
+    export const emptyNationalTeamForm = { id_federation: "", id_sport: "", id_discipline: "", nom_equipe_nationale: "", id_categorie_age: "", id_saison:"", statut: "ACTIF", observations: "" }
+    export type NationalTeamFormValue = typeof emptyNationalTeamForm
+    export const nationalTeamToForm = (team: NationalTeam) => Object.fromEntries(Object.keys(emptyNationalTeamForm).map((key) => [key, team[key as keyof NationalTeam] || ""])) as NationalTeamFormValue
+    
+    export function NationalTeamForm({ value, onChange, references, saving, onSubmit, onCancel, editing = false }: { value: NationalTeamFormValue; onChange: (value: NationalTeamFormValue) => void; references: NationalTeamReferences; saving: boolean; onSubmit: () => void; onCancel?: () => void; editing?: boolean }) {
+      const federation = references.federations.find((item) => item.id === value.id_federation)
+      const disciplineOptions = references.disciplines.filter((item) => item.parentId === value.id_sport)
+      const categoryParent = value.id_discipline || value.id_sport
+      const categoryOptions = references.ageCategories.filter((item) => item.parentId === categoryParent)
+      const update = (key: keyof NationalTeamFormValue, next: string) => {
+        if (key === "id_federation") {
+          const selected = references.federations.find((item) => item.id === next)
+          onChange({ ...value, id_federation: next, id_sport: selected?.parentId || "", id_discipline: "", id_categorie_age: "" })
+          return
+        }
+        if (key === "id_sport") { onChange({ ...value, id_sport: next, id_discipline: "", id_categorie_age: "" }); return }
+        if (key === "id_discipline") { onChange({ ...value, id_discipline: next, id_categorie_age: "" }); return }
+        onChange({ ...value, [key]: next })
+      }
+      const seasons=references.seasons||[],season=seasons.find((item)=>item.id===value.id_saison)
+    
+      return <div className="space-y-6 rounded-2xl border border-border/80 bg-card/60 p-4 shadow-[0_10px_30px_rgba(7,25,54,0.12)] sm:p-5">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Fédération *</Label><Select disabled={editing} value={value.id_federation} onValueChange={(next) => update("id_federation", next)}><SelectTrigger className="w-full"><SelectValue placeholder="Sélectionner" /></SelectTrigger><SelectContent>{references.federations.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}{item.secondary ? ` — ${item.secondary}` : ""}</SelectItem>)}</SelectContent></Select></div>
+          <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Sport *</Label>{federation?.parentId || editing ? <Input value={references.sports.find((item) => item.id === value.id_sport)?.label || value.id_sport} readOnly className="bg-muted" /> : <><Select value={value.id_sport} onValueChange={(next) => update("id_sport", next)}><SelectTrigger className="w-full"><SelectValue placeholder="Sélectionner le sport" /></SelectTrigger><SelectContent>{references.sports.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{federation && <p className="text-xs text-amber-500">Le sport n’est pas renseigné sur cette fédération dans le référentiel. Sélection manuelle requise.</p>}</>}</div>
+          <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Discipline</Label><Select disabled={!value.id_sport || disciplineOptions.length === 0} value={value.id_discipline || "aucune"} onValueChange={(next) => update("id_discipline", next === "aucune" ? "" : next)}><SelectTrigger className="w-full"><SelectValue placeholder="Non renseignée" /></SelectTrigger><SelectContent><SelectItem value="aucune">Non renseignée</SelectItem>{disciplineOptions.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{value.id_sport && disciplineOptions.length === 0 && <p className="text-xs text-muted-foreground">Aucune discipline n’est configurée pour ce sport.</p>}</div>
+          <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Catégorie d’âge</Label><Select disabled={!categoryParent || categoryOptions.length === 0} value={value.id_categorie_age || "aucune"} onValueChange={(next) => update("id_categorie_age", next === "aucune" ? "" : next)}><SelectTrigger className="w-full"><SelectValue placeholder="Non renseignée" /></SelectTrigger><SelectContent><SelectItem value="aucune">Non renseignée</SelectItem>{categoryOptions.map((item) => <SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{categoryParent && categoryOptions.length === 0 && <p className="text-xs text-muted-foreground">Aucune catégorie n’est configurée pour ce sport ou cette discipline.</p>}</div>
+          <div className="space-y-2 sm:col-span-2"><Label className="text-sm font-medium text-muted-foreground">Nom de l’équipe nationale *</Label><Input value={value.nom_equipe_nationale} onChange={(event) => update("nom_equipe_nationale", event.target.value)} /></div>
+          <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Statut *</Label><Select value={value.statut} onValueChange={(next) => update("statut", next)}><SelectTrigger className="w-full"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="ACTIF">Actif</SelectItem><SelectItem value="INACTIF">Inactif</SelectItem></SelectContent></Select></div>
+          <div className="space-y-2"><Label className="text-sm font-medium text-muted-foreground">Saison *</Label><Select disabled={editing} value={value.id_saison} onValueChange={(next)=>update("id_saison",next)}><SelectTrigger className="w-full"><SelectValue placeholder="Sélectionner une saison"/></SelectTrigger><SelectContent>{seasons.map((item)=><SelectItem key={item.id} value={item.id}>{item.label}</SelectItem>)}</SelectContent></Select>{season&&<p className="text-xs text-muted-foreground">Du {season.dateStart} au {season.dateEnd}</p>}</div>
+          <div className="space-y-2 sm:col-span-2"><Label className="text-sm font-medium text-muted-foreground">Observations</Label><Textarea value={value.observations} onChange={(event) => update("observations", event.target.value)} /></div>
+        </div>
+        <div className="flex justify-end gap-2">{onCancel && <Button variant="outline" onClick={onCancel}>Annuler</Button>}<Button disabled={saving} onClick={onSubmit}>{saving ? "Enregistrement…" : "Enregistrer"}</Button></div>
+      </div>
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/site-web-20261023/checkout/tests/unit/national-team-season.test.ts:13:9)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: une campagne conserve ses dates dans les bornes de la saison de son équipe
+ok 253 - une campagne conserve ses dates dans les bornes de la saison de son équipe
+  ---
+  duration_ms: 3.1118
+  type: 'test'
+  ...
+# Subtest: la vue globale relit les équipes et les classe par saison puis par nom
+ok 254 - la vue globale relit les équipes et les classe par saison puis par nom
+  ---
+  duration_ms: 3.1252
+  type: 'test'
+  ...
+# Subtest: la fiche et la création lisent les sélections sans cache inter-instance
+ok 255 - la fiche et la création lisent les sélections sans cache inter-instance
+  ---
+  duration_ms: 4.5882
+  type: 'test'
+  ...
+# Subtest: les sélections d'athlètes utilisent un tableau responsive
+ok 256 - les sélections d'athlètes utilisent un tableau responsive
+  ---
+  duration_ms: 8.1348
+  type: 'test'
+  ...
+# Subtest: ouvrir l'ajout de staff charge immédiatement les acteurs du type initial
+ok 257 - ouvrir l'ajout de staff charge immédiatement les acteurs du type initial
+  ---
+  duration_ms: 3.9769
+  type: 'test'
+  ...
+# Subtest: une modification de campagne rafraîchit sa période dans le formulaire de sélection
+ok 258 - une modification de campagne rafraîchit sa période dans le formulaire de sélection
+  ---
+  duration_ms: 6.0993
+  type: 'test'
+  ...
+# Subtest: la fiche relit les affectations du staff après une modification directe du classeur
+ok 259 - la fiche relit les affectations du staff après une modification directe du classeur
+  ---
+  duration_ms: 2.142
+  type: 'test'
+  ...
+# Subtest: les membres du staff sont classés alphabétiquement par leur nom affiché
+ok 260 - les membres du staff sont classés alphabétiquement par leur nom affiché
+  ---
+  duration_ms: 2.0935
+  type: 'test'
+  ...
+# Subtest: le choix Officiel sélectionne un rôle officiel valide
+ok 261 - le choix Officiel sélectionne un rôle officiel valide
+  ---
+  duration_ms: 1.0051
+  type: 'test'
+  ...
+# Subtest: chaque type de staff préfère son rôle métier
+ok 262 - chaque type de staff préfère son rôle métier
+  ---
+  duration_ms: 0.2366
+  type: 'test'
+  ...
+# Subtest: le parcours officiel utilise une icône accessible pour modifier une affiliation
+ok 263 - le parcours officiel utilise une icône accessible pour modifier une affiliation
+  ---
+  duration_ms: 4.9789
+  type: 'test'
+  ...
+# Subtest: l’onglet Parcours est en lecture seule et le profil conserve l’édition
+ok 264 - l’onglet Parcours est en lecture seule et le profil conserve l’édition
+  ---
+  duration_ms: 3.0313
+  type: 'test'
+  ...
+# Subtest: retient la plus ancienne affiliation dont la date de fin est vide
+ok 265 - retient la plus ancienne affiliation dont la date de fin est vide
+  ---
+  duration_ms: 9.0061
+  type: 'test'
+  ...
+# Subtest: résout indépendamment l'organisation principale de chaque officiel
+ok 266 - résout indépendamment l'organisation principale de chaque officiel
+  ---
+  duration_ms: 0.1905
+  type: 'test'
+  ...
+# Subtest: ne retourne aucune organisation lorsque toutes les affiliations sont terminées
+ok 267 - ne retourne aucune organisation lorsque toutes les affiliations sont terminées
+  ---
+  duration_ms: 0.0932
+  type: 'test'
+  ...
+# Subtest: la liste des officiels affiche le sigle de l’organisation
+ok 268 - la liste des officiels affiche le sigle de l’organisation
+  ---
+  duration_ms: 7.9434
+  type: 'test'
+  ...
+# Subtest: les sélecteurs d’organisation des officiels relisent le référentiel ENTITES
+ok 269 - les sélecteurs d’organisation des officiels relisent le référentiel ENTITES
+  ---
+  duration_ms: 4.6071
+  type: 'test'
+  ...
+# Subtest: les sélecteurs des athlètes demandent des fédérations fraîches
+ok 270 - les sélecteurs des athlètes demandent des fédérations fraîches
+  ---
+  duration_ms: 3.0257
+  type: 'test'
+  ...
+# Subtest: les sélecteurs des médecins relisent déjà le référentiel ENTITES
+ok 271 - les sélecteurs des médecins relisent déjà le référentiel ENTITES
+  ---
+  duration_ms: 2.3347
+  type: 'test'
+  ...
+# Subtest: le passeport officiel utilise les colonnes physiques OFFICIELS
+ok 272 - le passeport officiel utilise les colonnes physiques OFFICIELS
+  ---
+  duration_ms: 5.8428
+  type: 'test'
+  ...
+# Subtest: mappe exactement les en-têtes réels de AUTRES et neutralise les cellules absentes
+ok 273 - mappe exactement les en-têtes réels de AUTRES et neutralise les cellules absentes
+  ---
+  duration_ms: 0.9263
+  type: 'test'
+  ...
+# Subtest: la liste Autres reste responsive sans défilement horizontal
+ok 274 - la liste Autres reste responsive sans défilement horizontal
+  ---
+  duration_ms: 7.2933
+  type: 'test'
+  ...
+# Subtest: les actions d’écriture sont conditionnées et les relations restent des identifiants
+ok 275 - les actions d’écriture sont conditionnées et les relations restent des identifiants
+  ---
+  duration_ms: 3.3294
+  type: 'test'
+  ...
+# Subtest: id_national reste absent des interfaces et des validations de AUTRES
+ok 276 - id_national reste absent des interfaces et des validations de AUTRES
+  ---
+  duration_ms: 4.0647
+  type: 'test'
+  ...
+# Subtest: la fiche Autres se limite aux onglets Général et Documents
+ok 277 - la fiche Autres se limite aux onglets Général et Documents
+  ---
+  duration_ms: 3.3529
+  type: 'test'
+  ...
+# Subtest: l’ajout et la modification de AUTRES utilisent le même volet latéral
+ok 278 - l’ajout et la modification de AUTRES utilisent le même volet latéral
+  ---
+  duration_ms: 3.5701
+  type: 'test'
+  ...
+# Subtest: les imports directs des scripts sont déclarés dans le manifeste pnpm
+ok 279 - les imports directs des scripts sont déclarés dans le manifeste pnpm
+  ---
+  duration_ms: 3.6274
+  type: 'test'
+  ...
+# Subtest: produit des empreintes scrypt salées et vérifiables
+ok 280 - produit des empreintes scrypt salées et vérifiables
+  ---
+  duration_ms: 587.0704
+  type: 'test'
+  ...
+# Subtest: refuse les formats et paramètres non reconnus
+ok 281 - refuse les formats et paramètres non reconnus
+  ---
+  duration_ms: 0.5258
+  type: 'test'
+  ...
+# Subtest: applique les bornes et la liste locale des mots de passe courants
+ok 282 - applique les bornes et la liste locale des mots de passe courants
+  ---
+  duration_ms: 0.3224
+  type: 'test'
+  ...
+# Subtest: génère exactement vingt caractères sans symboles ambigus
+ok 283 - génère exactement vingt caractères sans symboles ambigus
+  ---
+  duration_ms: 1.3869
+  type: 'test'
+  ...
+# Subtest: le chargement normal du dashboard conserve le cache court
+ok 284 - le chargement normal du dashboard conserve le cache court
+  ---
+  duration_ms: 2.8597
+  type: 'test'
+  ...
+# Subtest: les compteurs de médailles ne chargent pas tout le graphe compétition
+ok 285 - les compteurs de médailles ne chargent pas tout le graphe compétition
+  ---
+  duration_ms: 0.9464
+  type: 'test'
+  ...
+# Subtest: les lectures groupées Sheets réutilisent le cache par plage
+ok 286 - les lectures groupées Sheets réutilisent le cache par plage
+  ---
+  duration_ms: 3.6305
+  type: 'test'
+  ...
+# Subtest: la connexion lit son contexte en un lot et reporte les écritures de succès
+ok 287 - la connexion lit son contexte en un lot et reporte les écritures de succès
+  ---
+  duration_ms: 2.0044
+  type: 'test'
+  ...
+# Subtest: les chargements concernés utilisent un gris léger
+not ok 288 - les chargements concernés utilisent un gris léger
+  ---
+  duration_ms: 5.9133
+  type: 'test'
+  location: 'C:\\Projets\\SNDS-HARMONISATION\\coc-cible\\.cache\\site-web-20261023\\checkout\\tests\\unit\\performance-paths.test.ts:22:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /\.submit:disabled \{ background: #e5e7eb;/. Input:
+    
+    '.page {\r\n' +
+      '  --panel-width: clamp(420px, 32vw, 560px);\r\n' +
+      '  position: fixed;\r\n' +
+      '  inset: 0;\r\n' +
+      '  display: grid;\r\n' +
+      '  grid-template-columns: minmax(0, 1.22fr) minmax(430px, 0.78fr);\r\n' +
+      '  grid-template-rows: minmax(0, 1fr);\r\n' +
+      '  height: auto;\r\n' +
+      '  min-width: 1024px;\r\n' +
+      '  overflow: hidden;\r\n' +
+      '  background: #071c32;\r\n' +
+      '  color: #f7fafc;\r\n' +
+      '}\r\n' +
+      '\r\n' +
+      '.hero { position: relative; min-width: 0; overflow: hidden; isolation: isolate; background: #071936; }\r\n' +
+      '.heroImage { object-fit: cover; object-position: 56% 55%; transform: scale(1.01); animation: heroReveal 900ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }\r\n' +
+      '.heroShade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(3, 16, 31, 0.12) 12%, rgba(3, 16, 31, 0.38) 52%, rgba(3, 16, 31, 0.96) 100%), linear-gradient(90deg, rgba(3, 16, 31, 0.16) 0%, rgba(3, 16, 31, 0.04) 54%, rgba(7, 28, 50, 0.96) 100%); }\r\n' +
+      '.heroInner { position: relative; z-index: 2; display: flex; height: 100%; min-height: 430px; flex-direction: column; justify-content: space-between; padding: clamp(42px, 6.2vh, 72px) clamp(48px, 5.6vw, 104px); color: #fff; }\r\n' +
+      '.brandLockup { display: flex; align-items: center; gap: 12px; animation: contentReveal 720ms 80ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }\r\n' +
+      '.brandLogo { position: relative; display: grid; width: 64px; height: 64px; place-items: center; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 999px; background: #fff; padding: 5px; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22); }\r\n' +
+      '.brandLogoImage { object-fit: contain; }\r\n' +
+      '.brandName { margin: 0; font-size: 1.25rem; font-weight: 900; letter-spacing: 0.12em; }\r\n' +
+      '.brandCountry { margin: 2px 0 0; color: rgba(255, 255, 255, 0.75); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }\r\n' +
+      '.heroContent { width: min(690px, 100%); padding-bottom: 2px; color: #fff; animation: contentReveal 720ms 120ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }\r\n' +
+      '.eyebrow, .panelEyebrow { margin: 0; text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.7rem; font-weight: 750; }\r\n' +
+      '.eyebrow { display: inline-flex; align-items: center; gap: 12px; color: #f7ce20; }\r\n' +
+      '.eyebrow::before { content: ""; width: 34px; height: 2px; background: #f7ce20; }\r\n' +
+      '.heroContent h1 { max-width: 650px; margin: clamp(16px, 2.3vh, 26px) 0 14px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: clamp(2.35rem, 3.2vw, 4.5rem); font-weight: 900; line-height: 0.98; letter-spacing: -0.035em; text-wrap: balance; text-shadow: 0 3px 24px rgba(0, 0, 0, 0.28); }\r\n' +
+      '.introduction { max-width: 580px; margin: 0; color: rgba(255, 255, 255, 0.9); font-size: clamp(0.88rem, 1.05vw, 1.08rem); line-height: 1.55; }\r\n' +
+      '.nationalLine { position: absolute; z-index: 3; top: 0; right: 0; width: 100%; height: 6px; transform: none; background: linear-gradient(90deg, #0b8fda 0 46%, #f7ce20 46% 53%, #cf1736 53% 100%); box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); }\r\n' +
+      '\r\n' +
+      '.loginPanel { position: relative; z-index: 4; display: grid; place-items: center; overflow: hidden; background: #071c32; }\r\n' +
+      '.panelContent { display: flex; width: min(370px, calc(100% - 64px)); height: 100%; flex-direction: column; justify-content: center; padding: 18px 0 14px; animation: panelReveal 700ms 80ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }\r\n' +
+      '.logoWrap { display: flex; justify-content: center; height: clamp(76px, 11vh, 112px); margin-bottom: clamp(14px, 2.1vh, 22px); }\r\n' +
+      '.cocLogo { width: auto; height: 100%; object-fit: contain; }\r\n' +
+      '.welcome { text-align: left; }\r\n' +
+      '.panelEyebrow { color: #62c8ff; }\r\n' +
+      '.welcome h2 { margin: 6px 0 2px; color: #f7fafc; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: clamp(1.85rem, 2.1vw, 2.45rem); font-weight: 800; line-height: 1.05; }\r\n' +
+      '.welcome > p:last-child { max-width: 330px; margin: 9px 0 0; color: #b7c6d5; font-size: 0.82rem; line-height: 1.45; }\r\n' +
+      '.form { display: grid; gap: clamp(9px, 1.25vh, 14px); margin-top: clamp(14px, 2.1vh, 22px); }\r\n' +
+      '.field { display: grid; gap: 6px; }\r\n' +
+      '.field label { color: #f7fafc; font-size: 0.77rem; font-weight: 700; }\r\n' +
+      '.inputWrap { position: relative; }\r\n' +
+      '.inputWrap > svg:first-child { position: absolute; z-index: 1; top: 50%; left: 14px; width: 17px; height: 17px; transform: translateY(-50%); color: #8ea4b9; pointer-events: none; }\r\n' +
+      '.inputWrap input { height: 48px; padding-left: 44px; padding-right: 46px; border-color: rgba(255, 255, 255, 0.15); border-radius: 6px; background: rgba(255, 255, 255, 0.06); color: #fff; font-size: 0.9rem; }\r\n' +
+      '.inputWrap input::placeholder { color: #64788d; }\r\n' +
+      '.inputWrap input:focus-visible { border-color: #62c8ff; box-shadow: 0 0 0 3px rgba(98, 200, 255, 0.2); }\r\n' +
+      '.passwordToggle { position: absolute; top: 50%; right: 5px; display: grid; width: 38px; height: 38px; transform: translateY(-50%); place-items: center; border-radius: 5px; color: #536176; cursor: pointer; }\r\n' +
+      '.passwordToggle:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }\r\n' +
+      '.passwordToggle:focus-visible { outline: 3px solid rgba(98, 200, 255, 0.35); outline-offset: 1px; }\r\n' +
+      '.passwordToggle svg { width: 18px; height: 18px; }\r\n' +
+      '.messageSlot { min-height: 0; }\r\n' +
+      '.messageSlot:has(.error) { min-height: 36px; }\r\n' +
+      '.error { margin: 0; padding: 9px 11px; border: 1px solid rgba(248, 113, 113, 0.3); border-radius: 6px; background: rgba(239, 68, 68, 0.1); color: #fee2e2; font-size: 0.72rem; line-height: 1.35; }\r\n' +
+      '.submit { height: 48px; border-radius: 6px; background: #f0bd16; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); color: #071c32; font-size: 0.88rem; font-weight: 800; }\r\n' +
+      '.submit:hover { background: #ffd43b; transform: translateY(-1px); }\r\n' +
+      '.submit:focus-visible { box-shadow: 0 0 0 4px rgba(247, 206, 32, 0.28); }\r\n' +
+      '.submit:disabled { background: #31516d; color: #9db2c6; box-shadow: none; opacity: 1; transform: none; }\r\n' +
+      '.spinner { animation: spin 800ms linear infinite; }\r\n' +
+      '.panelMeta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #8ea4b9; font-size: 0.68rem; }\r\n' +
+      '.help { margin: 18px 0 0; color: #8ea4b9; font-size: 0.7rem; line-height: 1.4; text-align: center; }\r\n' +
+      '.platformLabel { margin: 32px 0 0; color: #64788d; font-size: 0.68rem; line-height: 1.4; text-align: center; text-transform: uppercase; letter-spacing: 0.13em; }\r\n' +
+      '.signature { position: relative; align-self: center; display: inline-flex; align-items: baseline; gap: 5px; margin: clamp(10px, 1.8vh, 18px) 0 0; padding: 5px 12px 6px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px; background: rgba(255, 255, 255, 0.04); color: #8ea4b9; font-size: 0.61rem; letter-spacing: 0.05em; }\r\n' +
+      '.signature::after { content: ""; position: absolute; inset: 0; transform: translateX(-130%); background: linear-gradient(105deg, transparent 32%, rgba(247, 204, 47, 0.46) 50%, transparent 68%); animation: signatureShine 5.5s 1.2s ease-in-out infinite; }\r\n' +
+      '.signature strong { color: #f7fafc; font-size: 0.72rem; letter-spacing: 0.02em; }\r\n' +
+      '\r\n' +
+      '@media (max-height: 820px) {\r\n' +
+      '  .panelContent { width: min(420px, calc(100% - 64px)); padding-block: 10px 8px; }\r\n' +
+      '  .welcome h2 { font-size: 1.75rem; }\r\n' +
+      '  .welcome > p:last-child { margin-top: 4px; }\r\n' +
+      '  .form { gap: 8px; margin-top: 10px; }\r\n' +
+      '  .inputWrap input, .submit { height: 42px; }\r\n' +
+      '  .panelMeta { margin-top: 18px; padding-top: 11px; }\r\n' +
+      '  .signature { margin-top: 8px; }\r\n' +
+      '}\r\n' +
+      '\r\n' +
+      '@media (max-width: 1023px) {\r\n' +
+      '  .page {\r\n' +
+      '    grid-template-columns: minmax(0, 1fr);\r\n' +
+      '    grid-template-rows: minmax(0, 1fr);\r\n' +
+      '    width: 100%;\r\n' +
+      '    min-width: 0;\r\n' +
+      '    height: auto;\r\n' +
+      '    overflow-x: hidden;\r\n' +
+      '  }\r\n' +
+      '\r\n' +
+      '  .hero { display: none; }\r\n' +
+      '  .loginPanel { min-width: 0; padding: 24px 0; }\r\n' +
+      '  .panelContent { width: min(370px, calc(100% - 32px)); min-width: 0; }\r\n' +
+      '}\r\n' +
+      '\r\n' +
+      '@keyframes heroReveal { from { opacity: 0; transform: scale(1.045); } to { opacity: 1; transform: scale(1.01); } }\r\n' +
+      '@keyframes contentReveal { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }\r\n' +
+      '@keyframes panelReveal { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }\r\n' +
+      '@keyframes signatureShine { 0%, 68% { transform: translateX(-130%); } 82%, 100% { transform: translateX(130%); } }\r\n' +
+      '@keyframes spin { to { transform: rotate(360deg); } }\r\n' +
+      '\r\n' +
+      '@media (prefers-reduced-motion: reduce) {\r\n' +
+      '  .heroImage, .heroContent, .panelContent, .signature::after, .spinner { animation: none; }\r\n' +
+      '  .submit { transition: none; }\r\n' +
+      '  .submit:hover { transform: none; }\r\n' +
+      '}\r\n'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual: |-
+    .page {
+      --panel-width: clamp(420px, 32vw, 560px);
+      position: fixed;
+      inset: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.22fr) minmax(430px, 0.78fr);
+      grid-template-rows: minmax(0, 1fr);
+      height: auto;
+      min-width: 1024px;
+      overflow: hidden;
+      background: #071c32;
+      color: #f7fafc;
+    }
+    
+    .hero { position: relative; min-width: 0; overflow: hidden; isolation: isolate; background: #071936; }
+    .heroImage { object-fit: cover; object-position: 56% 55%; transform: scale(1.01); animation: heroReveal 900ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
+    .heroShade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(3, 16, 31, 0.12) 12%, rgba(3, 16, 31, 0.38) 52%, rgba(3, 16, 31, 0.96) 100%), linear-gradient(90deg, rgba(3, 16, 31, 0.16) 0%, rgba(3, 16, 31, 0.04) 54%, rgba(7, 28, 50, 0.96) 100%); }
+    .heroInner { position: relative; z-index: 2; display: flex; height: 100%; min-height: 430px; flex-direction: column; justify-content: space-between; padding: clamp(42px, 6.2vh, 72px) clamp(48px, 5.6vw, 104px); color: #fff; }
+    .brandLockup { display: flex; align-items: center; gap: 12px; animation: contentReveal 720ms 80ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
+    .brandLogo { position: relative; display: grid; width: 64px; height: 64px; place-items: center; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 999px; background: #fff; padding: 5px; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22); }
+    .brandLogoImage { object-fit: contain; }
+    .brandName { margin: 0; font-size: 1.25rem; font-weight: 900; letter-spacing: 0.12em; }
+    .brandCountry { margin: 2px 0 0; color: rgba(255, 255, 255, 0.75); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+    .heroContent { width: min(690px, 100%); padding-bottom: 2px; color: #fff; animation: contentReveal 720ms 120ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
+    .eyebrow, .panelEyebrow { margin: 0; text-transform: uppercase; letter-spacing: 0.18em; font-size: 0.7rem; font-weight: 750; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 12px; color: #f7ce20; }
+    .eyebrow::before { content: ""; width: 34px; height: 2px; background: #f7ce20; }
+    .heroContent h1 { max-width: 650px; margin: clamp(16px, 2.3vh, 26px) 0 14px; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: clamp(2.35rem, 3.2vw, 4.5rem); font-weight: 900; line-height: 0.98; letter-spacing: -0.035em; text-wrap: balance; text-shadow: 0 3px 24px rgba(0, 0, 0, 0.28); }
+    .introduction { max-width: 580px; margin: 0; color: rgba(255, 255, 255, 0.9); font-size: clamp(0.88rem, 1.05vw, 1.08rem); line-height: 1.55; }
+    .nationalLine { position: absolute; z-index: 3; top: 0; right: 0; width: 100%; height: 6px; transform: none; background: linear-gradient(90deg, #0b8fda 0 46%, #f7ce20 46% 53%, #cf1736 53% 100%); box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); }
+    
+    .loginPanel { position: relative; z-index: 4; display: grid; place-items: center; overflow: hidden; background: #071c32; }
+    .panelContent { display: flex; width: min(370px, calc(100% - 64px)); height: 100%; flex-direction: column; justify-content: center; padding: 18px 0 14px; animation: panelReveal 700ms 80ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
+    .logoWrap { display: flex; justify-content: center; height: clamp(76px, 11vh, 112px); margin-bottom: clamp(14px, 2.1vh, 22px); }
+    .cocLogo { width: auto; height: 100%; object-fit: contain; }
+    .welcome { text-align: left; }
+    .panelEyebrow { color: #62c8ff; }
+    .welcome h2 { margin: 6px 0 2px; color: #f7fafc; font-family: Inter, ui-sans-serif, system-ui, sans-serif; font-size: clamp(1.85rem, 2.1vw, 2.45rem); font-weight: 800; line-height: 1.05; }
+    .welcome > p:last-child { max-width: 330px; margin: 9px 0 0; color: #b7c6d5; font-size: 0.82rem; line-height: 1.45; }
+    .form { display: grid; gap: clamp(9px, 1.25vh, 14px); margin-top: clamp(14px, 2.1vh, 22px); }
+    .field { display: grid; gap: 6px; }
+    .field label { color: #f7fafc; font-size: 0.77rem; font-weight: 700; }
+    .inputWrap { position: relative; }
+    .inputWrap > svg:first-child { position: absolute; z-index: 1; top: 50%; left: 14px; width: 17px; height: 17px; transform: translateY(-50%); color: #8ea4b9; pointer-events: none; }
+    .inputWrap input { height: 48px; padding-left: 44px; padding-right: 46px; border-color: rgba(255, 255, 255, 0.15); border-radius: 6px; background: rgba(255, 255, 255, 0.06); color: #fff; font-size: 0.9rem; }
+    .inputWrap input::placeholder { color: #64788d; }
+    .inputWrap input:focus-visible { border-color: #62c8ff; box-shadow: 0 0 0 3px rgba(98, 200, 255, 0.2); }
+    .passwordToggle { position: absolute; top: 50%; right: 5px; display: grid; width: 38px; height: 38px; transform: translateY(-50%); place-items: center; border-radius: 5px; color: #536176; cursor: pointer; }
+    .passwordToggle:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    .passwordToggle:focus-visible { outline: 3px solid rgba(98, 200, 255, 0.35); outline-offset: 1px; }
+    .passwordToggle svg { width: 18px; height: 18px; }
+    .messageSlot { min-height: 0; }
+    .messageSlot:has(.error) { min-height: 36px; }
+    .error { margin: 0; padding: 9px 11px; border: 1px solid rgba(248, 113, 113, 0.3); border-radius: 6px; background: rgba(239, 68, 68, 0.1); color: #fee2e2; font-size: 0.72rem; line-height: 1.35; }
+    .submit { height: 48px; border-radius: 6px; background: #f0bd16; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); color: #071c32; font-size: 0.88rem; font-weight: 800; }
+    .submit:hover { background: #ffd43b; transform: translateY(-1px); }
+    .submit:focus-visible { box-shadow: 0 0 0 4px rgba(247, 206, 32, 0.28); }
+    .submit:disabled { background: #31516d; color: #9db2c6; box-shadow: none; opacity: 1; transform: none; }
+    .spinner { animation: spin 800ms linear infinite; }
+    .panelMeta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 28px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #8ea4b9; font-size: 0.68rem; }
+    .help { margin: 18px 0 0; color: #8ea4b9; font-size: 0.7rem; line-height: 1.4; text-align: center; }
+    .platformLabel { margin: 32px 0 0; color: #64788d; font-size: 0.68rem; line-height: 1.4; text-align: center; text-transform: uppercase; letter-spacing: 0.13em; }
+    .signature { position: relative; align-self: center; display: inline-flex; align-items: baseline; gap: 5px; margin: clamp(10px, 1.8vh, 18px) 0 0; padding: 5px 12px 6px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 999px; background: rgba(255, 255, 255, 0.04); color: #8ea4b9; font-size: 0.61rem; letter-spacing: 0.05em; }
+    .signature::after { content: ""; position: absolute; inset: 0; transform: translateX(-130%); background: linear-gradient(105deg, transparent 32%, rgba(247, 204, 47, 0.46) 50%, transparent 68%); animation: signatureShine 5.5s 1.2s ease-in-out infinite; }
+    .signature strong { color: #f7fafc; font-size: 0.72rem; letter-spacing: 0.02em; }
+    
+    @media (max-height: 820px) {
+      .panelContent { width: min(420px, calc(100% - 64px)); padding-block: 10px 8px; }
+      .welcome h2 { font-size: 1.75rem; }
+      .welcome > p:last-child { margin-top: 4px; }
+      .form { gap: 8px; margin-top: 10px; }
+      .inputWrap input, .submit { height: 42px; }
+      .panelMeta { margin-top: 18px; padding-top: 11px; }
+      .signature { margin-top: 8px; }
+    }
+    
+    @media (max-width: 1023px) {
+      .page {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+        width: 100%;
+        min-width: 0;
+        height: auto;
+        overflow-x: hidden;
+      }
+    
+      .hero { display: none; }
+      .loginPanel { min-width: 0; padding: 24px 0; }
+      .panelContent { width: min(370px, calc(100% - 32px)); min-width: 0; }
+    }
+    
+    @keyframes heroReveal { from { opacity: 0; transform: scale(1.045); } to { opacity: 1; transform: scale(1.01); } }
+    @keyframes contentReveal { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes panelReveal { from { opacity: 0; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes signatureShine { 0%, 68% { transform: translateX(-130%); } 82%, 100% { transform: translateX(130%); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    
+    @media (prefers-reduced-motion: reduce) {
+      .heroImage, .heroContent, .panelContent, .signature::after, .spinner { animation: none; }
+      .submit { transition: none; }
+      .submit:hover { transform: none; }
+    }
+    
+  operator: 'match'
+  stack: |-
+    TestContext.<anonymous> (file:///C:/Projets/SNDS-HARMONISATION/coc-cible/.cache/site-web-20261023/checkout/tests/unit/performance-paths.test.ts:26:10)
+    async Test.run (node:internal/test_runner/test:1313:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+  ...
+# Subtest: redirige une activation obligatoire vers l'activation
+ok 289 - redirige une activation obligatoire vers l'activation
+  ---
+  duration_ms: 0.8357
+  type: 'test'
+  ...
+# Subtest: redirige un utilisateur avec un bloc métier vers le dashboard
+ok 290 - redirige un utilisateur avec un bloc métier vers le dashboard
+  ---
+  duration_ms: 0.1875
+  type: 'test'
+  ...
+# Subtest: ne renvoie pas vers le dashboard un utilisateur sans bloc métier
+ok 291 - ne renvoie pas vers le dashboard un utilisateur sans bloc métier
+  ---
+  duration_ms: 0.115
+  type: 'test'
+  ...
+# Subtest: redirige un super-administrateur sans bloc vers le tableau de bord
+ok 292 - redirige un super-administrateur sans bloc vers le tableau de bord
+  ---
+  duration_ms: 0.1357
+  type: 'test'
+  ...
+# Subtest: VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation
+ok 293 - VIEWER rejoint le dashboard uniquement avec une attribution valide apres activation
+  ---
+  duration_ms: 0.1804
+  type: 'test'
+  ...
+# Subtest: la matrice couvre explicitement les familles de pages et API
+ok 294 - la matrice couvre explicitement les familles de pages et API
+  ---
+  duration_ms: 1.6878
+  type: 'test'
+  ...
+# Subtest: les routes inconnues et contournements par URL sont refusés par défaut
+ok 295 - les routes inconnues et contournements par URL sont refusés par défaut
+  ---
+  duration_ms: 0.3829
+  type: 'test'
+  ...
+# Subtest: chaque mutation métier exige WRITE et chaque lecture exige READ
+ok 296 - chaque mutation métier exige WRITE et chaque lecture exige READ
+  ---
+  duration_ms: 0.2395
+  type: 'test'
+  ...
+# Subtest: les périmètres officiels utilisent exactement le bon bloc
+ok 297 - les périmètres officiels utilisent exactement le bon bloc
+  ---
+  duration_ms: 1.0968
+  type: 'test'
+  ...
+# Subtest: toutes les routes protégées actuellement exposées appartiennent à la matrice
+ok 298 - toutes les routes protégées actuellement exposées appartiennent à la matrice
+  ---
+  duration_ms: 0.2701
+  type: 'test'
+  ...
+# Subtest: l’administration refuse le mass assignment des champs utilisateur sensibles
+ok 299 - l’administration refuse le mass assignment des champs utilisateur sensibles
+  ---
+  duration_ms: 4.1486
+  type: 'test'
+  ...
+# Subtest: la création AUTRES ignore les références documentaires fournies par le client
+ok 300 - la création AUTRES ignore les références documentaires fournies par le client
+  ---
+  duration_ms: 3.1985
+  type: 'test'
+  ...
+# Subtest: les pages d’écriture Autres et la purge du cache exigent WRITE
+ok 301 - les pages d’écriture Autres et la purge du cache exigent WRITE
+  ---
+  duration_ms: 2.235
+  type: 'test'
+  ...
+# Subtest: définit les attributs de sécurité et la durée du cookie
+ok 302 - définit les attributs de sécurité et la durée du cookie
+  ---
+  duration_ms: 1.5854
+  type: 'test'
+  ...
+# Subtest: une session en activation n'accède qu'aux quatre routes minimales
+ok 303 - une session en activation n'accède qu'aux quatre routes minimales
+  ---
+  duration_ms: 0.2176
+  type: 'test'
+  ...
+# Subtest: relit l'utilisateur et accepte un compte actif de même version
+ok 304 - relit l'utilisateur et accepte un compte actif de même version
+  ---
+  duration_ms: 26.0071
+  type: 'test'
+  ...
+# Subtest: refuse par défaut compte absent, inactif et bloqué
+ok 305 - refuse par défaut compte absent, inactif et bloqué
+  ---
+  duration_ms: 4.1715
+  type: 'test'
+  ...
+# Subtest: révoque une session dont session_version diffère
+ok 306 - révoque une session dont session_version diffère
+  ---
+  duration_ms: 2.9277
+  type: 'test'
+  ...
+# Subtest: échoue fermé lors d'une panne Sheets
+ok 307 - échoue fermé lors d'une panne Sheets
+  ---
+  duration_ms: 3.0184
+  type: 'test'
+  ...
+# Subtest: marque la session minimale quand le mot de passe doit changer
+ok 308 - marque la session minimale quand le mot de passe doit changer
+  ---
+  duration_ms: 2.3942
+  type: 'test'
+  ...
+# Subtest: refuse un accès temporaire absent ou expiré
+ok 309 - refuse un accès temporaire absent ou expiré
+  ---
+  duration_ms: 1.5334
+  type: 'test'
+  ...
+# Subtest: crée un jeton strict valable exactement huit heures
+ok 310 - crée un jeton strict valable exactement huit heures
+  ---
+  duration_ms: 10.5421
+  type: 'test'
+  ...
+# Subtest: refuse le jeton à l'instant exact de son expiration
+ok 311 - refuse le jeton à l'instant exact de son expiration
+  ---
+  duration_ms: 1.3996
+  type: 'test'
+  ...
+# Subtest: refuse un jeton altéré
+ok 312 - refuse un jeton altéré
+  ---
+  duration_ms: 0.9638
+  type: 'test'
+  ...
+# Subtest: refuse un ancien payload coc/technique même correctement signé
+ok 313 - refuse un ancien payload coc/technique même correctement signé
+  ---
+  duration_ms: 1.2975
+  type: 'test'
+  ...
+# Subtest: l’administration du site regroupe toutes les anciennes entrées du sous-menu
+ok 314 - l’administration du site regroupe toutes les anciennes entrées du sous-menu
+  ---
+  duration_ms: 4.9329
+  type: 'test'
+  ...
+# Subtest: le tableau territorial inclut les cercles dans son agrégation
+ok 315 - le tableau territorial inclut les cercles dans son agrégation
+  ---
+  duration_ms: 3.6936
+  type: 'test'
+  ...
+# Subtest: force toutes les lectures de sécurité en mode frais
+ok 316 - force toutes les lectures de sécurité en mode frais
+  ---
+  duration_ms: 1.4931
+  type: 'test'
+  ...
+# Subtest: refuse les e-mails normalisés dupliqués
+ok 317 - refuse les e-mails normalisés dupliqués
+  ---
+  duration_ms: 1.4795
+  type: 'test'
+  ...
+# Subtest: distingue une source indisponible d'un schéma invalide
+ok 318 - distingue une source indisponible d'un schéma invalide
+  ---
+  duration_ms: 0.3435
+  type: 'test'
+  ...
+# Subtest: refuse les périodes actives qui se chevauchent, bornes inclusives
+ok 319 - refuse les périodes actives qui se chevauchent, bornes inclusives
+  ---
+  duration_ms: 11.0889
+  type: 'test'
+  ...
+# Subtest: rend les ajouts techniques idempotents et vérifie la relecture
+ok 320 - rend les ajouts techniques idempotents et vérifie la relecture
+  ---
+  duration_ms: 1.032
+  type: 'test'
+  ...
+# Subtest: normalise un e-mail sans modifier sa partie interne
+ok 321 - normalise un e-mail sans modifier sa partie interne
+  ---
+  duration_ms: 0.6752
+  type: 'test'
+  ...
+# Subtest: accepte uniquement les en-têtes exacts et ordonnés
+ok 322 - accepte uniquement les en-têtes exacts et ordonnés
+  ---
+  duration_ms: 0.5068
+  type: 'test'
+  ...
+# Subtest: convertit une ligne utilisateur valide en modèle typé
+ok 323 - convertit une ligne utilisateur valide en modèle typé
+  ---
+  duration_ms: 0.4161
+  type: 'test'
+  ...
+# Subtest: refuse les valeurs contrôlées, booléens et instants non conformes
+ok 324 - refuse les valeurs contrôlées, booléens et instants non conformes
+  ---
+  duration_ms: 0.2541
+  type: 'test'
+  ...
+# Subtest: valide les dates calendaires et leur ordre
+ok 325 - valide les dates calendaires et leur ordre
+  ---
+  duration_ms: 1.2373
+  type: 'test'
+  ...
+1..325
+# tests 325
+# suites 0
+# pass 319
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16437.2759

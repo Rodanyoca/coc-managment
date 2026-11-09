@@ -73,3 +73,4 @@ try{
  if(page){await page.screenshot({path:`${out}/failure.png`,fullPage:true});writeFileSync(`${out}/failure.json`,JSON.stringify({message:error.message,errors,commands,body:await page.locator('body').innerText()},null,2))}
  throw error
 }finally{await browser.close()}
+

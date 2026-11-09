@@ -1,0 +1,65 @@
+{
+  "tests-before": {
+    "summary": [
+      "\u2139 tests 328",
+      "\u2139 pass 319",
+      "\u2139 fail 9",
+      "\u2139 duration_ms 89749.983"
+    ],
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination apr\u00e8s la pose du cookie",
+      "la liste finale masque les c\u00e9r\u00e9monies et conserve une action accessible",
+      "la liste f\u00e9d\u00e9rations utilise le format tableau des ligues sans colonne identifiant",
+      "le formulaire remplace les dates par le r\u00e9f\u00e9rentiel des saisons",
+      "les chargements concern\u00e9s utilisent un gris l\u00e9ger",
+      "les \u00e9critures restent contextuelles et masqu\u00e9es sans droit",
+      "l\u2019administration du site regroupe toutes les anciennes entr\u00e9es du sous-menu",
+      "une mise \u00e0 jour Sheets r\u00e9utilise les lignes et en-t\u00eates mis en cache"
+    ]
+  },
+  "tests-after": {
+    "summary": [
+      "\u2139 tests 328",
+      "\u2139 pass 319",
+      "\u2139 fail 9",
+      "\u2139 duration_ms 70987.2556"
+    ],
+    "failures": [
+      "T12: l'enveloppe serveur distingue 401/403, bloque les doublons et journalise",
+      "la connexion recharge la destination apr\u00e8s la pose du cookie",
+      "la liste finale masque les c\u00e9r\u00e9monies et conserve une action accessible",
+      "la liste f\u00e9d\u00e9rations utilise le format tableau des ligues sans colonne identifiant",
+      "le formulaire remplace les dates par le r\u00e9f\u00e9rentiel des saisons",
+      "les chargements concern\u00e9s utilisent un gris l\u00e9ger",
+      "les \u00e9critures restent contextuelles et masqu\u00e9es sans droit",
+      "l\u2019administration du site regroupe toutes les anciennes entr\u00e9es du sous-menu",
+      "une mise \u00e0 jour Sheets r\u00e9utilise les lignes et en-t\u00eates mis en cache"
+    ]
+  },
+  "cpu-before": {
+    "summary": [
+      "\u2139 tests 58",
+      "\u2139 pass 58",
+      "\u2139 fail 0",
+      "\u2139 duration_ms 10674.99"
+    ],
+    "failures": []
+  },
+  "cpu-after": {
+    "summary": [
+      "\u2139 tests 67",
+      "\u2139 pass 67",
+      "\u2139 fail 0",
+      "\u2139 duration_ms 2534.3189"
+    ],
+    "failures": []
+  },
+  "sameGeneralFailures": true,
+  "typescript": {
+    "output": ""
+  },
+  "lint": {
+    "output": "\r\nC:\\Projets\\SNDS-RDC\\data\\multisport\\coc-managment\\components\\dashboard\\athlete-sport-history.tsx\r\n  27:13  warning  Error: Calling setState synchronously within an effect can trigger cascading renders\r\n\r\nEffects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:\r\n* Update external systems with the latest state from React.\r\n* Subscribe for updates from some external system, calling setState in a callback function when external state changes.\r\n\r\nCalling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).\r\n\r\nC:\\Projets\\SNDS-RDC\\data\\multisport\\coc-managment\\components\\dashboard\\athlete-sport-history.tsx:27:13\r\n  25 |       .finally(() => setLoading(false))\r\n  26 |   }, [athleteId])\r\n> 27 |   useEffect(load, [load])\r\n     |             ^^^^ Avoid calling setState() directly within an effect\r\n  28 |   return { data, loading, error, retry: load }\r\n  29 | }\r\n  30 |  react-hooks/set-state-in-effect\r\n\r\n\u2716 1 problem (0 errors, 1 warning)\r\n\r\n"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "at": "2026-10-23T09:03:46.381Z",
+  "beforeHead": "c1488d33b6fcd2953d2bf0becc25a83055e13e2f",
+  "changed": [
+    "docs/implementation/audit-cpu-ecarts-2026-10-22.md",
+    "docs/implementation/audit-cpu-suivi-2026-10-22.md",
+    "scripts/cpu-audit/fixtures.mjs",
+    "lib/google/sheets.ts",
+    "lib/users/google-adapter.ts",
+    "lib/users/repository.ts",
+    "lib/users/types.ts",
+    "tests/unit/auth-source-unavailable-navigation.test.ts"
+  ],
+  "protectedFiles": 649,
+  "originalUserInterfacesPreserved": [
+    "app/dashboard/utilisateurs/[id]/loading.tsx",
+    "app/dashboard/utilisateurs/error.tsx",
+    "app/dashboard/utilisateurs/loading.tsx",
+    "components/dashboard/user-account-ui.tsx",
+    "app/api/users/[id]/route.ts",
+    "app/dashboard/utilisateurs/[id]/page.tsx",
+    "app/dashboard/utilisateurs/[id]/user-detail-client.tsx",
+    "app/dashboard/utilisateurs/nouveau/new-user-client.tsx",
+    "app/dashboard/utilisateurs/nouveau/page.tsx",
+    "app/dashboard/utilisateurs/page.tsx",
+    "app/dashboard/utilisateurs/users-client.tsx"
+  ],
+  "sourceHashes": {
+    "lib/google/sheets.ts": "a56cf1b69e97d3f9e1a5336232ee0bf07b827496626c996dc947c8529d1590c0",
+    "lib/users/google-adapter.ts": "1671fafcc3b0c78f29e3d96f8531d65fb6bedc6bc3898178e5a4f6e9051f6d39",
+    "lib/users/repository.ts": "ffeb6a436ddfe7ed3cf391ad0f0dd95355d2933d09b327379c6f8804a55ff3d1",
+    "lib/users/types.ts": "07020557132501dd92de19ee800d020bcc9a66e733899a6a5c03751864b03e68"
+  }
+}

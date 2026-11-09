@@ -1,0 +1,195 @@
+(node:32376) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:32376) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ competition detail and programs project only selected records, preserving normalization and freshness (271.2792ms)
+
+✔ results filter competition/history before projection; missing and orphaned relations stay excluded (95.8911ms)
+
+✔ unit members are indexed once, preserving duplicates, source order, direct composition and label failure (68.1355ms)
+
+✔ form references read only the three consumed tables and preserve returned labels (38.4945ms)
+
+✔ delegation counts scan athletes once and preserve union across campaigns and competitions (8.8047ms)
+
+✔ units route refuses absent, unassigned, expired and unavailable access before any business read (33.8294ms)
+
+✔ competition and program mutations re-read their changes without changing identity or unrelated editions (36.9381ms)
+
+(node:28696) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:28696) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ activity dashboard loads only the displayed reference, preserving all statuses and unknown types (364.5792ms)
+
+✔ independent unused reference failure does not break the activity dashboard (70.075ms)
+
+✔ required activity source error propagates without an aggregate fallback (44.3367ms)
+
+✔ narrow activity types retain the exact options returned to editing forms (42.0773ms)
+
+✔ concurrent dashboards share raw reads, never memoize aggregates across mutations (68.6772ms)
+
+✔ a two-workbook mutation fences old reads and conservatively refreshes all raw workbooks (49.6353ms)
+
+✔ partial failure across workbooks invalidates all raw caches on either attempted write (45.4781ms)
+
+(node:8684) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:8684) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ detail preserves full document output but reads size only for the selected file (248.3341ms)
+
+✔ missing detail never enriches unrelated files (24.5482ms)
+
+✔ entity selection normalizes fields before enrichment and preserves order (26.0207ms)
+
+✔ list keeps all sizes, missing file and Drive failure semantics (39.4494ms)
+
+✔ creation scans fresh document identifiers without reading unrelated Drive sizes (43.2403ms)
+
+(node:9412) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:9412) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ the fresh table preserves schema validation of headers beyond column Z (254.7486ms)
+
+✔ an audit write must not reject a fresh account snapshot from another sheet (21.8526ms)
+
+✔ fresh rows rejects an old result after a write to its actual source sheet (17.9666ms)
+
+✔ fresh headers rejects an old result after a write to its actual source sheet (21.2141ms)
+
+✔ fresh batch rejects an old result after a write to its actual source sheet (15.8745ms)
+
+✔ fresh table rejects an old result after a write to its actual source sheet (15.8191ms)
+
+✔ an audit append conservatively invalidates all raw workbook caches (17.0618ms)
+
+✔ fresh adapter reads cannot return a cached revoked account or stale fallback (20.0171ms)
+
+✔ targeted invalidation fences old reads without cancelling another workbook pending read (12.5415ms)
+
+✔ fresh read interrupted by local invalidation rejects instead of returning old grants (12.4594ms)
+
+✔ appendSheetRow: success fences all raw workbook ranges (12.1779ms)
+
+✔ appendSheetRow: uncertain error fences all raw workbook ranges (11.7152ms)
+
+✔ appendSheetRows: success fences all raw workbook ranges (10.8157ms)
+
+✔ appendSheetRows: uncertain error fences all raw workbook ranges (9.7208ms)
+
+✔ updateSheetCell: success fences all raw workbook ranges (9.6997ms)
+
+✔ updateSheetCell: uncertain error fences all raw workbook ranges (9.0179ms)
+
+✔ updateSheetCells: success fences all raw workbook ranges (11.617ms)
+
+✔ updateSheetCells: uncertain error fences all raw workbook ranges (11.8203ms)
+
+✔ deleteSheetRow: success fences all raw workbook ranges (9.9015ms)
+
+✔ deleteSheetRow: uncertain error fences all raw workbook ranges (9.913ms)
+
+✔ targeted invalidation fences headers and batch, preserving a different workbook (11.6269ms)
+
+✔ fresh table uses one response for headers and rows, never shares or falls back (20.149ms)
+
+✔ repository prefers coherent table snapshots and propagates source errors (22.5152ms)
+
+✔ Google adapter through repository and policy never regrants a revoked VIEWER block on source failure (34.1435ms)
+
+(node:25912) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:25912) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ server navigation and canAccess enforce assigned VIEWER blocks and fail closed (275.2374ms)
+
+Document preview error Error: Synthetic Drive failure
+
+    at downloadDriveFile (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/.cache/push-competitions-20261030/tests/cpu/private-documents.test.mjs:24:89)
+
+    at Module.GET (C:\Projets\SNDS-RDC\data\multisport\coc-managment\.cache\push-competitions-20261030\app\api\documents\[id]\preview\route.ts:13:24)
+
+    at async TestContext.<anonymous> (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/.cache/push-competitions-20261030/tests/cpu/private-documents.test.mjs:48:17)
+
+    at async Test.run (node:internal/test_runner/test:1313:7)
+
+    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+Document download error Error: Synthetic Drive failure
+
+    at downloadDriveFile (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/.cache/push-competitions-20261030/tests/cpu/private-documents.test.mjs:24:89)
+
+    at Module.GET (C:\Projets\SNDS-RDC\data\multisport\coc-managment\.cache\push-competitions-20261030\app\api\documents\[id]\download\route.ts:13:24)
+
+    at async TestContext.<anonymous> (file:///C:/Projets/SNDS-RDC/data/multisport/coc-managment/.cache/push-competitions-20261030/tests/cpu/private-documents.test.mjs:48:17)
+
+    at async Test.run (node:internal/test_runner/test:1313:7)
+
+    at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+(node:32748) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:32748) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ private preview: assigned VIEWER only, missing files, size and binary cache headers (330.5591ms)
+
+✔ private download: assigned VIEWER only, missing files, size and binary cache headers (55.8247ms)
+
+(node:12132) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+(node:12132) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+
+✔ batch reads only missing unique ranges, preserves the complete result (179.9413ms)
+
+✔ overlapping batches and individual readers share in-flight missing ranges (17.2646ms)
+
+✔ invalidating an in-flight single read prevents stale cache resurrection (14.4973ms)
+
+✔ successful write invalidates a batch already in flight, without cancelling its caller (16.9799ms)
+
+✔ headers finishing after invalidation do not poison subsequent reads (16.6023ms)
+
+✔ ordinary error fallback is kept, explicit fresh reads fail closed and never cache (41.3808ms)
+
+✔ different workbooks remain isolated; expiry triggers another read; empty batch does no I/O (17.957ms)
+
+✔ old completion cannot replace a new cache entry or remove its in-flight read (18.7889ms)
+
+✔ failed shared batch cleans its promises so a later request can retry (17.2809ms)
+
+✔ hot batches do no I/O, fresh batches do not share promises or populate caches (18.6636ms)
+
+✔ separate process contexts do not share cache entries or invalidations (23.6673ms)
+
+ℹ tests 57
+
+ℹ suites 0
+
+ℹ pass 57
+
+ℹ fail 0
+
+ℹ cancelled 0
+
+ℹ skipped 0
+
+ℹ todo 0
+
+ℹ duration_ms 891.6804

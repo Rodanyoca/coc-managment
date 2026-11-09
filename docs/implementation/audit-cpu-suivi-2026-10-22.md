@@ -212,6 +212,3 @@ Publie : 21822f51acf51667d27acee3107716e3c5b06210, deployment dpl_3SfWTtJqZJfDtc
 
 ### Correctif Site Web — insertion dans les gabarits (25 octobre 2026)
 Implémenté et vérifié localement : première ligne admissible par ID, protection des lignes incomplètes, traitement des FALSE déclarés, insertion/remplissage atomiques et recherche fraîche du rang lors des modifications. Neuf ressources, 114 tests ciblés ; lint, TypeScript et build normal réussis. Profil conservateur isolé, C2 différé ; brouillon principal préservé. Lectures supplémentaires pour la cohérence, aucun gain CPU Vercel revendiqué. Données distantes consultées en lecture seule ; déplacement proposé mais non exécuté. Voir [rapport et limites](site-web-insertion-2026-10-25.md). Sans push ni déploiement.
-
-### Publication Site Web du 25 octobre 2026
-Publié : **29f7149570924bdb116afa368b434efb912d8b1c**, déploiement **dpl_2iDignCCnpFJwNiun1i17Vmv7sEE READY** à 17:55:43.733 UTC, alias database.coc-rdc.net confirmé. Design et insertion des neuf ressources, documentation et tests ; 114 tests ciblés et huit contrôles anonymes réussis. C2 reste exclu, garanties S1/F1 préservées. Aucune écriture métier ni migration d’article. Clôture locale dans [le rapport de publication](publication-site-web-2026-10-25.md).
